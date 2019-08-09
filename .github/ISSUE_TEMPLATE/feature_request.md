@@ -11,7 +11,7 @@ assignees: ''
 As a [user], I would like to [action], so that [impact].
 
 ## Requirements/Acceptance Criteria
-A concise description of what you want to happen.
+A description of what you think needs to be done to satisfy the user story.
 
 ## Design
 Add design of the feature if applicable.
