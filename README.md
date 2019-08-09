@@ -13,7 +13,3 @@ Feel free to contribute.
 
 -   This Project runs all test and applyies all linter rules before commit or push
 -   If you have linter errors try `eslint "**/*.js` in terminal or remove the linter errors by hand
-
-    ##TO-DO:
-
--   Complete file-upload
