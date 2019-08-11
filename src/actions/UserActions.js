@@ -20,6 +20,9 @@ import {
     SEND_NOTIFICATION,
     SEND_NOTIFICATION_SUCCESS,
     SEND_NOTIFICATION_FAILURE,
+    FETCH_IDPS,
+    FETCH_IDPS_SUCCESS,
+    FETCH_IDPS_FAILED,
 } from './types';
 import auth from 'solid-auth-client';
 import User from 'your-user';
@@ -31,13 +34,8 @@ export const login = (username, password) => {
         auth.currentSession()
             .then((session) => {
                 if (!session) {
-                    auth.popupLogin(
-                        'https://owntech.de/common/popup.html'
-                    ).then(
-                        (value) => console.log('value from, auth login', value)
-                        // setSessionInfo(session);
-                    );
-                } else {
+                    dispatch({ type: LOGIN_FAIL });
+                } else if (session) {
                     dispatch(setSessionInfo(session));
                 }
             })
@@ -172,5 +170,21 @@ export const sendNotification = (webId, notification) => {
 export const setSelection = (selection) => {
     return (dispatch) => {
         dispatch({ type: SET_SELECTION, payload: selection });
+    };
+};
+
+export const fetchIdps = () => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_IDPS });
+        const request = { method: 'GET' };
+        fetch('https://solid.github.io/solid-idp-list/services.json', request)
+            .then((response) => {
+                response.json().then((idps) => {
+                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: idps.idps });
+                });
+            })
+            .catch((err) => {
+                dispatch({ type: FETCH_IDPS_FAILED, payload: err });
+            });
     };
 };

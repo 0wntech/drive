@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styles from './LoginScreen.module.css';
 import RegisterForm from '../../functional_components/RegisterForm/RegisterForm';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
+import { fetchIdps } from '../../actions/UserActions';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -11,15 +13,32 @@ class LoginScreen extends React.Component {
         };
     }
 
+    componentDidMount() {
+        const { register, loadIdps, idps, fetchIdps } = this.props;
+        if (!register && !loadIdps && !idps) {
+            fetchIdps();
+        }
+    }
+
     render() {
-        const register = window.location.href.includes('register');
+        const { register, idps } = this.props;
         return (
             <div className={styles.container}>
                 <h1>{register ? '🚀' : '👋'}</h1>
-                {register ? <RegisterForm /> : <LoginForm />}
+                {register ? <RegisterForm /> : <LoginForm idps={idps} />}
             </div>
         );
     }
 }
 
-export default LoginScreen;
+const mapStateToProps = (state) => {
+    return {
+        idps: state.app.idps,
+        loadIdps: state.app.loadIdps,
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    { fetchIdps }
+)(LoginScreen);
