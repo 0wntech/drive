@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './LoginScreen.module.css';
+import RegisterForm from '../../functional_components/RegisterForm/RegisterForm';
+import LoginForm from '../../functional_components/LoginForm/LoginForm';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -12,7 +14,8 @@ class LoginScreen extends React.Component {
     render() {
         return (
             <div className={styles.container}>
-                This is a LoginScreen.
+                <RegisterForm />
+                <LoginForm />
             </div>
         );
     }
