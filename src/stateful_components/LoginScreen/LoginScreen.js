@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import auth from 'solid-auth-client';
 import styles from './LoginScreen.module.css';
 import RegisterForm from '../../functional_components/RegisterForm/RegisterForm';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
-import { fetchIdps } from '../../actions/UserActions';
+import { fetchIdps, login } from '../../actions/UserActions';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -11,6 +12,15 @@ class LoginScreen extends React.Component {
         this.state = {
             newAccount: {},
         };
+
+        this.onLogin = this.onLogin.bind(this);
+    }
+
+    onLogin(loginUrl) {
+        const { login } = this.props;
+        auth.login(loginUrl).then(() => {
+            login();
+        });
     }
 
     componentDidMount() {
@@ -25,7 +35,11 @@ class LoginScreen extends React.Component {
         return (
             <div className={styles.container}>
                 <h1>{register ? '🚀' : '👋'}</h1>
-                {register ? <RegisterForm /> : <LoginForm idps={idps} />}
+                {register ? (
+                    <RegisterForm />
+                ) : (
+                    <LoginForm idps={idps} onLogin={this.onLogin} />
+                )}
             </div>
         );
     }
@@ -40,5 +54,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { fetchIdps }
+    { fetchIdps, login }
 )(LoginScreen);
