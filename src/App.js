@@ -149,7 +149,7 @@ class App extends React.Component {
                             <Route
                                 path="/register"
                                 exact
-                                component={LoginScreen}
+                                component={() => <LoginScreen />}
                             />
                             <PrivateRoute
                                 session={session}
@@ -170,11 +170,6 @@ class App extends React.Component {
                                 session={session}
                                 path="/contacts"
                                 component={<ContactSidebar webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/login"
-                                component={<LoginScreen webId={webId} />}
                             />
                         </Switch>
                     </ErrorBoundary>

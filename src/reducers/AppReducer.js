@@ -16,6 +16,9 @@ import {
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
+    FETCH_IDPS,
+    FETCH_IDPS_SUCCESS,
+    FETCH_IDPS_FAILED,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -35,7 +38,7 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-
+    idps: null,
     // [
     //     {
     //         name: 'testdata',
@@ -98,6 +101,12 @@ export default (state = INITIAL_STATE, action) => {
                 loadNotifications: false,
                 notifications: payload,
             };
+        case FETCH_IDPS:
+            return { ...state, loadIdps: true };
+        case FETCH_IDPS_SUCCESS:
+            return { ...state, idps: payload, loadIdps: false };
+        case FETCH_IDPS_FAILED:
+            return { ...state, error: payload, loadIdps: false };
         default:
             return state;
     }
