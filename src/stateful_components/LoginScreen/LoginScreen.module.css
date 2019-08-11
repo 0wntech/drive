@@ -2,10 +2,16 @@
     margin: 0% 15%;
     display: flex;
     flex-direction: row;
-    justify-items: center;
     align-items: center;
+    justify-content: center;
+    height: 80%;
 }
 
-.container div {
+.container div,
+h1 {
     flex: 1;
+}
+
+.container > h1 {
+    font-size: 10rem;
 }
