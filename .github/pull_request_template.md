@@ -1,5 +1,5 @@
 ## Related Ticket/Issue
-(DRIVE-03)[https://github.com/0wntech/drive/issues/3]
+This fixes #[Write Issue Number here without brackets]
 
 ## Description
 This PR adds:
