@@ -1,4 +1,4 @@
-.form {
+.container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -8,11 +8,11 @@
     border-radius: 10px;
 }
 
-.form h1 {
+.container h1 {
     text-align: left;
 }
 
-.form label {
+.container label {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -21,8 +21,16 @@
     padding: 10px;
 }
 
-.form label input {
+.container label input {
     background-color: #e4e4e4;
     border-radius: 10px;
     padding: 5px;
+}
+
+.idpList {
+    margin: 10px 0 0 0;
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-row-gap: 10px;
+    overflow-y: scroll;
 }

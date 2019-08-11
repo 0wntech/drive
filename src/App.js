@@ -149,7 +149,7 @@ class App extends React.Component {
                             <Route
                                 path="/register"
                                 exact
-                                component={() => <LoginScreen />}
+                                component={() => <LoginScreen register />}
                             />
                             <PrivateRoute
                                 session={session}
