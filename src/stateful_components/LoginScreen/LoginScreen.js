@@ -7,15 +7,16 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            webId: props.webId,
+            newAccount: {},
         };
     }
 
     render() {
+        const register = window.location.href.includes('register');
         return (
             <div className={styles.container}>
-                <RegisterForm />
-                <LoginForm />
+                <h1>{register ? '🚀' : '👋'}</h1>
+                {register ? <RegisterForm /> : <LoginForm />}
             </div>
         );
     }

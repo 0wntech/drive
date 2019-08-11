@@ -141,6 +141,16 @@ class App extends React.Component {
                         ) : null}
                         <Switch>
                             <Route path="/" exact component={LandingPage} />
+                            <Route
+                                path="/login"
+                                exact
+                                component={LoginScreen}
+                            />
+                            <Route
+                                path="/register"
+                                exact
+                                component={LoginScreen}
+                            />
                             <PrivateRoute
                                 session={session}
                                 path="/home"
