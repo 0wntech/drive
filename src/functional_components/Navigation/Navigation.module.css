@@ -23,6 +23,10 @@
     color: #0c89c6;
 }
 
+.loginButton a {
+    text-decoration: none;
+}
+
 .brand {
     display: flex;
 }

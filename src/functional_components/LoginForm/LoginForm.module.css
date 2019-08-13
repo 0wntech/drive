@@ -1,7 +1,7 @@
 .container {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     border: solid #c4c4c4 1px;
     margin: 5px;
     padding: 20px;
@@ -10,21 +10,6 @@
 
 .container h1 {
     text-align: left;
-}
-
-.container label {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    border: solid #c4c4c4 1px;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.container label input {
-    background-color: #e4e4e4;
-    border-radius: 10px;
-    padding: 5px;
 }
 
 .idpList {
