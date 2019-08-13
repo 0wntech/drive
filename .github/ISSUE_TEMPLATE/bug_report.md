@@ -21,6 +21,7 @@ Steps to reproduce the behavior:
 A concise description of what you expected to happen.
 
 ## Possible fix/Problem
+A possible solution could be:
 
 ## Screenshots/Errors/Logs
 If applicable, add screenshots, errors, logs to help explain your problem.
