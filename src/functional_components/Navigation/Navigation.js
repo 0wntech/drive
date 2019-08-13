@@ -61,12 +61,7 @@ const Navigation = ({ picture, webId, onLogin, onLogout, toggleSidebar }) => {
                                 </div>
                             ) : (
                                 <div className={styles.loginButton}>
-                                    <a
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            onLogin();
-                                        }}
-                                    >
+                                    <a href="http://localhost:3000/login">
                                         Login
                                     </a>
                                 </div>

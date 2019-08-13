@@ -34,7 +34,7 @@ class LoginScreen extends React.Component {
         const { register, idps } = this.props;
         return (
             <div className={styles.container}>
-                <h1>{register ? '🚀' : '👋'}</h1>
+                <h1>{register ? '👋' : '🚀'}</h1>
                 {register ? (
                     <RegisterForm />
                 ) : (
