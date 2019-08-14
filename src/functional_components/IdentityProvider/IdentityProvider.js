@@ -7,30 +7,21 @@ export default function IdentityProvider({
     description,
     icon,
     onLogin,
+    color,
+    textColor,
 }) {
     return (
-        <div className={styles.container}>
-            <img src={icon} />
+        <button
+            className={styles.container}
+            onClick={() => {
+                onLogin(url + 'login');
+            }}
+            style={{ backgroundColor: `${color}` }}
+        >
+            <img src={icon} alt={description} />
             <div className={styles.info}>
-                <p style={{ color: `${textColor}` }}>Log In with {title}</p>
+                <p style={{ color: `${textColor}` }}>{title}</p>
             </div>
-            <div className={styles.buttons}>
-                <button
-                    onClick={() => {
-                        onLogin(url + 'login');
-                    }}
-                >
-                    Login
-                </button>
-                <a
-                    href={
-                        url +
-                        'register?redirect_uri=http://localhost:3000/login'
-                    }
-                >
-                    Register
-                </a>
-            </div>
-        </div>
+        </button>
     );
 }

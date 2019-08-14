@@ -2,20 +2,52 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    border: solid #c4c4c4 1px;
-    margin: 5px;
-    padding: 20px;
     border-radius: 10px;
+    height: 80%;
+    max-width: 40%;
 }
 
-.container h1 {
-    text-align: left;
+.idpList h1 {
+    margin-right: auto;
+    /* padding-top: 20px;  */
+}
+
+.idpList p {
+    margin-right: auto;
+    margin-bottom: 0;
 }
 
 .idpList {
-    margin: 10px 0 0 0;
+    align-self: left;
+    border: solid #c4c4c4 1px;
+    border-radius: 10px;
+    padding: 35px;
     display: grid;
+    max-width: 70%;
     grid-auto-rows: 1fr;
     grid-row-gap: 10px;
+    justify-items: center;
     overflow-y: scroll;
 }
+
+/* 
+.authButton {
+    margin-left: auto;
+    margin-right: 10px;
+    background-color: #fff;
+    border: solid #c4c4c4 1px;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.authButton:hover {
+    background-image: linear-gradient(to bottom left, #e4e4e4, #d4d4d4);
+    color: #fff;
+    outline-offset: 0;
+}
+
+.authButton:active {
+    transform: scale(0.99);
+} */

@@ -5,9 +5,9 @@ import IdentityProvider from '../IdentityProvider/IdentityProvider';
 export default function LoginForm({ idps, onLogin, getIdpStyles }) {
     return (
         <div className={styles.container}>
-            <h1>Login</h1>
-            Choose an identity provider:
             <div className={styles.idpList}>
+                <h1>Login</h1>
+                <p>Choose an identity provider</p>
                 <IdentityProvider
                     description={
                         'Owntech is a german identity provider, dedicated to Data Ownership'
@@ -17,6 +17,8 @@ export default function LoginForm({ idps, onLogin, getIdpStyles }) {
                     title={'owntech.de'}
                     key="aa"
                     onLogin={onLogin}
+                    color="#fff"
+                    textColor={'#000'}
                 />
                 {idps
                     ? idps.map((idp, index) => {

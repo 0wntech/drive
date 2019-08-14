@@ -5,11 +5,11 @@
     align-items: center;
     justify-content: center;
     height: 80%;
-    padding: 10% 0;
 }
 
 .container h1 {
     flex: 1;
+    max-width: 50%;
 }
 
 .container > h1 {
