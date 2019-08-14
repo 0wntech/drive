@@ -6,9 +6,9 @@ export default function LoginForm({ idps, onLogin }) {
     console.log(idps);
     return (
         <div className={styles.container}>
-            <h1>Login</h1>
-            Choose an identity provider:
             <div className={styles.idpList}>
+                <h1>Login</h1>
+                <p>Choose an identity provider</p>
                 <IdentityProvider
                     description={
                         'Owntech is a german identity provider, dedicated to Data Ownership'
@@ -18,9 +18,25 @@ export default function LoginForm({ idps, onLogin }) {
                     title={'owntech.de'}
                     key="aa"
                     onLogin={onLogin}
+                    color="#fff"
+                    textColor={'#000'}
                 />
                 {idps
                     ? idps.map((idp, index) => {
+                          switch (idp.title) {
+                              case 'inrupt.net':
+                                  idp.color = '#18A9E6';
+                                  idp.textColor = '#fff';
+                                  break;
+                              case 'solid.community':
+                                  idp.color = '#7C4DFF';
+                                  idp.textColor = '#fff';
+                                  break;
+                              case 'solid.authing':
+                                  idp.color = '#fff';
+                                  idp.textColor = '#18A9E6';
+                                  break;
+                          }
                           return (
                               <IdentityProvider
                                   description={idp.description}
@@ -29,6 +45,8 @@ export default function LoginForm({ idps, onLogin }) {
                                   title={idp.title}
                                   key={index}
                                   onLogin={onLogin}
+                                  color={idp.color}
+                                  textColor={idp.textColor}
                               />
                           );
                       })

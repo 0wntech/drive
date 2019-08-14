@@ -18,6 +18,7 @@ class LoginScreen extends React.Component {
 
     onLogin(loginUrl) {
         const { login } = this.props;
+        localStorage.setItem('returnToUrl', 'http://localhost:3000/home');
         auth.login(loginUrl).then(() => {
             login();
         });
