@@ -54,11 +54,15 @@ class LoginScreen extends React.Component {
             <div className={styles.container}>
                 <h1>{register ? '👋' : '🚀'}</h1>
                 {register ? (
+<<<<<<< HEAD
                     <LoginForm
                         idps={idps}
                         onLogin={this.onLogin}
                         getIdpStyles={this.getIdpStyles}
                     />
+=======
+                    <LoginForm idps={idps} onLogin={this.onLogin} />
+>>>>>>> Remove register form
                 ) : (
                     <LoginForm
                         idps={idps}

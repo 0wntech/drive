@@ -20,7 +20,7 @@ export default function IdentityProvider({
         >
             <img src={icon} alt={description} />
             <div className={styles.info}>
-                <p style={{ color: `${textColor}` }}>{title}</p>
+                <p style={{ color: `${textColor}` }}>Log In with {title}</p>
             </div>
         </button>
     );
