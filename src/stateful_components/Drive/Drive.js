@@ -177,32 +177,37 @@ class Drive extends React.Component {
     }
 
     createFolder(folderAddress) {
+        const { currentPath, setCurrentPath } = this.props;
         const request = {
             method: 'POST',
             headers: {
-                slug: folderAddress,
-                link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
-                contentType: 'text/turtle',
+                // prettier-ignore
+                'Slug': folderAddress,
+                // prettier-ignore
+                'Link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
+                'Content-Type': 'text/turtle',
             },
         };
-
-        auth.fetch(this.state.currPath, request).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+        auth.fetch(currentPath, request).then(() => {
+            setCurrentPath(currentPath);
         });
     }
 
     createFile(folderAddress) {
+        const { currentPath, setCurrentPath } = this.props;
         const request = {
             method: 'POST',
             headers: {
-                slug: folderAddress,
-                link: '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
-                contentType: 'text/turtle',
+                // prettier-ignore
+                'Slug': folderAddress,
+                // prettier-ignore
+                'Link': '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
+                'Content-Type': 'text/turtle',
             },
         };
 
-        auth.fetch(this.state.currPath, request).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+        auth.fetch(currentPath, request).then(() => {
+            setCurrentPath(currentPath);
         });
     }
 
@@ -375,9 +380,7 @@ class Drive extends React.Component {
                                 <InputWindow
                                     windowName="Create Folder"
                                     info=""
-                                    onSubmit={(value) =>
-                                        this.createFolder(value)
-                                    }
+                                    onSubmit={this.createFolder}
                                     className={
                                         isCreateFolderVisible
                                             ? styles.visible
@@ -389,7 +392,7 @@ class Drive extends React.Component {
                                 <InputWindow
                                     windowName="Create File"
                                     info=""
-                                    onSubmit={(value) => this.createFile(value)}
+                                    onSubmit={this.createFile}
                                     className={
                                         isCreateFileVisible
                                             ? styles.visible
