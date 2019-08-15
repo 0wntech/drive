@@ -111,7 +111,6 @@ export const fetchCurrentItems = (url) => {
         fileUtils
             .getFolderFiles(url)
             .then((items) => {
-                console.log(items);
                 const fileNames = items.files.map((file) => {
                     return convertFileUrlToName(file);
                 });

@@ -51,10 +51,10 @@ class App extends React.Component {
     }
 
     logout() {
+        const { setWebId } = this.props;
         auth.logout().then(() => {
-            this.setState({
-                webId: undefined,
-            });
+            setWebId(undefined);
+            this.props.history.push('/');
         });
     }
 
@@ -97,7 +97,7 @@ class App extends React.Component {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
-                        size={100}
+                        size={30}
                         color="#686769"
                         loading={loadLogin || loadUser}
                     />
