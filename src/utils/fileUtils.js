@@ -233,22 +233,14 @@ function getFolderContents(folderUrl) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
 
-    return fetcher
-        .load(folderUrl)
-        .then(function() {
-            console.log(
-                store.each(rdf.sym(folderUrl), ns.ldp('contains'), undefined)
-            );
-            const containments = store
-                .each(rdf.sym(folderUrl), ns.ldp('contains'), undefined)
-                .map((containment) => {
-                    return containment.value;
-                });
-            return containments;
-        })
-        .catch((err) => {
-            return [];
-        });
+    return fetcher.load(folderUrl).then(() => {
+        const containments = store
+            .each(rdf.sym(folderUrl), ns.ldp('contains'), undefined)
+            .map((containment) => {
+                return containment.value;
+            });
+        return containments;
+    });
 }
 
 function getNotificationFiles(webId) {

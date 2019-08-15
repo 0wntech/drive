@@ -12,8 +12,7 @@ export default function IdentityProvider({
         <div className={styles.container}>
             <img src={icon} />
             <div className={styles.info}>
-                <h5>{title}</h5>
-                <p>{description}</p>
+                <p style={{ color: `${textColor}` }}>Log In with {title}</p>
             </div>
             <div className={styles.buttons}>
                 <button
