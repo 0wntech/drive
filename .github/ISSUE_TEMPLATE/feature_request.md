@@ -7,6 +7,7 @@ assignees: ''
 
 ---
 
+This issue depends on #3
 ## User Story
 As a [user], I would like to [action], so that [impact].
 
