@@ -12,7 +12,7 @@ This issue depends on #3
 As a [user], I would like to [action], so that [impact].
 
 ## Requirements/Acceptance Criteria
-A description of what you think needs to be done to satisfy the user story.
+A View, call it X, that includes:
 
 ## Design
 Add design of the feature if applicable.
