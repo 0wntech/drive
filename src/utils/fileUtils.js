@@ -102,7 +102,6 @@ function deleteItems(items) {
                 deletions.push(auth.fetch(item, { method: 'DELETE' }));
             } else {
                 return getFolderTree(item).then((results) => {
-                    console.log(results);
                     return Promise.all(
                         results.map((result, index) => {
                             if (index !== results.length) {

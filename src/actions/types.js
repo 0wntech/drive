@@ -34,6 +34,6 @@ export const SEND_NOTIFICATION = 'send_notification';
 export const SEND_NOTIFICATION_SUCCESS = 'send_notification_success';
 export const SEND_NOTIFICATION_FAILURE = 'send_notification_failure';
 
-export const FETCH_IDPS = 'fetch.idps';
-export const FETCH_IDPS_SUCCESS = 'fetch.idps.success';
-export const FETCH_IDPS_FAILED = 'fetch.idps.failure';
+export const FETCH_IDPS = 'fetch_idps';
+export const FETCH_IDPS_SUCCESS = 'fetch_idps_success';
+export const FETCH_IDPS_FAILED = 'fetch_idps_failure';
