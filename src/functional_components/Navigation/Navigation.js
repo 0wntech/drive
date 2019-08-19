@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Col from 'react-bootstrap/Col';
@@ -61,9 +62,7 @@ const Navigation = ({ picture, webId, onLogin, onLogout, toggleSidebar }) => {
                                 </div>
                             ) : (
                                 <div className={styles.loginButton}>
-                                    <a href="http://localhost:3000/login">
-                                        Login
-                                    </a>
+                                    <Link to="/login">Login</Link>
                                 </div>
                             )}
                         </Col>
