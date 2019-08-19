@@ -20,6 +20,7 @@ import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';
 import LandingPage from './stateful_components/LandingPage';
+import ImpressumPage from './pages/ImpressumPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -141,6 +142,10 @@ class App extends React.Component {
                         ) : null}
                         <Switch>
                             <Route path="/" exact component={LandingPage} />
+                            <Route
+                                path="/impressum"
+                                component={ImpressumPage}
+                            />
                             <PrivateRoute
                                 session={session}
                                 path="/home"
