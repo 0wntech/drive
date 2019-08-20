@@ -1,0 +1,10 @@
+.container {
+    background-color: #ddd;
+    padding: 5px;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+}
