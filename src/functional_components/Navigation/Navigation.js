@@ -4,10 +4,19 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import styles from './Navigation.module.css';
+import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
+import SearchDropdown from '../SearchDropdown/SearchDropdown';
 
-const Navigation = ({ picture, webId, onLogin, onLogout, toggleSidebar }) => {
+const Navigation = ({
+    picture,
+    webId,
+    onLogin,
+    onLogout,
+    toggleSidebar,
+    currentItems,
+}) => {
     return (
         <Container>
             <Navbar className={styles.navbar} expand="lg">
@@ -20,7 +29,24 @@ const Navigation = ({ picture, webId, onLogin, onLogout, toggleSidebar }) => {
                             </Navbar.Brand>
                             {/* <NavLink to="/home">HOME</NavLink> */}
                         </Col>
-                        <Col xs="6" sm="6" md="6" lg="6">
+                        <Col
+                            xs={{ span: 3, offset: 1 }}
+                            sm={{ span: 3, offset: 1 }}
+                            md={{ span: 3, offset: 1 }}
+                            lg={{ span: 3, offset: 1 }}
+                        >
+                            {currentItems ? (
+                                <div className={styles.verticalCenter}>
+                                    <SearchDropdown
+                                        items={[
+                                            ...currentItems.files,
+                                            ...currentItems.folders,
+                                        ]}
+                                    />
+                                </div>
+                            ) : null}
+                        </Col>
+                        <Col xs="2" sm="2" md="2" lg="2">
                             {webId ? (
                                 <div className={styles.menuWrapper}>
                                     {picture ? (
@@ -78,4 +104,10 @@ const Navigation = ({ picture, webId, onLogin, onLogout, toggleSidebar }) => {
     );
 };
 
-export default Navigation;
+const mapStateToProps = (state) => {
+    return { currentItems: state.app.currentItems };
+};
+export default connect(
+    mapStateToProps,
+    {}
+)(Navigation);
