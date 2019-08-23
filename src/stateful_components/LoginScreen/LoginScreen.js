@@ -20,6 +20,24 @@ class LoginScreen extends React.Component {
         });
     }
 
+    getIdpStyles(title) {
+        const idp = {};
+        switch (title) {
+            case 'inrupt.net':
+                idp.color = '#18A9E6';
+                idp.textColor = '#fff';
+                break;
+            case 'solid.community':
+                idp.color = '#7C4DFF';
+                idp.textColor = '#fff';
+                break;
+            case 'solid.authing':
+                idp.color = '#fff';
+                idp.textColor = '#18A9E6';
+        }
+        return idp;
+    }
+
     componentDidMount() {
         const { webId, loadIdps, idps, fetchIdps } = this.props;
         if (!webId && !loadIdps && !idps) {
@@ -35,9 +53,17 @@ class LoginScreen extends React.Component {
             <div className={styles.container}>
                 <h1>{register ? '👋' : '🚀'}</h1>
                 {register ? (
-                    <LoginForm idps={idps} onLogin={this.onLogin} />
+                    <LoginForm
+                        idps={idps}
+                        onLogin={this.onLogin}
+                        getIdpStyles={this.getIdpStyles}
+                    />
                 ) : (
-                    <LoginForm idps={idps} onLogin={this.onLogin} />
+                    <LoginForm
+                        idps={idps}
+                        onLogin={this.onLogin}
+                        getIdpStyles={this.getIdpStyles}
+                    />
                 )}
             </div>
         );

@@ -2,8 +2,7 @@ import React from 'react';
 import styles from './LoginForm.module.css';
 import IdentityProvider from '../IdentityProvider/IdentityProvider';
 
-export default function LoginForm({ idps, onLogin }) {
-    console.log(idps);
+export default function LoginForm({ idps, onLogin, getIdpStyles }) {
     return (
         <div className={styles.container}>
             <h1>Login</h1>
@@ -21,6 +20,7 @@ export default function LoginForm({ idps, onLogin }) {
                 />
                 {idps
                     ? idps.map((idp, index) => {
+                          const { color, textColor } = getIdpStyles(idp.title);
                           return (
                               <IdentityProvider
                                   description={idp.description}
@@ -29,6 +29,8 @@ export default function LoginForm({ idps, onLogin }) {
                                   title={idp.title}
                                   key={index}
                                   onLogin={onLogin}
+                                  color={color}
+                                  textColor={textColor}
                               />
                           );
                       })
