@@ -8,6 +8,10 @@ import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
+import FileIcon from '../../assets/icons/File.png';
+import FolderIcon from '../../assets/icons/Folder.png';
+import fileUtils from '../../utils/fileUtils';
+import { setCurrentPath } from '../../actions/UserActions';
 
 const Navigation = ({
     picture,
@@ -16,7 +20,37 @@ const Navigation = ({
     onLogout,
     toggleSidebar,
     currentItems,
+    currentPath,
+    setCurrentPath,
 }) => {
+    const items = currentItems
+        ? fileUtils.convertFilesAndFoldersToObject(
+              currentItems.files,
+              currentItems.folders
+          )
+        : null;
+
+    const formatOptionLabel = ({ value, label, name, type }) => (
+        <div
+            className={styles.optionContainer}
+            onClick={
+                type === 'folder'
+                    ? () => {
+                          setCurrentPath(`${currentPath}/${name}/`);
+                      }
+                    : () => {
+                          console.log('Implement Redux File onClickbehavior');
+                      }
+            }
+        >
+            <img
+                className={styles.optionIcon}
+                src={type === 'file' ? FileIcon : FolderIcon}
+            />
+            <span>{name}</span>
+        </div>
+    );
+
     return (
         <Container>
             <Navbar className={styles.navbar} expand="lg">
@@ -38,10 +72,12 @@ const Navigation = ({
                             {currentItems ? (
                                 <div className={styles.verticalCenter}>
                                     <SearchDropdown
-                                        items={[
-                                            ...currentItems.files,
-                                            ...currentItems.folders,
-                                        ]}
+                                        formatOptionLabel={formatOptionLabel}
+                                        items={items.map((item) => ({
+                                            ...item,
+                                            value: item.name,
+                                            label: item.label,
+                                        }))}
                                     />
                                 </div>
                             ) : null}
@@ -105,9 +141,12 @@ const Navigation = ({
 };
 
 const mapStateToProps = (state) => {
-    return { currentItems: state.app.currentItems };
+    return {
+        currentItems: state.app.currentItems,
+        currentPath: state.app.currentPath,
+    };
 };
 export default connect(
     mapStateToProps,
-    {}
+    { setCurrentPath }
 )(Navigation);

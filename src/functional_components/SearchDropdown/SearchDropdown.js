@@ -1,15 +1,16 @@
 import React from 'react';
 import styles from './SearchDropdown.module.css';
-export default function SearchDropdown({ items }) {
-    console.log(items);
+
+import Select from 'react-select';
+
+export default function SearchDropdown({ items, formatOptionLabel }) {
     return (
         <div className={styles.container}>
-            <input className={styles.input} type="text" list="items" />
-            <datalist id="items">
-                {items.map((item, key) => (
-                    <option value={item} key={key} />
-                ))}
-            </datalist>
+            <Select
+                defaultValue={items[0]}
+                formatOptionLabel={formatOptionLabel}
+                options={items}
+            />
         </div>
     );
 }

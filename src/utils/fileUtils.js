@@ -79,6 +79,40 @@ function uploadFile(filePath, currPath) {
     });
 }
 
+// input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
+// returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
+function convertFilesAndFoldersToObject(files, folders) {
+    const fileObjects = files.map((fileName) => {
+        return {
+            name: fileName,
+            type: 'file',
+            fileType: getFileType(fileName),
+        };
+    });
+
+    const folderObjects = folders.map((folderName) => {
+        return {
+            name: folderName,
+            type: 'folder',
+        };
+    });
+
+    return [...fileObjects, ...folderObjects];
+}
+
+// input "fav.ico" returns "ico"
+function getFileType(file) {
+    const splittedFile = file.split('.');
+    // no dot || nothing after dot
+    if (
+        splittedFile.length === 1 ||
+        splittedFile[splittedFile.length - 1] == ''
+    ) {
+        return null;
+    }
+    return splittedFile[splittedFile.length - 1];
+}
+
 function isFolder(url) {
     if (url[url.length - 1] === '/') {
         return true;
@@ -366,4 +400,6 @@ export default {
     deleteRecursively: deleteRecursively,
     getNotificationFiles: getNotificationFiles,
     sendNotification: sendNotification,
+    getFileType: getFileType,
+    convertFilesAndFoldersToObject: convertFilesAndFoldersToObject,
 };

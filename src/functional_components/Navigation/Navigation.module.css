@@ -3,6 +3,17 @@
     position: fixed;
 }
 
+.optionIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.optionContainer {
+    display: flex;
+    align-items: center;
+}
+
 .dropdown a {
     padding: inherit 0;
     width: 100%;

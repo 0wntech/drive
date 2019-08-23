@@ -13,6 +13,7 @@
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-select": "^3.0.4",
     "react-spinners-kit": "^1.9.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
@@ -32,8 +33,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "export CI=true && react-scripts test && lint-staged",
-      "pre-push": "export CI=true && react-scripts test && lint-staged"
+      "pre-commit": "set CI=true && react-scripts test && lint-staged",
+      "pre-push": "set CI=true && react-scripts test && lint-staged"
     }
   },
   "lint-staged": {
