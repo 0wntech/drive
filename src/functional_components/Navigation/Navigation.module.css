@@ -1,6 +1,14 @@
 .navbar  {
-    background-color: white;
     position: fixed;
+}
+
+.container {
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    margin: 15px 0 15px 0;
+    padding-right: 15px;
 }
 
 .dropdown a {
@@ -15,6 +23,15 @@
     justify-content: flex-end;
 }
 
+.username {
+    letter-spacing: 0.2em;
+    line-height: 21px;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: normal;
+    margin-left: 10px;
+}
+
 .loginButton {
     display: flex;
     align-items: center;
@@ -25,6 +42,7 @@
 
 .brand {
     display: flex;
+    margin-left: 15%;
 }
 
 .brand p {
@@ -38,12 +56,12 @@
 
 .brand img {
     height: auto;
-    max-height: 60px;
+    max-height: 50px;
 }
 
 .profileIcon {
-    width: 60px;
-    height: 60px;
+    height: 50px;
+    width: 50px;
     background-size: cover;
     background-position: center;
     border-radius: 50%;

@@ -104,16 +104,23 @@ class App extends React.Component {
                 </div>
             );
         } else {
+            console.log(user);
             return (
-                <div style={{ height: '100%', overflowY: 'hidden' }}>
+                <div
+                    className={styles.grid}
+                    style={{ height: '100%', overflowY: 'hidden' }}
+                >
                     <ErrorBoundary>
-                        <Navigation
-                            toggleSidebar={this.toggleSidebar}
-                            onLogout={this.logout}
-                            onLogin={this.login}
-                            webId={webId}
-                            picture={user ? user.picture : undefined}
-                        />
+                        <div className={styles.navArea}>
+                            <Navigation
+                                toggleSidebar={this.toggleSidebar}
+                                onLogout={this.logout}
+                                onLogin={this.login}
+                                webId={webId}
+                                picture={user ? user.picture : undefined}
+                                username={user ? user.name : undefined}
+                            />
+                        </div>
                         {webId && user ? (
                             <ProfileSideBar
                                 user={user}
@@ -139,34 +146,36 @@ class App extends React.Component {
                                 }}
                             />
                         ) : null}
-                        <Switch>
-                            <Route path="/" exact component={LandingPage} />
-                            <PrivateRoute
-                                session={session}
-                                path="/home"
-                                component={<Drive webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/notifications"
-                                component={<NotificationsPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/drive"
-                                component={<Drive webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/contacts"
-                                component={<ContactSidebar webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/login"
-                                component={<LoginScreen webId={webId} />}
-                            />
-                        </Switch>
+                        <div className={styles.mainArea}>
+                            <Switch>
+                                <Route path="/" exact component={LandingPage} />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/home"
+                                    component={<Drive webId={webId} />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/notifications"
+                                    component={<NotificationsPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/drive"
+                                    component={<Drive webId={webId} />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/contacts"
+                                    component={<ContactSidebar webId={webId} />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/login"
+                                    component={<LoginScreen webId={webId} />}
+                                />
+                            </Switch>
+                        </div>
                     </ErrorBoundary>
                 </div>
             );

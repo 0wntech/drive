@@ -16,6 +16,12 @@ code {
     width: 10px;
 }
 
-body, html, #root{
+body,
+html,
+#root {
     height: 100%;
+}
+
+#root {
+    background-color: #f4f4f4;
 }

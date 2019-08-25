@@ -10,7 +10,6 @@ import fileUtils from '../../utils/fileUtils';
 import { getBreadcrumbsFromUrl } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
-import Buttons from '../../functional_components/Buttons/Buttons';
 import { InputWindow } from '../../functional_components/InputWindow';
 import Container from 'react-bootstrap/Container';
 import { ConsentWindow } from '../../functional_components/ConsentWindow';
@@ -20,8 +19,8 @@ import {
     sendNotification,
     fetchCurrentItems,
 } from '../../actions/UserActions';
-import { ContactSidebar } from '../../functional_components/ContactSidebar';
 import { ClassicSpinner } from 'react-spinners-kit';
+import ToolbarButtons from '../../functional_components/ToolbarButtons';
 const ns = require('solid-namespace')(rdf);
 
 class Drive extends React.Component {
@@ -337,19 +336,32 @@ class Drive extends React.Component {
             );
         } else {
             return (
-                <div style={{ height: '100%' }} onClick={this.clearSelection}>
-                    {webId ? (
-                        <Breadcrumbs
-                            onClick={setCurrentPath}
-                            breadcrumbs={
-                                currentPath
-                                    ? getBreadcrumbsFromUrl(currentPath)
-                                    : null
-                            }
-                            webId={webId}
+                <div
+                    className={styles.grid}
+                    style={{ height: '100%' }}
+                    onClick={this.clearSelection}
+                >
+                    <div className={styles.toolbarArea}>
+                        {webId ? (
+                            <Breadcrumbs
+                                onClick={setCurrentPath}
+                                breadcrumbs={
+                                    currentPath
+                                        ? getBreadcrumbsFromUrl(currentPath)
+                                        : null
+                                }
+                                webId={webId}
+                            />
+                        ) : null}
+
+                        <ToolbarButtons
+                            onFileCreation={this.openCreateFileWindow}
+                            onFolderCreation={this.openCreateFolderWindow}
+                            onFolderUpload={this.uploadFolder}
+                            onFileUpload={this.uploadFile}
                         />
-                    ) : null}
-                    <div>
+                    </div>
+                    <div className={styles.mainArea}>
                         {fileMarkup ? (
                             <Container>{fileMarkup}</Container>
                         ) : (
@@ -400,7 +412,7 @@ class Drive extends React.Component {
                                 />
                                 {currentItems ? (
                                     <div>
-                                        <ContactSidebar />
+                                        {/* <ContactSidebar /> */}
                                         <Container>
                                             <ItemList
                                                 selectedItems={selectedItems}
@@ -445,18 +457,6 @@ class Drive extends React.Component {
                                                     fileUtils.onInfo(item);
                                                 }}
                                             />
-                                            <Buttons
-                                                onFileCreation={
-                                                    this.openCreateFileWindow
-                                                }
-                                                onFolderCreation={
-                                                    this.openCreateFolderWindow
-                                                }
-                                                onFolderUpload={
-                                                    this.uploadFolder
-                                                }
-                                                onFileUpload={this.uploadFile}
-                                            ></Buttons>
                                         </Container>
                                     </div>
                                 ) : (

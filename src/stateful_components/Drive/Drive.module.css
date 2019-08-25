@@ -9,3 +9,28 @@
 .visible {
     display: initial;
 }
+
+.toolbarArea {
+    grid-area: toolbar;
+    background-color: #e2e2e6;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 100%;
+    padding: 0 15px 0 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainArea {
+    grid-area: main;
+    display: flex;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: 1fr 23fr;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        'toolbar'
+        'main';
+}

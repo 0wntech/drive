@@ -1,3 +1,4 @@
-.container ol{
-    border-radius: 0;
+.container {
+    display: flex;
+    align-items: center;
 }

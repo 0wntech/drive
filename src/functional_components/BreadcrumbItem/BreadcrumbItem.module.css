@@ -1,0 +1,12 @@
+.breadcrumb {
+    color: #5c94ff;
+    cursor: pointer;
+}
+
+.seperator {
+    margin: 0 10px 0 10px;
+}
+
+.container {
+    display: flex;
+}
