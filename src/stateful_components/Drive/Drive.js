@@ -305,7 +305,44 @@ class Drive extends React.Component {
             setCurrentPath,
             loadCurrentItems,
         } = this.props;
-        console.log('-------------', selectedItems);
+
+        const CONTEXTMENU_OPTIONS = [
+            {
+                label: 'Info',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: false,
+            },
+            {
+                label: 'Copy*',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: true,
+            },
+            {
+                label: 'Paste*',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: true,
+            },
+            {
+                label: 'Rename',
+                onClick: (item) => fileUtils.renameItem(item),
+                disabled: false,
+            },
+            {
+                label: 'Manage Access',
+                onClick: (item) => fileUtils.changeAccess(item),
+                disabled: false,
+            },
+            {
+                label: 'Share*',
+                onClick: (item) => fileUtils.changeAccess(item),
+                disabled: true,
+            },
+            {
+                label: 'Delete',
+                onClick: (item) => this.openConsentWindow(),
+                disabled: false,
+            },
+        ];
         const fileMarkup = this.state.file ? (
             <div className={styles.renderedFile}>
                 {this.state.image ? (
@@ -416,18 +453,9 @@ class Drive extends React.Component {
                                             currPath={currentPath}
                                             image={folder}
                                             onItemClick={this.followPath}
-                                            onDelete={(item) => {
-                                                this.openConsentWindow();
-                                            }}
-                                            onAccess={(item) => {
-                                                fileUtils.changeAccess(item);
-                                            }}
-                                            onRename={(item) => {
-                                                fileUtils.renameItem(item);
-                                            }}
-                                            onInfo={(item) => {
-                                                fileUtils.getInfo(item);
-                                            }}
+                                            contextMenuOptions={
+                                                CONTEXTMENU_OPTIONS
+                                            }
                                         />
                                         <div className={styles.header}>
                                             Files
@@ -439,18 +467,9 @@ class Drive extends React.Component {
                                             currPath={currentPath}
                                             image={fileIcon}
                                             onItemClick={this.loadFile}
-                                            onDelete={(item) => {
-                                                this.openConsentWindow();
-                                            }}
-                                            onAccess={(item) => {
-                                                fileUtils.changeAccess(item);
-                                            }}
-                                            onRename={(item) => {
-                                                fileUtils.renameFile(item);
-                                            }}
-                                            onInfo={(item) => {
-                                                fileUtils.onInfo(item);
-                                            }}
+                                            contextMenuOptions={
+                                                CONTEXTMENU_OPTIONS
+                                            }
                                         />
                                     </div>
                                 ) : (

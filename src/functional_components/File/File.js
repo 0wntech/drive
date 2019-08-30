@@ -1,17 +1,14 @@
 import React from 'react';
 import styles from './File.module.css';
 import classNames from 'classnames';
-import { Menu, Separator, MenuProvider, Item } from 'react-contexify';
+import { Menu, MenuProvider, Item } from 'react-contexify';
 export default function File({
     currPath,
     onClick,
     image,
     label,
     selectedItem,
-    onDelete,
-    onAccess,
-    onRename,
-    onInfo,
+    contextMenuOptions,
 }) {
     const imageTypes = ['ico', 'png', 'jpeg', 'jpg'];
     const labelFragments = encodeURIComponent(label).split('.');
@@ -42,42 +39,28 @@ export default function File({
                 </div>
                 <div className={styles.label}>{label}</div>
                 <Menu className={styles.contextMenu} id={label + 'contextmenu'}>
-                    <Item
-                        onClick={() => {
-                            onDelete(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Delete</div>
-                    </Item>
-                    <Item
-                        onClick={() => {
-                            onInfo(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Info</div>
-                    </Item>
-                    <Item
-                        onClick={() => {
-                            onAccess(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Access</div>
-                    </Item>
-                    <Item
-                        onClick={() => {
-                            onRename(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Rename</div>
-                    </Item>
-                    <Separator />
-                    <Item
-                        onClick={() => {
-                            onRename(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Rename</div>
-                    </Item>
+                    {contextMenuOptions &&
+                        contextMenuOptions.map((option, index) => (
+                            <Item
+                                disabled={option.disabled}
+                                key={index + option.label}
+                                onClick={
+                                    !option.disabled
+                                        ? () => {
+                                              option.onClick(
+                                                  currPath +
+                                                      encodeURIComponent(label)
+                                              );
+                                          }
+                                        : undefined
+                                }
+                                className={classNames(styles.contextItem, {
+                                    [styles.disabled]: option.disabled,
+                                })}
+                            >
+                                <div>{option.label}</div>
+                            </Item>
+                        ))}
                 </Menu>
             </MenuProvider>
         );
@@ -103,42 +86,28 @@ export default function File({
                     className={styles.contextMenu}
                     id={label + 'contextmenu1'}
                 >
-                    <Item
-                        onClick={() => {
-                            onDelete(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Delete</div>
-                    </Item>
-                    <Item
-                        onClick={() => {
-                            onInfo(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Info</div>
-                    </Item>
-                    <Item
-                        onClick={() => {
-                            onAccess(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Access</div>
-                    </Item>
-                    <Item
-                        onClick={() => {
-                            onRename(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Rename</div>
-                    </Item>
-                    <Separator />
-                    <Item
-                        onClick={() => {
-                            onRename(currPath + encodeURIComponent(label));
-                        }}
-                    >
-                        <div className={styles.contextItem}>Rename</div>
-                    </Item>
+                    {contextMenuOptions &&
+                        contextMenuOptions.map((option, index) => (
+                            <Item
+                                disabled={option.disabled}
+                                key={index + option.label}
+                                onClick={
+                                    !option.disabled
+                                        ? () => {
+                                              option.onClick(
+                                                  currPath +
+                                                      encodeURIComponent(label)
+                                              );
+                                          }
+                                        : undefined
+                                }
+                                className={classNames(styles.contextItem, {
+                                    [styles.disabled]: option.disabled,
+                                })}
+                            >
+                                <div>{option.label}</div>
+                            </Item>
+                        ))}
                 </Menu>
             </MenuProvider>
         );

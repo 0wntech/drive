@@ -8,10 +8,7 @@ const MyItem = ({
     image,
     label,
     onClick,
-    onDelete,
-    onAccess,
-    onRename,
-    onInfo,
+    contextMenuOptions,
     selectedItem,
     currPath,
 }) => {
@@ -29,74 +26,28 @@ const MyItem = ({
                 <div className={styles.label}>{label}</div>
             </div>
             <Menu className={styles.contextMenu} id={label + 'contextmenu'}>
-                <Item
-                    onClick={() => {
-                        onInfo(currPath + encodeURIComponent(label), 'folder');
-                    }}
-                    className={styles.contextItem}
-                >
-                    <div>Info</div>
-                </Item>
-                <Item
-                    className={styles.contextItem}
-                    onClick={() => {
-                        onRename(label);
-                    }}
-                >
-                    <div>Copy*</div>
-                </Item>
-                <Item
-                    className={styles.contextItem}
-                    onClick={() => {
-                        onRename(label);
-                    }}
-                >
-                    <div>Paste*</div>
-                </Item>
-                <Item
-                    className={styles.contextItem}
-                    onClick={() => {
-                        onRename(
-                            currPath + encodeURIComponent(label),
-                            'folder'
-                        );
-                    }}
-                >
-                    <div>Rename</div>
-                </Item>
-                <Item
-                    className={styles.contextItem}
-                    onClick={() => {
-                        onAccess(
-                            currPath + encodeURIComponent(label),
-                            'folder'
-                        );
-                    }}
-                >
-                    <div>Manage Access</div>
-                </Item>
-                <Item
-                    className={styles.contextItem}
-                    onClick={() => {
-                        onDelete(
-                            currPath + encodeURIComponent(label),
-                            'folder'
-                        );
-                    }}
-                >
-                    <div className={styles.itemLabel}>Share*</div>
-                </Item>
-                <Item
-                    className={styles.contextItem}
-                    onClick={() => {
-                        onDelete(
-                            currPath + encodeURIComponent(label),
-                            'folder'
-                        );
-                    }}
-                >
-                    <div className={styles.itemLabel}>Delete</div>
-                </Item>
+                {contextMenuOptions &&
+                    contextMenuOptions.map((option, index) => (
+                        <Item
+                            disabled={option.disabled}
+                            key={index + option.label}
+                            onClick={
+                                !option.disabled
+                                    ? () => {
+                                          option.onClick(
+                                              currPath +
+                                                  encodeURIComponent(label)
+                                          );
+                                      }
+                                    : undefined
+                            }
+                            className={classNames(styles.contextItem, {
+                                [styles.disabled]: option.disabled,
+                            })}
+                        >
+                            <div>{option.label}</div>
+                        </Item>
+                    ))}
             </Menu>
         </MenuProvider>
     );

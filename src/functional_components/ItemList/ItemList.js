@@ -2,7 +2,7 @@ import React from 'react';
 import { Item } from '../Item';
 import styles from './ItemList.module.css';
 import { File } from '../File';
-import fileutils from '../../utils/fileUtils';
+
 const ItemList = ({
     selectedItems,
     items,
@@ -14,11 +14,11 @@ const ItemList = ({
     onAccess,
     onRename,
     onInfo,
+    contextMenuOptions,
 }) => {
     const itemComponents = items
         ? items.map((item, index) => {
               console.log(
-                  'maaaaaaaaaaaaaaaaaap',
                   currPath + encodeURIComponent(item),
                   selectedItems.includes(currPath + encodeURIComponent(item))
               );
@@ -36,10 +36,7 @@ const ItemList = ({
                       onClick={() => {
                           onItemClick(currPath + encodeURIComponent(item));
                       }}
-                      onDelete={onDelete}
-                      onAccess={onAccess}
-                      onRename={onRename}
-                      onInfo={onInfo}
+                      contextMenuOptions={contextMenuOptions}
                       label={item}
                       currPath={currPath}
                   />
@@ -57,10 +54,7 @@ const ItemList = ({
                       onClick={() =>
                           onItemClick(currPath + encodeURIComponent(item))
                       }
-                      onDelete={onDelete}
-                      onAccess={fileutils.changeAccess}
-                      onRename={fileutils.renameFile}
-                      onInfo={fileutils.getInfo}
+                      contextMenuOptions={contextMenuOptions}
                       currPath={currPath}
                       label={item}
                   />
