@@ -33,22 +33,24 @@ const Navigation = ({
             <div className={styles.menuWrapper}>
                 {webId ? (
                     <div className={styles.dropdownWrapper}>
-                        {picture ? (
-                            <div
-                                onClick={toggleSidebar}
-                                className={styles.profileIcon}
-                                style={{
-                                    backgroundImage: 'url(' + picture + ')',
-                                }}
-                            />
-                        ) : (
-                            <img
-                                onClick={toggleSidebar}
-                                className={styles.profileIcon}
-                                src={defaultIcon}
-                            />
-                        )}
-                        <div className={styles.username}>{username}</div>
+                        <div className={styles.profileSection}>
+                            {picture ? (
+                                <div
+                                    onClick={toggleSidebar}
+                                    className={styles.profileIcon}
+                                    style={{
+                                        backgroundImage: 'url(' + picture + ')',
+                                    }}
+                                />
+                            ) : (
+                                <img
+                                    onClick={toggleSidebar}
+                                    className={styles.profileIcon}
+                                    src={defaultIcon}
+                                />
+                            )}
+                            <div className={styles.username}>{username}</div>
+                        </div>
                         <DropdownMenu
                             options={DROPDOWN_OPTIONS}
                             isExpanded={isDropdownExpanded}
