@@ -57,6 +57,13 @@
     z-index: 2;
 }
 
+.contextItem:hover {
+    background-color: #f2f2f2;
+}
+
+.itemLabel {
+}
+
 .gridCell:hover .label {
     overflow: visible;
     font-size: 105%;

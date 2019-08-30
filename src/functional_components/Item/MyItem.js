@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Separator, MenuProvider, Item } from 'react-contexify';
+import { Menu, MenuProvider, Item } from 'react-contexify';
 import classNames from 'classnames';
 import styles from './Item.module.css';
 import 'react-contexify/dist/ReactContexify.min.css';
@@ -22,7 +22,6 @@ const MyItem = ({
             })}
             id={label + 'contextmenu'}
         >
-            {console.log(selectedItem)}
             <div className={classNames(styles.container)} onClick={onClick}>
                 <div className={styles.innerContainer}>
                     <img className={styles.icon} src={image} />
@@ -32,32 +31,30 @@ const MyItem = ({
             <Menu className={styles.contextMenu} id={label + 'contextmenu'}>
                 <Item
                     onClick={() => {
-                        onDelete(
-                            currPath + encodeURIComponent(label),
-                            'folder'
-                        );
-                    }}
-                >
-                    <div className={styles.contextItem}>Delete</div>
-                </Item>
-                <Item
-                    onClick={() => {
                         onInfo(currPath + encodeURIComponent(label), 'folder');
                     }}
+                    className={styles.contextItem}
                 >
-                    <div className={styles.contextItem}>Info</div>
+                    <div>Info</div>
                 </Item>
                 <Item
+                    className={styles.contextItem}
                     onClick={() => {
-                        onAccess(
-                            currPath + encodeURIComponent(label),
-                            'folder'
-                        );
+                        onRename(label);
                     }}
                 >
-                    <div className={styles.contextItem}>Access</div>
+                    <div>Copy*</div>
                 </Item>
                 <Item
+                    className={styles.contextItem}
+                    onClick={() => {
+                        onRename(label);
+                    }}
+                >
+                    <div>Paste*</div>
+                </Item>
+                <Item
+                    className={styles.contextItem}
                     onClick={() => {
                         onRename(
                             currPath + encodeURIComponent(label),
@@ -65,15 +62,40 @@ const MyItem = ({
                         );
                     }}
                 >
-                    <div className={styles.contextItem}>Rename</div>
+                    <div>Rename</div>
                 </Item>
-                <Separator />
                 <Item
+                    className={styles.contextItem}
                     onClick={() => {
-                        onRename(label);
+                        onAccess(
+                            currPath + encodeURIComponent(label),
+                            'folder'
+                        );
                     }}
                 >
-                    <div className={styles.contextItem}>Rename</div>
+                    <div>Manage Access</div>
+                </Item>
+                <Item
+                    className={styles.contextItem}
+                    onClick={() => {
+                        onDelete(
+                            currPath + encodeURIComponent(label),
+                            'folder'
+                        );
+                    }}
+                >
+                    <div className={styles.itemLabel}>Share*</div>
+                </Item>
+                <Item
+                    className={styles.contextItem}
+                    onClick={() => {
+                        onDelete(
+                            currPath + encodeURIComponent(label),
+                            'folder'
+                        );
+                    }}
+                >
+                    <div className={styles.itemLabel}>Delete</div>
                 </Item>
             </Menu>
         </MenuProvider>
