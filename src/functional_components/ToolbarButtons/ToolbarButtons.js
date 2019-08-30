@@ -1,26 +1,26 @@
 import React from 'react';
+
 import styles from './ToolbarButtons.module.css';
-import shareIcon from '../../assets/icons/share.png';
-import downloadIcon from '../../assets/icons/download.png';
-import uploadIcon from '../../assets/icons/upload.png';
-import trashIcon from '../../assets/icons/trash.png';
-import infoIcon from '../../assets/icons/info.png';
+import SvgShare from '../../assets/svgIcons/Share';
+import SvgDownload from '../../assets/svgIcons/Download';
+import SvgUpload from '../../assets/svgIcons/Upload';
+import SvgTrash from '../../assets/svgIcons/Trash';
+import SvgInfo from '../../assets/svgIcons/Info';
 import FileUpload from '../FileUpload/FileUpload';
 
 export default function ToolbarButtons({ uploadFile }) {
     return (
         <div className={styles.container}>
-            <img className={styles.toolbarIcon} src={shareIcon} />
-            <img className={styles.toolbarIcon} src={downloadIcon} />
+            <SvgShare className={styles.toolbarIcon} />
+            <SvgDownload className={styles.toolbarIcon} />
             <FileUpload onChange={uploadFile}>
-                <img
+                <SvgUpload
                     className={styles.toolbarIcon}
                     onClick={uploadFile}
-                    src={uploadIcon}
                 />
             </FileUpload>
-            <img className={styles.toolbarIcon} src={trashIcon} />
-            <img className={styles.toolbarIcon} src={infoIcon} />
+            <SvgTrash className={styles.toolbarIcon} />
+            <SvgInfo className={styles.toolbarIcon} />
         </div>
     );
 }

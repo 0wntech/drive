@@ -80,7 +80,7 @@ export default (state = INITIAL_STATE, action) => {
         case SET_CURRENT_PATH:
             return { ...state, currentPath: payload, selectedItem: [] };
         case SET_SELECTION:
-            return { ...state, selectedItems: payload };
+            return { ...state, selectedItems: [...payload] };
         case FETCH_CURRENT_ITEMS:
             return { ...state, loadFolder: true };
         case FETCH_CURRENT_ITEMS_SUCCESS:

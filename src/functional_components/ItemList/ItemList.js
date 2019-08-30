@@ -17,11 +17,16 @@ const ItemList = ({
 }) => {
     const itemComponents = items
         ? items.map((item, index) => {
+              console.log(
+                  'maaaaaaaaaaaaaaaaaap',
+                  currPath + encodeURIComponent(item),
+                  selectedItems.includes(currPath + encodeURIComponent(item))
+              );
               return isFile ? (
                   <File
                       selectedItem={
                           selectedItems.includes(
-                              currPath + '/' + encodeURIComponent(item)
+                              currPath + encodeURIComponent(item)
                           )
                               ? true
                               : undefined
@@ -42,7 +47,7 @@ const ItemList = ({
                   <Item
                       selectedItem={
                           selectedItems.includes(
-                              currPath + encodeURIComponent(item) + '/'
+                              currPath + encodeURIComponent(item)
                           )
                               ? true
                               : undefined

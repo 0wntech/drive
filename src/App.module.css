@@ -10,17 +10,19 @@
     min-height: 0;
     display: grid;
     height: 100%;
-    margin: 0 25% 0 25%;
+    margin: 0 20% 0 20%;
     grid-template-areas:
         'nav'
         'main';
-    grid-template-rows: 1fr 11fr;
+    grid-template-rows: 3fr 21fr;
 }
 
 .navArea {
     grid-area: nav;
-    overflow: hidden;
-    min-width: 0;
+    /* overflow: hidden;
+    min-width: 0; */
+    align-items: center;
+    display: flex;
 }
 
 .mainArea {

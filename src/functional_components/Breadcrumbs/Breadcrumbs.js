@@ -16,6 +16,7 @@ const Breadcrumbs = (props) => {
                           key={currentIndex}
                           label={currentLabel}
                           onClick={() => {
+                              console.log('currentURRRRRL', currentUrl);
                               props.onClick(currentUrl);
                           }}
                       >

@@ -29,7 +29,8 @@
     "test": "react-scripts test",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "svgr": "svgr -d src/assets/svgIcons src/assets/icons"
   },
   "husky": {
     "hooks": {
@@ -66,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "@svgr/cli": "^4.3.2",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",

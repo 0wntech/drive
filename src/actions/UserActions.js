@@ -70,7 +70,6 @@ export const setCurrentPath = (newPath) => {
 
 export const fetchUser = (webId) => {
     return (dispatch) => {
-        console.log('in fetch user', webId);
         dispatch({ type: FETCH_USER });
         const currUser = new User(webId);
         currUser
@@ -81,7 +80,6 @@ export const fetchUser = (webId) => {
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAIL, payload: error })
             );
-        console.log('finish');
     };
 };
 
@@ -113,7 +111,6 @@ export const fetchCurrentItems = (url) => {
         fileUtils
             .getFolderFiles(url)
             .then((items) => {
-                console.log(items);
                 const fileNames = items.files.map((file) => {
                     return convertFileUrlToName(file);
                 });
@@ -169,8 +166,7 @@ export const sendNotification = (webId, notification) => {
     };
 };
 
-export const setSelection = (selection) => {
-    return (dispatch) => {
-        dispatch({ type: SET_SELECTION, payload: selection });
-    };
-};
+export const setSelection = (selection) => ({
+    type: SET_SELECTION,
+    payload: selection,
+});
