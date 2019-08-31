@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import SvgDropdown from '../../assets/svgIcons/Dropdown';
 import styles from './DropdownMenu.module.css';
 import classNames from 'classnames';
-import useHeight from '../../hooks/useHeight';
 
 function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
-    const [ref, height] = useHeight();
-    console.log('height', height);
     const defaultRender = (option) => {
         return (
             <div onClick={option.onClick} className={styles.option}>
@@ -27,8 +24,6 @@ function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
                 className={classNames(styles.dropdownContent, {
                     [styles.hide]: !isExpanded,
                 })}
-                ref={ref}
-                style={{ bottom: -height }}
             >
                 {renderOption
                     ? options.map((option) => (
