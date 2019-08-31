@@ -33,8 +33,11 @@ const ItemList = ({
                       }
                       key={item + index}
                       image={image}
-                      onClick={() => {
-                          onItemClick(currPath + encodeURIComponent(item));
+                      onClick={(event) => {
+                          onItemClick(
+                              currPath + encodeURIComponent(item),
+                              event
+                          );
                       }}
                       contextMenuOptions={contextMenuOptions}
                       label={item}
@@ -51,8 +54,11 @@ const ItemList = ({
                       }
                       key={item + index}
                       image={image}
-                      onClick={() =>
-                          onItemClick(currPath + encodeURIComponent(item))
+                      onClick={(event) =>
+                          onItemClick(
+                              currPath + encodeURIComponent(item),
+                              event
+                          )
                       }
                       contextMenuOptions={contextMenuOptions}
                       currPath={currPath}

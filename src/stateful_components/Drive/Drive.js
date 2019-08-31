@@ -103,11 +103,15 @@ class Drive extends React.Component {
         );
     }
 
-    loadFile(url) {
-        if (this.props.selectedItems.includes(url) === false) {
-            const newSelection = this.props.selectedItems;
+    loadFile(url, event = {}) {
+        const { selectedItems, setSelection } = this.props;
+        if (event.ctrlKey && selectedItems.includes(url) === false) {
+            const newSelection = [...selectedItems];
             newSelection.push(url);
-            this.props.setSelection(newSelection);
+            setSelection(newSelection);
+        } else if (event.ctrlKey && selectedItems.includes(url)) {
+            const newSelection = selectedItems.filter((item) => item != url);
+            setSelection(newSelection);
         } else {
             const newBreadCrumbs = getBreadcrumbsFromUrl(url);
 
@@ -136,15 +140,16 @@ class Drive extends React.Component {
         }
     }
 
-    followPath(path) {
-        if (this.props.selectedItems.includes(path)) {
-            this.props.setCurrentPath(path);
-            // const newBreadcrumbs = getBreadcrumbsFromUrl(path);
-            // this.loadCurrentFolder(path, newBreadcrumbs);
+    followPath(path, event = {}) {
+        const { selectedItems, setCurrentPath, setSelection } = this.props;
+        if (event.ctrlKey && selectedItems.includes(path)) {
+            const newSelection = selectedItems.filter((item) => item != path);
+            setSelection(newSelection);
+        } else if (event.ctrlKey && !selectedItems.includes(path)) {
+            const newSelection = [...selectedItems, path];
+            setSelection(newSelection);
         } else {
-            const newSelection = this.props.selectedItems;
-            newSelection.push(path);
-            this.props.setSelection(newSelection);
+            setCurrentPath(path);
         }
     }
 
