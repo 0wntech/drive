@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
 import { connect } from 'react-redux';
@@ -310,17 +310,9 @@ class Drive extends React.Component {
 
     render() {
         const {
-            isCreateFolderVisible,
-            isCreateFileVisible,
-            isConsentWindowVisible,
-        } = this.state;
-
-        const {
             selectedItems,
-            webId,
             currentItems,
             currentPath,
-            setCurrentPath,
             loadCurrentItems,
         } = this.props;
 
@@ -373,6 +365,70 @@ class Drive extends React.Component {
             undefined
         );
 
+        const toolbar = (
+            <div className={styles.toolbarArea}>
+                {webId ? (
+                    <Breadcrumbs
+                        onClick={setCurrentPath}
+                        breadcrumbs={
+                            currentPath
+                                ? getBreadcrumbsFromUrl(currentPath)
+                                : null
+                        }
+                        webId={webId}
+                    />
+                ) : null}
+
+                <ToolbarButtons
+                    onFileCreation={this.openCreateFileWindow}
+                    onFolderCreation={this.openCreateFolderWindow}
+                    onFolderUpload={this.uploadFolder}
+                    onFileUpload={this.uploadFile}
+                />
+            </div>
+        );
+
+        const windows = (
+            <Fragment>
+                <ConsentWindow
+                    windowName="Delete File?"
+                    selectedItems={selectedItems}
+                    info={
+                        selectedItems.length > 1
+                            ? 'Do you really want to delete these items?'
+                            : 'Do you really want to delete this item?'
+                    }
+                    onSubmit={(selectedItems) =>
+                        fileUtils.deleteItems(selectedItems)
+                    }
+                    className={
+                        isConsentWindowVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeConsentWindow}
+                ></ConsentWindow>
+                <InputWindow
+                    windowName="Create Folder"
+                    info=""
+                    onSubmit={(value) => this.createFolder(value)}
+                    className={
+                        isCreateFolderVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeCreateFolderWindow}
+                    placeholder={'Untitled'}
+                />
+                <InputWindow
+                    windowName="Create File"
+                    info=""
+                    onSubmit={(value) => this.createFile(value)}
+                    className={
+                        isCreateFileVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeCreateFileWindow}
+                    placeholder={'Untitled'}
+                />
+            </Fragment>
+        );
+
         if (loadCurrentItems) {
             return (
                 <div className={styles.spinner}>
@@ -390,75 +446,13 @@ class Drive extends React.Component {
                     style={{ height: '100%' }}
                     onClick={this.clearSelection}
                 >
-                    <div className={styles.toolbarArea}>
-                        {webId ? (
-                            <Breadcrumbs
-                                onClick={setCurrentPath}
-                                breadcrumbs={
-                                    currentPath
-                                        ? getBreadcrumbsFromUrl(currentPath)
-                                        : null
-                                }
-                                webId={webId}
-                            />
-                        ) : null}
-
-                        <ToolbarButtons
-                            onFileCreation={this.openCreateFileWindow}
-                            onFolderCreation={this.openCreateFolderWindow}
-                            onFolderUpload={this.uploadFolder}
-                            onFileUpload={this.uploadFile}
-                        />
-                    </div>
+                    {toolbar}
                     <div className={styles.mainArea}>
                         {fileMarkup ? (
                             <div className={styles.container}>{fileMarkup}</div>
                         ) : (
                             <div className={styles.container}>
-                                <ConsentWindow
-                                    windowName="Delete File?"
-                                    selectedItems={selectedItems}
-                                    info={
-                                        selectedItems.length > 1
-                                            ? 'Do you really want to delete these items?'
-                                            : 'Do you really want to delete this item?'
-                                    }
-                                    onSubmit={(selectedItems) =>
-                                        fileUtils.deleteItems(selectedItems)
-                                    }
-                                    className={
-                                        isConsentWindowVisible
-                                            ? styles.visible
-                                            : styles.hidden
-                                    }
-                                    onClose={this.closeConsentWindow}
-                                ></ConsentWindow>
-                                <InputWindow
-                                    windowName="Create Folder"
-                                    info=""
-                                    onSubmit={(value) =>
-                                        this.createFolder(value)
-                                    }
-                                    className={
-                                        isCreateFolderVisible
-                                            ? styles.visible
-                                            : styles.hidden
-                                    }
-                                    onClose={this.closeCreateFolderWindow}
-                                    placeholder={'Untitled'}
-                                />
-                                <InputWindow
-                                    windowName="Create File"
-                                    info=""
-                                    onSubmit={(value) => this.createFile(value)}
-                                    className={
-                                        isCreateFileVisible
-                                            ? styles.visible
-                                            : styles.hidden
-                                    }
-                                    onClose={this.closeCreateFileWindow}
-                                    placeholder={'Untitled'}
-                                />
+                                {windows}
                                 {currentItems ? (
                                     <div className={styles.contentWrapper}>
                                         {/* <ContactSidebar /> */}
