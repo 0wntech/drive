@@ -1,3 +1,131 @@
+.grid {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 23fr;
+    grid-template-columns: 3fr 6fr 3fr;
+    grid-template-areas:
+        'toolbar toolbar toolbar'
+        '. profile .';
+    background-color: #ffffff;
+    border-radius: 20px 20px 0 0;
+}
+
+.iconWrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    grid-area: settings;
+    cursor: pointer;
+}
+
+.settings:hover path {
+    fill: #c2c2c2;
+}
+
+.profileContainer {
+    grid-area: profile;
+    display: flex;
+    width: 100%;
+    margin-top: 65px;
+}
+
+.profileImage {
+    grid-area: profileImg;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+
+.nameContainer {
+    grid-area: name;
+}
+
+.bio {
+    grid-area: name;
+}
+
+.headInfoContainer {
+    width: 50%;
+    margin-left: 20px;
+}
+
+.headContainer {
+    width: 100%;
+    height: 185px;
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    grid-template-areas:
+        'profileImg name editIcon' 'profileImg bio .'
+        'info info info';
+}
+
+.iconContainer {
+    width: 12%;
+}
+
+.toolbarArea {
+    grid-area: toolbar;
+    background-color: #e2e2e6;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 11fr 1fr;
+    grid-template-areas: '. settings';
+}
+
+.nameLabel {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.2em;
+    margin-top: 30px;
+}
+
+.webIdLabel {
+    margin-top: 10px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    color: #454545;
+}
+
+.bioLabel {
+    letter-spacing: 0.2em;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 21px;
+    width: 50%;
+}
+
+.valueLabel {
+    letter-spacing: 0.2em;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 21px;
+}
+
+.keyLabel {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    line-height: 21px;
+}
+
 .background {
     width: 100%;
     height: 100%;
