@@ -314,7 +314,14 @@ class Drive extends React.Component {
             currentItems,
             currentPath,
             loadCurrentItems,
+            webId,
         } = this.props;
+
+        const {
+            isConsentWindowVisible,
+            isCreateFileVisible,
+            isCreateFolderVisible,
+        } = this.state;
 
         const CONTEXTMENU_OPTIONS = [
             {
