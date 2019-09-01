@@ -105,11 +105,17 @@ class Drive extends React.Component {
 
     loadFile(url, event = {}) {
         const { selectedItems, setSelection } = this.props;
-        if (event.ctrlKey && selectedItems.includes(url) === false) {
+        if (
+            event.metaKey ||
+            (event.ctrlKey && selectedItems.includes(url) === false)
+        ) {
             const newSelection = [...selectedItems];
             newSelection.push(url);
             setSelection(newSelection);
-        } else if (event.ctrlKey && selectedItems.includes(url)) {
+        } else if (
+            event.metaKey ||
+            (event.ctrlKey && selectedItems.includes(url))
+        ) {
             const newSelection = selectedItems.filter((item) => item != url);
             setSelection(newSelection);
         } else {
@@ -142,10 +148,13 @@ class Drive extends React.Component {
 
     followPath(path, event = {}) {
         const { selectedItems, setCurrentPath, setSelection } = this.props;
-        if (event.ctrlKey && selectedItems.includes(path)) {
+        if (event.metaKey || (event.ctrlKey && selectedItems.includes(path))) {
             const newSelection = selectedItems.filter((item) => item != path);
             setSelection(newSelection);
-        } else if (event.ctrlKey && !selectedItems.includes(path)) {
+        } else if (
+            event.metaKey ||
+            (event.ctrlKey && !selectedItems.includes(path))
+        ) {
             const newSelection = [...selectedItems, path];
             setSelection(newSelection);
         } else {
