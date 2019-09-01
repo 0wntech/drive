@@ -209,7 +209,11 @@ class Drive extends React.Component {
 
         if (!currentItems && !currentPath && !loadCurrentItems) {
             console.log('fetching files');
-            console.log(currentPath, currentItems);
+            console.log(
+                'current path + current items: ',
+                currentPath,
+                currentItems
+            );
             fetchCurrentItems(currentPath);
         }
 

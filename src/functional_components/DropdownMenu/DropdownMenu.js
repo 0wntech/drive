@@ -8,7 +8,6 @@ function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
     const defaultRender = (option) => {
         return (
             <div onClick={option.onClick} className={styles.option}>
-                {console.log(option.label)}
                 {option.label}
             </div>
         );

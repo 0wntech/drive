@@ -18,10 +18,6 @@ const ItemList = ({
 }) => {
     const itemComponents = items
         ? items.map((item, index) => {
-              console.log(
-                  currPath + encodeURIComponent(item),
-                  selectedItems.includes(currPath + encodeURIComponent(item))
-              );
               return isFile ? (
                   <File
                       selectedItem={
