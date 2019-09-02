@@ -313,6 +313,7 @@ class Drive extends React.Component {
             currentPath,
             loadCurrentItems,
             webId,
+            setCurrentPath,
         } = this.props;
 
         const {
