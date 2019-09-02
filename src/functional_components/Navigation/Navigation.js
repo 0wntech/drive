@@ -1,80 +1,81 @@
-import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import React, { useState } from 'react';
+import classNames from 'classnames';
 import styles from './Navigation.module.css';
-import Container from 'react-bootstrap/Container';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
+import DropdownMenu from '../DropdownMenu';
 
-const Navigation = ({ picture, webId, onLogin, onLogout, toggleSidebar }) => {
+const DROPDOWN_OPTIONS = [
+    { onClick: () => console.log('test'), label: 'Home' },
+    { onClick: () => console.log('test2'), label: 'Settings' },
+    { onClick: () => console.log('test2'), label: 'Notifications' },
+    { onClick: () => console.log('test2'), label: 'Contacts' },
+    { onClick: () => console.log('test2'), label: 'Trash' },
+];
+
+const Navigation = ({
+    picture,
+    webId,
+    onLogin,
+    onLogout,
+    toggleSidebar,
+    username,
+}) => {
+    const [isDropdownExpanded, setDropdownExpanded] = useState(false);
+
     return (
-        <Container>
-            <Navbar className={styles.navbar} expand="lg">
-                <div style={{ width: '100%' }}>
-                    <Row>
-                        <Col xs="6" sm="6" md="6" lg="6">
-                            <Navbar.Brand href="/home" className={styles.brand}>
-                                <img src="https://owntech.de/favicon.ico" />
-                                <p>OWNDRIVE</p>
-                            </Navbar.Brand>
-                            {/* <NavLink to="/home">HOME</NavLink> */}
-                        </Col>
-                        <Col xs="6" sm="6" md="6" lg="6">
-                            {webId ? (
-                                <div className={styles.menuWrapper}>
-                                    {picture ? (
-                                        <div
-                                            onClick={toggleSidebar}
-                                            className={styles.profileIcon}
-                                            style={{
-                                                backgroundImage:
-                                                    'url(' + picture + ')',
-                                            }}
-                                        />
-                                    ) : (
-                                        <img
-                                            onClick={toggleSidebar}
-                                            className={styles.profileIcon}
-                                            src={defaultIcon}
-                                        />
-                                    )}
-                                    <NavDropdown
-                                        id="dropdown"
-                                        alignRight
-                                        className={[
-                                            styles.dropdown,
-                                            'float-right',
-                                        ]}
-                                    >
-                                        <NavDropdown.Item href="home">
-                                            Home
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item href="notifications">
-                                            Notifications
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item onClick={onLogout}>
-                                            Logout
-                                        </NavDropdown.Item>
-                                    </NavDropdown>
-                                </div>
+        <div className={styles.container}>
+            <div className={styles.brandWrapper}>
+                <img
+                    className={styles.brand}
+                    src="https://owntech.de/favicon.ico"
+                />
+            </div>
+            <div className={styles.menuWrapper}>
+                {webId ? (
+                    <div className={styles.dropdownWrapper}>
+                        <div className={styles.profileSection}>
+                            {picture ? (
+                                <div
+                                    onClick={toggleSidebar}
+                                    className={styles.profileIcon}
+                                    style={{
+                                        backgroundImage: 'url(' + picture + ')',
+                                    }}
+                                />
                             ) : (
-                                <div className={styles.loginButton}>
-                                    <a
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            onLogin();
-                                        }}
-                                    >
-                                        Login
-                                    </a>
-                                </div>
+                                <img
+                                    onClick={toggleSidebar}
+                                    className={styles.profileIcon}
+                                    src={defaultIcon}
+                                />
                             )}
-                        </Col>
-                    </Row>
-                </div>
-            </Navbar>
-        </Container>
+                            <div className={styles.username}>{username}</div>
+                        </div>
+                        <DropdownMenu
+                            options={DROPDOWN_OPTIONS}
+                            isExpanded={isDropdownExpanded}
+                            setExpanded={setDropdownExpanded}
+                        />
+                        <div
+                            className={classNames(styles.mask, {
+                                [styles.active]: isDropdownExpanded,
+                            })}
+                        />
+                    </div>
+                ) : (
+                    <div className={styles.loginButton}>
+                        <a
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onLogin();
+                            }}
+                        >
+                            Login
+                        </a>
+                    </div>
+                )}
+            </div>
+        </div>
     );
 };
 

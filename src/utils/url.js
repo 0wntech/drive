@@ -16,7 +16,6 @@ export const getBreadcrumbsFromUrl = (url) => {
             newBreadcrumbs.push('/' + breadcrumb);
         }
     });
-    console.log(newBreadcrumbs);
     return newBreadcrumbs;
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import Container from 'react-bootstrap/Container';
 import styles from './Breadcrumbs.module.css';
+import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
 
 const Breadcrumbs = (props) => {
     console.log(props.breadcrumbs);
@@ -11,10 +10,13 @@ const Breadcrumbs = (props) => {
         ? props.breadcrumbs.map((currentBreadcrumb, currentIndex) => {
               if (currentBreadcrumb !== '/') {
                   currentUrl = currentUrl + currentBreadcrumb;
+                  const currentLabel = currentBreadcrumb.replace('/', '');
                   return (
-                      <Breadcrumb.Item
+                      <BreadcrumbItem
                           key={currentIndex}
+                          label={currentLabel}
                           onClick={() => {
+                              console.log('currentURRRRRL', currentUrl);
                               props.onClick(currentUrl);
                           }}
                       >
@@ -24,28 +26,21 @@ const Breadcrumbs = (props) => {
                               currentBreadcrumb
                           )}
                           {currentBreadcrumb.replace('/', '')}
-                      </Breadcrumb.Item>
+                      </BreadcrumbItem>
                   );
               } else {
                   return (
-                      <Breadcrumb.Item
+                      <BreadcrumbItem
                           key={0}
+                          label={'Home'}
                           onClick={() => props.onClick(root + '/')}
-                      >
-                          Home
-                      </Breadcrumb.Item>
+                      ></BreadcrumbItem>
                   );
               }
           })
         : undefined;
 
-    return (
-        <Container>
-            <Breadcrumb className={styles.container}>
-                {breadcrumbMarkup}
-            </Breadcrumb>
-        </Container>
-    );
+    return <div className={styles.container}>{breadcrumbMarkup}</div>;
 };
 
 export default Breadcrumbs;

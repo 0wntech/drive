@@ -2,7 +2,7 @@ import React from 'react';
 import { Item } from '../Item';
 import styles from './ItemList.module.css';
 import { File } from '../File';
-import fileutils from '../../utils/fileUtils';
+
 const ItemList = ({
     selectedItems,
     items,
@@ -14,6 +14,7 @@ const ItemList = ({
     onAccess,
     onRename,
     onInfo,
+    contextMenuOptions,
 }) => {
     const itemComponents = items
         ? items.map((item, index) => {
@@ -21,20 +22,20 @@ const ItemList = ({
                   <File
                       selectedItem={
                           selectedItems.includes(
-                              currPath + '/' + encodeURIComponent(item)
+                              currPath + encodeURIComponent(item)
                           )
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
-                      onClick={() => {
-                          onItemClick(currPath + encodeURIComponent(item));
+                      onClick={(event) => {
+                          onItemClick(
+                              currPath + encodeURIComponent(item),
+                              event
+                          );
                       }}
-                      onDelete={onDelete}
-                      onAccess={onAccess}
-                      onRename={onRename}
-                      onInfo={onInfo}
+                      contextMenuOptions={contextMenuOptions}
                       label={item}
                       currPath={currPath}
                   />
@@ -42,20 +43,20 @@ const ItemList = ({
                   <Item
                       selectedItem={
                           selectedItems.includes(
-                              currPath + encodeURIComponent(item) + '/'
+                              currPath + encodeURIComponent(item)
                           )
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
-                      onClick={() =>
-                          onItemClick(currPath + encodeURIComponent(item))
+                      onClick={(event) =>
+                          onItemClick(
+                              currPath + encodeURIComponent(item),
+                              event
+                          )
                       }
-                      onDelete={onDelete}
-                      onAccess={fileutils.changeAccess}
-                      onRename={fileutils.renameFile}
-                      onInfo={fileutils.getInfo}
+                      contextMenuOptions={contextMenuOptions}
                       currPath={currPath}
                       label={item}
                   />
