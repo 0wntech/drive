@@ -34,8 +34,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "set CI=true && react-scripts test && lint-staged",
-      "pre-push": "set CI=true && react-scripts test && lint-staged"
+      "pre-commit": "export CI=true && react-scripts test && lint-staged",
+      "pre-push": "export CI=true && react-scripts test && lint-staged"
     }
   },
   "lint-staged": {
