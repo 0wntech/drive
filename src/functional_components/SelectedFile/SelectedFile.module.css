@@ -1,0 +1,13 @@
+.container {
+    max-width: 40%;
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 10px;
+    border: solid #6db7db 1px;
+    border-radius: 20px;
+}
+
+.container > img {
+    max-width: 24px;
+    margin: 0 10px 5px 5px;
+}

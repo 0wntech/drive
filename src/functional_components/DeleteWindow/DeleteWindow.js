@@ -1,9 +1,10 @@
 import React from 'react';
 import { Window } from '../Window';
-import styles from './ConsentWindow.module.css';
+import styles from './DeleteWindow.module.css';
 import classNames from 'classnames';
+import SelectedFile from '../SelectedFile/SelectedFile';
 
-export default function ConsentWindow({
+export default function DeleteWindow({
     className,
     selectedItems,
     onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
@@ -15,13 +16,12 @@ export default function ConsentWindow({
     return (
         <Window windowName={windowName} onClose={onClose} className={className}>
             <p>{info}</p>
+            <div className={styles.selectedFiles}>
+                {selectedItems.map((item, index) => {
+                    return <SelectedFile fileName={item} />;
+                })}
+            </div>
             <div className={styles.buttonBar}>
-                <div
-                    onClick={onCancel ? onCancel : onClose}
-                    className={styles.button}
-                >
-                    CANCEL
-                </div>
                 <div
                     onClick={() => {
                         onSubmit(selectedItems);
@@ -29,7 +29,7 @@ export default function ConsentWindow({
                     }}
                     className={classNames(styles.button, styles.confirm)}
                 >
-                    CONFIRM
+                    Delete
                 </div>
             </div>
         </Window>

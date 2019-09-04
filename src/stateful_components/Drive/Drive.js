@@ -11,7 +11,7 @@ import { getBreadcrumbsFromUrl } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { InputWindow } from '../../functional_components/InputWindow';
-import { ConsentWindow } from '../../functional_components/ConsentWindow';
+import { DeleteWindow } from '../../functional_components/DeleteWindow';
 import {
     setCurrentPath,
     setSelection,
@@ -396,8 +396,8 @@ class Drive extends React.Component {
 
         const windows = (
             <Fragment>
-                <ConsentWindow
-                    windowName="Delete File?"
+                <DeleteWindow
+                    windowName="Delete File"
                     selectedItems={selectedItems}
                     info={
                         selectedItems.length > 1
@@ -411,7 +411,7 @@ class Drive extends React.Component {
                         isConsentWindowVisible ? styles.visible : styles.hidden
                     }
                     onClose={this.closeConsentWindow}
-                ></ConsentWindow>
+                ></DeleteWindow>
                 <InputWindow
                     windowName="Create Folder"
                     info=""
