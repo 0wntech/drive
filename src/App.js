@@ -120,6 +120,17 @@ class App extends React.Component {
                                 username={user ? user.name : undefined}
                             />
                         </div>
+                        {webId && user ? (
+                            <ProfileSideBar
+                                user={user}
+                                toggleSidebar={this.toggleSidebar}
+                                onLogout={this.logout}
+                                onLogin={this.login}
+                                webId={webId}
+                                picture={user ? user.picture : undefined}
+                                username={user ? user.name : undefined}
+                            />
+                        ) : null}
                         <div className={styles.mainArea}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />

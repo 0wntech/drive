@@ -20,6 +20,7 @@ import {
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
+import { isCmdPressed } from '../../utils/helper';
 const ns = require('solid-namespace')(rdf);
 
 class Drive extends React.Component {
@@ -107,14 +108,14 @@ class Drive extends React.Component {
         const { selectedItems, setSelection } = this.props;
         if (
             event.metaKey ||
-            (event.ctrlKey && selectedItems.includes(url) === false)
+            (isCmdPressed(event) && selectedItems.includes(url) === false)
         ) {
             const newSelection = [...selectedItems];
             newSelection.push(url);
             setSelection(newSelection);
         } else if (
             event.metaKey ||
-            (event.ctrlKey && selectedItems.includes(url))
+            (isCmdPressed(event) && selectedItems.includes(url))
         ) {
             const newSelection = selectedItems.filter((item) => item != url);
             setSelection(newSelection);
@@ -148,13 +149,10 @@ class Drive extends React.Component {
 
     followPath(path, event = {}) {
         const { selectedItems, setCurrentPath, setSelection } = this.props;
-        if (event.metaKey || (event.ctrlKey && selectedItems.includes(path))) {
+        if (isCmdPressed(event) && selectedItems.includes(path)) {
             const newSelection = selectedItems.filter((item) => item != path);
             setSelection(newSelection);
-        } else if (
-            event.metaKey ||
-            (event.ctrlKey && !selectedItems.includes(path))
-        ) {
+        } else if (isCmdPressed(event) && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];
             setSelection(newSelection);
         } else {
@@ -315,6 +313,7 @@ class Drive extends React.Component {
             currentPath,
             loadCurrentItems,
             webId,
+            setCurrentPath,
         } = this.props;
 
         const {
