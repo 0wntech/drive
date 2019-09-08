@@ -161,12 +161,14 @@ class Drive extends React.Component {
     }
 
     uploadFile(e) {
+        console.log(e);
         const currPath = this.props.currentPath;
         const filePath = e.target.files[0];
 
         fileUtils.uploadFile(filePath, currPath).then(() => {
             this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
         });
+        this.props.history.push('/home');
     }
 
     clearSelection(e) {
@@ -354,6 +356,10 @@ class Drive extends React.Component {
                 disabled: true,
             },
             {
+                label: 'Create Folder',
+                onClick: () => this.openCreateFolderWindow(),
+            },
+            {
                 label: 'Delete',
                 onClick: (item) => this.openConsentWindow(),
                 disabled: false,
@@ -389,7 +395,7 @@ class Drive extends React.Component {
                     onFileCreation={this.openCreateFileWindow}
                     onFolderCreation={this.openCreateFolderWindow}
                     onFolderUpload={this.uploadFolder}
-                    onFileUpload={this.uploadFile}
+                    uploadFile={this.uploadFile}
                 />
             </div>
         );
@@ -404,9 +410,10 @@ class Drive extends React.Component {
                             ? 'Do you really want to delete these items?'
                             : 'Do you really want to delete this item?'
                     }
-                    onSubmit={(selectedItems) =>
-                        fileUtils.deleteItems(selectedItems)
-                    }
+                    onSubmit={(selectedItems) => {
+                        fileUtils.deleteItems(selectedItems);
+                        this.props.history.push('/home');
+                    }}
                     className={
                         isConsentWindowVisible ? styles.visible : styles.hidden
                     }

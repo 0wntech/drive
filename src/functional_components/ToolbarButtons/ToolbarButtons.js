@@ -13,11 +13,8 @@ export default function ToolbarButtons({ uploadFile }) {
         <div className={styles.container}>
             <SvgShare className={styles.toolbarIcon} />
             <SvgDownload className={styles.toolbarIcon} />
-            <FileUpload onChange={uploadFile}>
-                <SvgUpload
-                    className={styles.toolbarIcon}
-                    onClick={uploadFile}
-                />
+            <FileUpload onFileUpload={uploadFile}>
+                <SvgUpload className={styles.toolbarIcon} />
             </FileUpload>
             <SvgTrash className={styles.toolbarIcon} />
             <SvgInfo className={styles.toolbarIcon} />

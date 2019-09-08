@@ -18,7 +18,7 @@ export default function DeleteWindow({
             <p>{info}</p>
             <div className={styles.selectedFiles}>
                 {selectedItems.map((item, index) => {
-                    return <SelectedFile fileName={item} />;
+                    return <SelectedFile fileName={decodeURIComponent(item)} />;
                 })}
             </div>
             <div className={styles.buttonBar}>
