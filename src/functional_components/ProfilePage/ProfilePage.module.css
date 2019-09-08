@@ -1,7 +1,7 @@
 .grid {
     height: 100%;
     display: grid;
-    grid-template-rows: 1fr 23fr;
+    grid-template-rows: 40px 23fr;
     grid-template-columns: 3fr 6fr 3fr;
     grid-template-areas:
         'toolbar toolbar toolbar'
@@ -41,10 +41,25 @@
 
 .nameContainer {
     grid-area: name;
+    padding: 0 0 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .bio {
-    grid-area: name;
+    padding: 0 0 0 30px;
+    grid-area: bio;
+    text-decoration: underline;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    letter-spacing: 0.2em;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 21px;
 }
 
 .headInfoContainer {
@@ -58,7 +73,9 @@
     display: grid;
     grid-template-columns: 10vw 3fr 1fr;
     grid-template-rows: 5vw 5vw;
-    grid-template-areas: 'profileImg name editIcon' 'profileImg bio .';
+    grid-template-areas:
+        'profileImg name editIcon'
+        'profileImg bio .';
 }
 
 .iconContainer {
@@ -78,12 +95,12 @@
 
 .nameLabel {
     font-family: Roboto;
+    text-decoration: underline;
     font-style: normal;
     font-weight: 300;
     font-size: 24px;
     line-height: 28px;
     letter-spacing: 0.2em;
-    margin-top: 30px;
 }
 
 .webIdLabel {
@@ -97,16 +114,6 @@
     color: #454545;
 }
 
-.bioLabel {
-    letter-spacing: 0.2em;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 21px;
-    width: 50%;
-}
-
 .valueLabel {
     letter-spacing: 0.2em;
     font-family: Roboto;
@@ -114,6 +121,16 @@
     font-weight: 300;
     font-size: 18px;
     line-height: 21px;
+}
+
+.editIconContainer {
+    grid-area: editIcon;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.editIcon {
+    cursor: pointer;
 }
 
 .keyLabel {
@@ -192,16 +209,6 @@
 
 .container.active {
     right: 0;
-}
-
-.editIcon {
-    position: relative;
-    right: 100px;
-    width: 100px;
-    height: 100px;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
 }
 
 .profilePicture {

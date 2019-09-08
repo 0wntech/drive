@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './ProfilePage.module.css';
+
 import Settings from '../../assets/svgIcons/Settings';
+import EditIcon from '../../assets/svgIcons/Edit';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 
 export default function ProfilePage({
@@ -32,6 +34,9 @@ export default function ProfilePage({
                         <div className={styles.webIdLabel}>
                             https://ludwig.owntech.de
                         </div>
+                    </div>
+                    <div className={styles.editIconContainer}>
+                        <EditIcon className={styles.editIcon} />
                     </div>
                     <div className={styles.bio}>Hacking is life. (Bio)</div>
                 </div>

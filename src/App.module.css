@@ -7,10 +7,12 @@
 }
 
 .grid {
+    padding-top: 40px;
     min-height: 0;
     display: grid;
     height: 100%;
     margin: 0 20% 0 20%;
+    grid-row-gap: 20px;
     grid-template-areas:
         'nav'
         'main';
