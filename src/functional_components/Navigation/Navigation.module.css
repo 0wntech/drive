@@ -73,6 +73,7 @@
 .brand {
     height: 64px;
     width: 64px;
+    cursor: pointer;
 }
 
 .brand p {
@@ -96,6 +97,7 @@
     background-size: cover;
     background-position: center;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .profileIcon:hover {

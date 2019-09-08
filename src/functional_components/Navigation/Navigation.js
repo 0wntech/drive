@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { withRouter } from 'react-router-dom';
 import styles from './Navigation.module.css';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
@@ -19,6 +20,7 @@ const Navigation = ({
     onLogout,
     toggleSidebar,
     username,
+    history,
 }) => {
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
 
@@ -26,6 +28,7 @@ const Navigation = ({
         <div className={styles.container}>
             <div className={styles.brandWrapper}>
                 <img
+                    onClick={() => history.push('/home')}
                     className={styles.brand}
                     src="https://owntech.de/favicon.ico"
                 />
@@ -44,7 +47,7 @@ const Navigation = ({
                                 />
                             ) : (
                                 <img
-                                    onClick={toggleSidebar}
+                                    onClick={() => history.push('/profile')}
                                     className={styles.profileIcon}
                                     src={defaultIcon}
                                 />
@@ -79,4 +82,4 @@ const Navigation = ({
     );
 };
 
-export default Navigation;
+export default withRouter(Navigation);
