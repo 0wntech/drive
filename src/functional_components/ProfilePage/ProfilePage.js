@@ -38,7 +38,7 @@ const ProfilePage = ({
                         <div className={styles.nameContainer}>
                             <div className={styles.nameLabel}>{user.name}</div>
                             <div className={styles.webIdLabel}>
-                                {user.webId.replace('/card#me', '')}
+                                {user.webId.replace('/profile/card#me', '')}
                             </div>
                         </div>
                         <div className={styles.bio}>
