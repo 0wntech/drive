@@ -10,7 +10,6 @@ const KeyValuePair = ({ label, value }) => {
             return <div className={styles.value}>{value}</div>;
         }
     };
-    console.log('keeeeeeeey', label);
     return (
         <div className={styles.container}>
             <div className={styles.keyLabel}>{label}</div>

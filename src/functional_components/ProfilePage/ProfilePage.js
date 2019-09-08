@@ -15,7 +15,6 @@ const ProfilePage = ({
     onProfileUpdate,
     onPictureChange,
 }) => {
-    console.log('ussssssaaaaaaaaaaaaaaaaaaaa', user);
     if (user) {
         return (
             <div className={styles.grid}>
