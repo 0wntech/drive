@@ -1,0 +1,28 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './KeyValuePair.module.css';
+
+const KeyValuePair = ({ label, value }) => {
+    const renderValues = (value) => {
+        if (typeof value === 'object') {
+            value.map((value) => <div className={styles.value}>{value}</div>);
+        } else if (typeof value === 'string') {
+            return <div className={styles.value}>{value}</div>;
+        }
+    };
+    console.log('keeeeeeeey', label);
+    return (
+        <div className={styles.container}>
+            <div className={styles.keyLabel}>{label}</div>
+            <div className={styles.valueContainer}>{renderValues(value)}</div>
+        </div>
+    );
+};
+
+KeyValuePair.propTypes = {
+    label: PropTypes.string.isRequired,
+    items: PropTypes.object,
+    className: PropTypes.string,
+};
+
+export default KeyValuePair;
