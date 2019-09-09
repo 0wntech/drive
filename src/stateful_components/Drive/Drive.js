@@ -24,6 +24,7 @@ import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
 import { MenuProvider, Menu, Item } from 'react-contexify';
 import classNames from 'classnames';
+import url from 'url';
 const ns = require('solid-namespace')(rdf);
 
 class Drive extends React.Component {
@@ -288,14 +289,22 @@ class Drive extends React.Component {
     }
 
     openConsentWindow(item) {
-        if (!this.props.selectedItems.includes(item)) {
-            const newSelection = [...this.props.selectedItems];
+        const { selectedItems, webId, setSelection } = this.props;
+        const newSelection = [...selectedItems];
+        if (
+            item &&
+            url.parse(item).hostname !== url.parse(webId).hostname &&
+            !selectedItems.includes(item)
+        ) {
+            console.log(url.parse(webId).hostname, item);
             newSelection.push(item);
-            this.props.setSelection(newSelection);
+            setSelection(newSelection);
         }
-        this.setState({
-            isConsentWindowVisible: true,
-        });
+        if (selectedItems.length !== 0 || newSelection.length !== 0) {
+            this.setState({
+                isConsentWindowVisible: true,
+            });
+        }
     }
 
     closeCreateFileWindow() {
@@ -405,6 +414,9 @@ class Drive extends React.Component {
                     onFolderCreation={this.openCreateFolderWindow}
                     onFolderUpload={this.uploadFolder}
                     uploadFile={this.uploadFile}
+                    onDelete={() => {
+                        this.openConsentWindow();
+                    }}
                 />
             </div>
         );

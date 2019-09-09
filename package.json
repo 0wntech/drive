@@ -20,6 +20,7 @@
     "solid-auth-client": "^2.3.0",
     "solid-namespace": "^0.2.0",
     "styled-components": "^4.3.2",
+    "url": "^0.11.0",
     "your-acl": "^1.0.17",
     "your-user": "^1.1.11"
   },

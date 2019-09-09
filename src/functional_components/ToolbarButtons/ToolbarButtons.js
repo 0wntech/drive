@@ -8,7 +8,7 @@ import SvgTrash from '../../assets/svgIcons/Trash';
 import SvgInfo from '../../assets/svgIcons/Info';
 import FileUpload from '../FileUpload/FileUpload';
 
-export default function ToolbarButtons({ uploadFile }) {
+export default function ToolbarButtons({ uploadFile, onDelete }) {
     return (
         <div className={styles.container}>
             <SvgShare className={styles.toolbarIcon} />
@@ -16,7 +16,7 @@ export default function ToolbarButtons({ uploadFile }) {
             <FileUpload onFileUpload={uploadFile}>
                 <SvgUpload className={styles.toolbarIcon} />
             </FileUpload>
-            <SvgTrash className={styles.toolbarIcon} />
+            <SvgTrash className={styles.toolbarIcon} onClick={onDelete} />
             <SvgInfo className={styles.toolbarIcon} />
         </div>
     );
