@@ -14,7 +14,6 @@
 
 .opacity {
     z-index: 2;
-
     position: fixed;
     top: 0;
     right: 0;
@@ -32,6 +31,10 @@
     background-color: #ff697b;
     border-radius: 100%;
     margin-left: auto;
+}
+
+.close:hover {
+    transform: scale(1.05);
 }
 
 .head {

@@ -18,10 +18,21 @@ export default function DeleteWindow({
             <p>{info}</p>
             <div className={styles.selectedFiles}>
                 {selectedItems.map((item, index) => {
-                    return <SelectedFile fileName={decodeURIComponent(item)} />;
+                    return (
+                        <SelectedFile
+                            fileName={decodeURIComponent(item)}
+                            key={index}
+                        />
+                    );
                 })}
             </div>
             <div className={styles.buttonBar}>
+                <div
+                    onClick={onCancel ? onCancel : onClose}
+                    className={styles.button}
+                >
+                    CANCEL
+                </div>
                 <div
                     onClick={() => {
                         onSubmit(selectedItems);

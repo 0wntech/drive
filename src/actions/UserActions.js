@@ -23,6 +23,9 @@ import {
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
     FETCH_IDPS_FAILED,
+    DELETE_ITEMS,
+    DELETE_ITEMS_SUCCESS,
+    DELETE_ITEMS_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import User from 'your-user';
@@ -182,6 +185,24 @@ export const fetchIdps = () => {
             })
             .catch((err) => {
                 dispatch({ type: FETCH_IDPS_FAILED, payload: err });
+            });
+    };
+};
+
+export const deleteItems = (items, currentPath = '/') => {
+    return (dispatch) => {
+        dispatch({ type: DELETE_ITEMS });
+        fileUtils
+            .deleteItems(items)
+            .then(() => {
+                // To avoid reloading when not everything has been deleted
+                setTimeout(() => {
+                    dispatch({ type: DELETE_ITEMS_SUCCESS });
+                    dispatch(setCurrentPath(currentPath));
+                }, 2000);
+            })
+            .catch((err) => {
+                dispatch({ type: DELETE_ITEMS_FAILURE });
             });
     };
 };

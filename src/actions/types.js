@@ -37,3 +37,7 @@ export const SEND_NOTIFICATION_FAILURE = 'send_notification_failure';
 export const FETCH_IDPS = 'fetch_idps';
 export const FETCH_IDPS_SUCCESS = 'fetch_idps_success';
 export const FETCH_IDPS_FAILED = 'fetch_idps_failure';
+
+export const DELETE_ITEMS = 'delete_items';
+export const DELETE_ITEMS_SUCCESS = 'delete_items_success';
+export const DELETE_ITEMS_FAILURE = 'delete_items_failure';

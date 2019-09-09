@@ -34,7 +34,9 @@ const MyItem = ({
                             onClick={
                                 !option.disabled
                                     ? () => {
-                                          option.onClick(currPath + label);
+                                          option.onClick(
+                                              currPath + label + '/'
+                                          );
                                       }
                                     : undefined
                             }

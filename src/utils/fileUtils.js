@@ -95,40 +95,10 @@ function getFolderUrl(folder) {
 }
 
 function deleteItems(items) {
-    const deletions = [];
-    if (Array.isArray(items)) {
-        items.forEach((item) => {
-            if (!isFolder(item)) {
-                deletions.push(auth.fetch(item, { method: 'DELETE' }));
-            } else {
-                return getFolderTree(item).then((results) => {
-                    return Promise.all(
-                        results.map((result, index) => {
-                            if (index !== results.length) {
-                                return auth.fetch(result, { method: 'DELETE' });
-                            }
-                        })
-                    ).then(() => {
-                        console.log(
-                            'Delete root folder',
-                            results[results.length - 1]
-                        );
-                        return auth
-                            .fetch(results[results.length - 1], {
-                                method: 'DELETE',
-                            })
-                            .then(() => {
-                                window.location.href = window.location.href;
-                            });
-                    });
-                });
-            }
-        });
-    } else {
-        deletions.push(auth.fetch(items, { method: 'DELETE' }));
-    }
-
-    return Promise.all(deletions);
+    items.map((item) => {
+        return deleteRecursively(item);
+    });
+    return Promise.all(items);
 }
 
 function hasArray(fileList) {
@@ -179,10 +149,10 @@ function getFolderTree(folderUrl) {
 }
 
 function deleteRecursively(url) {
-    const store = rdf.graph();
-    const fetcher = new rdf.Fetcher(store);
-    return new Promise(function(resolve, reject) {
-        fetcher.load(url).then(function(response) {
+    return new Promise(function(resolve) {
+        const store = rdf.graph();
+        const fetcher = new rdf.Fetcher(store);
+        fetcher.load(url).then(function() {
             const promises = store
                 .each(rdf.sym(url), ns.ldp('contains'))
                 .map((file) => {
@@ -198,9 +168,10 @@ function deleteRecursively(url) {
                         return fetcher.webOperation('DELETE', file.uri);
                     }
                 });
-            promises.push(fetcher.webOperation('DELETE', url));
-            Promise.all(promises).then((res) => {
-                resolve();
+            Promise.all(promises).then(() => {
+                fetcher.webOperation('DELETE', url).then(() => {
+                    resolve();
+                });
             });
         });
     });

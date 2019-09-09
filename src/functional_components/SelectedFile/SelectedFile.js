@@ -5,8 +5,10 @@ import folderIcon from '../../assets/icons/Folder.png';
 
 export default function SelectedFile({ fileName }) {
     const labelFragments = fileName.split('/');
-    const label = labelFragments[labelFragments.length - 1];
-    const file = fileName.endsWith('/');
+    const file = !fileName.endsWith('/');
+    const label = file
+        ? labelFragments[labelFragments.length - 1]
+        : labelFragments[labelFragments.length - 2];
     return (
         <div className={styles.container}>
             {file ? <img src={fileIcon} /> : <img src={folderIcon} />}

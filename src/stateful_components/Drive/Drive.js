@@ -17,10 +17,13 @@ import {
     setSelection,
     sendNotification,
     fetchCurrentItems,
+    deleteItems,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
+import { MenuProvider, Menu, Item } from 'react-contexify';
+import classNames from 'classnames';
 const ns = require('solid-namespace')(rdf);
 
 class Drive extends React.Component {
@@ -166,9 +169,8 @@ class Drive extends React.Component {
         const filePath = e.target.files[0];
 
         fileUtils.uploadFile(filePath, currPath).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+            this.setCurrentPath(this.props.currentPath);
         });
-        this.props.history.push('/home');
     }
 
     clearSelection(e) {
@@ -189,12 +191,12 @@ class Drive extends React.Component {
             headers: {
                 slug: folderAddress,
                 link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
-                contentType: 'text/turtle',
+                'Content-Type': 'text/turtle',
             },
         };
 
-        auth.fetch(this.state.currPath, request).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+        auth.fetch(this.props.currentPath, request).then(() => {
+            this.props.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -208,8 +210,8 @@ class Drive extends React.Component {
             },
         };
 
-        auth.fetch(this.state.currPath, request).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+        auth.fetch(this.props.currentPath, request).then(() => {
+            this.props.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -285,7 +287,12 @@ class Drive extends React.Component {
         });
     }
 
-    openConsentWindow() {
+    openConsentWindow(item) {
+        if (!this.props.selectedItems.includes(item)) {
+            const newSelection = [...this.props.selectedItems];
+            newSelection.push(item);
+            this.props.setSelection(newSelection);
+        }
         this.setState({
             isConsentWindowVisible: true,
         });
@@ -313,9 +320,11 @@ class Drive extends React.Component {
             selectedItems,
             currentItems,
             currentPath,
+            deleteItems,
             loadCurrentItems,
             webId,
             setCurrentPath,
+            loadDeletion,
         } = this.props;
 
         const {
@@ -361,7 +370,7 @@ class Drive extends React.Component {
             },
             {
                 label: 'Delete',
-                onClick: (item) => this.openConsentWindow(),
+                onClick: (item) => this.openConsentWindow(item),
                 disabled: false,
             },
         ];
@@ -411,8 +420,7 @@ class Drive extends React.Component {
                             : 'Do you really want to delete this item?'
                     }
                     onSubmit={(selectedItems) => {
-                        fileUtils.deleteItems(selectedItems);
-                        this.props.history.push('/home');
+                        deleteItems(selectedItems, currentPath);
                     }}
                     className={
                         isConsentWindowVisible ? styles.visible : styles.hidden
@@ -442,13 +450,13 @@ class Drive extends React.Component {
             </Fragment>
         );
 
-        if (loadCurrentItems) {
+        if ((loadCurrentItems, loadDeletion)) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
-                        size={100}
+                        size={30}
                         color="#686769"
-                        loading={loadCurrentItems}
+                        loading={(loadCurrentItems, loadDeletion)}
                     />
                 </div>
             );
@@ -460,7 +468,10 @@ class Drive extends React.Component {
                     onClick={this.clearSelection}
                 >
                     {toolbar}
-                    <div className={styles.mainArea}>
+                    <MenuProvider
+                        className={styles.mainArea}
+                        id="drive contextmenu"
+                    >
                         {fileMarkup ? (
                             <div className={styles.container}>{fileMarkup}</div>
                         ) : (
@@ -502,7 +513,31 @@ class Drive extends React.Component {
                                 )}
                             </div>
                         )}
-                    </div>
+                    </MenuProvider>
+                    <Menu
+                        className={styles.contextMenu}
+                        id={'drive contextmenu'}
+                    >
+                        {CONTEXTMENU_OPTIONS &&
+                            CONTEXTMENU_OPTIONS.map((option, index) => (
+                                <Item
+                                    disabled={option.disabled}
+                                    key={index + option.label}
+                                    onClick={
+                                        !option.disabled
+                                            ? () => {
+                                                  option.onClick(currentPath);
+                                              }
+                                            : undefined
+                                    }
+                                    className={classNames(styles.contextItem, {
+                                        [styles.disabled]: option.disabled,
+                                    })}
+                                >
+                                    <div>{option.label}</div>
+                                </Item>
+                            ))}
+                    </Menu>
                 </div>
             );
         }
@@ -516,12 +551,19 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.app.webId,
         loadCurrentItems: state.app.loadCurrentItems,
+        loadDeletion: state.app.loadDeletion,
     };
 };
 
 export default withRouter(
     connect(
         mapStateToProps,
-        { setCurrentPath, sendNotification, fetchCurrentItems, setSelection }
+        {
+            setCurrentPath,
+            sendNotification,
+            fetchCurrentItems,
+            setSelection,
+            deleteItems,
+        }
     )(Drive)
 );

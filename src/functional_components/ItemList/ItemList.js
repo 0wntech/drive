@@ -21,14 +21,14 @@ const ItemList = ({
               return isFile ? (
                   <File
                       selectedItem={
-                          selectedItems.includes(currPath + item)
+                          selectedItems.includes(currPath + item + '/')
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
                       onClick={(event) => {
-                          onItemClick(currPath + item, event);
+                          onItemClick(currPath + item + '/', event);
                       }}
                       contextMenuOptions={contextMenuOptions}
                       label={item}
@@ -37,13 +37,15 @@ const ItemList = ({
               ) : (
                   <Item
                       selectedItem={
-                          selectedItems.includes(currPath + item)
+                          selectedItems.includes(currPath + item + '/')
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
-                      onClick={(event) => onItemClick(currPath + item, event)}
+                      onClick={(event) =>
+                          onItemClick(currPath + item + '/', event)
+                      }
                       contextMenuOptions={contextMenuOptions}
                       currPath={currPath}
                       label={decodeURIComponent(item)}
