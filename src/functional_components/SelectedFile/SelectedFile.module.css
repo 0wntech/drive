@@ -7,7 +7,12 @@
     border-radius: 20px;
 }
 
-.container > img {
+.listing {
+    display: flex;
+}
+
+.listing > img {
     max-width: 24px;
+    max-height: 20px;
     margin: 0 10px 5px 5px;
 }

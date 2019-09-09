@@ -11,8 +11,10 @@ export default function SelectedFile({ fileName }) {
         : labelFragments[labelFragments.length - 2];
     return (
         <div className={styles.container}>
-            {file ? <img src={fileIcon} /> : <img src={folderIcon} />}
-            {label}
+            <div className={styles.listing}>
+                {file ? <img src={fileIcon} /> : <img src={folderIcon} />}
+                <div className={styles.label}>{label}</div>
+            </div>
         </div>
     );
 }

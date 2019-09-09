@@ -110,6 +110,11 @@ class Drive extends React.Component {
 
     loadFile(url, event = {}) {
         const { selectedItems, setSelection } = this.props;
+        if (url.endsWith('/')) {
+            url = url.split('/');
+            url.pop();
+            url = url.join('/');
+        }
         if (
             event.metaKey ||
             (isCmdPressed(event) && selectedItems.includes(url) === false)
@@ -289,14 +294,13 @@ class Drive extends React.Component {
     }
 
     openConsentWindow(item) {
-        const { selectedItems, webId, setSelection } = this.props;
+        const { selectedItems, setSelection } = this.props;
         const newSelection = [...selectedItems];
         if (
             item &&
-            url.parse(item).hostname !== url.parse(webId).hostname &&
+            url.parse(item).path !== '/' &&
             !selectedItems.includes(item)
         ) {
-            console.log(url.parse(webId).hostname, item);
             newSelection.push(item);
             setSelection(newSelection);
         }
