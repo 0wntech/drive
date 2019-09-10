@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
+import url from 'url';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.css';
@@ -42,6 +43,7 @@ class Drive extends React.Component {
         this.followPath = this.followPath.bind(this);
         this.uploadFolder = this.uploadFolder.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
+        this.downloadItems = this.downloadItems.bind(this);
         this.loadFile = this.loadFile.bind(this);
         this.loadCurrentFolder = this.loadCurrentFolder.bind(this);
         this.clearSelection = this.clearSelection.bind(this);
@@ -244,6 +246,14 @@ class Drive extends React.Component {
         // }
     }
 
+    downloadItems() {
+        const { selectedItems, webId } = this.props;
+        selectedItems.forEach((item) => {
+            const download = webId.replace("profile/card#me", "download?path=") + url.parse(item).path;
+            window.open(download);
+        });
+    }
+
     uploadFolder(e) {
         const files = e.target.files;
         for (let file = 0; file < files.length; file++) {
@@ -390,6 +400,7 @@ class Drive extends React.Component {
                     onFolderCreation={this.openCreateFolderWindow}
                     onFolderUpload={this.uploadFolder}
                     onFileUpload={this.uploadFile}
+                    onDownload={this.downloadItems}
                 />
             </div>
         );
