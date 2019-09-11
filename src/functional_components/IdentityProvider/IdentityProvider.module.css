@@ -1,19 +1,19 @@
 .container {
     padding: 10px;
-    border: solid #e4e4e4 .5px;
+    border: solid #e4e4e4 0.5px;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: left;
-    width: 100%;
+    width: 80%;
+    height: 100%;
     cursor: pointer;
 }
 
 .container img {
     height: auto;
-    width: 15%;
-    /* margin-right: auto; */
+    width: 20%;
 }
 
 .info {
