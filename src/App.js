@@ -172,7 +172,9 @@ class App extends React.Component {
                                 <Route
                                     session={session}
                                     path="/login"
-                                    component={() => <LoginScreen webId={webId} />}
+                                    component={() => (
+                                        <LoginScreen webId={webId} />
+                                    )}
                                 />
                             </Switch>
                         </div>

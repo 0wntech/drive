@@ -19,6 +19,9 @@ import {
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
     FETCH_IDPS_FAILED,
+    DELETE_ITEMS,
+    DELETE_ITEMS_SUCCESS,
+    DELETE_ITEMS_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -30,6 +33,7 @@ const INITIAL_STATE = {
     loadFolderTree: false,
     loadNotifications: false,
     loadCurrentItems: false,
+    loadDeletion: false,
     error: null,
     contacts: null,
     session: null,
@@ -107,6 +111,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, idps: payload, loadIdps: false };
         case FETCH_IDPS_FAILED:
             return { ...state, error: payload, loadIdps: false };
+        case DELETE_ITEMS:
+            return { ...state, loadDeletion: true };
+        case DELETE_ITEMS_SUCCESS:
+            return { ...state, loadDeletion: false };
+        case DELETE_ITEMS_FAILURE:
+            return { ...state, error: payload, loadDeletion: false };
         default:
             return state;
     }

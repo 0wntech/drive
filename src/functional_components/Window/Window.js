@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Window.module.css';
-import closeIcon from '../../assets/icons/close.png';
+import closeIcon from '../../assets/icons/x.png';
 
 export default function Window({ windowName, className, children, onClose }) {
     return (
@@ -14,7 +14,7 @@ export default function Window({ windowName, className, children, onClose }) {
                         onClick={onClose}
                     />
                 </div>
-                {children}
+                <div className={styles.body}>{children}</div>
             </div>
             <div className={styles.opacity} />
         </div>
