@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "flare-react": "^1.0.2",
     "rdflib": "^0.20.1",
     "react": "^16.8.6",
@@ -15,6 +17,7 @@
     "react-scripts": "3.0.1",
     "react-select": "^3.0.4",
     "react-spinners-kit": "^1.9.0",
+    "react-test-renderer": "^16.9.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "solid-auth-client": "^2.3.0",
@@ -68,8 +71,6 @@
   },
   "devDependencies": {
     "@svgr/cli": "^4.3.2",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
