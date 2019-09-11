@@ -1,6 +1,8 @@
 .container {
     max-width: 40%;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin: 5px;
     padding: 5px 10px;
     border: solid #6db7db 1px;
@@ -9,10 +11,12 @@
 
 .listing {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .listing > img {
     max-width: 24px;
     max-height: 20px;
-    margin: 0 10px 5px 5px;
+    margin: 0 10px 0 5px;
 }
