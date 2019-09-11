@@ -26,8 +26,9 @@
     grid-auto-rows: 1fr;
     grid-row-gap: 10px;
     justify-items: center;
-    overflow-y: scroll;
+    overflow-y: auto;
     background: #fff;
+    max-height: 90%;
 }
 
 /* 
