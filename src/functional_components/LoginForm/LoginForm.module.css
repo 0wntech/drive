@@ -23,7 +23,7 @@
     padding: 35px;
     display: grid;
     max-width: 40%;
-    grid-auto-rows: 1fr;
+    grid-auto-rows: 60px;
     grid-row-gap: 10px;
     justify-items: center;
     overflow-y: auto;
