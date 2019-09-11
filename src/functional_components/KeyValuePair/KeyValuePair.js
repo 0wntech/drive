@@ -4,6 +4,9 @@ import styles from './KeyValuePair.module.css';
 
 const KeyValuePair = ({ label, value }) => {
     const renderValues = (value) => {
+        if (!value || (typeof 'object' && value.length === 0)) {
+            return <div className={styles.value}>... add {label}</div>;
+        }
         if (typeof value === 'object') {
             value.map((value) => <div className={styles.value}>{value}</div>);
         } else if (typeof value === 'string') {
