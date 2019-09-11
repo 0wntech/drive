@@ -4,11 +4,12 @@ about: Issues related to modules
 title: ''
 labels: learning
 assignees: ''
-
 ---
 
-**Module**
-Testing..
+## Topic
 
-**Content**
-Add tests to drive Component
+example - Learning about snapshot tests.
+
+## Content
+
+example - Add tests to drive Component
