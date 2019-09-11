@@ -57,7 +57,7 @@ const ProfilePage = ({
     } else {
         return (
             <div className={styles.spinner}>
-                <ClassicSpinner size={100} color="#686769" loading={!user} />
+                <ClassicSpinner size={30} color="#686769" loading={!user} />
             </div>
         );
     }
