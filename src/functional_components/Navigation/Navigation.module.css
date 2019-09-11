@@ -96,10 +96,6 @@
     cursor: pointer;
 }
 
-.profileIcon:hover {
-    box-shadow: 0 0 4px black;
-}
-
 .mask {
     border-radius: 20px;
     -webkit-z-index: -1;
