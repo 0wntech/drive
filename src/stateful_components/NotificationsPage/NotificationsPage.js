@@ -33,8 +33,7 @@ class NotificationsPage extends React.Component {
     getNotificationContent(notification) {
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
-        // eslint-disable-next-line
-        const preq = rdf.Namespace(
+        const preq = new rdf.Namespace(
             'https://a-solid-web.github.io/permission-ontology/permissionrequests.rdf#'
         );
 

@@ -61,10 +61,7 @@ export default function File({
                             onClick={
                                 !option.disabled
                                     ? () => {
-                                          option.onClick(
-                                              currPath +
-                                                  encodeURIComponent(label)
-                                          );
+                                          option.onClick(currPath + label);
                                       }
                                     : undefined
                             }

@@ -1,7 +1,12 @@
+.mainArea {
+    grid-area: main;
+}
+
 .container {
     height: 100%;
     scroll-snap-type: y mandatory;
     overflow-y: scroll;
+    border-radius: 20px 20px 0 0;
 }
 
 .container > section {

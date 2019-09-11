@@ -9,7 +9,7 @@ const DROPDOWN_OPTIONS = [
     { onClick: () => console.log('test2'), label: 'Settings' },
     { onClick: () => console.log('test2'), label: 'Notifications' },
     { onClick: () => console.log('test2'), label: 'Contacts' },
-    { onClick: () => console.log('test2'), label: 'Trash' },
+    { onClick: () => {}, label: 'Logout' },
 ];
 
 const Navigation = ({
@@ -20,6 +20,7 @@ const Navigation = ({
     toggleSidebar,
     username,
 }) => {
+    DROPDOWN_OPTIONS[DROPDOWN_OPTIONS.length - 1].onClick = onLogout
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
 
     return (
@@ -65,10 +66,7 @@ const Navigation = ({
                 ) : (
                     <div className={styles.loginButton}>
                         <a
-                            onClick={(e) => {
-                                e.preventDefault();
-                                onLogin();
-                            }}
+                            href="/login"
                         >
                             Login
                         </a>

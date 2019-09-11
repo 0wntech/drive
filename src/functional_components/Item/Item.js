@@ -35,8 +35,7 @@ const MyItem = ({
                                 !option.disabled
                                     ? () => {
                                           option.onClick(
-                                              currPath +
-                                                  encodeURIComponent(label)
+                                              currPath + label + '/'
                                           );
                                       }
                                     : undefined
