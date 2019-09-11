@@ -16,6 +16,12 @@ import {
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
+    FETCH_IDPS,
+    FETCH_IDPS_SUCCESS,
+    FETCH_IDPS_FAILED,
+    DELETE_ITEMS,
+    DELETE_ITEMS_SUCCESS,
+    DELETE_ITEMS_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -27,6 +33,7 @@ const INITIAL_STATE = {
     loadFolderTree: false,
     loadNotifications: false,
     loadCurrentItems: false,
+    loadDeletion: false,
     error: null,
     contacts: null,
     session: null,
@@ -35,7 +42,7 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-
+    idps: null,
     // [
     //     {
     //         name: 'testdata',
@@ -98,6 +105,18 @@ export default (state = INITIAL_STATE, action) => {
                 loadNotifications: false,
                 notifications: payload,
             };
+        case FETCH_IDPS:
+            return { ...state, loadIdps: true };
+        case FETCH_IDPS_SUCCESS:
+            return { ...state, idps: payload, loadIdps: false };
+        case FETCH_IDPS_FAILED:
+            return { ...state, error: payload, loadIdps: false };
+        case DELETE_ITEMS:
+            return { ...state, loadDeletion: true };
+        case DELETE_ITEMS_SUCCESS:
+            return { ...state, loadDeletion: false };
+        case DELETE_ITEMS_FAILURE:
+            return { ...state, error: payload, loadDeletion: false };
         default:
             return state;
     }

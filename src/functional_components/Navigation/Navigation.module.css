@@ -38,7 +38,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     height: 100%;
 }
 
@@ -56,10 +56,6 @@
 }
 
 .loginButton {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-top: 25px;
     color: #0c89c6;
 }
 

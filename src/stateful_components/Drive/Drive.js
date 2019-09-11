@@ -11,16 +11,20 @@ import { getBreadcrumbsFromUrl } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { InputWindow } from '../../functional_components/InputWindow';
-import { ConsentWindow } from '../../functional_components/ConsentWindow';
+import { DeleteWindow } from '../../functional_components/DeleteWindow';
 import {
     setCurrentPath,
     setSelection,
     sendNotification,
     fetchCurrentItems,
+    deleteItems,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
+import { MenuProvider, Menu, Item } from 'react-contexify';
+import classNames from 'classnames';
+import url from 'url';
 const ns = require('solid-namespace')(rdf);
 
 class Drive extends React.Component {
@@ -106,6 +110,11 @@ class Drive extends React.Component {
 
     loadFile(url, event = {}) {
         const { selectedItems, setSelection } = this.props;
+        if (url.endsWith('/')) {
+            url = url.split('/');
+            url.pop();
+            url = url.join('/');
+        }
         if (
             event.metaKey ||
             (isCmdPressed(event) && selectedItems.includes(url) === false)
@@ -161,11 +170,12 @@ class Drive extends React.Component {
     }
 
     uploadFile(e) {
+        console.log(e);
         const currPath = this.props.currentPath;
         const filePath = e.target.files[0];
 
         fileUtils.uploadFile(filePath, currPath).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+            this.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -187,12 +197,12 @@ class Drive extends React.Component {
             headers: {
                 slug: folderAddress,
                 link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
-                contentType: 'text/turtle',
+                'Content-Type': 'text/turtle',
             },
         };
 
-        auth.fetch(this.state.currPath, request).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+        auth.fetch(this.props.currentPath, request).then(() => {
+            this.props.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -206,8 +216,8 @@ class Drive extends React.Component {
             },
         };
 
-        auth.fetch(this.state.currPath, request).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+        auth.fetch(this.props.currentPath, request).then(() => {
+            this.props.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -283,10 +293,22 @@ class Drive extends React.Component {
         });
     }
 
-    openConsentWindow() {
-        this.setState({
-            isConsentWindowVisible: true,
-        });
+    openConsentWindow(item) {
+        const { selectedItems, setSelection } = this.props;
+        const newSelection = [...selectedItems];
+        if (
+            item &&
+            url.parse(item).path !== '/' &&
+            !selectedItems.includes(item)
+        ) {
+            newSelection.push(item);
+            setSelection(newSelection);
+        }
+        if (selectedItems.length !== 0 || newSelection.length !== 0) {
+            this.setState({
+                isConsentWindowVisible: true,
+            });
+        }
     }
 
     closeCreateFileWindow() {
@@ -311,9 +333,11 @@ class Drive extends React.Component {
             selectedItems,
             currentItems,
             currentPath,
+            deleteItems,
             loadCurrentItems,
             webId,
             setCurrentPath,
+            loadDeletion,
         } = this.props;
 
         const {
@@ -354,8 +378,12 @@ class Drive extends React.Component {
                 disabled: true,
             },
             {
+                label: 'Create Folder',
+                onClick: () => this.openCreateFolderWindow(),
+            },
+            {
                 label: 'Delete',
-                onClick: (item) => this.openConsentWindow(),
+                onClick: (item) => this.openConsentWindow(item),
                 disabled: false,
             },
         ];
@@ -389,29 +417,32 @@ class Drive extends React.Component {
                     onFileCreation={this.openCreateFileWindow}
                     onFolderCreation={this.openCreateFolderWindow}
                     onFolderUpload={this.uploadFolder}
-                    onFileUpload={this.uploadFile}
+                    uploadFile={this.uploadFile}
+                    onDelete={() => {
+                        this.openConsentWindow();
+                    }}
                 />
             </div>
         );
 
         const windows = (
             <Fragment>
-                <ConsentWindow
-                    windowName="Delete File?"
+                <DeleteWindow
+                    windowName="Delete File"
                     selectedItems={selectedItems}
                     info={
                         selectedItems.length > 1
                             ? 'Do you really want to delete these items?'
                             : 'Do you really want to delete this item?'
                     }
-                    onSubmit={(selectedItems) =>
-                        fileUtils.deleteItems(selectedItems)
-                    }
+                    onSubmit={(selectedItems) => {
+                        deleteItems(selectedItems, currentPath);
+                    }}
                     className={
                         isConsentWindowVisible ? styles.visible : styles.hidden
                     }
                     onClose={this.closeConsentWindow}
-                ></ConsentWindow>
+                ></DeleteWindow>
                 <InputWindow
                     windowName="Create Folder"
                     info=""
@@ -435,13 +466,13 @@ class Drive extends React.Component {
             </Fragment>
         );
 
-        if (loadCurrentItems) {
+        if ((loadCurrentItems, loadDeletion)) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
-                        size={100}
+                        size={30}
                         color="#686769"
-                        loading={loadCurrentItems}
+                        loading={(loadCurrentItems, loadDeletion)}
                     />
                 </div>
             );
@@ -453,7 +484,10 @@ class Drive extends React.Component {
                     onClick={this.clearSelection}
                 >
                     {toolbar}
-                    <div className={styles.mainArea}>
+                    <MenuProvider
+                        className={styles.mainArea}
+                        id="drive contextmenu"
+                    >
                         {fileMarkup ? (
                             <div className={styles.container}>{fileMarkup}</div>
                         ) : (
@@ -495,7 +529,31 @@ class Drive extends React.Component {
                                 )}
                             </div>
                         )}
-                    </div>
+                    </MenuProvider>
+                    <Menu
+                        className={styles.contextMenu}
+                        id={'drive contextmenu'}
+                    >
+                        {CONTEXTMENU_OPTIONS &&
+                            CONTEXTMENU_OPTIONS.map((option, index) => (
+                                <Item
+                                    disabled={option.disabled}
+                                    key={index + option.label}
+                                    onClick={
+                                        !option.disabled
+                                            ? () => {
+                                                  option.onClick(currentPath);
+                                              }
+                                            : undefined
+                                    }
+                                    className={classNames(styles.contextItem, {
+                                        [styles.disabled]: option.disabled,
+                                    })}
+                                >
+                                    <div>{option.label}</div>
+                                </Item>
+                            ))}
+                    </Menu>
                 </div>
             );
         }
@@ -509,12 +567,19 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.app.webId,
         loadCurrentItems: state.app.loadCurrentItems,
+        loadDeletion: state.app.loadDeletion,
     };
 };
 
 export default withRouter(
     connect(
         mapStateToProps,
-        { setCurrentPath, sendNotification, fetchCurrentItems, setSelection }
+        {
+            setCurrentPath,
+            sendNotification,
+            fetchCurrentItems,
+            setSelection,
+            deleteItems,
+        }
     )(Drive)
 );
