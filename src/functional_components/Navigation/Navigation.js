@@ -5,14 +5,6 @@ import styles from './Navigation.module.css';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
 
-const DROPDOWN_OPTIONS = [
-    { onClick: () => console.log('test'), label: 'Home' },
-    { onClick: () => console.log('test2'), label: 'Settings' },
-    { onClick: () => console.log('test2'), label: 'Notifications' },
-    { onClick: () => console.log('test2'), label: 'Contacts' },
-    { onClick: () => {}, label: 'Logout' },
-];
-
 const Navigation = ({
     picture,
     webId,
@@ -22,7 +14,13 @@ const Navigation = ({
     username,
     history,
 }) => {
-    DROPDOWN_OPTIONS[DROPDOWN_OPTIONS.length - 1].onClick = onLogout
+    const DROPDOWN_OPTIONS = [
+        { onClick: () => history.push('/profile'), label: 'Profile' },
+        { onClick: () => console.log('test2'), label: 'Settings*' },
+        { onClick: () => console.log('test2'), label: 'Notifications*' },
+        { onClick: () => console.log('test2'), label: 'Contacts*' },
+        { onClick: () => onLogout(), label: 'Logout' },
+    ];
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
 
     return (
@@ -68,11 +66,7 @@ const Navigation = ({
                     </div>
                 ) : (
                     <div className={styles.loginButton}>
-                        <a
-                            href="/login"
-                        >
-                            Login
-                        </a>
+                        <a href="/login">Login</a>
                     </div>
                 )}
             </div>
