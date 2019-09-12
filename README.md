@@ -4,6 +4,10 @@ This application is supposed to be an alternative interface to the Solid Pod int
 
 Feel free to contribute.
 
+## Documentation 
+- [Documentation Repository](https://github.com/0wntech/drive-documentation)
+
+
 ## Linter and Prettier
 
 -   if you use vscode install Eslint & Prettier Package
