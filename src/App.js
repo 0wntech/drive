@@ -5,7 +5,6 @@ import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
 import Drive from './stateful_components/Drive';
 import LoginScreen from './stateful_components/LoginScreen';
-import { ProfileSideBar } from './functional_components/ProfileSideBar';
 import auth from 'solid-auth-client';
 import User from 'your-user';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
@@ -20,6 +19,7 @@ import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';
 import LandingPage from './stateful_components/LandingPage';
+import { ProfilePage } from './functional_components/ProfilePage';
 
 class App extends React.Component {
     constructor(props) {
@@ -51,10 +51,10 @@ class App extends React.Component {
     }
 
     logout() {
+        const { setWebId } = this.props;
         auth.logout().then(() => {
-            this.setState({
-                webId: undefined,
-            });
+            setWebId(undefined);
+            this.props.history.push('/');
         });
     }
 
@@ -91,13 +91,12 @@ class App extends React.Component {
     }
 
     render() {
-        const { isProfileExpanded } = this.state;
         const { webId, user, session, loadLogin, loadUser } = this.props;
         if (loadLogin || loadUser) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
-                        size={100}
+                        size={30}
                         color="#686769"
                         loading={loadLogin || loadUser}
                     />
@@ -121,38 +120,19 @@ class App extends React.Component {
                                 username={user ? user.name : undefined}
                             />
                         </div>
-                        {webId && user ? (
-                            <ProfileSideBar
-                                user={user}
-                                toggleSidebar={this.toggleSidebar}
-                                isExpanded={isProfileExpanded}
-                                onProfileUpdate={this.onProfileUpdate}
-                                onPictureChange={(e) => {
-                                    const user = new User(webId);
-                                    user.setProfilePicture(
-                                        e,
-                                        webId,
-                                        user.picture
-                                    ).then(() => {
-                                        user.getProfile().then((profile) => {
-                                            console.log(
-                                                'Loading updated Profile'
-                                            );
-                                            this.setState({
-                                                user: profile,
-                                            });
-                                        });
-                                    });
-                                }}
-                            />
-                        ) : null}
+
                         <div className={styles.mainArea}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />
                                 <PrivateRoute
                                     session={session}
                                     path="/home"
-                                    component={<Drive webId={webId} />}
+                                    component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/profile"
+                                    component={<ProfilePage />}
                                 />
                                 <PrivateRoute
                                     session={session}
@@ -169,10 +149,12 @@ class App extends React.Component {
                                     path="/contacts"
                                     component={<ContactSidebar webId={webId} />}
                                 />
-                                <PrivateRoute
+                                <Route
                                     session={session}
                                     path="/login"
-                                    component={<LoginScreen webId={webId} />}
+                                    component={() => (
+                                        <LoginScreen webId={webId} />
+                                    )}
                                 />
                             </Switch>
                         </div>

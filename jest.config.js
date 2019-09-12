@@ -111,10 +111,10 @@ module.exports = {
     // runner: "jest-runner",
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
-    setupFiles: ['<rootDir>/enzyme.config.js'],
+    setupFiles: ['<rootDir>/src/setupTests.js'],
 
     // The path to a module that runs some code to configure or set up the testing framework before each test
-    // setupTestFrameworkScriptFile: '',
+    // setupTestFrameworkScriptFile: '<rootDir>/enzyme.config.js',
 
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing
     // snapshotSerializers: [],

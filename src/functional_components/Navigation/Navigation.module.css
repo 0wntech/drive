@@ -9,9 +9,9 @@
     display: grid;
     align-items: center;
     width: 100%;
+    height: 100%;
     grid-template-columns: 2fr 7fr 3fr;
     grid-template-areas: 'logo . dropdown';
-    grid-template-rows: 80px;
 }
 
 .dropdown a {
@@ -38,7 +38,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     height: 100%;
 }
 
@@ -56,10 +56,6 @@
 }
 
 .loginButton {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-top: 25px;
     color: #0c89c6;
 }
 
@@ -73,6 +69,7 @@
 .brand {
     height: 64px;
     width: 64px;
+    cursor: pointer;
 }
 
 .brand p {
@@ -96,10 +93,7 @@
     background-size: cover;
     background-position: center;
     border-radius: 50%;
-}
-
-.profileIcon:hover {
-    box-shadow: 0 0 4px black;
+    cursor: pointer;
 }
 
 .mask {

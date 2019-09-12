@@ -7,7 +7,13 @@ import classNames from 'classnames';
 function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
     const defaultRender = (option) => {
         return (
-            <div onClick={option.onClick} className={styles.option}>
+            <div
+                onClick={() => {
+                    option.onClick();
+                    setExpanded(!isExpanded);
+                }}
+                className={styles.option}
+            >
                 {option.label}
             </div>
         );

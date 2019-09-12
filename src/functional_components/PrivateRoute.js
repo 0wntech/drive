@@ -6,11 +6,14 @@ export default ({ component: Component, session, ...rest }) => {
         <Route
             {...rest}
             render={(props) =>
-                true ? (
+                session ? (
                     Component
                 ) : (
                     <Redirect
-                        to={{ pathname: '/', state: { from: props.location } }}
+                        to={{
+                            pathname: '/login',
+                            state: { from: props.location },
+                        }}
                     />
                 )
             }

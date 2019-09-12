@@ -1,82 +1,32 @@
-.key {
-    width: 30%;
-    font-weight: 600;
-    color: #aaa;
-    text-align: right;
-    padding: 2% 0;
-    padding-right: 50px;
-    font-size: 1em;
-    height: 40px; 
+.container {
+    border: 0.5px solid #c4c4c4;
+    box-sizing: border-box;
+    border-radius: 20px;
+    display: flex;
+    padding: 20px 0 20px 5%;
+    margin-bottom: 20px;
 }
 
-.values {
-    width: 60%;
-    height: auto;
-    font-size: 1em;
-    color: #0c89c6;
-    padding: 2% 0;
+.keyLabel {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    width: 30%;
+    letter-spacing: 0.2em;
 }
 
 .value {
-    background-color: #fff;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: hidden;
 }
 
-.multiValue{
-    margin: 5% 0;
-}
-
-input::placeholder {
-    color: #0c89c6;
-}
-
-input:focus::placeholder {
-    color: #888;
-}
-
-input:focus {
-    border: none;
-    outline: none;
-    border-bottom: solid #0c89c6 2px;
-    color: #000;
-}
-
-input {
-    color: #0c89c6;
-    border: none;
-    outline: none;
-}
-
-.section {
-    margin: 1px 0;
-    width: 100%;
-    height: 10%;
-    align-items: center;
-    background-color: white;
-    padding: 10px 25px;
-    display: flex;
-}
-
-.editIcon{
-    display: none;
-}
-
-.editable{
-    display: show;
-    position: absolute;
-    /* bottom: 30%; */
-    right: 15px;
-    color: #5a3;
-    font-size: 2.5em;
-    cursor: pointer;
-}
-
-.complete{
-    position: absolute;
-    right: 15px;
-    font-size: .8em;
-    color: #aaa;
-    font-style: oblique;
+.valueContainer {
+    width: 70%;
 }
