@@ -116,17 +116,12 @@ class Drive extends React.Component {
             url.pop();
             url = url.join('/');
         }
-        if (
-            event.metaKey ||
-            (isCmdPressed(event) && selectedItems.includes(url) === false)
-        ) {
+        console.log(url);
+        if (isCmdPressed(event) && selectedItems.includes(url) === false) {
             const newSelection = [...selectedItems];
             newSelection.push(url);
             setSelection(newSelection);
-        } else if (
-            event.metaKey ||
-            (isCmdPressed(event) && selectedItems.includes(url))
-        ) {
+        } else if (isCmdPressed(event) && selectedItems.includes(url)) {
             const newSelection = selectedItems.filter((item) => item != url);
             setSelection(newSelection);
         } else {
@@ -260,8 +255,8 @@ class Drive extends React.Component {
         selectedItems.forEach((item) => {
             const download =
                 webId.replace('profile/card#me', 'download?path=') +
-                url.parse(item).path;
-            window.open(download);
+                url.parse(item).pathname;
+            window.open(download.replace(/\/+$/, ''));
         });
     }
 
@@ -428,6 +423,7 @@ class Drive extends React.Component {
                     onFileCreation={this.openCreateFileWindow}
                     onFolderCreation={this.openCreateFolderWindow}
                     onFolderUpload={this.uploadFolder}
+                    onDownload={this.downloadItems}
                     uploadFile={this.uploadFile}
                     onDelete={() => {
                         this.openConsentWindow();
