@@ -10,7 +10,10 @@ export default ({ component: Component, session, ...rest }) => {
                     Component
                 ) : (
                     <Redirect
-                        to={{ pathname: '/login', state: { from: props.location } }}
+                        to={{
+                            pathname: '/login',
+                            state: { from: props.location },
+                        }}
                     />
                 )
             }

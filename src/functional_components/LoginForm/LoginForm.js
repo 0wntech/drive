@@ -25,7 +25,7 @@ export default function LoginForm({ idps, onLogin, getIdpStyles }) {
                           const { color, textColor } = getIdpStyles(idp.title);
                           return (
                               <IdentityProvider
-                                //   description={idp.description}
+                                  //   description={idp.description}
                                   url={idp.url}
                                   icon={idp.icon}
                                   title={idp.title}
