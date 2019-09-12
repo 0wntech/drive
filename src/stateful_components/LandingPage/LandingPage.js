@@ -12,16 +12,14 @@ class LandingPage extends React.Component {
     render() {
         return (
             <div className={styles.container}>
-                <section>
-                    <div className={styles.floatAnimation}>
-                        <p className={styles.slogan}>
-                            Because the internet deserves better.
-                        </p>
-                        <a className={styles.homeButton} href="/home">
-                            Get Home
-                        </a>
-                    </div>
-                </section>
+                <div className={styles.floatAnimation}>
+                    <p className={styles.slogan}>
+                        Because the internet deserves better.
+                    </p>
+                    <a className={styles.homeButton} href="/home">
+                        Get Home
+                    </a>
+                </div>
                 <section style={{ backgroundColor: '#333' }}>
                     <p className={styles.mission}>Owning your digital self.</p>
                 </section>

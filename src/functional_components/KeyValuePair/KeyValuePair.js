@@ -1,86 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './KeyValuePair.module.css';
-import classNames from 'classnames';
-export default function KeyValuePair({
-    keyVal,
-    values,
-    onUpdate,
-    onEdit,
-    currentValues,
-    webId,
-}) {
-    const [isEditable, setEditable] = useState(false);
-    const [isComplete, setComplete] = useState(undefined);
-    const [row, setRow] = useState(0);
 
+const KeyValuePair = ({ label, value }) => {
+    const renderValues = (value) => {
+        if (!value || (typeof 'object' && value.length === 0)) {
+            return <div className={styles.value}>... add {label}</div>;
+        }
+        if (typeof value === 'object') {
+            value.map((value) => <div className={styles.value}>{value}</div>);
+        } else if (typeof value === 'string') {
+            return <div className={styles.value}>{value}</div>;
+        }
+    };
     return (
-        <div className={styles.section}>
-            <div className={styles.key}>{keyVal}:</div>
-            <div className={styles.values}>
-                {Array.isArray(values) ? (
-                    <div className={styles.multiValue}>
-                        {values.map((value, index) => (
-                            <input
-                                className={classNames(styles.value)}
-                                key={value + index}
-                                placeholder={value[0]
-                                    .replace('tel:', '')
-                                    .replace('mailto:', '')}
-                                onInput={(e) => {
-                                    onEdit(e.target.value);
-                                    setComplete(undefined);
-                                    setRow(index);
-                                    setEditable(true);
-                                }}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div>
-                        <input
-                            className={classNames(styles.value)}
-                            key={values}
-                            placeholder={values}
-                            onInput={(e) => {
-                                onEdit(e.target.value);
-                                setComplete(undefined);
-                                setEditable(true);
-                            }}
-                            disabled={keyVal === 'webId' ? true : false}
-                        ></input>
-                    </div>
-                )}
-            </div>
-            <div
-                className={classNames({
-                    [styles.editable]: isEditable,
-                    [styles.editIcon]: !isEditable,
-                })}
-                onClick={() => {
-                    onUpdate(
-                        keyVal,
-                        Array.isArray(values) ? [currentValues] : currentValues,
-                        Array.isArray(values) ? values[row] : values,
-                        webId
-                    )
-                        .then(() => {
-                            setComplete(true);
-                            setEditable(!isEditable);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                }}
-            >
-                ✓
-            </div>
-            {isComplete ? (
-                <p className={styles.complete}>Changes applied.</p>
-            ) : isComplete === false ? (
-                <p className={styles.complete}>Changes could not be applied.</p>
-            ) : (
-                undefined
-            )}
+        <div className={styles.container}>
+            <div className={styles.keyLabel}>{label}</div>
+            <div className={styles.valueContainer}>{renderValues(value)}</div>
         </div>
     );
-}
+};
+
+KeyValuePair.propTypes = {
+    label: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+};
+
+export default KeyValuePair;
