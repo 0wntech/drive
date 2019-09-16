@@ -22,6 +22,9 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -43,6 +46,8 @@ const INITIAL_STATE = {
     notifications: null,
     selectedItems: [],
     idps: null,
+    updateProfile: false,
+    updateProfileError: false,
     // [
     //     {
     //         name: 'testdata',
@@ -117,6 +122,16 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadDeletion: false };
         case DELETE_ITEMS_FAILURE:
             return { ...state, error: payload, loadDeletion: false };
+        case UPDATE_PROFILE:
+            return { ...state, updateProfile: true, updateProfileError: false };
+        case UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                updateProfile: false,
+                updateProfileError: false,
+            };
+        case UPDATE_PROFILE_FAILURE:
+            return { ...state, updateProfile: false, updateProfileError: true };
         default:
             return state;
     }

@@ -7,6 +7,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "flare-react": "^1.0.2",
+    "ownuser": "^1.2.2",
     "rdflib": "^0.20.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
@@ -38,8 +39,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "export CI=true && react-scripts test && lint-staged",
-      "pre-push": "export CI=true && react-scripts test && lint-staged"
+      "pre-commit": "set CI=true && react-scripts test && lint-staged",
+      "pre-push": "set CI=true && react-scripts test && lint-staged"
     }
   },
   "lint-staged": {

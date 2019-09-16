@@ -26,9 +26,13 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_FAILURE,
+    UPDATE_PROFILE_SUCCESS,
 } from './types';
 import auth from 'solid-auth-client';
 import User from 'your-user';
+import { User as OwnUser } from 'ownuser';
 import fileUtils from '../utils/fileUtils';
 
 export const login = (username, password) => {
@@ -204,5 +208,17 @@ export const deleteItems = (items, currentPath = '/') => {
             .catch((err) => {
                 dispatch({ type: DELETE_ITEMS_FAILURE });
             });
+    };
+};
+
+export const updateProfile = (profileData) => {
+    return (dispatch) => {
+        dispatch({ type: UPDATE_PROFILE });
+        OwnUser.setProfile(profileData)
+            .then(() => {
+                dispatch({ type: UPDATE_PROFILE_SUCCESS });
+                dispatch(fetchUser(profileData.webId));
+            })
+            .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
     };
 };
