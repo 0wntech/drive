@@ -31,8 +31,7 @@ import {
     UPDATE_PROFILE_SUCCESS,
 } from './types';
 import auth from 'solid-auth-client';
-import User from 'your-user';
-import { User as OwnUser } from 'ownuser';
+import User from 'ownuser';
 import fileUtils from '../utils/fileUtils';
 
 export const login = (username, password) => {
@@ -211,13 +210,15 @@ export const deleteItems = (items, currentPath = '/') => {
     };
 };
 
-export const updateProfile = (profileData) => {
+export const updateProfile = (profileData, webId) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_PROFILE });
-        OwnUser.setProfile(profileData)
+        const currUser = new User(webId);
+        currUser
+            .setProfile(profileData)
             .then(() => {
                 dispatch({ type: UPDATE_PROFILE_SUCCESS });
-                dispatch(fetchUser(profileData.webId));
+                dispatch(fetchUser(webId));
             })
             .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
     };

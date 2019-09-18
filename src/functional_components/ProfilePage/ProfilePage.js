@@ -13,7 +13,7 @@ import KeyValuePair from '../KeyValuePair/KeyValuePair';
 
 const ProfilePage = ({
     isExpanded,
-    toggleSidebar,
+    webId,
     user,
     onProfileUpdate,
     onPictureChange,
@@ -33,7 +33,7 @@ const ProfilePage = ({
 
     const onSubmit = () => {
         setEditable(false);
-        updateProfile(userData);
+        updateProfile(userData, webId);
     };
 
     console.log('profile user data', userData);
@@ -131,6 +131,7 @@ const ProfilePage = ({
 
 const mapStateToProps = (state) => ({
     user: state.app.user,
+    webId: state.app.webId,
 });
 
 export default connect(

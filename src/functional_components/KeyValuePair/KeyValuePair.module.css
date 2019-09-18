@@ -66,8 +66,8 @@
 }
 
 .value {
-    width: 90%;
-    text-underline-position: under;
+    width: 60%;
+    /* text-underline-position: under; */
     font-family: Roboto;
     font-style: normal;
     box-sizing: border-box;
@@ -78,18 +78,18 @@
     white-space: nowrap;
     overflow: hidden;
     border: none;
-    /* border-bottom: 2px solid transparent; */
+    border-bottom: 2px solid transparent;
     outline: none;
 }
 
 .value.active::placeholder {
-    text-decoration: underline;
-    text-decoration-color: #6db7db;
+    /* text-decoration: underline;
+    text-decoration-color: #6db7db; */
 }
 
 .value.active {
-    /* border-bottom: 2px solid black; */
-    text-decoration: underline;
+    border-bottom: 2px solid black;
+    /* text-decoration: underline; */
 }
 
 .value.focus::placeholder {
@@ -98,9 +98,9 @@
 
 .value.active:focus {
     outline: none;
-    /* border-color: #6db7db; */
+    border-color: #6db7db;
     caret-color: #6db7db;
-    text-decoration-color: #6db7db;
+    /* text-decoration-color: #6db7db; */
 }
 
 .multiple {
