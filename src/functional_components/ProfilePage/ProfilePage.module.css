@@ -10,6 +10,11 @@
     border-radius: 20px;
 }
 
+.editButtons {
+    display: flex;
+    flex-direction: column;
+}
+
 .iconWrapper {
     height: 100%;
     display: flex;
@@ -144,6 +149,6 @@
     justify-content: center;
 }
 
-.editIcon {
+.icon {
     cursor: pointer;
 }

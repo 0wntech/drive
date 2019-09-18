@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { ClassicSpinner } from 'react-spinners-kit';
 
+import { updateProfile } from '../../actions/UserActions';
 import Settings from '../../assets/svgIcons/Settings';
 import EditIcon from '../../assets/svgIcons/Edit';
+import X from '../../assets/svgIcons/X';
+import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 
@@ -14,7 +17,27 @@ const ProfilePage = ({
     user,
     onProfileUpdate,
     onPictureChange,
+    updateProfile,
 }) => {
+    const [userData, setUserData] = useState({ ...user });
+    const [isEditable, setEditable] = useState(false);
+
+    const updateUserData = (key, value) => {
+        setUserData({ ...userData, [key]: value });
+    };
+
+    const onCancel = () => {
+        setEditable(false);
+        setUserData({ ...user });
+    };
+
+    const onSubmit = () => {
+        setEditable(false);
+        updateProfile(userData);
+    };
+
+    console.log('profile user data', userData);
+
     if (user) {
         return (
             <div className={styles.grid}>
@@ -45,12 +68,55 @@ const ProfilePage = ({
                             {user.bio ? user.bio : 'add Bio'}
                         </div>
                         <div className={styles.editWrapper}>
-                            <EditIcon className={styles.editIcon} />
+                            {isEditable ? (
+                                <div className={styles.editButtons}>
+                                    <X
+                                        onClick={onCancel}
+                                        className={styles.icon}
+                                    />{' '}
+                                    <Check
+                                        className={styles.icon}
+                                        onClick={onSubmit}
+                                    />
+                                </div>
+                            ) : (
+                                <EditIcon
+                                    onClick={() => setEditable(!isEditable)}
+                                    className={styles.icon}
+                                />
+                            )}
                         </div>
                     </div>
-                    <KeyValuePair label="Job" value={user.job} />
-                    <KeyValuePair label="Email" value={user.emails} />
-                    <KeyValuePair label="Telephone" value={user.telephones} />
+                    <KeyValuePair
+                        label="Job"
+                        dataKey="job"
+                        value={userData.job}
+                        editable={isEditable}
+                        setValue={updateUserData}
+                        placeholder={user.job ? user.job : `add Job`}
+                    />
+                    <KeyValuePair
+                        setValue={updateUserData}
+                        label="Email"
+                        dataKey="emails"
+                        value={userData.emails}
+                        editable={isEditable}
+                        placeholder={
+                            user.emails.length > 1 ? user.emails : `add Email`
+                        }
+                    />
+                    <KeyValuePair
+                        setValue={updateUserData}
+                        dataKey="telephones"
+                        label="Telephone"
+                        value={userData.telephones}
+                        editable={isEditable}
+                        placeholder={
+                            user.telephones.length > 1
+                                ? user.telephones
+                                : `add Number`
+                        }
+                    />
                 </div>
             </div>
         );
@@ -69,5 +135,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
     mapStateToProps,
-    {}
+    { updateProfile }
 )(ProfilePage);
