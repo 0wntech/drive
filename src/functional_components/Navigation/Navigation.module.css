@@ -1,6 +1,17 @@
 .navbar  {
-    background-color: white;
     position: fixed;
+}
+
+.container {
+    z-index: 1;
+    background-color: white;
+    border-radius: 20px;
+    display: grid;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 2fr 7fr 3fr;
+    grid-template-areas: 'logo . dropdown';
 }
 
 .dropdown a {
@@ -8,23 +19,57 @@
     width: 100%;
 }
 
-.menuWrapper {
-    padding-top: 5px;
+.profileSection {
+    width: 66%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+}
+
+.dropdownWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.menuWrapper {
+    grid-area: dropdown;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.username {
+    letter-spacing: 0.2em;
+    line-height: 21px;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: normal;
+    font-family: Roboto;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .loginButton {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-top: 25px;
     color: #0c89c6;
 }
 
-.brand {
+.brandWrapper {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: logo;
+}
+
+.brand {
+    height: 64px;
+    width: 64px;
+    cursor: pointer;
 }
 
 .brand p {
@@ -38,26 +83,34 @@
 
 .brand img {
     height: auto;
-    max-height: 60px;
+    max-height: 50px;
 }
 
 .profileIcon {
-    width: 60px;
-    height: 60px;
+    height: 64px;
+    width: 64px;
+    border: 5px solid #e5e5e5;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
-    /* background-color: blueviolet; */
-
-    /* dummytext can be deleted */
-    /* display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.6em; */
+    cursor: pointer;
 }
 
-.profileIcon:hover {
-    box-shadow: 0 0 4px black;
+.mask {
+    border-radius: 20px;
+    -webkit-z-index: -1;
+    -moz-z-index: -1;
+    -ms-z-index: -1;
+    -o-z-index: -1;
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    background: #ffffff;
+    height: 100%;
+}
+
+.mask.active {
+    border-radius: 20px 20px 0px 20px;
 }
 
 @media (max-width: 380px) {

@@ -20,6 +20,12 @@ import {
     SEND_NOTIFICATION,
     SEND_NOTIFICATION_SUCCESS,
     SEND_NOTIFICATION_FAILURE,
+    FETCH_IDPS,
+    FETCH_IDPS_SUCCESS,
+    FETCH_IDPS_FAILED,
+    DELETE_ITEMS,
+    DELETE_ITEMS_SUCCESS,
+    DELETE_ITEMS_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import User from 'your-user';
@@ -31,13 +37,8 @@ export const login = (username, password) => {
         auth.currentSession()
             .then((session) => {
                 if (!session) {
-                    auth.popupLogin(
-                        'https://owntech.de/common/popup.html'
-                    ).then(
-                        (value) => console.log('value from, auth login', value)
-                        // setSessionInfo(session);
-                    );
-                } else {
+                    dispatch({ type: LOGIN_FAIL });
+                } else if (session) {
                     dispatch(setSessionInfo(session));
                 }
             })
@@ -70,7 +71,6 @@ export const setCurrentPath = (newPath) => {
 
 export const fetchUser = (webId) => {
     return (dispatch) => {
-        console.log('in fetch user', webId);
         dispatch({ type: FETCH_USER });
         const currUser = new User(webId);
         currUser
@@ -81,7 +81,6 @@ export const fetchUser = (webId) => {
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAIL, payload: error })
             );
-        console.log('finish');
     };
 };
 
@@ -113,7 +112,6 @@ export const fetchCurrentItems = (url) => {
         fileUtils
             .getFolderFiles(url)
             .then((items) => {
-                console.log(items);
                 const fileNames = items.files.map((file) => {
                     return convertFileUrlToName(file);
                 });
@@ -172,5 +170,39 @@ export const sendNotification = (webId, notification) => {
 export const setSelection = (selection) => {
     return (dispatch) => {
         dispatch({ type: SET_SELECTION, payload: selection });
+    };
+};
+
+export const fetchIdps = () => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_IDPS });
+        const request = { method: 'GET' };
+        fetch('https://solid.github.io/solid-idp-list/services.json', request)
+            .then((response) => {
+                response.json().then((idps) => {
+                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: idps.idps });
+                });
+            })
+            .catch((err) => {
+                dispatch({ type: FETCH_IDPS_FAILED, payload: err });
+            });
+    };
+};
+
+export const deleteItems = (items, currentPath = '/') => {
+    return (dispatch) => {
+        dispatch({ type: DELETE_ITEMS });
+        fileUtils
+            .deleteItems(items)
+            .then(() => {
+                // To avoid reloading when not everything has been deleted
+                setTimeout(() => {
+                    dispatch({ type: DELETE_ITEMS_SUCCESS });
+                    dispatch(setCurrentPath(currentPath));
+                }, 2000);
+            })
+            .catch((err) => {
+                dispatch({ type: DELETE_ITEMS_FAILURE });
+            });
     };
 };

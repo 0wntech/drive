@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
 import { connect } from 'react-redux';
@@ -10,18 +10,21 @@ import fileUtils from '../../utils/fileUtils';
 import { getBreadcrumbsFromUrl } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
-import Buttons from '../../functional_components/Buttons/Buttons';
 import { InputWindow } from '../../functional_components/InputWindow';
-import Container from 'react-bootstrap/Container';
-import { ConsentWindow } from '../../functional_components/ConsentWindow';
+import { DeleteWindow } from '../../functional_components/DeleteWindow';
 import {
     setCurrentPath,
     setSelection,
     sendNotification,
     fetchCurrentItems,
+    deleteItems,
 } from '../../actions/UserActions';
-import { ContactSidebar } from '../../functional_components/ContactSidebar';
 import { ClassicSpinner } from 'react-spinners-kit';
+import ToolbarButtons from '../../functional_components/ToolbarButtons';
+import { isCmdPressed } from '../../utils/helper';
+import { MenuProvider, Menu, Item } from 'react-contexify';
+import classNames from 'classnames';
+import url from 'url';
 const ns = require('solid-namespace')(rdf);
 
 class Drive extends React.Component {
@@ -31,7 +34,6 @@ class Drive extends React.Component {
             currPath: undefined,
             file: undefined,
             image: undefined,
-            selectedItems: [],
             folders: undefined,
             isCreateFolderVisible: false,
             isConsentWindowVisible: false,
@@ -106,10 +108,25 @@ class Drive extends React.Component {
         );
     }
 
-    loadFile(url) {
-        if (this.props.selectedItems.includes(url) === false) {
-            const newSelection = this.props.selectedItems;
+    loadFile(url, event = {}) {
+        const { selectedItems, setSelection } = this.props;
+        if (url.endsWith('/')) {
+            url = url.split('/');
+            url.pop();
+            url = url.join('/');
+        }
+        if (
+            event.metaKey ||
+            (isCmdPressed(event) && selectedItems.includes(url) === false)
+        ) {
+            const newSelection = [...selectedItems];
             newSelection.push(url);
+            setSelection(newSelection);
+        } else if (
+            event.metaKey ||
+            (isCmdPressed(event) && selectedItems.includes(url))
+        ) {
+            const newSelection = selectedItems.filter((item) => item != url);
             setSelection(newSelection);
         } else {
             const newBreadCrumbs = getBreadcrumbsFromUrl(url);
@@ -139,28 +156,26 @@ class Drive extends React.Component {
         }
     }
 
-    followPath(path) {
-        if (this.props.selectedItems.includes(path)) {
-            console.log(path);
-            this.props.setCurrentPath(path);
-            // const newBreadcrumbs = getBreadcrumbsFromUrl(path);
-            // this.loadCurrentFolder(path, newBreadcrumbs);
-        } else {
-            const newSelection = this.props.selectedItems;
-            newSelection.push(path);
+    followPath(path, event = {}) {
+        const { selectedItems, setCurrentPath, setSelection } = this.props;
+        if (isCmdPressed(event) && selectedItems.includes(path)) {
+            const newSelection = selectedItems.filter((item) => item != path);
             setSelection(newSelection);
-            this.setState({
-                selectedItems: newSelection,
-            });
+        } else if (isCmdPressed(event) && !selectedItems.includes(path)) {
+            const newSelection = [...selectedItems, path];
+            setSelection(newSelection);
+        } else {
+            setCurrentPath(path);
         }
     }
 
     uploadFile(e) {
+        console.log(e);
         const currPath = this.props.currentPath;
         const filePath = e.target.files[0];
 
         fileUtils.uploadFile(filePath, currPath).then(() => {
-            this.loadCurrentFolder(this.state.currPath, this.state.breadcrumbs);
+            this.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -181,15 +196,14 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                // prettier-ignore
-                'Slug': folderAddress,
-                // prettier-ignore
-                'Link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
+                slug: folderAddress,
+                link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
-        auth.fetch(currentPath, request).then(() => {
-            setCurrentPath(currentPath);
+
+        auth.fetch(this.props.currentPath, request).then(() => {
+            this.props.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -206,8 +220,8 @@ class Drive extends React.Component {
             },
         };
 
-        auth.fetch(currentPath, request).then(() => {
-            setCurrentPath(currentPath);
+        auth.fetch(this.props.currentPath, request).then(() => {
+            this.props.setCurrentPath(this.props.currentPath);
         });
     }
 
@@ -216,7 +230,11 @@ class Drive extends React.Component {
 
         if (!currentItems && !currentPath && !loadCurrentItems) {
             console.log('fetching files');
-            console.log(currentPath, currentItems);
+            console.log(
+                'current path + current items: ',
+                currentPath,
+                currentItems
+            );
             fetchCurrentItems(currentPath);
         }
 
@@ -279,10 +297,22 @@ class Drive extends React.Component {
         });
     }
 
-    openConsentWindow() {
-        this.setState({
-            isConsentWindowVisible: true,
-        });
+    openConsentWindow(item) {
+        const { selectedItems, setSelection } = this.props;
+        const newSelection = [...selectedItems];
+        if (
+            item &&
+            url.parse(item).path !== '/' &&
+            !selectedItems.includes(item)
+        ) {
+            newSelection.push(item);
+            setSelection(newSelection);
+        }
+        if (selectedItems.length !== 0 || newSelection.length !== 0) {
+            this.setState({
+                isConsentWindowVisible: true,
+            });
+        }
     }
 
     closeCreateFileWindow() {
@@ -304,20 +334,63 @@ class Drive extends React.Component {
 
     render() {
         const {
-            isCreateFolderVisible,
-            isCreateFileVisible,
-            isConsentWindowVisible,
             selectedItems,
-        } = this.state;
-
-        const {
-            webId,
             currentItems,
             currentPath,
-            setCurrentPath,
+            deleteItems,
             loadCurrentItems,
+            webId,
+            setCurrentPath,
+            loadDeletion,
         } = this.props;
 
+        const {
+            isConsentWindowVisible,
+            isCreateFileVisible,
+            isCreateFolderVisible,
+        } = this.state;
+
+        const CONTEXTMENU_OPTIONS = [
+            {
+                label: 'Info',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: false,
+            },
+            {
+                label: 'Copy*',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: true,
+            },
+            {
+                label: 'Paste*',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: true,
+            },
+            {
+                label: 'Rename',
+                onClick: (item) => fileUtils.renameItem(item),
+                disabled: false,
+            },
+            {
+                label: 'Manage Access',
+                onClick: (item) => fileUtils.changeAccess(item),
+                disabled: false,
+            },
+            {
+                label: 'Share*',
+                onClick: (item) => fileUtils.changeAccess(item),
+                disabled: true,
+            },
+            {
+                label: 'Create Folder',
+                onClick: () => this.openCreateFolderWindow(),
+            },
+            {
+                label: 'Delete',
+                onClick: (item) => this.openConsentWindow(item),
+                disabled: false,
+            },
+        ];
         const fileMarkup = this.state.file ? (
             <div className={styles.renderedFile}>
                 {this.state.image ? (
@@ -330,144 +403,161 @@ class Drive extends React.Component {
             undefined
         );
 
-        if (loadCurrentItems) {
+        const toolbar = (
+            <div className={styles.toolbarArea}>
+                {webId ? (
+                    <Breadcrumbs
+                        onClick={setCurrentPath}
+                        breadcrumbs={
+                            currentPath
+                                ? getBreadcrumbsFromUrl(currentPath)
+                                : null
+                        }
+                        webId={webId}
+                    />
+                ) : null}
+
+                <ToolbarButtons
+                    onFileCreation={this.openCreateFileWindow}
+                    onFolderCreation={this.openCreateFolderWindow}
+                    onFolderUpload={this.uploadFolder}
+                    uploadFile={this.uploadFile}
+                    onDelete={() => {
+                        this.openConsentWindow();
+                    }}
+                />
+            </div>
+        );
+
+        const windows = (
+            <Fragment>
+                <DeleteWindow
+                    windowName="Delete File"
+                    selectedItems={selectedItems}
+                    info={
+                        selectedItems.length > 1
+                            ? 'Do you really want to delete these items?'
+                            : 'Do you really want to delete this item?'
+                    }
+                    onSubmit={(selectedItems) => {
+                        deleteItems(selectedItems, currentPath);
+                    }}
+                    className={
+                        isConsentWindowVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeConsentWindow}
+                ></DeleteWindow>
+                <InputWindow
+                    windowName="Create Folder"
+                    info=""
+                    onSubmit={(value) => this.createFolder(value)}
+                    className={
+                        isCreateFolderVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeCreateFolderWindow}
+                    placeholder={'Untitled'}
+                />
+                <InputWindow
+                    windowName="Create File"
+                    info=""
+                    onSubmit={(value) => this.createFile(value)}
+                    className={
+                        isCreateFileVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeCreateFileWindow}
+                    placeholder={'Untitled'}
+                />
+            </Fragment>
+        );
+
+        if ((loadCurrentItems, loadDeletion)) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
-                        size={100}
+                        size={30}
                         color="#686769"
-                        loading={loadCurrentItems}
+                        loading={(loadCurrentItems, loadDeletion)}
                     />
                 </div>
             );
         } else {
             return (
-                <div style={{ height: '100%' }} onClick={this.clearSelection}>
-                    {webId ? (
-                        <Breadcrumbs
-                            onClick={setCurrentPath}
-                            breadcrumbs={
-                                currentPath
-                                    ? getBreadcrumbsFromUrl(currentPath)
-                                    : null
-                            }
-                            webId={webId}
-                        />
-                    ) : null}
-                    <div>
+                <div
+                    className={styles.grid}
+                    style={{ height: '100%' }}
+                    onClick={this.clearSelection}
+                >
+                    {toolbar}
+                    <MenuProvider
+                        className={styles.mainArea}
+                        id="drive contextmenu"
+                    >
                         {fileMarkup ? (
-                            <Container>{fileMarkup}</Container>
+                            <div className={styles.container}>{fileMarkup}</div>
                         ) : (
-                            <div>
-                                <ConsentWindow
-                                    windowName="Delete File?"
-                                    selectedItems={selectedItems}
-                                    info={
-                                        selectedItems.length > 1
-                                            ? 'Do you really want to delete these items?'
-                                            : 'Do you really want to delete this item?'
-                                    }
-                                    onSubmit={(selectedItems) =>
-                                        fileUtils.deleteItems(selectedItems)
-                                    }
-                                    className={
-                                        isConsentWindowVisible
-                                            ? styles.visible
-                                            : styles.hidden
-                                    }
-                                    onClose={this.closeConsentWindow}
-                                ></ConsentWindow>
-                                <InputWindow
-                                    windowName="Create Folder"
-                                    info=""
-                                    onSubmit={this.createFolder}
-                                    className={
-                                        isCreateFolderVisible
-                                            ? styles.visible
-                                            : styles.hidden
-                                    }
-                                    onClose={this.closeCreateFolderWindow}
-                                    placeholder={'Untitled'}
-                                />
-                                <InputWindow
-                                    windowName="Create File"
-                                    info=""
-                                    onSubmit={this.createFile}
-                                    className={
-                                        isCreateFileVisible
-                                            ? styles.visible
-                                            : styles.hidden
-                                    }
-                                    onClose={this.closeCreateFileWindow}
-                                    placeholder={'Untitled'}
-                                />
+                            <div className={styles.container}>
+                                {windows}
                                 {currentItems ? (
-                                    <div>
-                                        <ContactSidebar />
-                                        <Container>
-                                            <ItemList
-                                                selectedItems={selectedItems}
-                                                items={currentItems.folders}
-                                                currPath={currentPath}
-                                                image={folder}
-                                                onItemClick={this.followPath}
-                                                onDelete={(item) => {
-                                                    this.openConsentWindow();
-                                                }}
-                                                onAccess={(item) => {
-                                                    fileUtils.changeAccess(
-                                                        item
-                                                    );
-                                                }}
-                                                onRename={(item) => {
-                                                    fileUtils.renameItem(item);
-                                                }}
-                                                onInfo={(item) => {
-                                                    fileUtils.getInfo(item);
-                                                }}
-                                            />
-                                            <ItemList
-                                                selectedItems={selectedItems}
-                                                isFile
-                                                items={currentItems.files}
-                                                currPath={currentPath}
-                                                image={fileIcon}
-                                                onItemClick={this.loadFile}
-                                                onDelete={(item) => {
-                                                    this.openConsentWindow();
-                                                }}
-                                                onAccess={(item) => {
-                                                    fileUtils.changeAccess(
-                                                        item
-                                                    );
-                                                }}
-                                                onRename={(item) => {
-                                                    fileUtils.renameFile(item);
-                                                }}
-                                                onInfo={(item) => {
-                                                    fileUtils.onInfo(item);
-                                                }}
-                                            />
-                                            <Buttons
-                                                onFileCreation={
-                                                    this.openCreateFileWindow
-                                                }
-                                                onFolderCreation={
-                                                    this.openCreateFolderWindow
-                                                }
-                                                onFolderUpload={
-                                                    this.uploadFolder
-                                                }
-                                                onFileUpload={this.uploadFile}
-                                            ></Buttons>
-                                        </Container>
+                                    <div className={styles.contentWrapper}>
+                                        {/* <ContactSidebar /> */}
+                                        <div className={styles.header}>
+                                            Folders
+                                        </div>
+                                        <ItemList
+                                            selectedItems={selectedItems}
+                                            items={currentItems.folders}
+                                            currPath={currentPath}
+                                            image={folder}
+                                            onItemClick={this.followPath}
+                                            contextMenuOptions={
+                                                CONTEXTMENU_OPTIONS
+                                            }
+                                        />
+                                        <div className={styles.header}>
+                                            Files
+                                        </div>
+                                        <ItemList
+                                            selectedItems={selectedItems}
+                                            isFile
+                                            items={currentItems.files}
+                                            currPath={currentPath}
+                                            image={fileIcon}
+                                            onItemClick={this.loadFile}
+                                            contextMenuOptions={
+                                                CONTEXTMENU_OPTIONS
+                                            }
+                                        />
                                     </div>
                                 ) : (
                                     undefined
                                 )}
                             </div>
                         )}
-                    </div>
+                    </MenuProvider>
+                    <Menu
+                        className={styles.contextMenu}
+                        id={'drive contextmenu'}
+                    >
+                        {CONTEXTMENU_OPTIONS &&
+                            CONTEXTMENU_OPTIONS.map((option, index) => (
+                                <Item
+                                    disabled={option.disabled}
+                                    key={index + option.label}
+                                    onClick={
+                                        !option.disabled
+                                            ? () => {
+                                                  option.onClick(currentPath);
+                                              }
+                                            : undefined
+                                    }
+                                    className={classNames(styles.contextItem, {
+                                        [styles.disabled]: option.disabled,
+                                    })}
+                                >
+                                    <div>{option.label}</div>
+                                </Item>
+                            ))}
+                    </Menu>
                 </div>
             );
         }
@@ -481,12 +571,19 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.app.webId,
         loadCurrentItems: state.app.loadCurrentItems,
+        loadDeletion: state.app.loadDeletion,
     };
 };
 
 export default withRouter(
     connect(
         mapStateToProps,
-        { setCurrentPath, sendNotification, fetchCurrentItems }
+        {
+            setCurrentPath,
+            sendNotification,
+            fetchCurrentItems,
+            setSelection,
+            deleteItems,
+        }
     )(Drive)
 );

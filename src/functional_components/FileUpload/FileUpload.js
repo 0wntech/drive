@@ -1,28 +1,28 @@
 import React from 'react';
-import fileIcon from './FileUpload.png';
-import folderIcon from './FolderUpload.png';
 
-const FileUpload = (props) => {
+const FileUpload = ({ folder, children, onFileUpload }) => {
     return (
-        <label htmlFor={props.folder ? 'folderUpload' : 'fileUpload'}>
-            <img
-                src={props.folder ? folderIcon : fileIcon}
-                className={props.className}
-                alt="file upload icon"
-            />
+        <label
+            style={{ marginBottom: 0, display: 'flex' }}
+            htmlFor={folder ? 'folderUpload' : 'fileUpload'}
+        >
+            {children}
             <input
                 type="file"
                 onChange={(e) => {
-                    props.onChange(e);
+                    if (e.target.files) {
+                        console.log(e);
+                        onFileUpload(e);
+                    }
                 }}
-                webkitdirectory={props.folder ? 'true' : undefined}
-                mozdirectory={props.folder ? 'true' : undefined}
-                msdirectory={props.folder ? 'true' : undefined}
-                odirectory={props.folder ? 'true' : undefined}
-                directory={props.folder ? 'true' : undefined}
-                multiple={props.folder ? true : false}
+                webkitdirectory={folder ? 'true' : undefined}
+                mozdirectory={folder ? 'true' : undefined}
+                msdirectory={folder ? 'true' : undefined}
+                odirectory={folder ? 'true' : undefined}
+                directory={folder ? 'true' : undefined}
+                multiple={folder ? true : false}
                 style={{ display: 'none' }}
-                id={props.folder ? 'folderUpload' : 'fileUpload'}
+                id={folder ? 'folderUpload' : 'fileUpload'}
                 accept="*/*"
             />
         </label>

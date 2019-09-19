@@ -5,7 +5,6 @@ import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
 import Drive from './stateful_components/Drive';
 import LoginScreen from './stateful_components/LoginScreen';
-import { ProfileSideBar } from './functional_components/ProfileSideBar';
 import auth from 'solid-auth-client';
 import User from 'your-user';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
@@ -20,6 +19,7 @@ import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';
 import LandingPage from './stateful_components/LandingPage';
+import { ProfilePage } from './functional_components/ProfilePage';
 
 class App extends React.Component {
     constructor(props) {
@@ -51,10 +51,10 @@ class App extends React.Component {
     }
 
     logout() {
+        const { setWebId } = this.props;
         auth.logout().then(() => {
-            this.setState({
-                webId: undefined,
-            });
+            setWebId(undefined);
+            this.props.history.push('/');
         });
     }
 
@@ -91,82 +91,73 @@ class App extends React.Component {
     }
 
     render() {
-        const { isProfileExpanded } = this.state;
         const { webId, user, session, loadLogin, loadUser } = this.props;
         if (loadLogin || loadUser) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
-                        size={100}
+                        size={30}
                         color="#686769"
                         loading={loadLogin || loadUser}
                     />
                 </div>
             );
         } else {
+            console.log(user);
             return (
-                <div style={{ height: '100%', overflowY: 'hidden' }}>
+                <div
+                    className={styles.grid}
+                    style={{ height: '100%', overflowY: 'hidden' }}
+                >
                     <ErrorBoundary>
-                        <Navigation
-                            toggleSidebar={this.toggleSidebar}
-                            onLogout={this.logout}
-                            onLogin={this.login}
-                            webId={webId}
-                            picture={user ? user.picture : undefined}
-                        />
-                        {webId && user ? (
-                            <ProfileSideBar
-                                user={user}
+                        <div className={styles.navArea}>
+                            <Navigation
                                 toggleSidebar={this.toggleSidebar}
-                                isExpanded={isProfileExpanded}
-                                onProfileUpdate={this.onProfileUpdate}
-                                onPictureChange={(e) => {
-                                    const user = new User(webId);
-                                    user.setProfilePicture(
-                                        e,
-                                        webId,
-                                        user.picture
-                                    ).then(() => {
-                                        user.getProfile().then((profile) => {
-                                            console.log(
-                                                'Loading updated Profile'
-                                            );
-                                            this.setState({
-                                                user: profile,
-                                            });
-                                        });
-                                    });
-                                }}
+                                onLogout={this.logout}
+                                onLogin={this.login}
+                                webId={webId}
+                                picture={user ? user.picture : undefined}
+                                username={user ? user.name : undefined}
                             />
-                        ) : null}
-                        <Switch>
-                            <Route path="/" exact component={LandingPage} />
-                            <PrivateRoute
-                                session={session}
-                                path="/home"
-                                component={<Drive webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/notifications"
-                                component={<NotificationsPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/drive"
-                                component={<Drive webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/contacts"
-                                component={<ContactSidebar webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/login"
-                                component={<LoginScreen webId={webId} />}
-                            />
-                        </Switch>
+                        </div>
+
+                        <div className={styles.mainArea}>
+                            <Switch>
+                                <Route path="/" exact component={LandingPage} />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/home"
+                                    component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/profile"
+                                    component={<ProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/notifications"
+                                    component={<NotificationsPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/drive"
+                                    component={<Drive webId={webId} />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/contacts"
+                                    component={<ContactSidebar webId={webId} />}
+                                />
+                                <Route
+                                    session={session}
+                                    path="/login"
+                                    component={() => (
+                                        <LoginScreen webId={webId} />
+                                    )}
+                                />
+                            </Switch>
+                        </div>
                     </ErrorBoundary>
                 </div>
             );
