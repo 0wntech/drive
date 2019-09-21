@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
+import url from 'url';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.css';
@@ -24,7 +25,6 @@ import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
 import { MenuProvider, Menu, Item } from 'react-contexify';
 import classNames from 'classnames';
-import url from 'url';
 const ns = require('solid-namespace')(rdf);
 
 class Drive extends React.Component {
@@ -46,6 +46,7 @@ class Drive extends React.Component {
         this.followPath = this.followPath.bind(this);
         this.uploadFolder = this.uploadFolder.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
+        this.downloadItems = this.downloadItems.bind(this);
         this.loadFile = this.loadFile.bind(this);
         this.loadCurrentFolder = this.loadCurrentFolder.bind(this);
         this.clearSelection = this.clearSelection.bind(this);
@@ -115,17 +116,12 @@ class Drive extends React.Component {
             url.pop();
             url = url.join('/');
         }
-        if (
-            event.metaKey ||
-            (isCmdPressed(event) && selectedItems.includes(url) === false)
-        ) {
+        console.log(url);
+        if (isCmdPressed(event) && selectedItems.includes(url) === false) {
             const newSelection = [...selectedItems];
             newSelection.push(url);
             setSelection(newSelection);
-        } else if (
-            event.metaKey ||
-            (isCmdPressed(event) && selectedItems.includes(url))
-        ) {
+        } else if (isCmdPressed(event) && selectedItems.includes(url)) {
             const newSelection = selectedItems.filter((item) => item != url);
             setSelection(newSelection);
         } else {
@@ -252,6 +248,16 @@ class Drive extends React.Component {
         // } catch (e) {
         //     console.log(e);
         // }
+    }
+
+    downloadItems() {
+        const { selectedItems, webId } = this.props;
+        selectedItems.forEach((item) => {
+            const download =
+                webId.replace('profile/card#me', 'download?path=') +
+                url.parse(item).pathname;
+            window.open(download.replace(/\/+$/, ''));
+        });
     }
 
     uploadFolder(e) {
@@ -417,6 +423,7 @@ class Drive extends React.Component {
                     onFileCreation={this.openCreateFileWindow}
                     onFolderCreation={this.openCreateFolderWindow}
                     onFolderUpload={this.uploadFolder}
+                    onDownload={this.downloadItems}
                     uploadFile={this.uploadFile}
                     onDelete={() => {
                         this.openConsentWindow();
