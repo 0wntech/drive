@@ -23,7 +23,7 @@ const KeyValuePair = ({ label, value }) => {
 
 KeyValuePair.propTypes = {
     label: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 };
 
 export default KeyValuePair;
