@@ -31,10 +31,8 @@ describe('ProfilePage', () => {
 
         describe('ProfilePage Snapshot', () => {
             it('matches the snapshot', () => {
-                const tree = TestRenderer.create(
-                    <ProfilePage user={user} />
-                ).toJSON();
-                expect(tree).toMatchSnapshot();
+                const tree = TestRenderer.create(<ProfilePage user={user} />);
+                expect(tree.toJSON()).toMatchSnapshot();
             });
         });
 

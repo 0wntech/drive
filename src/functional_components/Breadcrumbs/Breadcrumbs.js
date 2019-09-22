@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './Breadcrumbs.module.css';
 import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
-
-const Breadcrumbs = (props) => {
-    console.log(props.breadcrumbs);
-    const root = 'https://' + props.webId.split('/')[2];
+import PropTypes from 'prop-types';
+const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
+    const root = 'https://' + webId.split('/')[2];
     let currentUrl = root;
-    const breadcrumbMarkup = props.breadcrumbs
-        ? props.breadcrumbs.map((currentBreadcrumb, currentIndex) => {
+    const breadcrumbMarkup = breadcrumbs
+        ? breadcrumbs.map((currentBreadcrumb, currentIndex) => {
               if (currentBreadcrumb !== '/') {
                   currentUrl = currentUrl + currentBreadcrumb;
                   const currentLabel = currentBreadcrumb.replace('/', '');
@@ -16,8 +15,7 @@ const Breadcrumbs = (props) => {
                           key={currentIndex}
                           label={currentLabel}
                           onClick={() => {
-                              console.log('currentURRRRRL', currentUrl);
-                              props.onClick(currentUrl);
+                              onClick(currentUrl);
                           }}
                       >
                           {console.log(
@@ -33,7 +31,7 @@ const Breadcrumbs = (props) => {
                       <BreadcrumbItem
                           key={0}
                           label={'Home'}
-                          onClick={() => props.onClick(root + '/')}
+                          onClick={() => onClick(root + '/')}
                       ></BreadcrumbItem>
                   );
               }
@@ -41,6 +39,12 @@ const Breadcrumbs = (props) => {
         : undefined;
 
     return <div className={styles.container}>{breadcrumbMarkup}</div>;
+};
+
+Breadcrumbs.propTypes = {
+    webId: PropTypes.string.isRequired,
+    breadcrumbs: PropTypes.array,
+    onClick: PropTypes.func,
 };
 
 export default Breadcrumbs;
