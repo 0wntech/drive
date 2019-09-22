@@ -13,12 +13,12 @@ const showAddButton = (value, editable) => {
 };
 
 const KeyValuePair = ({
-    label,
-    value,
-    editable,
-    setValue,
     dataKey,
+    editable,
+    label,
     placeholder,
+    setValue,
+    value,
 }) => {
     const renderValues = (value) => {
         if (typeof value === 'object') {

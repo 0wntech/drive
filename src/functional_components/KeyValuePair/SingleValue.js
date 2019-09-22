@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import styles from './KeyValuePair.module.css';
 
 const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
-    const [fallbackValue] = useState(value);
+    const [fallbackValue, setFallbackValue] = useState(value);
 
     const onFocusIn = (e) => {
         // make Placeholder visible
@@ -13,10 +13,14 @@ const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
         }
     };
 
-    const onFocusOut = () => {
+    const onFocusOut = (e) => {
         // restore default if no change is made
         if (value == '' && editable) {
             setValue(fallbackValue);
+        }
+        if (value != '') {
+            console.log('target value', e.target.value);
+            setFallbackValue(e.target.value);
         }
     };
 
@@ -42,6 +46,7 @@ SingleValue.propTypes = {
     value: PropTypes.string.isRequired,
     editable: PropTypes.bool,
     dataKey: PropTypes.string,
+    className: PropTypes.string,
 };
 
 export default SingleValue;

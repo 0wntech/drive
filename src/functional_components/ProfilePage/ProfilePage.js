@@ -10,6 +10,7 @@ import X from '../../assets/svgIcons/X';
 import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
+import SingleValue from '../KeyValuePair/SingleValue';
 
 const ProfilePage = ({
     isExpanded,
@@ -59,6 +60,7 @@ const ProfilePage = ({
                             }
                         />
                         <div className={styles.nameContainer}>
+                            <SingleValue />
                             <div className={styles.nameLabel}>{user.name}</div>
                             <div className={styles.webIdLabel}>
                                 {user.webId.replace('/profile/card#me', '')}

@@ -7,7 +7,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "flare-react": "^1.0.2",
-    "ownuser": "^1.2.2",
+    "ownuser": "^1.2.5",
     "rdflib": "^0.20.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
