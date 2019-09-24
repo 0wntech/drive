@@ -6,7 +6,7 @@ import TestRenderer from 'react-test-renderer';
 describe('BreadcrumbItem', () => {
     it('should render correctly', () => {
         const tree = TestRenderer.create(<BreadcrumbItem label="Test" />);
-        expect(tree.toJSON).toMatchSnapshot();
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 
     it('should handle the click event', () => {

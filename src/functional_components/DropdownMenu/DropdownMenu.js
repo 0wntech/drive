@@ -8,6 +8,7 @@ function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
     const defaultRender = (option) => {
         return (
             <div
+                key={option.label}
                 onClick={() => {
                     option.onClick();
                     setExpanded(!isExpanded);
@@ -31,8 +32,8 @@ function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
                 })}
             >
                 {renderOption
-                    ? options.map((option) => (
-                          <div className={styles.option}>
+                    ? options.map((option, index) => (
+                          <div key={index} className={styles.option}>
                               {renderOption(option)}
                           </div>
                       ))

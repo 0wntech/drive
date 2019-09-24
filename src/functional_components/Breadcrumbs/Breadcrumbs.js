@@ -18,11 +18,6 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
                               onClick(currentUrl);
                           }}
                       >
-                          {console.log(
-                              'current breadcrumb',
-                              currentUrl,
-                              currentBreadcrumb
-                          )}
                           {currentBreadcrumb.replace('/', '')}
                       </BreadcrumbItem>
                   );
