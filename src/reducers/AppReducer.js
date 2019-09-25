@@ -25,6 +25,9 @@ import {
     UPDATE_PROFILE,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAILURE,
+    CHANGE_PROFILE_PHOTO,
+    CHANGE_PROFILE_PHOTO_SUCCESS,
+    CHANGE_PROFILE_PHOTO_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -48,6 +51,7 @@ const INITIAL_STATE = {
     idps: null,
     updateProfile: false,
     updateProfileError: false,
+    updateProfilePic: false,
     // [
     //     {
     //         name: 'testdata',
@@ -132,6 +136,12 @@ export default (state = INITIAL_STATE, action) => {
             };
         case UPDATE_PROFILE_FAILURE:
             return { ...state, updateProfile: false, updateProfileError: true };
+        case CHANGE_PROFILE_PHOTO:
+            return { ...state, updateProfilePic: true };
+        case CHANGE_PROFILE_PHOTO_SUCCESS:
+            return { ...state, updateProfilePic: false };
+        case CHANGE_PROFILE_PHOTO_FAILURE:
+            return { ...state, updateProfilePic: false, error: payload };
         default:
             return state;
     }
