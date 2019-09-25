@@ -13,7 +13,7 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 
-const ProfilePage = ({
+export const ProfilePage = ({
     webId,
     user,
     updateProfilePic,
@@ -41,7 +41,7 @@ const ProfilePage = ({
         changeProfilePhoto(e, webId);
     };
 
-    if (user || updateProfilePic) {
+    if (user) {
         return (
             <div className={styles.grid}>
                 <div className={styles.toolbarArea}>

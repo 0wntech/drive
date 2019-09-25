@@ -6,6 +6,7 @@ function getContentType(file) {
     const mimeTypes = {
         py: 'application/x-python-code',
         jpeg: 'image',
+        jpg: 'image',
         png: 'image',
         ico: 'image',
         mp3: 'audio',
