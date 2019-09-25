@@ -40,13 +40,3 @@
   padding: 20px 20px;
   margin: 0;
 }
-
-.register {
-  padding: 20px 20px;
-  border: solid rgba(54, 165, 16, 1) 2px;
-}
-
-.login {
-  border: solid rgba(54, 165, 16) 2px;
-  padding: 20px 20px;
-}

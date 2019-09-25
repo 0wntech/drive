@@ -8,9 +8,7 @@ import EditIcon from '../../assets/svgIcons/Edit';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 
-const ProfilePage = ({
-    user
-}) => {
+const ProfilePage = ({ user }) => {
     if (user) {
         return (
             <div className={styles.grid}>

@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './ActionButton.module.css';
 import classNames from 'classnames';
 
-export const ActionButton = ({ label, className, color }) => {
-    console.log(color);
+const ActionButton = ({ label, className, color, onClick, size }) => {
     switch (color) {
         case 'red':
             color = 'red';
@@ -15,11 +15,32 @@ export const ActionButton = ({ label, className, color }) => {
             color = 'blue';
             break;
     }
-    console.log(color);
+    
+    switch (size) {
+        case 'sm':
+            size = 'sm';
+            break;
+        case 'md':
+            size = 'md';
+            break;
+        default:
+            size = 'lg';
+            break;
+    }
 
     return (
-        <div className={classNames(styles.container, className, styles[color])}>
+        <div
+            className={classNames(styles.container, className, styles[color], styles[size])}
+            onClick={onClick}
+        >
             {label}
         </div>
     );
 };
+
+ActionButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
+export default ActionButton;

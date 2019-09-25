@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import styles from './Navigation.module.css';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
+import ActionButton from '../ActionButton/ActionButton';
 
 const Navigation = ({
     picture,
@@ -27,7 +28,13 @@ const Navigation = ({
         <div className={styles.container}>
             <div className={styles.brandWrapper}>
                 <img
-                    onClick={() => history.push('/home')}
+                    onClick={() => {
+                        if (webId) {
+                            history.push('/home');
+                        } else {
+                            history.push('/');
+                        }
+                    }}
                     className={styles.brand}
                     src="https://owntech.de/favicon.ico"
                 />
@@ -65,9 +72,11 @@ const Navigation = ({
                         />
                     </div>
                 ) : (
-                    <div className={styles.loginButton}>
-                        <a href="/login">Login</a>
-                    </div>
+                    <ActionButton
+                        size="sm"
+                        label="Login"
+                        onClick={() => history.push('/login')}
+                    />
                 )}
             </div>
         </div>
