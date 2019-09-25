@@ -6,9 +6,6 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
     SET_WEBID,
-    FETCH_FRIENDS,
-    FETCH_FRIENDS_FAIL,
-    FETCH_FRIENDS_SUCCESS,
     FETCH_CURRENT_ITEMS,
     FETCH_CURRENT_ITEMS_SUCCESS,
     FETCH_CURRENT_ITEMS_FAIL,
@@ -26,6 +23,11 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_SUCCESS,
+    FETCH_CONTACTS_FAILURE,
+    ADD_CONTACT,
+    REMOVE_CONTACT,
 } from './types';
 import auth from 'solid-auth-client';
 import User from 'your-user';
@@ -40,6 +42,7 @@ export const login = (username, password) => {
                     dispatch({ type: LOGIN_FAIL });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
+                    dispatch(fetchContacts(session.webId));
                 }
             })
             .catch((error) => {
@@ -81,20 +84,6 @@ export const fetchUser = (webId) => {
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAIL, payload: error })
             );
-    };
-};
-
-export const fetchContacts = (yourUserObject) => {
-    return (dispatch) => {
-        dispatch({ type: FETCH_FRIENDS });
-        yourUserObject
-            .getFriends()
-            .then((friends) => {
-                dispatch({ type: FETCH_FRIENDS_SUCCESS, payload: friends });
-            })
-            .catch((error) => {
-                dispatch({ type: FETCH_FRIENDS_FAIL, payload: error });
-            });
     };
 };
 
@@ -204,5 +193,43 @@ export const deleteItems = (items, currentPath = '/') => {
             .catch((err) => {
                 dispatch({ type: DELETE_ITEMS_FAILURE });
             });
+    };
+};
+
+export const addContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: ADD_CONTACT });
+        const user = new User(webId);
+        user.addFriend(contactWebId);
+        dispatch(fetchContacts(webId));
+    };
+};
+
+export const removeContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: REMOVE_CONTACT });
+        const user = new User(webId);
+        user.removeFriend(contactWebId);
+        dispatch(fetchContacts(webId));
+    };
+};
+
+export const fetchContacts = (webId) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CONTACTS });
+        const user = new User(webId);
+        console.log(user);
+        user.getFriends()
+            .then((contacts) => {
+                if (contacts) {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: contacts,
+                    });
+                }
+            })
+            .catch((error) =>
+                dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
+            );
     };
 };
