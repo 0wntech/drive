@@ -37,8 +37,6 @@ const ProfilePage = ({
         updateProfile(userData, webId);
     };
 
-    console.log('profile user data', userData);
-
     if (user) {
         return (
             <div className={styles.grid}>
@@ -60,14 +58,29 @@ const ProfilePage = ({
                             }
                         />
                         <div className={styles.nameContainer}>
-                            <SingleValue />
-                            <div className={styles.nameLabel}>{user.name}</div>
+                            <SingleValue
+                                editable={isEditable}
+                                value={userData.name}
+                                setValue={(value) =>
+                                    updateUserData('name', value)
+                                }
+                                className={styles.nameLabel}
+                                placholder="Enter Name.."
+                            />
                             <div className={styles.webIdLabel}>
                                 {user.webId.replace('/profile/card#me', '')}
                             </div>
                         </div>
                         <div className={styles.bio}>
-                            {user.bio ? user.bio : 'add Bio'}
+                            <SingleValue
+                                editable={isEditable}
+                                value={userData.bio}
+                                setValue={(value) =>
+                                    updateUserData('bio', value)
+                                }
+                                placeholder="Add bio.."
+                                className={styles.bioLabel}
+                            />
                         </div>
                         <div className={styles.editWrapper}>
                             {isEditable ? (

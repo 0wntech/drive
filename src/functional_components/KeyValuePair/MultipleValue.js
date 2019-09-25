@@ -27,14 +27,16 @@ const MultipleValue = ({
                         }}
                         placeholder={placeholder}
                     />
-                    <X
-                        className={styles.deleteIcon}
-                        onClick={() => {
-                            const valueCopy = [...values];
-                            valueCopy.splice(index, 1);
-                            setValue(dataKey, valueCopy);
-                        }}
-                    />
+                    {editable ? (
+                        <X
+                            className={styles.deleteIcon}
+                            onClick={() => {
+                                const valueCopy = [...values];
+                                valueCopy.splice(index, 1);
+                                setValue(dataKey, valueCopy);
+                            }}
+                        />
+                    ) : null}
                 </div>
             ))}
         </div>

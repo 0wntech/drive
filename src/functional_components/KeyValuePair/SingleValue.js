@@ -15,11 +15,11 @@ const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
 
     const onFocusOut = (e) => {
         // restore default if no change is made
-        if (value == '' && editable) {
+        if (value === '' && editable) {
             setValue(fallbackValue);
         }
+        // set new fallback value
         if (value != '') {
-            console.log('target value', e.target.value);
             setFallbackValue(e.target.value);
         }
     };
@@ -27,13 +27,11 @@ const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
     return (
         <input
             readOnly={!editable}
-            className={classNames(className, styles.value, {
+            className={classNames(styles.value, className, {
                 [styles.active]: editable,
             })}
             value={value}
-            placeholder={
-                placeholder ? placeholder : value ? value : 'enter value'
-            }
+            placeholder={fallbackValue ? fallbackValue : placeholder}
             onFocus={onFocusIn}
             onBlur={onFocusOut}
             onChange={(e) => setValue(e.target.value)}
