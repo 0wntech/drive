@@ -9,9 +9,7 @@ const ContactList = ({ contacts }) => {
             {contacts
                 ? contacts.map((contact) => (
                       <div className={styles.itemContainer}>
-                          <ContactListItem
-                              contact={contact[Object.keys(contact)[0]]}
-                          />
+                          <ContactListItem contact={contact} />
                       </div>
                   ))
                 : null}

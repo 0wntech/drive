@@ -30,7 +30,7 @@ import {
     REMOVE_CONTACT,
 } from './types';
 import auth from 'solid-auth-client';
-import User from 'your-user';
+import User from 'ownuser';
 import fileUtils from '../utils/fileUtils';
 
 export const login = (username, password) => {
@@ -200,8 +200,9 @@ export const addContact = (webId, contactWebId) => {
     return (dispatch) => {
         dispatch({ type: ADD_CONTACT });
         const user = new User(webId);
-        user.addFriend(contactWebId);
-        dispatch(fetchContacts(webId));
+        user.addContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
     };
 };
 
@@ -209,9 +210,28 @@ export const removeContact = (webId, contactWebId) => {
     return (dispatch) => {
         dispatch({ type: REMOVE_CONTACT });
         const user = new User(webId);
-        user.removeFriend(contactWebId);
-        dispatch(fetchContacts(webId));
+        user.deleteContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
     };
+};
+
+export const fetchDetailContacts = (contacts) => {
+    const requests = contacts.map((webid) => {
+        const request = new Promise((resolve, reject) => {
+            const contact = new User(webid);
+            contact
+                .getProfile()
+                .then((profileData) => {
+                    resolve(profileData);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+        return request;
+    });
+    return Promise.all(requests);
 };
 
 export const fetchContacts = (webId) => {
@@ -219,14 +239,14 @@ export const fetchContacts = (webId) => {
         dispatch({ type: FETCH_CONTACTS });
         const user = new User(webId);
         console.log(user);
-        user.getFriends()
+        user.getContacts()
             .then((contacts) => {
-                if (contacts) {
+                fetchDetailContacts(contacts).then((detailContacts) => {
                     dispatch({
                         type: FETCH_CONTACTS_SUCCESS,
-                        payload: contacts,
+                        payload: detailContacts,
                     });
-                }
+                });
             })
             .catch((error) =>
                 dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })

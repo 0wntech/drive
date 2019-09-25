@@ -3,14 +3,22 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import styles from './ContactListItem.module.css';
-import defaultIcon from '../../assets/icons/defaultUserPic.png';
+import defaultIcon from '../../assets/icons/defaultUserPic2.png';
 import Delete from '../../assets/svgIcons/Delete';
 import { removeContact } from '../../actions/UserActions';
 
-const ContactListItem = ({ contact, webId, className, removeContact }) => {
-    console.log('contact', contact);
+const ContactListItem = ({
+    contact,
+    webId,
+    className,
+    removeContact,
+    onClick,
+}) => {
     return (
-        <div className={classNames(styles.container, className)}>
+        <div
+            onClick={onClick}
+            className={classNames(styles.container, className)}
+        >
             <div className={styles.imageContainer}>
                 {contact.picture ? (
                     <div

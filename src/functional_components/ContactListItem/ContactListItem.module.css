@@ -19,6 +19,11 @@
 
 .iconContainer {
     flex-basis: 10%;
+    cursor: pointer;
+}
+
+.iconContainer:hover ellipse {
+    fill: #ff697b;
 }
 
 .image {
