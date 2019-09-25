@@ -8,13 +8,7 @@ import LoginScreen from './stateful_components/LoginScreen';
 import auth from 'solid-auth-client';
 import User from 'your-user';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
-import { ContactSidebar } from './functional_components/ContactSidebar';
-import {
-    login,
-    fetchUser,
-    setWebId,
-    fetchContacts,
-} from './actions/UserActions';
+import { login, fetchUser, setWebId } from './actions/UserActions';
 import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';
@@ -150,11 +144,7 @@ class App extends React.Component {
                                     path="/drive"
                                     component={<Drive webId={webId} />}
                                 />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/contacts"
-                                    component={<ContactSidebar webId={webId} />}
-                                />
+
                                 <Route
                                     session={session}
                                     path="/login"
@@ -191,7 +181,6 @@ export default withRouter(
             login,
             fetchUser,
             setWebId,
-            fetchContacts,
         }
     )(App)
 );
