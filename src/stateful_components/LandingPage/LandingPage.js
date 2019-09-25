@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './LandingPage.module.css';
+import Slogan from '../../assets/svgIcons/Slogan';
+import { ActionButton } from '../../functional_components/ActionButton/ActionButton';
 
 class LandingPage extends React.Component {
     constructor(props) {
@@ -11,18 +13,20 @@ class LandingPage extends React.Component {
 
     render() {
         return (
-            <div className={styles.container}>
-                <div className={styles.floatAnimation}>
-                    <p className={styles.slogan}>
-                        Because the internet deserves better.
-                    </p>
-                    <a className={styles.homeButton} href="/home">
+            <div className={styles.grid}>
+                <div className={styles.mainArea}>
+                    <div className={styles.container}>
+                        <Slogan width="100%" viewBox="0 0 971 219" />
+                        <div className={styles.buttons}>
+                            <ActionButton label="Register" color="green" />
+                            <p>or</p>
+                            <ActionButton label="Login" color="blue" />
+                        </div>
+                    </div>
+                    {/* <a className={styles.homeButton} href="/home">
                         Get Home
-                    </a>
+                    </a> */}
                 </div>
-                <section style={{ backgroundColor: '#333' }}>
-                    <p className={styles.mission}>Owning your digital self.</p>
-                </section>
             </div>
         );
     }

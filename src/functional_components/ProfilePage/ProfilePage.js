@@ -9,11 +9,7 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 
 const ProfilePage = ({
-    isExpanded,
-    toggleSidebar,
-    user,
-    onProfileUpdate,
-    onPictureChange,
+    user
 }) => {
     if (user) {
         return (

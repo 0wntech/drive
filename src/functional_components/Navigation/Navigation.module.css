@@ -72,20 +72,6 @@
     cursor: pointer;
 }
 
-.brand p {
-    margin: 0 10px;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 300;
-    align-self: center;
-    display: inline;
-    font-size: 1.5em;
-}
-
-.brand img {
-    height: auto;
-    max-height: 50px;
-}
-
 .profileIcon {
     height: 64px;
     width: 64px;

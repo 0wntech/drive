@@ -1,3 +1,5 @@
+import idps from '../assets/idps';
+
 import {
     LOGIN,
     LOGIN_SUCCESS,
@@ -22,6 +24,10 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    COPY_ITEMS,
+    PASTE_ITEMS,
+    PASTE_ITEMS_SUCCESS,
+    PASTE_ITEMS_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -42,7 +48,9 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-    idps: null,
+    idps: idps,
+    clipboard: [],
+    loadPaste: false,
     // [
     //     {
     //         name: 'testdata',
@@ -117,6 +125,14 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadDeletion: false };
         case DELETE_ITEMS_FAILURE:
             return { ...state, error: payload, loadDeletion: false };
+        case COPY_ITEMS:
+            return { ...state, clipboard: payload };
+        case PASTE_ITEMS:
+            return { ...state, loadPaste: true };
+        case PASTE_ITEMS_SUCCESS:
+            return { ...state, loadPaste: false };
+        case PASTE_ITEMS_FAILURE:
+            return { ...state, error: payload, loadPaste: false };
         default:
             return state;
     }

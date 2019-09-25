@@ -1,0 +1,32 @@
+.container {
+  padding: 9px 33px;
+  border-radius: 20px;
+  color: #666;
+  letter-spacing: .2em;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  font-family: 'Helvetica Neue';
+}
+
+.blue {
+  border: solid #2771FF 2px;
+}
+
+.blue:hover {
+  border: solid #fff 2px;
+  cursor: pointer;
+  background: linear-gradient(to top, #2771FF, rgba(39, 113, 255, 0.5))
+}
+
+.green {
+  border: solid #36A510 2px;
+}
+
+.green:hover {
+  border: solid #fff 2px;
+  cursor: pointer;
+  background: linear-gradient(to top, #36A510, rgba(54, 165, 16, 0.5))
+}

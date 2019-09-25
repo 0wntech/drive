@@ -41,3 +41,8 @@ export const FETCH_IDPS_FAILED = 'fetch_idps_failure';
 export const DELETE_ITEMS = 'delete_items';
 export const DELETE_ITEMS_SUCCESS = 'delete_items_success';
 export const DELETE_ITEMS_FAILURE = 'delete_items_failure';
+
+export const COPY_ITEMS = 'copy_items';
+export const PASTE_ITEMS = 'paste_items';
+export const PASTE_ITEMS_SUCCESS = 'paste_items_success';
+export const PASTE_ITEMS_FAILURE = 'paste_items_failure';

@@ -19,6 +19,8 @@ import {
     sendNotification,
     fetchCurrentItems,
     deleteItems,
+    copyItems,
+    pasteItems,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -344,6 +346,10 @@ class Drive extends React.Component {
             webId,
             setCurrentPath,
             loadDeletion,
+            loadPaste,
+            copyItems,
+            pasteItems,
+            clipboard,
         } = this.props;
 
         const {
@@ -360,13 +366,18 @@ class Drive extends React.Component {
             },
             {
                 label: 'Copy*',
-                onClick: (item) => fileUtils.getInfo(item),
-                disabled: true,
+                onClick: (item) => {
+                    if (!selectedItems.includes(item)) {
+                        selectedItems.push(item);
+                    }
+                    copyItems(selectedItems);
+                },
+                disabled: false,
             },
             {
                 label: 'Paste*',
-                onClick: (item) => fileUtils.getInfo(item),
-                disabled: true,
+                onClick: () => pasteItems(clipboard, currentPath),
+                disabled: clipboard.length === 0,
             },
             {
                 label: 'Rename',
@@ -473,7 +484,7 @@ class Drive extends React.Component {
             </Fragment>
         );
 
-        if ((loadCurrentItems, loadDeletion)) {
+        if ((loadCurrentItems, loadDeletion, loadPaste)) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
@@ -575,6 +586,8 @@ const mapStateToProps = (state) => {
         webId: state.app.webId,
         loadCurrentItems: state.app.loadCurrentItems,
         loadDeletion: state.app.loadDeletion,
+        clipboard: state.app.clipboard,
+        loadPaste: state.app.loadPaste,
     };
 };
 
@@ -587,6 +600,8 @@ export default withRouter(
             fetchCurrentItems,
             setSelection,
             deleteItems,
+            copyItems,
+            pasteItems,
         }
     )(Drive)
 );
