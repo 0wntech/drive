@@ -285,7 +285,11 @@ export const changeProfilePhoto = (e, webId) => {
         reader.onload = function() {
             const data = this.result;
             const contentType = file.type;
-            const pictureUrl = encodeURI(webId.replace('card#me', file.name));
+            const pictureUrl = webId.replace(
+                'card#me',
+                encodeURIComponent(file.name)
+            );
+
             fetcher
                 .webOperation('PUT', pictureUrl, {
                     data: data,

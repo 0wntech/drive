@@ -41,7 +41,7 @@ const Navigation = ({
                                     onClick={() => history.push('/profile')}
                                     className={styles.profileIcon}
                                     style={{
-                                        backgroundImage: 'url(' + picture + ')',
+                                        backgroundImage: `url('${picture}')`,
                                     }}
                                 />
                             ) : (

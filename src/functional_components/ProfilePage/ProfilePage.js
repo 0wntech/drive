@@ -70,9 +70,11 @@ const ProfilePage = ({
                             style={
                                 user && user.picture
                                     ? {
-                                          backgroundImage: `url(${user.picture})`,
+                                          backgroundImage: `url('${user.picture}')`,
                                       }
-                                    : { backgroundImage: `url(${defaultIcon})` }
+                                    : {
+                                          backgroundImage: `url('${defaultIcon}')`,
+                                      }
                             }
                         />
                         <div className={styles.nameContainer}>

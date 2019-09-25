@@ -23,7 +23,7 @@ const ContactListItem = ({
                 {contact.picture ? (
                     <div
                         className={styles.image}
-                        style={{ backgroundImage: `url(${contact.picture})` }}
+                        style={{ backgroundImage: `url('${contact.picture}')` }}
                     />
                 ) : (
                     <img className={styles.image} src={defaultIcon} />
