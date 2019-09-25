@@ -6,15 +6,18 @@
     "classnames": "^2.2.6",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "flare-react": "^1.0.5",
-    "ownuser": "^1.3.0",
-    "rdflib": "^0.20.3",
-    "react": "^16.9.0",
-    "react-bootstrap": "^1.0.0-beta.12",
+    "flare-react": "^1.0.2",
+    "mime": "^2.4.4",
+    "ownuser": "^1.2.5",
+    "rdflib": "^0.20.1",
+    "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.9",
+    "react-collapse": "^4.0.3",
     "react-contexify": "^4.1.1",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.1",
-    "react-router-dom": "^5.1.0",
+    "react-dom": "^16.8.6",
+    "react-motion": "^0.5.2",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-select": "^3.0.5",
     "react-spinners-kit": "^1.9.0",
@@ -40,7 +43,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "set CI=true && react-scripts test && lint-staged",
-      "pre-push": "export CI=true && react-scripts test && lint-staged"
+      "pre-push": "set CI=true && react-scripts test && lint-staged"
     }
   },
   "lint-staged": {

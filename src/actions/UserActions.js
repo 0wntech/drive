@@ -28,9 +28,16 @@ import {
     FETCH_CONTACTS_FAILURE,
     ADD_CONTACT,
     REMOVE_CONTACT,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_FAILURE,
+    UPDATE_PROFILE_SUCCESS,
+    CHANGE_PROFILE_PHOTO,
+    CHANGE_PROFILE_PHOTO_SUCCESS,
+    CHANGE_PROFILE_PHOTO_FAILURE,
 } from './types';
-import auth from 'solid-auth-client';
 import User from 'ownuser';
+import auth from 'solid-auth-client';
+import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 
 export const login = (username, password) => {
@@ -137,11 +144,11 @@ export const fetchNotifications = (webId) => {
     };
 };
 
-export const sendNotification = (webId, notification) => {
+export const sendNotification = (to, notification) => {
     return (dispatch) => {
         dispatch({ type: SEND_NOTIFICATION });
         fileUtils
-            .sendNotification(webId, notification)
+            .sendNotification(to, notification)
             .then(() => {
                 dispatch({
                     type: SEND_NOTIFICATION_SUCCESS,
@@ -251,5 +258,64 @@ export const fetchContacts = (webId) => {
             .catch((error) =>
                 dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
             );
+    };
+};
+export const updateProfile = (profileData, webId) => {
+    return (dispatch) => {
+        dispatch({ type: UPDATE_PROFILE });
+        const currUser = new User(webId);
+        currUser
+            .setProfile(profileData)
+            .then(() => {
+                dispatch({ type: UPDATE_PROFILE_SUCCESS });
+                dispatch(fetchUser(webId));
+            })
+            .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
+    };
+};
+
+export const changeProfilePhoto = (e, webId) => {
+    return (dispatch) => {
+        dispatch({ type: CHANGE_PROFILE_PHOTO });
+        const currUser = new User(webId);
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        const store = rdf.graph();
+        const fetcher = new rdf.Fetcher(store);
+        reader.onload = function() {
+            const data = this.result;
+            const contentType = file.type;
+            const pictureUrl = encodeURI(webId.replace('card#me', file.name));
+            fetcher
+                .webOperation('PUT', pictureUrl, {
+                    data: data,
+                    contentType: contentType,
+                })
+                .then((res) => {
+                    if (res.status == 201) {
+                        currUser
+                            .setPicture(pictureUrl)
+                            .then(() => {
+                                dispatch({
+                                    type: CHANGE_PROFILE_PHOTO_SUCCESS,
+                                });
+                                dispatch(fetchUser(webId));
+                            })
+                            .catch((err) => {
+                                dispatch({
+                                    type: CHANGE_PROFILE_PHOTO_FAILURE,
+                                    payload: err,
+                                });
+                            });
+                    }
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: CHANGE_PROFILE_PHOTO_FAILURE,
+                        payload: err,
+                    });
+                });
+        };
+        reader.readAsArrayBuffer(file);
     };
 };
