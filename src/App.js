@@ -20,6 +20,7 @@ import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';
 import LandingPage from './stateful_components/LandingPage';
 import { ProfilePage } from './functional_components/ProfilePage';
+import { ContactsPage } from './functional_components/ContactsPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -133,6 +134,11 @@ class App extends React.Component {
                                     session={session}
                                     path="/profile"
                                     component={<ProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/contacts"
+                                    component={<ContactsPage />}
                                 />
                                 <PrivateRoute
                                     session={session}
