@@ -67,11 +67,15 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
       <div
         className="nameContainer"
       >
-        <div
-          className="nameLabel"
-        >
-          Ben
-        </div>
+        <input
+          className="value nameLabel"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          placeholder="Ben"
+          readOnly={true}
+          value="Ben"
+        />
         <div
           className="webIdLabel"
         >
@@ -81,20 +85,28 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
       <div
         className="bio"
       >
-        add Bio
+        <input
+          className="value bioLabel"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          placeholder="Add bio.."
+          readOnly={true}
+        />
       </div>
       <div
         className="editWrapper"
       >
         <svg
-          className="editIcon"
+          className="icon"
           fill="none"
           height={32}
+          onClick={[Function]}
           width={32}
         >
           <path
             clipRule="evenodd"
-            d="M22.267 3.067l6.666 6.666a1.289 1.289 0 0 1 0 1.867L11.6 28.933c-.267.267-.533.4-.933.4H4c-.8 0-1.333-.533-1.333-1.333v-6.667c0-.4.133-.666.4-.933L20.4 3.067a1.289 1.289 0 0 1 1.867 0zm-16.934 23.6h4.8l16-16-4.8-4.8-16 16v4.8z"
+            d="M22.267 3.067l6.666 6.666a1.289 1.289 0 010 1.867L11.6 28.933c-.267.267-.533.4-.933.4H4c-.8 0-1.333-.533-1.333-1.333v-6.667c0-.4.133-.666.4-.933L20.4 3.067a1.289 1.289 0 011.867 0zm-16.934 23.6h4.8l16-16-4.8-4.8-16 16v4.8z"
             fill="#000"
             fillRule="evenodd"
           />
@@ -108,7 +120,7 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
           >
             <path
               clipRule="evenodd"
-              d="M22.267 3.067l6.666 6.666a1.289 1.289 0 0 1 0 1.867L11.6 28.933c-.267.267-.533.4-.933.4H4c-.8 0-1.333-.533-1.333-1.333v-6.667c0-.4.133-.666.4-.933L20.4 3.067a1.289 1.289 0 0 1 1.867 0zm-16.934 23.6h4.8l16-16-4.8-4.8-16 16v4.8z"
+              d="M22.267 3.067l6.666 6.666a1.289 1.289 0 010 1.867L11.6 28.933c-.267.267-.533.4-.933.4H4c-.8 0-1.333-.533-1.333-1.333v-6.667c0-.4.133-.666.4-.933L20.4 3.067a1.289 1.289 0 011.867 0zm-16.934 23.6h4.8l16-16-4.8-4.8-16 16v4.8z"
               fill="#fff"
               fillRule="evenodd"
             />
@@ -130,17 +142,45 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
       className="container"
     >
       <div
-        className="keyLabel"
-      >
-        Job
-      </div>
-      <div
-        className="valueContainer"
+        className="keyValueContainer"
       >
         <div
-          className="value"
+          className="keyLabel"
         >
-          Software Engineer
+          Job
+        </div>
+        <div
+          className="valueContainer"
+        >
+          <input
+            className="value"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="Software Engineer"
+            readOnly={true}
+            value="Software Engineer"
+          />
+        </div>
+      </div>
+      <div
+        className="ReactCollapse--collapse"
+        style={
+          Object {
+            "height": 0,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <div
+          className="ReactCollapse--content"
+        >
+          <div
+            className="containerFooter addLabel"
+            onClick={[Function]}
+          >
+            + Add
+          </div>
         </div>
       </div>
     </div>
@@ -148,25 +188,109 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
       className="container"
     >
       <div
-        className="keyLabel"
+        className="keyValueContainer"
       >
-        Email
+        <div
+          className="keyLabel"
+        >
+          Email
+        </div>
+        <div
+          className="valueContainer"
+        >
+          <div
+            className="multiValueContainer"
+          >
+            <div
+              className="valueWrapper"
+            >
+              <input
+                className="value"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="ben.test@owntech.de"
+                readOnly={true}
+                value="ben.test@owntech.de"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        className="valueContainer"
-      />
+        className="ReactCollapse--collapse"
+        style={
+          Object {
+            "height": 0,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <div
+          className="ReactCollapse--content"
+        >
+          <div
+            className="containerFooter addLabel"
+            onClick={[Function]}
+          >
+            + Add
+          </div>
+        </div>
+      </div>
     </div>
     <div
       className="container"
     >
       <div
-        className="keyLabel"
+        className="keyValueContainer"
       >
-        Telephone
+        <div
+          className="keyLabel"
+        >
+          Telephone
+        </div>
+        <div
+          className="valueContainer"
+        >
+          <div
+            className="multiValueContainer"
+          >
+            <div
+              className="valueWrapper"
+            >
+              <input
+                className="value"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="0177313131"
+                readOnly={true}
+                value="0177313131"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        className="valueContainer"
-      />
+        className="ReactCollapse--collapse"
+        style={
+          Object {
+            "height": 0,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <div
+          className="ReactCollapse--content"
+        >
+          <div
+            className="containerFooter addLabel"
+            onClick={[Function]}
+          >
+            + Add
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

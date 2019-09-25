@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfilePage } from './ProfilePage';
+import { ProfilePage } from './ProfilePage.js';
 import { FETCH_USER_SUCCESS } from '../../actions/types';
 import appReducer from '../../reducers/appReducer';
 import TestRenderer from 'react-test-renderer';

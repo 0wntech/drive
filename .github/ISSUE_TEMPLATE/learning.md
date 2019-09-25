@@ -1,7 +1,7 @@
 ---
 name: Learning
 about: Issues related to modules
-title: ''
+title: '[LEARNING]'
 labels: learning
 assignees: ''
 ---
