@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { ClassicSpinner } from 'react-spinners-kit';
 
-import { updateProfile } from '../../actions/UserActions';
+import { updateProfile, changeProfilePhoto } from '../../actions/UserActions';
 import Settings from '../../assets/svgIcons/Settings';
+import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
 import X from '../../assets/svgIcons/X';
 import Check from '../../assets/svgIcons/Check';
@@ -12,14 +13,7 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 
-const ProfilePage = ({
-    isExpanded,
-    webId,
-    user,
-    onProfileUpdate,
-    onPictureChange,
-    updateProfile,
-}) => {
+const ProfilePage = ({ webId, user, updateProfilePic, changeProfilePhoto, updateProfile }) => {
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
 
@@ -37,7 +31,11 @@ const ProfilePage = ({
         updateProfile(userData, webId);
     };
 
-    if (user) {
+    const onPhotoChange = (e) => {
+        changeProfilePhoto(e, webId);
+    };
+
+    if (user || updateProfilePic) {
         return (
             <div className={styles.grid}>
                 <div className={styles.toolbarArea}>
@@ -47,6 +45,20 @@ const ProfilePage = ({
                 </div>
                 <div className={styles.profileContainer}>
                     <div className={styles.headContainer}>
+                        {isEditable ? (
+                            <div className={styles.editPhoto}>
+                                <input
+                                    type="file"
+                                    onChange={onPhotoChange}
+                                    style={{ display: 'none' }}
+                                    id="pictureUpload"
+                                    accept="*/*"
+                                />
+                                <label htmlFor="pictureUpload">
+                                    <Camera />
+                                </label>
+                            </div>
+                        ) : null}
                         <div
                             className={styles.profileImage}
                             style={
@@ -147,9 +159,10 @@ const ProfilePage = ({
 const mapStateToProps = (state) => ({
     user: state.app.user,
     webId: state.app.webId,
+    updateProfilePic: state.app.updateProfilePic,
 });
 
 export default connect(
     mapStateToProps,
-    { updateProfile }
+    { updateProfile, changeProfilePhoto }
 )(ProfilePage);
