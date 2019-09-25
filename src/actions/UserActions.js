@@ -35,7 +35,6 @@ import {
 } from './types';
 import auth from 'solid-auth-client';
 import User from 'ownuser';
-import mime from 'mime';
 import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 

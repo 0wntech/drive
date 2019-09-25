@@ -15,7 +15,7 @@ const MultipleValue = ({
     return (
         <div className={styles.multiValueContainer}>
             {values.map((value, index) => (
-                <div className={styles.valueWrapper}>
+                <div key={index} className={styles.valueWrapper}>
                     <SingleValue
                         dataKey={dataKey}
                         value={value}

@@ -13,7 +13,13 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 
-const ProfilePage = ({ webId, user, updateProfilePic, changeProfilePhoto, updateProfile }) => {
+export const ProfilePage = ({
+    webId,
+    user,
+    updateProfilePic,
+    changeProfilePhoto,
+    updateProfile,
+}) => {
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
 
@@ -35,7 +41,7 @@ const ProfilePage = ({ webId, user, updateProfilePic, changeProfilePhoto, update
         changeProfilePhoto(e, webId);
     };
 
-    if (user || updateProfilePic) {
+    if (user) {
         return (
             <div className={styles.grid}>
                 <div className={styles.toolbarArea}>
