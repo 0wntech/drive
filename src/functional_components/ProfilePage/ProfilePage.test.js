@@ -1,4 +1,3 @@
-// import { shallow } from 'enzyme';
 import React from 'react';
 import { ProfilePage } from './ProfilePage';
 import { FETCH_USER_SUCCESS } from '../../actions/types';
@@ -39,13 +38,3 @@ describe('ProfilePage', () => {
         describe('ProfilePage UnitTest', () => {});
     });
 });
-
-// it('displays profile picture', () => {
-//     const wrapper = shallow(<ProfilePage  />).dive();
-
-//     expect(
-//         wrapper.containsMatchingElement(
-//             <div style="background-image: url(https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png)" />
-//         )
-//     ).toBe(true);
-// });

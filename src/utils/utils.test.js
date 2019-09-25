@@ -12,11 +12,11 @@ describe('Testing util functions', () => {
             );
         });
 
-        test('getBreadcrumbsfromURL(url="") should return empty array', () => {
+        test('test getBreadcrumbsfromURL(url="") should throw', () => {
             expect(() => getBreadcrumbsFromUrl(emptyUrl)).toThrow();
         });
 
-        test('getBreadcrumbsfromURL(url=invalidUrl) should return error', () => {
+        test('test getBreadcrumbsfromURL(url=invalidUrl) should throw', () => {
             expect(() => getBreadcrumbsFromUrl(invalidUrl)).toThrow();
         });
     });
