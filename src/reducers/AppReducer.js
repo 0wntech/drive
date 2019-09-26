@@ -24,10 +24,12 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
-    COPY_ITEMS,
-    PASTE_ITEMS,
-    PASTE_ITEMS_SUCCESS,
-    PASTE_ITEMS_FAILURE,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAILURE,
+    CHANGE_PROFILE_PHOTO,
+    CHANGE_PROFILE_PHOTO_SUCCESS,
+    CHANGE_PROFILE_PHOTO_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -48,9 +50,10 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-    idps: idps,
-    clipboard: [],
-    loadPaste: false,
+    idps: null,
+    updateProfile: false,
+    updateProfileError: false,
+    updateProfilePic: false,
     // [
     //     {
     //         name: 'testdata',
@@ -125,14 +128,22 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadDeletion: false };
         case DELETE_ITEMS_FAILURE:
             return { ...state, error: payload, loadDeletion: false };
-        case COPY_ITEMS:
-            return { ...state, clipboard: payload };
-        case PASTE_ITEMS:
-            return { ...state, loadPaste: true };
-        case PASTE_ITEMS_SUCCESS:
-            return { ...state, loadPaste: false };
-        case PASTE_ITEMS_FAILURE:
-            return { ...state, error: payload, loadPaste: false };
+        case UPDATE_PROFILE:
+            return { ...state, updateProfile: true, updateProfileError: false };
+        case UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                updateProfile: false,
+                updateProfileError: false,
+            };
+        case UPDATE_PROFILE_FAILURE:
+            return { ...state, updateProfile: false, updateProfileError: true };
+        case CHANGE_PROFILE_PHOTO:
+            return { ...state, updateProfilePic: true };
+        case CHANGE_PROFILE_PHOTO_SUCCESS:
+            return { ...state, updateProfilePic: false };
+        case CHANGE_PROFILE_PHOTO_FAILURE:
+            return { ...state, updateProfilePic: false, error: payload };
         default:
             return state;
     }

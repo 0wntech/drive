@@ -45,7 +45,7 @@ const Navigation = ({
                         <div className={styles.profileSection}>
                             {picture ? (
                                 <div
-                                    onClick={toggleSidebar}
+                                    onClick={() => history.push('/profile')}
                                     className={styles.profileIcon}
                                     style={{
                                         backgroundImage: 'url(' + picture + ')',

@@ -19,8 +19,6 @@ import {
     sendNotification,
     fetchCurrentItems,
     deleteItems,
-    copyItems,
-    pasteItems,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -190,6 +188,7 @@ class Drive extends React.Component {
     }
 
     createFolder(folderAddress) {
+        const { currentPath, setCurrentPath } = this.props;
         const request = {
             method: 'POST',
             headers: {
@@ -199,23 +198,24 @@ class Drive extends React.Component {
             },
         };
 
-        auth.fetch(this.props.currentPath, request).then(() => {
-            this.props.setCurrentPath(this.props.currentPath);
+        auth.fetch(currentPath, request).then(() => {
+            setCurrentPath(currentPath);
         });
     }
 
     createFile(folderAddress) {
+        const { currentPath, setCurrentPath } = this.props;
         const request = {
             method: 'POST',
             headers: {
                 slug: folderAddress,
                 link: '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
-                contentType: 'text/turtle',
+                'Content-Type': 'text/turtle',
             },
         };
 
-        auth.fetch(this.props.currentPath, request).then(() => {
-            this.props.setCurrentPath(this.props.currentPath);
+        auth.fetch(currentPath, request).then(() => {
+            setCurrentPath(currentPath);
         });
     }
 
@@ -600,8 +600,6 @@ export default withRouter(
             fetchCurrentItems,
             setSelection,
             deleteItems,
-            copyItems,
-            pasteItems,
         }
     )(Drive)
 );
