@@ -8,6 +8,7 @@
     "enzyme-adapter-react-16": "^1.14.0",
     "flare-react": "^1.0.2",
     "mime": "^2.4.4",
+    "ownfiles": "^1.0.4",
     "ownuser": "^1.2.5",
     "rdflib": "^0.20.1",
     "react": "^16.8.6",

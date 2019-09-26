@@ -19,6 +19,8 @@ import {
     sendNotification,
     fetchCurrentItems,
     deleteItems,
+    copyItems,
+    pasteItems,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -367,7 +369,10 @@ class Drive extends React.Component {
             {
                 label: 'Copy*',
                 onClick: (item) => {
-                    if (!selectedItems.includes(item)) {
+                    if (
+                        !selectedItems.includes(item) &&
+                        item !== webId.replace('profile/card#me', '')
+                    ) {
                         selectedItems.push(item);
                     }
                     copyItems(selectedItems);
@@ -490,7 +495,7 @@ class Drive extends React.Component {
                     <ClassicSpinner
                         size={30}
                         color="#686769"
-                        loading={(loadCurrentItems, loadDeletion)}
+                        loading={(loadCurrentItems, loadDeletion, loadPaste)}
                     />
                 </div>
             );
@@ -600,6 +605,8 @@ export default withRouter(
             fetchCurrentItems,
             setSelection,
             deleteItems,
+            copyItems,
+            pasteItems,
         }
     )(Drive)
 );

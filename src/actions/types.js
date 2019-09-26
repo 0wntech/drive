@@ -42,6 +42,11 @@ export const DELETE_ITEMS = 'delete_items';
 export const DELETE_ITEMS_SUCCESS = 'delete_items_success';
 export const DELETE_ITEMS_FAILURE = 'delete_items_failure';
 
+export const COPY_ITEMS = 'copy_items';
+export const PASTE_ITEMS = 'paste_items';
+export const PASTE_ITEMS_SUCCESS = 'paste_items_success';
+export const PASTE_ITEMS_FAILURE = 'paste_items_failure';
+
 export const UPDATE_PROFILE = 'delete_items';
 export const UPDATE_PROFILE_SUCCESS = 'update_profile_success';
 export const UPDATE_PROFILE_FAILURE = 'update_profile_failure';
