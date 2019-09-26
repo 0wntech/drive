@@ -17,6 +17,15 @@ svg:hover {
   flex-direction: column;
 }
 
+svg:hover {
+    cursor: pointer;
+}
+
+.editButtons {
+    display: flex;
+    flex-direction: column;
+}
+
 .iconWrapper {
   height: 100%;
   display: flex;
@@ -30,6 +39,7 @@ svg:hover {
 }
 
 .profileContainer {
+<<<<<<< HEAD
   grid-area: profile;
   overflow-y: auto;
   display: flex;
@@ -37,6 +47,15 @@ svg:hover {
   width: 100%;
   height: 100%;
   margin-top: 65px;
+=======
+    grid-area: profile;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin-top: 65px;
+>>>>>>> 44c2da56dc77d593d0c745523e36d516e298d680
 }
 
 .profileImage {
@@ -66,6 +85,23 @@ svg:hover {
   cursor: pointer;
 }
 
+.editPhoto {
+    grid-area: profileImg;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 5, 0.5);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.editPhoto:hover {
+    cursor: pointer;
+}
+
 .nameContainer {
   grid-area: name;
   padding: 0 0 0 30px;
@@ -90,12 +126,34 @@ svg:hover {
   width: 100% !important;
 }
 
+<<<<<<< HEAD
 .bio {
   padding: 0 0 0 30px;
   grid-area: bio;
   display: flex;
   flex-direction: column;
   justify-content: center;
+=======
+.bioLabel {
+    letter-spacing: 0.2em;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 21px;
+    width: 100% !important;
+}
+
+.bio {
+    padding: 0 0 0 30px;
+    grid-area: bio;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+>>>>>>> 44c2da56dc77d593d0c745523e36d516e298d680
 }
 
 .headInfoContainer {
@@ -104,6 +162,7 @@ svg:hover {
 }
 
 .headContainer {
+<<<<<<< HEAD
   width: 100%;
   max-height: 100%;
   margin-bottom: 20px;
@@ -111,6 +170,15 @@ svg:hover {
   grid-template-columns: 10vw 3fr 1fr;
   grid-template-rows: 5vw 5vw;
   grid-template-areas: 'profileImg name editIcon' 'profileImg bio .';
+=======
+    width: 100%;
+    max-height: 100%;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 10vw 3fr 1fr;
+    grid-template-rows: 5vw 5vw;
+    grid-template-areas: 'profileImg name editIcon' 'profileImg bio .';
+>>>>>>> 44c2da56dc77d593d0c745523e36d516e298d680
 }
 
 .iconContainer {
@@ -129,6 +197,7 @@ svg:hover {
 }
 
 .nameLabel {
+<<<<<<< HEAD
   font-family: Roboto;
   font-style: normal;
   width: 100% !important;
@@ -140,6 +209,19 @@ svg:hover {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: visible;
+=======
+    font-family: Roboto;
+    font-style: normal;
+    width: 100% !important;
+    font-weight: 300;
+    font-size: 24px !important;
+    line-height: 28px;
+    position: relative;
+    letter-spacing: 0.2em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: visible;
+>>>>>>> 44c2da56dc77d593d0c745523e36d516e298d680
 }
 
 .webIdLabel {
@@ -173,5 +255,10 @@ svg:hover {
 }
 
 .icon {
+<<<<<<< HEAD
   cursor: pointer;
 }
+=======
+    cursor: pointer;
+}
+>>>>>>> 44c2da56dc77d593d0c745523e36d516e298d680

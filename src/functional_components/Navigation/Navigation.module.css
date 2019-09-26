@@ -73,8 +73,8 @@
 }
 
 .profileIcon {
-    height: 64px;
-    width: 64px;
+    min-height: 64px;
+    min-width: 64px;
     border: 5px solid #e5e5e5;
     background-size: cover;
     background-position: center;
