@@ -13,7 +13,7 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 
-const ProfilePage = ({
+export const ProfilePage = ({
     webId,
     user,
     updateProfilePic,

@@ -242,7 +242,9 @@ export const pasteItems = (items, location) => {
                             return pod.copy(item, location);
                         }
                     });
-                    Promise.all(items);
+                    Promise.all(items).catch((err) => {
+                        reject(err);
+                    });
                 });
                 Promise.resolve(paste)
                     .then(() => {
