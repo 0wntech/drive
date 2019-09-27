@@ -5,7 +5,8 @@
   line-height: 29px;
   display: flex;
   align-items: center;
-  font-family: 'Helvetica Neue';
+  font-family: "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 .blue {

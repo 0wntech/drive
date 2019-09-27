@@ -4,33 +4,17 @@ import styles from './ActionButton.module.css';
 import classNames from 'classnames';
 
 const ActionButton = ({ label, className, color, onClick, size }) => {
-    switch (color) {
-        case 'red':
-            color = 'red';
-            break;
-        case 'green':
-            color = 'green';
-            break;
-        default:
-            color = 'blue';
-            break;
-    }
-    
-    switch (size) {
-        case 'sm':
-            size = 'sm';
-            break;
-        case 'md':
-            size = 'md';
-            break;
-        default:
-            size = 'lg';
-            break;
-    }
+    color = color ? color : 'blue';
+    size = size ? size : 'lg';
 
     return (
         <div
-            className={classNames(styles.container, className, styles[color], styles[size])}
+            className={classNames(
+                styles.container,
+                className,
+                styles[color],
+                styles[size]
+            )}
             onClick={onClick}
         >
             {label}
@@ -39,8 +23,10 @@ const ActionButton = ({ label, className, color, onClick, size }) => {
 };
 
 ActionButton.propTypes = {
-  label: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+    color: PropTypes.oneOf(['red', 'green', 'blue']),
+    size: PropTypes.oneOf(['sm', 'md', 'lg']),
+    label: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default ActionButton;
