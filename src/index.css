@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    font-family: "Helvetica Neue Light", "Helvetica Neue", 
-    Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
+        'Lucida Grande', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

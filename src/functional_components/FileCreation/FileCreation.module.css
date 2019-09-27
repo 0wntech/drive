@@ -1,38 +1,38 @@
-.icon{
+.icon {
     position: fixed;
     height: 100px;
     width: 100px;
-    opacity: .9;
+    opacity: 0.9;
 }
 
-.icon:hover{
+.icon:hover {
     cursor: pointer;
     opacity: 1;
 }
 
-@media (max-width: 415px){
-    .icon{
+@media (max-width: 415px) {
+    .icon {
         bottom: 30%;
         right: 10%;
     }
 }
 
-@media (min-width: 415px) and (max-width: 1100px){
-    .icon{
+@media (min-width: 415px) and (max-width: 1100px) {
+    .icon {
         bottom: 32%;
         right: 13%;
     }
 }
 
-@media (min-width: 1100px) and (max-width: 1700px){
-    .icon{
+@media (min-width: 1100px) and (max-width: 1700px) {
+    .icon {
         bottom: 32%;
         right: 18%;
     }
 }
 
-@media (min-width: 1700px){
-    .icon{
+@media (min-width: 1700px) {
+    .icon {
         bottom: 32%;
         right: 25%;
     }

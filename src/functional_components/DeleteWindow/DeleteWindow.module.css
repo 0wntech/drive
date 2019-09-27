@@ -1,6 +1,6 @@
 .selectedFiles {
-  max-height: 20rem;
-  overflow-y: auto;
+    max-height: 20rem;
+    overflow-y: auto;
 }
 
 .button {

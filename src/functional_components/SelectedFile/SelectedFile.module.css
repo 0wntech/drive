@@ -7,24 +7,24 @@
     padding: 5px 20px;
     border: solid #6db7db 1px;
     border-radius: 20px;
-  }
-  
-  .listing {
+}
+
+.listing {
     max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .listing > img {
+}
+
+.listing > img {
     min-width: 24px;
     max-height: 20px;
     margin: 0 10px 0 5px;
-  }
+}
 
-  .labelText{
+.labelText {
     max-width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
+}
