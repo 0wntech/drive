@@ -1,3 +1,5 @@
+import idps from '../assets/idps';
+
 import {
     LOGIN,
     LOGIN_SUCCESS,
@@ -19,6 +21,10 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    COPY_ITEMS,
+    PASTE_ITEMS,
+    PASTE_ITEMS_SUCCESS,
+    PASTE_ITEMS_FAILURE,
     FETCH_CONTACTS,
     FETCH_CONTACTS_FAILURE,
     FETCH_CONTACTS_SUCCESS,
@@ -28,6 +34,10 @@ import {
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
+    SET_CURRENT_CONTACT,
+    RENAME_ITEM,
+    RENAME_ITEM_SUCCESS,
+    RENAME_ITEM_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -48,7 +58,11 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-    idps: null,
+    idps: idps,
+    clipboard: [],
+    loadPaste: false,
+    idps: idps,
+    currentContact: null,
     updateProfile: false,
     updateProfileError: false,
     updateProfilePic: false,
@@ -126,6 +140,14 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadDeletion: false };
         case DELETE_ITEMS_FAILURE:
             return { ...state, error: payload, loadDeletion: false };
+        case COPY_ITEMS:
+            return { ...state, clipboard: payload };
+        case PASTE_ITEMS:
+            return { ...state, loadPaste: true };
+        case PASTE_ITEMS_SUCCESS:
+            return { ...state, loadPaste: false };
+        case PASTE_ITEMS_FAILURE:
+            return { ...state, error: payload, loadPaste: false };
         case UPDATE_PROFILE:
             return { ...state, updateProfile: true, updateProfileError: false };
         case UPDATE_PROFILE_SUCCESS:
@@ -142,6 +164,14 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, updateProfilePic: false };
         case CHANGE_PROFILE_PHOTO_FAILURE:
             return { ...state, updateProfilePic: false, error: payload };
+        case SET_CURRENT_CONTACT:
+            return { ...state, currentContact: payload };
+        case RENAME_ITEM:
+            return { ...state, renamingItem: true };
+        case RENAME_ITEM_SUCCESS:
+            return { ...state, renamingItem: false };
+        case RENAME_ITEM_FAILURE:
+            return { ...state, renamingItem: false, error: payload };
         default:
             return state;
     }

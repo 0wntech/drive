@@ -12,7 +12,7 @@ import { login, fetchUser, setWebId } from './actions/UserActions';
 import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';
-import LandingPage from './stateful_components/LandingPage';
+import LandingPage from './functional_components/LandingPage';
 import { ProfilePage } from './functional_components/ProfilePage';
 import { ContactsPage } from './functional_components/ContactsPage';
 

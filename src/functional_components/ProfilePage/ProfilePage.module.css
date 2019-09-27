@@ -17,6 +17,15 @@ svg:hover {
     flex-direction: column;
 }
 
+svg:hover {
+    cursor: pointer;
+}
+
+.editButtons {
+    display: flex;
+    flex-direction: column;
+}
+
 .iconWrapper {
     height: 100%;
     display: flex;
@@ -47,6 +56,23 @@ svg:hover {
     background-size: cover;
     background-position: center;
     border-radius: 50%;
+}
+
+.editPhoto {
+    grid-area: profileImg;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 5, 0.5);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.editPhoto:hover {
+    cursor: pointer;
 }
 
 .editPhoto {

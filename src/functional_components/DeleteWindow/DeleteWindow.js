@@ -31,7 +31,7 @@ export default function DeleteWindow({
                     onClick={onCancel ? onCancel : onClose}
                     className={styles.button}
                 >
-                    CANCEL
+                    Cancel
                 </div>
                 <div
                     onClick={() => {

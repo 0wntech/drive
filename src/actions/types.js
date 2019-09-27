@@ -42,6 +42,11 @@ export const DELETE_ITEMS = 'delete_items';
 export const DELETE_ITEMS_SUCCESS = 'delete_items_success';
 export const DELETE_ITEMS_FAILURE = 'delete_items_failure';
 
+export const COPY_ITEMS = 'copy_items';
+export const PASTE_ITEMS = 'paste_items';
+export const PASTE_ITEMS_SUCCESS = 'paste_items_success';
+export const PASTE_ITEMS_FAILURE = 'paste_items_failure';
+
 export const FETCH_CONTACTS = 'fetch_contacts';
 export const FETCH_CONTACTS_SUCCESS = 'fetch_contacts_success';
 export const FETCH_CONTACTS_FAILURE = 'fetch_contacts_failure';
@@ -61,3 +66,9 @@ export const UPDATE_PROFILE_FAILURE = 'update_profile_failure';
 export const CHANGE_PROFILE_PHOTO = 'change_profile_photo';
 export const CHANGE_PROFILE_PHOTO_SUCCESS = 'change_profile_photo_success';
 export const CHANGE_PROFILE_PHOTO_FAILURE = 'change_profile_photo_failure';
+
+export const SET_CURRENT_CONTACT = 'set_current_contact';
+
+export const RENAME_ITEM = 'rename_item';
+export const RENAME_ITEM_SUCCESS = 'rename_item_success';
+export const RENAME_ITEM_FAILURE = 'rename_item_failure';

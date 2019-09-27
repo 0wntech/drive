@@ -13,12 +13,16 @@ import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { InputWindow } from '../../functional_components/InputWindow';
 import { DeleteWindow } from '../../functional_components/DeleteWindow';
+import RenameWindow from '../../functional_components/RenameWindow/RenameWindow';
 import {
     setCurrentPath,
     setSelection,
     sendNotification,
     fetchCurrentItems,
     deleteItems,
+    copyItems,
+    pasteItems,
+    renameItem,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -38,7 +42,9 @@ class Drive extends React.Component {
             isCreateFolderVisible: false,
             isConsentWindowVisible: false,
             isCreateFileVisible: false,
+            isRenameFileVisible: false,
             files: undefined,
+            renamedItem: undefined,
         };
 
         this.createFolder = this.createFolder.bind(this);
@@ -56,6 +62,8 @@ class Drive extends React.Component {
         this.closeConsentWindow = this.closeConsentWindow.bind(this);
         this.openCreateFileWindow = this.openCreateFileWindow.bind(this);
         this.closeCreateFileWindow = this.closeCreateFileWindow.bind(this);
+        this.openRenameFileWindow = this.openRenameFileWindow.bind(this);
+        this.closeRenameFileWindow = this.closeRenameFileWindow.bind(this);
     }
 
     sortContainments(urls) {
@@ -331,6 +339,20 @@ class Drive extends React.Component {
         });
     }
 
+    closeRenameFileWindow(item) {
+        this.setState({
+            isRenameFileVisible: false,
+            renamedItem: undefined,
+        });
+    }
+
+    openRenameFileWindow(item) {
+        this.setState({
+            isRenameFileVisible: true,
+            renamedItem: item,
+        });
+    }
+
     componentWillUnmount() {
         // console.log('Caching state...');
         // localStorage.setItem('appState', JSON.stringify(this.state));
@@ -346,12 +368,19 @@ class Drive extends React.Component {
             webId,
             setCurrentPath,
             loadDeletion,
+            loadPaste,
+            copyItems,
+            pasteItems,
+            clipboard,
+            renameItem,
         } = this.props;
 
         const {
             isConsentWindowVisible,
             isCreateFileVisible,
             isCreateFolderVisible,
+            isRenameFileVisible,
+            renamedItem,
         } = this.state;
 
         const CONTEXTMENU_OPTIONS = [
@@ -362,17 +391,25 @@ class Drive extends React.Component {
             },
             {
                 label: 'Copy*',
-                onClick: (item) => fileUtils.getInfo(item),
-                disabled: true,
+                onClick: (item) => {
+                    if (
+                        !selectedItems.includes(item) &&
+                        item !== webId.replace('profile/card#me', '')
+                    ) {
+                        selectedItems.push(item);
+                    }
+                    copyItems(selectedItems);
+                },
+                disabled: false,
             },
             {
                 label: 'Paste*',
-                onClick: (item) => fileUtils.getInfo(item),
-                disabled: true,
+                onClick: () => pasteItems(clipboard, currentPath),
+                disabled: clipboard.length === 0,
             },
             {
                 label: 'Rename',
-                onClick: (item) => fileUtils.renameItem(item),
+                onClick: (item) => this.openRenameFileWindow(item),
                 disabled: false,
             },
             {
@@ -472,16 +509,28 @@ class Drive extends React.Component {
                     onClose={this.closeCreateFileWindow}
                     placeholder={'Untitled'}
                 />
+                <RenameWindow
+                    windowName="Rename File"
+                    info="Enter a new name:"
+                    placeholder={renamedItem ? renamedItem : 'Untitled'}
+                    onSubmit={(value) =>
+                        renameItem(renamedItem, encodeURIComponent(value))
+                    }
+                    className={
+                        isRenameFileVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeRenameFileWindow}
+                />
             </Fragment>
         );
 
-        if ((loadCurrentItems, loadDeletion)) {
+        if ((loadCurrentItems, loadDeletion, loadPaste)) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
                         size={30}
                         color="#686769"
-                        loading={(loadCurrentItems, loadDeletion)}
+                        loading={(loadCurrentItems, loadDeletion, loadPaste)}
                     />
                 </div>
             );
@@ -577,6 +626,8 @@ const mapStateToProps = (state) => {
         webId: state.app.webId,
         loadCurrentItems: state.app.loadCurrentItems,
         loadDeletion: state.app.loadDeletion,
+        clipboard: state.app.clipboard,
+        loadPaste: state.app.loadPaste,
     };
 };
 
@@ -589,6 +640,9 @@ export default withRouter(
             fetchCurrentItems,
             setSelection,
             deleteItems,
+            copyItems,
+            pasteItems,
+            renameItem,
         }
     )(Drive)
 );
