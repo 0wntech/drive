@@ -43,21 +43,16 @@ const Navigation = ({
                 {webId ? (
                     <div className={styles.dropdownWrapper}>
                         <div className={styles.profileSection}>
-                            {picture ? (
-                                <div
-                                    onClick={() => history.push('/profile')}
-                                    className={styles.profileIcon}
-                                    style={{
-                                        backgroundImage: 'url(' + picture + ')',
-                                    }}
-                                />
-                            ) : (
-                                <img
-                                    onClick={() => history.push('/profile')}
-                                    className={styles.profileIcon}
-                                    src={defaultIcon}
-                                />
-                            )}
+                            <div
+                                onClick={() => history.push('/profile')}
+                                className={styles.profileIcon}
+                                style={{
+                                    backgroundImage: `url('${
+                                        picture ? picture : defaultIcon
+                                    }')`,
+                                }}
+                            />
+
                             <div className={styles.username}>{username}</div>
                         </div>
                         <DropdownMenu
