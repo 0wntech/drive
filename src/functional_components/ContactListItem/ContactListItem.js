@@ -13,10 +13,14 @@ const ContactListItem = ({
     className,
     removeContact,
     onClick,
+    history,
 }) => {
     return (
         <div
-            onClick={onClick}
+            onClick={() => {
+                onClick(contact);
+                history.push('/contact');
+            }}
             className={classNames(styles.container, className)}
         >
             <div className={styles.imageContainer}>

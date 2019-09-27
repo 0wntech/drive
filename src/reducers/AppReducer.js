@@ -34,6 +34,7 @@ import {
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
+    SET_CURRENT_PROFILE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -58,6 +59,7 @@ const INITIAL_STATE = {
     clipboard: [],
     loadPaste: false,
     idps: idps,
+    currentProfile: null,
     updateProfile: false,
     updateProfileError: false,
     updateProfilePic: false,
@@ -159,6 +161,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, updateProfilePic: false };
         case CHANGE_PROFILE_PHOTO_FAILURE:
             return { ...state, updateProfilePic: false, error: payload };
+        case SET_CURRENT_PROFILE:
+            return { ...state, currentProfile: payload };
         default:
             return state;
     }
