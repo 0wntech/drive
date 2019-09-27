@@ -6,9 +6,6 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
     SET_WEBID,
-    FETCH_FRIENDS,
-    FETCH_FRIENDS_FAIL,
-    FETCH_FRIENDS_SUCCESS,
     FETCH_CURRENT_ITEMS,
     FETCH_CURRENT_ITEMS_SUCCESS,
     FETCH_CURRENT_ITEMS_FAIL,
@@ -30,6 +27,11 @@ import {
     PASTE_ITEMS,
     PASTE_ITEMS_SUCCESS,
     PASTE_ITEMS_FAILURE,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_SUCCESS,
+    FETCH_CONTACTS_FAILURE,
+    ADD_CONTACT,
+    REMOVE_CONTACT,
     UPDATE_PROFILE,
     UPDATE_PROFILE_FAILURE,
     UPDATE_PROFILE_SUCCESS,
@@ -37,9 +39,8 @@ import {
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
 } from './types';
-import auth from 'solid-auth-client';
 import User from 'ownuser';
-import mime from 'mime';
+import auth from 'solid-auth-client';
 import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
@@ -53,6 +54,7 @@ export const login = (username, password) => {
                     dispatch({ type: LOGIN_FAIL });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
+                    dispatch(fetchContacts(session.webId));
                 }
             })
             .catch((error) => {
@@ -94,20 +96,6 @@ export const fetchUser = (webId) => {
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAIL, payload: error })
             );
-    };
-};
-
-export const fetchContacts = (yourUserObject) => {
-    return (dispatch) => {
-        dispatch({ type: FETCH_FRIENDS });
-        yourUserObject
-            .getFriends()
-            .then((friends) => {
-                dispatch({ type: FETCH_FRIENDS_SUCCESS, payload: friends });
-            })
-            .catch((error) => {
-                dispatch({ type: FETCH_FRIENDS_FAIL, payload: error });
-            });
     };
 };
 
@@ -261,6 +249,63 @@ export const pasteItems = (items, location) => {
     };
 };
 
+export const addContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: ADD_CONTACT });
+        const user = new User(webId);
+        user.addContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
+    };
+};
+
+export const removeContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: REMOVE_CONTACT });
+        const user = new User(webId);
+        user.deleteContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
+    };
+};
+
+export const fetchDetailContacts = (contacts) => {
+    const requests = contacts.map((webid) => {
+        const request = new Promise((resolve, reject) => {
+            const contact = new User(webid);
+            contact
+                .getProfile()
+                .then((profileData) => {
+                    resolve(profileData);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+        return request;
+    });
+    return Promise.all(requests);
+};
+
+export const fetchContacts = (webId) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CONTACTS });
+        const user = new User(webId);
+        console.log(user);
+        user.getContacts()
+            .then((contacts) => {
+                fetchDetailContacts(contacts).then((detailContacts) => {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: detailContacts,
+                    });
+                });
+            })
+            .catch((error) =>
+                dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
+            );
+    };
+};
 export const updateProfile = (profileData, webId) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_PROFILE });
@@ -286,7 +331,11 @@ export const changeProfilePhoto = (e, webId) => {
         reader.onload = function() {
             const data = this.result;
             const contentType = file.type;
-            const pictureUrl = webId.replace('card#me', file.name);
+            const pictureUrl = webId.replace(
+                'card#me',
+                encodeURIComponent(file.name)
+            );
+
             fetcher
                 .webOperation('PUT', pictureUrl, {
                     data: data,

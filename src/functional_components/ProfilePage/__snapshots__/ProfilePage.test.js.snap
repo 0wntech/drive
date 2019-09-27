@@ -60,7 +60,7 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
         className="profileImage"
         style={
           Object {
-            "backgroundImage": "url(https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png)",
+            "backgroundImage": "url('https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png')",
           }
         }
       />
