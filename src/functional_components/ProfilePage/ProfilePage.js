@@ -41,7 +41,7 @@ export const ProfilePage = ({
         changeProfilePhoto(e, webId);
     };
 
-    if (user) {
+    if (user || updateProfilePic) {
         return (
             <div className={styles.grid}>
                 <div className={styles.toolbarArea}>

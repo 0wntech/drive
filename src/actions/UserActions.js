@@ -23,6 +23,10 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    COPY_ITEMS,
+    PASTE_ITEMS,
+    PASTE_ITEMS_SUCCESS,
+    PASTE_ITEMS_FAILURE,
     FETCH_CONTACTS,
     FETCH_CONTACTS_SUCCESS,
     FETCH_CONTACTS_FAILURE,
@@ -39,6 +43,7 @@ import User from 'ownuser';
 import auth from 'solid-auth-client';
 import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
+import PodClient from 'ownfiles';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -198,7 +203,48 @@ export const deleteItems = (items, currentPath = '/') => {
                 }, 2000);
             })
             .catch((err) => {
-                dispatch({ type: DELETE_ITEMS_FAILURE });
+                dispatch({ type: DELETE_ITEMS_FAILURE, payload: err });
+            });
+    };
+};
+
+export const copyItems = (items) => {
+    return (dispatch) => {
+        dispatch({ type: COPY_ITEMS, payload: items });
+    };
+};
+
+export const pasteItems = (items, location) => {
+    return (dispatch) => {
+        dispatch({ type: PASTE_ITEMS });
+        auth.currentSession()
+            .then((session) => {
+                const pod = new PodClient({ podUrl: session.webId });
+                const paste = new Promise((resolve, reject) => {
+                    items.map((item, index) => {
+                        if (index == items.length - 1) {
+                            return pod.copy(item, location).then(() => {
+                                resolve();
+                            });
+                        } else {
+                            return pod.copy(item, location);
+                        }
+                    });
+                    Promise.all(items).catch((err) => {
+                        reject(err);
+                    });
+                });
+                Promise.resolve(paste)
+                    .then(() => {
+                        dispatch({ type: PASTE_ITEMS_SUCCESS });
+                        dispatch(setCurrentPath(location));
+                    })
+                    .catch((err) => {
+                        dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
+                    });
+            })
+            .catch((err) => {
+                dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
             });
     };
 };
