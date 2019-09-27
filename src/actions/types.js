@@ -42,6 +42,18 @@ export const DELETE_ITEMS = 'delete_items';
 export const DELETE_ITEMS_SUCCESS = 'delete_items_success';
 export const DELETE_ITEMS_FAILURE = 'delete_items_failure';
 
+export const FETCH_CONTACTS = 'fetch_contacts';
+export const FETCH_CONTACTS_SUCCESS = 'fetch_contacts_success';
+export const FETCH_CONTACTS_FAILURE = 'fetch_contacts_failure';
+
+export const ADD_CONTACT = 'add_contact';
+export const ADD_CONTACT_SUCCESS = 'add_contact_success';
+export const ADD_CONTACT_FAILURE = 'add_contact_failure';
+
+export const REMOVE_CONTACT = 'remove_contact';
+export const REMOVE_CONTACT_SUCCESS = 'remove_contact_success';
+export const REMOVE_CONTACT_FAILURE = 'remove_contact_failure';
+
 export const UPDATE_PROFILE = 'delete_items';
 export const UPDATE_PROFILE_SUCCESS = 'update_profile_success';
 export const UPDATE_PROFILE_FAILURE = 'update_profile_failure';

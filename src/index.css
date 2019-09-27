@@ -7,6 +7,14 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+@font-face {
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Helvetica Neue'), url(./assets/fonts/HelveticaNeue-Light.otf),
+        format('otf');
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;

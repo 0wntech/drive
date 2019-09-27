@@ -6,9 +6,6 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
     SET_WEBID,
-    FETCH_FRIENDS,
-    FETCH_FRIENDS_SUCCESS,
-    FETCH_FRIENDS_FAIL,
     FETCH_CURRENT_ITEMS,
     FETCH_CURRENT_ITEMS_SUCCESS,
     FETCH_CURRENT_ITEMS_FAIL,
@@ -22,6 +19,9 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_FAILURE,
+    FETCH_CONTACTS_SUCCESS,
     UPDATE_PROFILE,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAILURE,
@@ -35,7 +35,7 @@ const INITIAL_STATE = {
     user: null,
     loadLogin: false,
     loadUser: false,
-    loadFriends: false,
+    loadContacts: false,
     loadFolderTree: false,
     loadNotifications: false,
     loadCurrentItems: false,
@@ -85,12 +85,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadUser: false, user: payload };
         case FETCH_USER_FAIL:
             return { ...state, loadUser: false, error: payload };
-        case FETCH_FRIENDS:
-            return { ...state, loadFriends: true };
-        case FETCH_FRIENDS_SUCCESS:
-            return { ...state, loadFriends: false, contacts: payload };
-        case FETCH_FRIENDS_FAIL:
-            return { ...state, loadFriends: false, error: payload };
+        case FETCH_CONTACTS:
+            return { ...state, loadContacts: true };
+        case FETCH_CONTACTS_SUCCESS:
+            return { ...state, loadContacts: false, contacts: payload };
+        case FETCH_CONTACTS_FAILURE:
+            return { ...state, loadContacts: false, error: payload };
         case SET_WEBID:
             return { ...state, webId: payload };
         case SET_CURRENT_PATH:
