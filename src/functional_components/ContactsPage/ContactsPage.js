@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
     addContact,
     removeContact,
-    setCurrentProfile,
+    setCurrentContact,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 
@@ -16,6 +16,7 @@ const ContactsPage = ({
     removeContact,
     loadContacts,
     webId,
+    setCurrentContact,
 }) => {
     return (
         <div className={styles.grid}>
@@ -33,7 +34,7 @@ const ContactsPage = ({
             ) : (
                 <div className={styles.contactsContainer}>
                     <ContactList
-                        onItemClick={setCurrentProfile}
+                        onItemClick={setCurrentContact}
                         contacts={contacts}
                     />
                     {/* <button
@@ -62,5 +63,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
     mapStateToProps,
-    { setCurrentProfile, addContact, removeContact }
+    { setCurrentContact, addContact, removeContact }
 )(ContactsPage);

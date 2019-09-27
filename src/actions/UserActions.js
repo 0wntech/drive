@@ -38,7 +38,7 @@ import {
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
-    SET_CURRENT_PROFILE,
+    SET_CURRENT_CONTACT,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
@@ -108,8 +108,10 @@ const convertFileUrlToName = (fileUrl) => {
     return fileUrl.split('/').splice(-1)[0];
 };
 
-export const setCurrentProfile = (profile) => {
-    dispatch({ type: SET_CURRENT_PROFILE, payload: profile });
+export const setCurrentContact = (profile) => {
+    return (dispatch) => {
+        dispatch({ type: SET_CURRENT_CONTACT, payload: profile });
+    };
 };
 
 export const fetchCurrentItems = (url) => {

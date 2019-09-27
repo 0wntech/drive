@@ -67,4 +67,4 @@ export const CHANGE_PROFILE_PHOTO = 'change_profile_photo';
 export const CHANGE_PROFILE_PHOTO_SUCCESS = 'change_profile_photo_success';
 export const CHANGE_PROFILE_PHOTO_FAILURE = 'change_profile_photo_failure';
 
-export const SET_CURRENT_PROFILE = 'set_current_profile';
+export const SET_CURRENT_CONTACT = 'set_current_contact';

@@ -22,7 +22,7 @@ const ContactList = ({ contacts, onItemClick }) => {
 
 ContactList.propTypes = {
     contacts: PropTypes.arrayOf(PropTypes.object),
-    onItemClick: PropTypes.func(PropTypes.func),
+    onItemClick: PropTypes.func,
 };
 
 export default ContactList;

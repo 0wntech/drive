@@ -6,6 +6,7 @@ import styles from './ContactListItem.module.css';
 import defaultIcon from '../../assets/icons/defaultUserPic2.png';
 import Delete from '../../assets/svgIcons/Delete';
 import { removeContact } from '../../actions/UserActions';
+import { withRouter } from 'react-router-dom';
 
 const ContactListItem = ({
     contact,
@@ -18,6 +19,7 @@ const ContactListItem = ({
     return (
         <div
             onClick={() => {
+                console.log(onClick);
                 onClick(contact);
                 history.push('/contact');
             }}
@@ -55,4 +57,4 @@ const mapStateToProps = (state) => ({
 export default connect(
     mapStateToProps,
     { removeContact }
-)(ContactListItem);
+)(withRouter(ContactListItem));
