@@ -503,7 +503,7 @@ class Drive extends React.Component {
                         webId={webId}
                     />
                 ) : null}
-
+                <div className={styles.toolbarHeader}>Drive</div>
                 <ToolbarButtons
                     onFileCreation={this.openCreateFileWindow}
                     onFolderCreation={this.openCreateFolderWindow}
