@@ -1,10 +1,17 @@
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-        'Helvetica Neue', sans-serif;
+    font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
+        'Lucida Grande', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Helvetica Neue'), url(./assets/fonts/HelveticaNeue-Light.otf),
+        format('otf');
 }
 
 code {
@@ -16,6 +23,12 @@ code {
     width: 10px;
 }
 
-body, html, #root{
+body,
+html,
+#root {
     height: 100%;
+}
+
+#root {
+    background-color: #f4f4f4;
 }

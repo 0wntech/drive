@@ -1,3 +1,5 @@
+import idps from '../assets/idps';
+
 import {
     LOGIN,
     LOGIN_SUCCESS,
@@ -6,9 +8,6 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
     SET_WEBID,
-    FETCH_FRIENDS,
-    FETCH_FRIENDS_SUCCESS,
-    FETCH_FRIENDS_FAIL,
     FETCH_CURRENT_ITEMS,
     FETCH_CURRENT_ITEMS_SUCCESS,
     FETCH_CURRENT_ITEMS_FAIL,
@@ -16,6 +15,25 @@ import {
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
+    FETCH_IDPS,
+    FETCH_IDPS_SUCCESS,
+    FETCH_IDPS_FAILED,
+    DELETE_ITEMS,
+    DELETE_ITEMS_SUCCESS,
+    DELETE_ITEMS_FAILURE,
+    COPY_ITEMS,
+    PASTE_ITEMS,
+    PASTE_ITEMS_SUCCESS,
+    PASTE_ITEMS_FAILURE,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_FAILURE,
+    FETCH_CONTACTS_SUCCESS,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAILURE,
+    CHANGE_PROFILE_PHOTO,
+    CHANGE_PROFILE_PHOTO_SUCCESS,
+    CHANGE_PROFILE_PHOTO_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -23,10 +41,11 @@ const INITIAL_STATE = {
     user: null,
     loadLogin: false,
     loadUser: false,
-    loadFriends: false,
+    loadContacts: false,
     loadFolderTree: false,
     loadNotifications: false,
     loadCurrentItems: false,
+    loadDeletion: false,
     error: null,
     contacts: null,
     session: null,
@@ -35,7 +54,13 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-
+    idps: idps,
+    clipboard: [],
+    loadPaste: false,
+    idps: idps,
+    updateProfile: false,
+    updateProfileError: false,
+    updateProfilePic: false,
     // [
     //     {
     //         name: 'testdata',
@@ -69,18 +94,18 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadUser: false, user: payload };
         case FETCH_USER_FAIL:
             return { ...state, loadUser: false, error: payload };
-        case FETCH_FRIENDS:
-            return { ...state, loadFriends: true };
-        case FETCH_FRIENDS_SUCCESS:
-            return { ...state, loadFriends: false, contacts: payload };
-        case FETCH_FRIENDS_FAIL:
-            return { ...state, loadFriends: false, error: payload };
+        case FETCH_CONTACTS:
+            return { ...state, loadContacts: true };
+        case FETCH_CONTACTS_SUCCESS:
+            return { ...state, loadContacts: false, contacts: payload };
+        case FETCH_CONTACTS_FAILURE:
+            return { ...state, loadContacts: false, error: payload };
         case SET_WEBID:
             return { ...state, webId: payload };
         case SET_CURRENT_PATH:
             return { ...state, currentPath: payload, selectedItem: [] };
         case SET_SELECTION:
-            return { ...state, selectedItems: payload };
+            return { ...state, selectedItems: [...payload] };
         case FETCH_CURRENT_ITEMS:
             return { ...state, loadFolder: true };
         case FETCH_CURRENT_ITEMS_SUCCESS:
@@ -98,6 +123,42 @@ export default (state = INITIAL_STATE, action) => {
                 loadNotifications: false,
                 notifications: payload,
             };
+        case FETCH_IDPS:
+            return { ...state, loadIdps: true };
+        case FETCH_IDPS_SUCCESS:
+            return { ...state, idps: payload, loadIdps: false };
+        case FETCH_IDPS_FAILED:
+            return { ...state, error: payload, loadIdps: false };
+        case DELETE_ITEMS:
+            return { ...state, loadDeletion: true };
+        case DELETE_ITEMS_SUCCESS:
+            return { ...state, loadDeletion: false };
+        case DELETE_ITEMS_FAILURE:
+            return { ...state, error: payload, loadDeletion: false };
+        case COPY_ITEMS:
+            return { ...state, clipboard: payload };
+        case PASTE_ITEMS:
+            return { ...state, loadPaste: true };
+        case PASTE_ITEMS_SUCCESS:
+            return { ...state, loadPaste: false };
+        case PASTE_ITEMS_FAILURE:
+            return { ...state, error: payload, loadPaste: false };
+        case UPDATE_PROFILE:
+            return { ...state, updateProfile: true, updateProfileError: false };
+        case UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                updateProfile: false,
+                updateProfileError: false,
+            };
+        case UPDATE_PROFILE_FAILURE:
+            return { ...state, updateProfile: false, updateProfileError: true };
+        case CHANGE_PROFILE_PHOTO:
+            return { ...state, updateProfilePic: true };
+        case CHANGE_PROFILE_PHOTO_SUCCESS:
+            return { ...state, updateProfilePic: false };
+        case CHANGE_PROFILE_PHOTO_FAILURE:
+            return { ...state, updateProfilePic: false, error: payload };
         default:
             return state;
     }

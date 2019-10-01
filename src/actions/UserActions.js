@@ -6,9 +6,6 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
     SET_WEBID,
-    FETCH_FRIENDS,
-    FETCH_FRIENDS_FAIL,
-    FETCH_FRIENDS_SUCCESS,
     FETCH_CURRENT_ITEMS,
     FETCH_CURRENT_ITEMS_SUCCESS,
     FETCH_CURRENT_ITEMS_FAIL,
@@ -20,10 +17,33 @@ import {
     SEND_NOTIFICATION,
     SEND_NOTIFICATION_SUCCESS,
     SEND_NOTIFICATION_FAILURE,
+    FETCH_IDPS,
+    FETCH_IDPS_SUCCESS,
+    FETCH_IDPS_FAILED,
+    DELETE_ITEMS,
+    DELETE_ITEMS_SUCCESS,
+    DELETE_ITEMS_FAILURE,
+    COPY_ITEMS,
+    PASTE_ITEMS,
+    PASTE_ITEMS_SUCCESS,
+    PASTE_ITEMS_FAILURE,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_SUCCESS,
+    FETCH_CONTACTS_FAILURE,
+    ADD_CONTACT,
+    REMOVE_CONTACT,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_FAILURE,
+    UPDATE_PROFILE_SUCCESS,
+    CHANGE_PROFILE_PHOTO,
+    CHANGE_PROFILE_PHOTO_SUCCESS,
+    CHANGE_PROFILE_PHOTO_FAILURE,
 } from './types';
+import User from 'ownuser';
 import auth from 'solid-auth-client';
-import User from 'your-user';
+import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
+import PodClient from 'ownfiles';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -31,14 +51,10 @@ export const login = (username, password) => {
         auth.currentSession()
             .then((session) => {
                 if (!session) {
-                    auth.popupLogin(
-                        'https://owntech.de/common/popup.html'
-                    ).then(
-                        (value) => console.log('value from, auth login', value)
-                        // setSessionInfo(session);
-                    );
-                } else {
+                    dispatch({ type: LOGIN_FAIL });
+                } else if (session) {
                     dispatch(setSessionInfo(session));
+                    dispatch(fetchContacts(session.webId));
                 }
             })
             .catch((error) => {
@@ -70,7 +86,6 @@ export const setCurrentPath = (newPath) => {
 
 export const fetchUser = (webId) => {
     return (dispatch) => {
-        console.log('in fetch user', webId);
         dispatch({ type: FETCH_USER });
         const currUser = new User(webId);
         currUser
@@ -81,21 +96,6 @@ export const fetchUser = (webId) => {
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAIL, payload: error })
             );
-        console.log('finish');
-    };
-};
-
-export const fetchContacts = (yourUserObject) => {
-    return (dispatch) => {
-        dispatch({ type: FETCH_FRIENDS });
-        yourUserObject
-            .getFriends()
-            .then((friends) => {
-                dispatch({ type: FETCH_FRIENDS_SUCCESS, payload: friends });
-            })
-            .catch((error) => {
-                dispatch({ type: FETCH_FRIENDS_FAIL, payload: error });
-            });
     };
 };
 
@@ -113,7 +113,6 @@ export const fetchCurrentItems = (url) => {
         fileUtils
             .getFolderFiles(url)
             .then((items) => {
-                console.log(items);
                 const fileNames = items.files.map((file) => {
                     return convertFileUrlToName(file);
                 });
@@ -150,11 +149,11 @@ export const fetchNotifications = (webId) => {
     };
 };
 
-export const sendNotification = (webId, notification) => {
+export const sendNotification = (to, notification) => {
     return (dispatch) => {
         dispatch({ type: SEND_NOTIFICATION });
         fileUtils
-            .sendNotification(webId, notification)
+            .sendNotification(to, notification)
             .then(() => {
                 dispatch({
                     type: SEND_NOTIFICATION_SUCCESS,
@@ -172,5 +171,201 @@ export const sendNotification = (webId, notification) => {
 export const setSelection = (selection) => {
     return (dispatch) => {
         dispatch({ type: SET_SELECTION, payload: selection });
+    };
+};
+
+export const fetchIdps = () => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_IDPS });
+        const request = { method: 'GET' };
+        fetch('https://solid.github.io/solid-idp-list/services.json', request)
+            .then((response) => {
+                response.json().then((idps) => {
+                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: idps.idps });
+                });
+            })
+            .catch((err) => {
+                dispatch({ type: FETCH_IDPS_FAILED, payload: err });
+            });
+    };
+};
+
+export const deleteItems = (items, currentPath = '/') => {
+    return (dispatch) => {
+        dispatch({ type: DELETE_ITEMS });
+        fileUtils
+            .deleteItems(items)
+            .then(() => {
+                // To avoid reloading when not everything has been deleted
+                setTimeout(() => {
+                    dispatch({ type: DELETE_ITEMS_SUCCESS });
+                    dispatch(setCurrentPath(currentPath));
+                }, 2000);
+            })
+            .catch((err) => {
+                dispatch({ type: DELETE_ITEMS_FAILURE, payload: err });
+            });
+    };
+};
+
+export const copyItems = (items) => {
+    return (dispatch) => {
+        dispatch({ type: COPY_ITEMS, payload: items });
+    };
+};
+
+export const pasteItems = (items, location) => {
+    return (dispatch) => {
+        dispatch({ type: PASTE_ITEMS });
+        auth.currentSession()
+            .then((session) => {
+                const pod = new PodClient({ podUrl: session.webId });
+                const paste = new Promise((resolve, reject) => {
+                    items.map((item, index) => {
+                        if (index == items.length - 1) {
+                            return pod.copy(item, location).then(() => {
+                                resolve();
+                            });
+                        } else {
+                            return pod.copy(item, location);
+                        }
+                    });
+                    Promise.all(items).catch((err) => {
+                        reject(err);
+                    });
+                });
+                Promise.resolve(paste)
+                    .then(() => {
+                        dispatch({ type: PASTE_ITEMS_SUCCESS });
+                        dispatch(setCurrentPath(location));
+                    })
+                    .catch((err) => {
+                        dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
+                    });
+            })
+            .catch((err) => {
+                dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
+            });
+    };
+};
+
+export const addContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: ADD_CONTACT });
+        const user = new User(webId);
+        user.addContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
+    };
+};
+
+export const removeContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: REMOVE_CONTACT });
+        const user = new User(webId);
+        user.deleteContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
+    };
+};
+
+export const fetchDetailContacts = (contacts) => {
+    const requests = contacts.map((webid) => {
+        const request = new Promise((resolve, reject) => {
+            const contact = new User(webid);
+            contact
+                .getProfile()
+                .then((profileData) => {
+                    resolve(profileData);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+        return request;
+    });
+    return Promise.all(requests);
+};
+
+export const fetchContacts = (webId) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CONTACTS });
+        const user = new User(webId);
+        console.log(user);
+        user.getContacts()
+            .then((contacts) => {
+                fetchDetailContacts(contacts).then((detailContacts) => {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: detailContacts,
+                    });
+                });
+            })
+            .catch((error) =>
+                dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
+            );
+    };
+};
+export const updateProfile = (profileData, webId) => {
+    return (dispatch) => {
+        dispatch({ type: UPDATE_PROFILE });
+        const currUser = new User(webId);
+        currUser
+            .setProfile(profileData)
+            .then(() => {
+                dispatch({ type: UPDATE_PROFILE_SUCCESS });
+                dispatch(fetchUser(webId));
+            })
+            .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
+    };
+};
+
+export const changeProfilePhoto = (e, webId) => {
+    return (dispatch) => {
+        dispatch({ type: CHANGE_PROFILE_PHOTO });
+        const currUser = new User(webId);
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        const store = rdf.graph();
+        const fetcher = new rdf.Fetcher(store);
+        reader.onload = function() {
+            const data = this.result;
+            const contentType = file.type;
+            const pictureUrl = webId.replace(
+                'card#me',
+                encodeURIComponent(file.name)
+            );
+
+            fetcher
+                .webOperation('PUT', pictureUrl, {
+                    data: data,
+                    contentType: contentType,
+                })
+                .then((res) => {
+                    if (res.status == 201) {
+                        currUser
+                            .setPicture(pictureUrl)
+                            .then(() => {
+                                dispatch({
+                                    type: CHANGE_PROFILE_PHOTO_SUCCESS,
+                                });
+                                dispatch(fetchUser(webId));
+                            })
+                            .catch((err) => {
+                                dispatch({
+                                    type: CHANGE_PROFILE_PHOTO_FAILURE,
+                                    payload: err,
+                                });
+                            });
+                    }
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: CHANGE_PROFILE_PHOTO_FAILURE,
+                        payload: err,
+                    });
+                });
+        };
+        reader.readAsArrayBuffer(file);
     };
 };

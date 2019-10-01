@@ -1,86 +1,79 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Collapse } from 'react-collapse';
+
 import styles from './KeyValuePair.module.css';
 import classNames from 'classnames';
-export default function KeyValuePair({
-    keyVal,
-    values,
-    onUpdate,
-    onEdit,
-    currentValues,
-    webId,
-}) {
-    const [isEditable, setEditable] = useState(false);
-    const [isComplete, setComplete] = useState(undefined);
-    const [row, setRow] = useState(0);
+import MultipleValue from './MultipleValue';
+import SingleValue from './SingleValue';
 
+const showAddButton = (value, editable) => {
+    // multiple values possible (array) and at least one is already filled
+    return typeof value === 'object' && editable;
+};
+
+const KeyValuePair = ({
+    dataKey,
+    editable,
+    label,
+    placeholder,
+    setValue,
+    value,
+}) => {
+    const renderValues = (value) => {
+        if (typeof value === 'object') {
+            // is an array
+            return (
+                <MultipleValue
+                    dataKey={dataKey}
+                    values={value}
+                    editable={editable}
+                    setValue={setValue}
+                    placeholder={placeholder}
+                />
+            );
+        } else if (typeof value === 'string') {
+            // is a single value
+            return (
+                <SingleValue
+                    setValue={(value) => setValue(dataKey, value)}
+                    dataKey={dataKey}
+                    value={value}
+                    placeholder={placeholder}
+                    editable={editable}
+                />
+            );
+        }
+    };
     return (
-        <div className={styles.section}>
-            <div className={styles.key}>{keyVal}:</div>
-            <div className={styles.values}>
-                {Array.isArray(values) ? (
-                    <div className={styles.multiValue}>
-                        {values.map((value, index) => (
-                            <input
-                                className={classNames(styles.value)}
-                                key={value + index}
-                                placeholder={value[0]
-                                    .replace('tel:', '')
-                                    .replace('mailto:', '')}
-                                onInput={(e) => {
-                                    onEdit(e.target.value);
-                                    setComplete(undefined);
-                                    setRow(index);
-                                    setEditable(true);
-                                }}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div>
-                        <input
-                            className={classNames(styles.value)}
-                            key={values}
-                            placeholder={values}
-                            onInput={(e) => {
-                                onEdit(e.target.value);
-                                setComplete(undefined);
-                                setEditable(true);
-                            }}
-                            disabled={keyVal === 'webId' ? true : false}
-                        ></input>
-                    </div>
-                )}
+        <div className={styles.container}>
+            <div className={styles.keyValueContainer}>
+                <div className={styles.keyLabel}>{label}</div>
+                <div className={styles.valueContainer}>
+                    {renderValues(value)}
+                </div>
             </div>
-            <div
-                className={classNames({
-                    [styles.editable]: isEditable,
-                    [styles.editIcon]: !isEditable,
-                })}
-                onClick={() => {
-                    onUpdate(
-                        keyVal,
-                        Array.isArray(values) ? [currentValues] : currentValues,
-                        Array.isArray(values) ? values[row] : values,
-                        webId
-                    )
-                        .then(() => {
-                            setComplete(true);
-                            setEditable(!isEditable);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                }}
-            >
-                ✓
-            </div>
-            {isComplete ? (
-                <p className={styles.complete}>Changes applied.</p>
-            ) : isComplete === false ? (
-                <p className={styles.complete}>Changes could not be applied.</p>
-            ) : (
-                undefined
-            )}
+
+            <Collapse isOpened={showAddButton(value, editable)}>
+                <div
+                    className={classNames(
+                        styles.containerFooter,
+                        styles.addLabel,
+                        { [styles.active]: editable }
+                    )}
+                    onClick={() => setValue(dataKey, [...value, ''])}
+                >
+                    + Add
+                </div>
+            </Collapse>
         </div>
     );
-}
+};
+
+KeyValuePair.propTypes = {
+    label: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    dataKey: PropTypes.string.isRequired,
+};
+
+export default KeyValuePair;

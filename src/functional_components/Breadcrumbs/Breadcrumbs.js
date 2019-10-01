@@ -1,51 +1,45 @@
 import React from 'react';
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import Container from 'react-bootstrap/Container';
 import styles from './Breadcrumbs.module.css';
-
-const Breadcrumbs = (props) => {
-    console.log(props.breadcrumbs);
-    const root = 'https://' + props.webId.split('/')[2];
+import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
+import PropTypes from 'prop-types';
+const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
+    const root = 'https://' + webId.split('/')[2];
     let currentUrl = root;
-    const breadcrumbMarkup = props.breadcrumbs
-        ? props.breadcrumbs.map((currentBreadcrumb, currentIndex) => {
+    const breadcrumbMarkup = breadcrumbs
+        ? breadcrumbs.map((currentBreadcrumb, currentIndex) => {
               if (currentBreadcrumb !== '/') {
                   currentUrl = currentUrl + currentBreadcrumb;
+                  const currentLabel = currentBreadcrumb.replace('/', '');
                   return (
-                      <Breadcrumb.Item
+                      <BreadcrumbItem
                           key={currentIndex}
+                          label={currentLabel}
                           onClick={() => {
-                              props.onClick(currentUrl);
+                              onClick(currentUrl);
                           }}
                       >
-                          {console.log(
-                              'current breadcrumb',
-                              currentUrl,
-                              currentBreadcrumb
-                          )}
                           {currentBreadcrumb.replace('/', '')}
-                      </Breadcrumb.Item>
+                      </BreadcrumbItem>
                   );
               } else {
                   return (
-                      <Breadcrumb.Item
+                      <BreadcrumbItem
                           key={0}
-                          onClick={() => props.onClick(root + '/')}
-                      >
-                          Home
-                      </Breadcrumb.Item>
+                          label={'Home'}
+                          onClick={() => onClick(root + '/')}
+                      ></BreadcrumbItem>
                   );
               }
           })
         : undefined;
 
-    return (
-        <Container>
-            <Breadcrumb className={styles.container}>
-                {breadcrumbMarkup}
-            </Breadcrumb>
-        </Container>
-    );
+    return <div className={styles.container}>{breadcrumbMarkup}</div>;
+};
+
+Breadcrumbs.propTypes = {
+    webId: PropTypes.string.isRequired,
+    breadcrumbs: PropTypes.array,
+    onClick: PropTypes.func,
 };
 
 export default Breadcrumbs;

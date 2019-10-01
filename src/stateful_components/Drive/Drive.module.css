@@ -1,3 +1,10 @@
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
 .fileMarkup li {
     list-style: none;
 }
@@ -8,4 +15,68 @@
 
 .visible {
     display: initial;
+}
+
+.toolbarArea {
+    grid-area: toolbar;
+    background-color: #e2e2e6;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 100%;
+    padding: 0 15px 0 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainArea {
+    grid-area: main;
+    overflow-y: auto;
+}
+
+.mainArea::-webkit-scrollbar {
+    display: none;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: 40px 23fr;
+    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-areas: 'toolbar toolbar toolbar' '. main .';
+    background-color: #ffffff;
+    border-radius: 20px;
+}
+
+.contentWrapper {
+    overflow: hidden;
+    grid-area: content;
+}
+
+.header {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: 0.05em;
+    font-family: Source Sans Pro;
+    margin: 30px 0 20px 0;
+}
+
+.contextMenu {
+    background-color: white;
+    border-radius: 5px;
+    border: 0.5px solid #ddd;
+    z-index: 2;
+    width: 130px;
+    padding: 0 !important;
+}
+
+.contextItem div {
+    color: #000000;
+}
+
+.contextItem:hover div {
+    background-color: #f2f2f2 !important;
+}
+
+.disabled div {
+    color: #8c8c8c;
+    cursor: default;
 }

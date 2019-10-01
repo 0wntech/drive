@@ -1,0 +1,50 @@
+.container {
+    border-radius: 20px;
+    color: #666;
+    letter-spacing: 0.2em;
+    line-height: 29px;
+    display: flex;
+    align-items: center;
+    font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
+        'Lucida Grande', sans-serif;
+}
+
+.blue {
+    border: solid #2771ff 2px;
+}
+
+.blue:hover {
+    border: solid #fff 2px;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(to top, #2771ff, rgba(39, 113, 255, 0.5));
+}
+
+.green {
+    border: solid #36a510 2px;
+}
+
+.green:hover {
+    border: solid #fff 2px;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(to top, #36a510, rgba(54, 165, 16, 0.5));
+}
+
+.sm {
+    font-size: 0.75rem;
+    padding: 0px 20px;
+    font-weight: 500;
+}
+
+.md {
+    font-size: 1.125rem;
+    padding: 3px 25px;
+    font-weight: 500;
+}
+
+.lg {
+    font-size: 1.5rem;
+    padding: 4px 30px;
+    font-weight: 400;
+}

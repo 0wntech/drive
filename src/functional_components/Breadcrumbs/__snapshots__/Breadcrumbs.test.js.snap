@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Breadcrumbs should render correctly 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="container"
+    onClick={[Function]}
+  >
+    <div
+      className="breadcrumb"
+    >
+      Home
+    </div>
+    <div
+      className="seperator"
+    >
+      /
+    </div>
+  </div>
+  <div
+    className="container"
+    onClick={[Function]}
+  >
+    <div
+      className="breadcrumb"
+    >
+      test
+    </div>
+    <div
+      className="seperator"
+    >
+      /
+    </div>
+  </div>
+  <div
+    className="container"
+    onClick={[Function]}
+  >
+    <div
+      className="breadcrumb"
+    >
+      path
+    </div>
+    <div
+      className="seperator"
+    >
+      /
+    </div>
+  </div>
+</div>
+`;
