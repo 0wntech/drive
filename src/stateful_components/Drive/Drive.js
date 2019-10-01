@@ -432,6 +432,52 @@ class Drive extends React.Component {
                 disabled: false,
             },
         ];
+
+        const CONTEXTMENU_OPTIONS_DRIVE = [
+            {
+                label: 'Info',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: false,
+            },
+            {
+                label: 'Copy',
+                onClick: (item) => {
+                    if (
+                        !selectedItems.includes(item) &&
+                        item !== webId.replace('profile/card#me', '')
+                    ) {
+                        selectedItems.push(item);
+                    }
+                    copyItems(selectedItems);
+                },
+                disabled: false,
+            },
+            {
+                label: 'Paste',
+                onClick: () => pasteItems(clipboard, currentPath),
+                disabled: clipboard.length === 0,
+            },
+            {
+                label: 'Manage Access',
+                onClick: (item) => fileUtils.changeAccess(item),
+                disabled: false,
+            },
+            // {
+            //     label: 'Share*',
+            //     onClick: (item) => fileUtils.changeAccess(item),
+            //     disabled: true,
+            // },
+            {
+                label: 'Create Folder',
+                onClick: () => this.openCreateFolderWindow(),
+            },
+            {
+                label: 'Delete',
+                onClick: (item) => this.openConsentWindow(item),
+                disabled: false,
+            },
+        ];
+
         const fileMarkup = this.state.file ? (
             <div className={styles.renderedFile}>
                 {this.state.image ? (
@@ -592,8 +638,8 @@ class Drive extends React.Component {
                         className={styles.contextMenu}
                         id={'drive contextmenu'}
                     >
-                        {CONTEXTMENU_OPTIONS &&
-                            CONTEXTMENU_OPTIONS.map((option, index) => (
+                        {CONTEXTMENU_OPTIONS_DRIVE &&
+                            CONTEXTMENU_OPTIONS_DRIVE.map((option, index) => (
                                 <Item
                                     disabled={option.disabled}
                                     key={index + option.label}

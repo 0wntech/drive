@@ -30,7 +30,6 @@
 
 .mainArea {
     grid-area: main;
-    overflow-y: auto;
 }
 
 .mainArea::-webkit-scrollbar {
@@ -44,10 +43,16 @@
     grid-template-areas: 'toolbar toolbar toolbar' '. main .';
     background-color: #ffffff;
     border-radius: 20px;
+    overflow-y: auto;
+}
+
+.container {
+    height: 100%;
 }
 
 .contentWrapper {
-    overflow: hidden;
+    overflow-y: hidden;
+    height: 100%;
     grid-area: content;
 }
 

@@ -11,8 +11,6 @@ export default function RenameWindow({
     windowName,
     placeholder,
 }) {
-    const [value, setValue] = useState('');
-
     placeholder = placeholder.split('/');
     if (placeholder[placeholder.length - 1] === '') {
         placeholder = placeholder[placeholder.length - 2];
@@ -20,10 +18,17 @@ export default function RenameWindow({
         placeholder = placeholder[placeholder.length - 1];
     }
 
-    console.log(placeholder);
+    const [value, setValue] = useState('');
 
     return (
-        <Window windowName={windowName} onClose={onClose} className={className}>
+        <Window
+            windowName={windowName}
+            onClose={() => {
+                setValue('');
+                onClose();
+            }}
+            className={className}
+        >
             <p>Enter a new name:</p>
             <input
                 className={styles.input}
@@ -33,7 +38,15 @@ export default function RenameWindow({
             ></input>
             <div className={styles.buttonBar}>
                 <div
-                    onClick={onCancel ? onCancel : onClose}
+                    onClick={() => {
+                        if (onCancel) {
+                            setValue('');
+                            onCancel();
+                        } else {
+                            setValue('');
+                            onClose();
+                        }
+                    }}
                     className={styles.button}
                 >
                     Cancel
@@ -41,6 +54,7 @@ export default function RenameWindow({
                 <div
                     onClick={() => {
                         onSubmit(value);
+                        setValue('');
                         onClose();
                     }}
                     className={classNames(styles.button, styles.confirm)}
