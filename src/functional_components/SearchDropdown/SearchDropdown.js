@@ -18,15 +18,15 @@ export default function SearchDropdown({
         );
     };
 
-    const Control = (props) => {
-        return (
-            components.Control && (
-                <components.Control {...props}></components.Control>
-            )
-        );
-    };
-
     const customStyles = {
+        input: (provided) => ({
+            ...provided,
+            fontSize: '22px',
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            fontSize: '22px',
+        }),
         container: (provided) => ({
             ...provided,
             display: 'flex',
@@ -39,11 +39,13 @@ export default function SearchDropdown({
         menu: (provided) => ({
             // none of react-select's styles are passed to <Control />
             ...provided,
-            borderRadius: '20px',
+            borderRadius: '0 0 20px 20px',
             overflow: 'hidden',
             marginTop: 0,
             marginBottom: 0,
-            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.25)',
+            zIndex: 1,
+            boxShadow: '0 7px 6px 0 rgba(0, 0, 0, 0.25)',
+            top: 'calc(100% - 3px)',
         }),
         menuList: (provided) => ({
             ...provided,
@@ -53,16 +55,20 @@ export default function SearchDropdown({
         indicatorSeparator: (provided) => ({
             display: 'none',
         }),
-        control: (provided) => ({
+        control: (provided, state) => ({
             // none of react-select's styles are passed to <Control />
             width: '100%',
             height: '100%',
 
-            backgroundColor: '#F8F8F8',
-            borderRadius: '20px',
+            backgroundColor: state.isFocused ? '#ffffff' : '#F8F8F8',
+            borderRadius: state.isFocused ? '20px 20px 0 0' : '20px',
+            boxShadow: state.isFocused
+                ? '0px 4px 6px rgba(0, 0, 0, 0.25)'
+                : 'none',
             borderWidth: 0,
             display: 'flex',
             flexDirection: 'row-reverse',
+            cursor: state.isFocused ? 'initial' : 'pointer',
         }),
         singleValue: (provided, state) => {
             const opacity = state.isDisabled ? 0.5 : 1;
@@ -75,7 +81,7 @@ export default function SearchDropdown({
     return (
         <div className={classNames(styles.container, className)}>
             <Select
-                components={{ DropdownIndicator, Control }}
+                components={{ DropdownIndicator }}
                 styles={customStyles}
                 defaultValue={items[0]}
                 formatOptionLabel={formatOptionLabel}
