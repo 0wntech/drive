@@ -10,7 +10,6 @@ import SingleValue from '../KeyValuePair/SingleValue';
 import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 const ContactPage = ({ currentContact, addContact, webId }) => {
-    console.log(currentContact);
     return (
         <div className={styles.grid}>
             <div className={styles.toolbarArea}>
