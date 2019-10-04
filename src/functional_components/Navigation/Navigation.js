@@ -18,6 +18,7 @@ const Navigation = ({
     onLogin,
     onLogout,
     toggleSidebar,
+    setCurrentPath,
     username,
     history,
     items,
@@ -31,28 +32,13 @@ const Navigation = ({
         { onClick: () => onLogout(), label: 'Logout' },
     ];
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
-
-    const formatOptionLabel = ({ value, label, name, type }) => (
-        <div
-            className={styles.optionContainer}
-            onClick={
-                type === 'folder'
-                    ? () => {
-                          setCurrentPath(`${currentPath}/${name}/`);
-                      }
-                    : () => {
-                          console.log('Implement Redux File onClickbehavior');
-                      }
-            }
-        >
-            <img
-                className={styles.optionIcon}
-                src={type === 'file' ? FileIcon : FolderIcon}
-            />
-            <span>{name}</span>
-        </div>
-    );
-
+    const handleChange = (selected) => {
+        if (selected.type === 'folder') {
+            setCurrentPath(`${currentPath}/${selected.name}/`);
+        } else if (selected === 'file') {
+            console.log('implement redux on file click');
+        }
+    };
     return (
         <div className={styles.container}>
             <div className={styles.brandWrapper}>
@@ -74,6 +60,7 @@ const Navigation = ({
                     <SearchDropdown
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
+                        onChange={handleChange}
                         items={fileUtils
                             .convertFilesAndFoldersToArray(
                                 items.files,
@@ -126,8 +113,21 @@ const Navigation = ({
     );
 };
 
+const formatOptionLabel = ({ value, label, name, type }) => (
+    <div className={styles.optionContainer}>
+        <img
+            className={styles.optionIcon}
+            src={type === 'file' ? FileIcon : FolderIcon}
+        />
+        <span>{name}</span>
+    </div>
+);
+
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
     items: state.app.currentItems,
 });
-export default connect(mapStateToProps)(withRouter(Navigation));
+export default connect(
+    mapStateToProps,
+    setCurrentPath
+)(withRouter(Navigation));
