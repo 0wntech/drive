@@ -19,7 +19,6 @@ const ContactListItem = ({
     return (
         <div
             onClick={() => {
-                console.log(onClick);
                 onClick(contact);
                 history.push('/contact');
             }}

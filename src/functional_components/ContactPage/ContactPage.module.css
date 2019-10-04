@@ -24,6 +24,12 @@ svg:hover {
     cursor: pointer;
 }
 
+.addButtonWrapper {
+    grid-area: addButton;
+    display: flex;
+    align-items: center;
+}
+
 .profileContainer {
     grid-area: profile;
     overflow-y: auto;
@@ -46,7 +52,7 @@ svg:hover {
 
 .nameContainer {
     grid-area: name;
-    padding: 0 0 0 30px;
+    padding: 0 15px 0 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -88,7 +94,7 @@ svg:hover {
     display: grid;
     grid-template-columns: 10vw 3fr 1fr;
     grid-template-rows: 5vw 5vw;
-    grid-template-areas: 'profileImg name editIcon' 'profileImg bio .';
+    grid-template-areas: 'profileImg name addButton' 'profileImg bio .';
 }
 
 .iconContainer {

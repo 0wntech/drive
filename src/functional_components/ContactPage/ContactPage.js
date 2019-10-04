@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './ContactPage.module.css';
+
+import { addContact } from '../../actions/UserActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
 import Settings from '../../assets/svgIcons/Settings';
-const ContactPage = ({ currentContact }) => {
+import IconButton from '../IconButton/IconButton';
+const ContactPage = ({ currentContact, addContact, webId }) => {
     console.log(currentContact);
     return (
         <div className={styles.grid}>
@@ -49,6 +52,14 @@ const ContactPage = ({ currentContact }) => {
                             placeholder="no bio"
                         />
                     </div>
+                    <div className={styles.addButtonWrapper}>
+                        <IconButton
+                            label={'Add'}
+                            onClick={() =>
+                                addContact(webId, currentContact.webId)
+                            }
+                        />
+                    </div>
                 </div>
                 <KeyValuePair
                     label="Job"
@@ -76,6 +87,10 @@ ContactPage.propTypes = {
 
 const mapStateToProps = (state) => ({
     currentContact: state.app.currentContact,
+    webId: state.app.webId,
 });
 
-export default connect(mapStateToProps)(ContactPage);
+export default connect(
+    mapStateToProps,
+    { addContact }
+)(ContactPage);

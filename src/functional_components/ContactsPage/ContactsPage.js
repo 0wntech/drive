@@ -37,7 +37,7 @@ const ContactsPage = ({
                         onItemClick={setCurrentContact}
                         contacts={contacts}
                     />
-                    {/* <button
+                    <button
                         onClick={() =>
                             addContact(
                                 webId,
@@ -46,7 +46,7 @@ const ContactsPage = ({
                         }
                     >
                         add
-                    </button> */}
+                    </button>
                 </div>
             )}
         </div>
