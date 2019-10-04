@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FileUpload = ({ folder, children, onFileUpload }) => {
+const FileUpload = ({ folder, children, onChange }) => {
     return (
         <label
             style={{ marginBottom: 0, display: 'flex' }}
@@ -12,7 +12,7 @@ const FileUpload = ({ folder, children, onFileUpload }) => {
                 onChange={(e) => {
                     if (e.target.files) {
                         console.log(e);
-                        onFileUpload(e);
+                        onChange(e);
                     }
                 }}
                 webkitdirectory={folder ? 'true' : undefined}
