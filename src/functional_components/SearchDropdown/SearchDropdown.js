@@ -24,7 +24,7 @@ export default function SearchDropdown({
             <Select
                 components={{ DropdownIndicator }}
                 styles={customStyles}
-                defaultValue={items[0]}
+                defaultValue={items ? items[0] : 'no result'}
                 formatOptionLabel={formatOptionLabel}
                 options={items}
                 onChange={onChange}

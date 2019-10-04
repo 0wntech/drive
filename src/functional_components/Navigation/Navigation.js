@@ -7,7 +7,7 @@ import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
 import { connect } from 'react-redux';
-import { setCurrentPath } from '../../actions/UserActions';
+import { setCurrentPath, setCurrentContact } from '../../actions/UserActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
 import ActionButton from '../ActionButton/ActionButton';
@@ -22,7 +22,9 @@ const Navigation = ({
     username,
     history,
     items,
+    contacts,
     currentPath,
+    setCurrentContact,
 }) => {
     const DROPDOWN_OPTIONS = [
         { onClick: () => history.push('/profile'), label: 'Profile' },
@@ -35,9 +37,28 @@ const Navigation = ({
     const handleChange = (selected) => {
         if (selected.type === 'folder') {
             setCurrentPath(`${currentPath}/${selected.name}/`);
-        } else if (selected === 'file') {
+        } else if (selected.type === 'file') {
             console.log('implement redux on file click');
+        } else if (selected.type === 'contact') {
+            setCurrentContact(selected.value);
+            history.push('/contact');
         }
+    };
+
+    const getSearchDropdownOptions = () => {
+        const filesAndFolders = fileUtils
+            .convertFilesAndFoldersToArray(items.files, items.folders)
+            .map((item) => ({
+                ...item,
+                value: item.name,
+                label: item.label,
+            }));
+        const contactOptions = contacts.map((contact) => ({
+            value: { ...contact },
+            type: 'contact',
+        }));
+        const separator = { label: 'People', type: 'separator' };
+        return [...filesAndFolders, separator, ...contactOptions];
     };
     return (
         <div className={styles.container}>
@@ -61,16 +82,11 @@ const Navigation = ({
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
                         onChange={handleChange}
-                        items={fileUtils
-                            .convertFilesAndFoldersToArray(
-                                items.files,
-                                items.folders
-                            )
-                            .map((item) => ({
-                                ...item,
-                                value: item.name,
-                                label: item.label,
-                            }))}
+                        items={
+                            items && contacts
+                                ? getSearchDropdownOptions()
+                                : null
+                        }
                     />
                 ) : null}
             </div>
@@ -113,21 +129,47 @@ const Navigation = ({
     );
 };
 
-const formatOptionLabel = ({ value, label, name, type }) => (
-    <div className={styles.optionContainer}>
-        <img
-            className={styles.optionIcon}
-            src={type === 'file' ? FileIcon : FolderIcon}
-        />
-        <span>{name}</span>
-    </div>
-);
+const formatOptionLabel = ({ value, label, name, type }) => {
+    if (type === 'contact') {
+        return (
+            <div className={styles.optionContainer}>
+                <div
+                    className={styles.contactIcon}
+                    style={{
+                        backgroundImage: `url('${value.picture}')`,
+                    }}
+                />
+                <span>{`${value.name} (${value.webId.replace(
+                    '/profile/card#me',
+                    ''
+                )})`}</span>
+            </div>
+        );
+    } else if (type === 'separator') {
+        return (
+            <div className={styles.separatorContainer}>
+                <div className={styles.separator}>{label}</div>
+            </div>
+        );
+    } else {
+        return (
+            <div className={styles.optionContainer}>
+                <img
+                    className={styles.optionIcon}
+                    src={type === 'file' ? FileIcon : FolderIcon}
+                />
+                <span>{name}</span>
+            </div>
+        );
+    }
+};
 
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
     items: state.app.currentItems,
+    contacts: state.app.contacts,
 });
 export default connect(
     mapStateToProps,
-    setCurrentPath
+    { setCurrentPath, setCurrentContact }
 )(withRouter(Navigation));

@@ -59,6 +59,27 @@
     height: 100%;
 }
 
+.separator {
+    letter-spacing: 0.05em;
+    font-family: Helvetica Neue;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.separatorContainer {
+    display: flex;
+    align-items: flex-end;
+}
+
+.contactIcon {
+    width: 38px;
+    height: 38px;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+
 .username {
     letter-spacing: 0.2em;
     line-height: 21px;
