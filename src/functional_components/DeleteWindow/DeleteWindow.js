@@ -11,11 +11,24 @@ export default function DeleteWindow({
     onClose,
     onCancel,
     windowName,
-    info,
 }) {
+    const multiple = selectedItems.length > 1;
+
     return (
-        <Window windowName={windowName} onClose={onClose} className={className}>
-            <p>{info}</p>
+        <Window
+            windowName={windowName}
+            onClose={onCancel ? onCancel : onClose}
+            className={className}
+        >
+            <p className={styles.prompt}>
+                {multiple
+                    ? 'Do you really want to delete these items?'
+                    : 'Do you really want to delete this item?'}
+            </p>
+            <p className={styles.description}>
+                If you copied {multiple ? 'some of these items' : 'this item'}{' '}
+                before, deleting it will make it unavailable for pasting.
+            </p>
             <div className={styles.selectedFiles}>
                 {selectedItems.map((item, index) => {
                     return (

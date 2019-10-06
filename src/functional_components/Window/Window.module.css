@@ -30,6 +30,7 @@
     background-color: #ff697b;
     border-radius: 100%;
     margin-left: auto;
+    z-index: 1;
 }
 
 .close:hover {

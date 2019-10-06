@@ -522,11 +522,6 @@ class Drive extends React.Component {
                 <DeleteWindow
                     windowName="Delete File"
                     selectedItems={selectedItems}
-                    info={
-                        selectedItems.length > 1
-                            ? 'Do you really want to delete these items?'
-                            : 'Do you really want to delete this item?'
-                    }
                     onSubmit={(selectedItems) => {
                         deleteItems(selectedItems, currentPath);
                     }}

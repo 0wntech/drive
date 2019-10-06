@@ -1,3 +1,12 @@
+.prompt {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #666;
+    font-size: 0.8rem;
+}
+
 .selectedFiles {
     max-height: 20rem;
     overflow-y: auto;
