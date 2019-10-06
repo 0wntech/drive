@@ -1,3 +1,12 @@
+.prompt {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #666;
+    font-size: 0.8rem;
+}
+
 .button {
     display: flex;
     justify-content: center;
@@ -14,6 +23,15 @@
 
 .button:hover {
     transform: scale(1.05);
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: initial;
+}
+
+.disabled:hover {
+    transform: initial;
 }
 
 .buttonBar {
