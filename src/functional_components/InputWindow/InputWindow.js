@@ -27,7 +27,7 @@ export default function CreateWindow({
                     onClick={onCancel ? onCancel : onClose}
                     className={styles.button}
                 >
-                    CANCEL
+                    Cancel
                 </div>
                 <div
                     onClick={() => {
@@ -36,7 +36,7 @@ export default function CreateWindow({
                     }}
                     className={classNames(styles.button, styles.confirm)}
                 >
-                    CONFIRM
+                    Confirm
                 </div>
             </div>
         </Window>

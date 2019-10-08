@@ -68,3 +68,7 @@ export const CHANGE_PROFILE_PHOTO_SUCCESS = 'change_profile_photo_success';
 export const CHANGE_PROFILE_PHOTO_FAILURE = 'change_profile_photo_failure';
 
 export const SET_CURRENT_CONTACT = 'set_current_contact';
+
+export const RENAME_ITEM = 'rename_item';
+export const RENAME_ITEM_SUCCESS = 'rename_item_success';
+export const RENAME_ITEM_FAILURE = 'rename_item_failure';

@@ -13,6 +13,7 @@ import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { InputWindow } from '../../functional_components/InputWindow';
 import { DeleteWindow } from '../../functional_components/DeleteWindow';
+import RenameWindow from '../../functional_components/RenameWindow/RenameWindow';
 import {
     setCurrentPath,
     setSelection,
@@ -21,6 +22,7 @@ import {
     deleteItems,
     copyItems,
     pasteItems,
+    renameItem,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -40,7 +42,9 @@ class Drive extends React.Component {
             isCreateFolderVisible: false,
             isConsentWindowVisible: false,
             isCreateFileVisible: false,
+            isRenameFileVisible: false,
             files: undefined,
+            renamedItem: undefined,
         };
 
         this.createFolder = this.createFolder.bind(this);
@@ -50,7 +54,6 @@ class Drive extends React.Component {
         this.uploadFile = this.uploadFile.bind(this);
         this.downloadItems = this.downloadItems.bind(this);
         this.loadFile = this.loadFile.bind(this);
-        this.loadCurrentFolder = this.loadCurrentFolder.bind(this);
         this.clearSelection = this.clearSelection.bind(this);
         this.openCreateFolderWindow = this.openCreateFolderWindow.bind(this);
         this.closeCreateFolderWindow = this.closeCreateFolderWindow.bind(this);
@@ -58,6 +61,8 @@ class Drive extends React.Component {
         this.closeConsentWindow = this.closeConsentWindow.bind(this);
         this.openCreateFileWindow = this.openCreateFileWindow.bind(this);
         this.closeCreateFileWindow = this.closeCreateFileWindow.bind(this);
+        this.openRenameFileWindow = this.openRenameFileWindow.bind(this);
+        this.closeRenameFileWindow = this.closeRenameFileWindow.bind(this);
     }
 
     sortContainments(urls) {
@@ -90,25 +95,6 @@ class Drive extends React.Component {
 
             return this.sortContainments(containments);
         });
-    }
-
-    loadCurrentFolder(path, newBreadcrumbs) {
-        const currPath = path
-            ? path
-            : 'https://' + this.props.webId.split('/')[2] + '/';
-        Promise.resolve(this.loadFolder(currPath, newBreadcrumbs)).then(
-            (sortedContainments) => {
-                this.setState({
-                    folders: sortedContainments[1],
-                    files: sortedContainments[0],
-                    currPath: currPath,
-                    breadcrumbs: newBreadcrumbs,
-                    file: undefined,
-                    image: undefined,
-                    selectedItems: [],
-                });
-            }
-        );
     }
 
     loadFile(url, event = {}) {
@@ -169,12 +155,14 @@ class Drive extends React.Component {
 
     uploadFile(e) {
         console.log(e);
-        const currPath = this.props.currentPath;
-        const filePath = e.target.files[0];
-
-        fileUtils.uploadFile(filePath, currPath).then(() => {
-            this.setCurrentPath(this.props.currentPath);
-        });
+        const { currentPath, fetchCurrentItems } = this.props;
+        const filePath =
+            e.target.files && e.target.files.length ? e.target.files[0] : null;
+        if (filePath) {
+            fileUtils.uploadFile(filePath, currentPath, () => {
+                fetchCurrentItems(currentPath);
+            });
+        }
     }
 
     clearSelection(e) {
@@ -233,25 +221,6 @@ class Drive extends React.Component {
             );
             fetchCurrentItems(currentPath);
         }
-
-        // if (webId) {
-        //     const object = webId.replace('/card#me', '');
-        //     console.log('sending notification...')
-        //     sendNotification({ actor: webId, object: object, target: webId });
-        // }
-        // try {
-        //     if (!JSON.parse(localStorage.getItem('appState')).currPath) {
-        //         this.loadCurrentFolder(this.state.currPath, ['/']);
-        //     } else {
-        //         console.log('Using cached state...');
-        //         this.loadCurrentFolder(
-        //             JSON.parse(localStorage.getItem('appState')).currPath,
-        //             JSON.parse(localStorage.getItem('appState')).breadcrumbs
-        //         );
-        //     }
-        // } catch (e) {
-        //     console.log(e);
-        // }
     }
 
     downloadItems() {
@@ -265,23 +234,23 @@ class Drive extends React.Component {
     }
 
     uploadFolder(e) {
+        const { currentPath } = this.props;
         const files = e.target.files;
-        for (let file = 0; file < files.length; file++) {
-            fileUtils
-                .uploadFolderOrFile(
-                    files[file],
-                    this.props.currentPath +
-                        encodeURIComponent(files[file].webkitRelativePath)
-                )
-                .then((response) => {
-                    console.log(file, response);
-                    if (file === files.length - 1) {
-                        this.loadCurrentFolder(
-                            this.props.currentPath,
-                            getBreadcrumbsFromUrl(this.props.currentPath)
-                        );
-                    }
-                });
+        if (files && files.length) {
+            for (let file = 0; file < files.length; file++) {
+                fileUtils
+                    .uploadFolderOrFile(
+                        files[file],
+                        currentPath +
+                            encodeURIComponent(files[file].webkitRelativePath)
+                    )
+                    .then((response) => {
+                        console.log(file, response);
+                        if (file === files.length - 1) {
+                            fetchCurrentItems(currentPath);
+                        }
+                    });
+            }
         }
     }
 
@@ -333,6 +302,20 @@ class Drive extends React.Component {
         });
     }
 
+    closeRenameFileWindow(item) {
+        this.setState({
+            isRenameFileVisible: false,
+            renamedItem: undefined,
+        });
+    }
+
+    openRenameFileWindow(item) {
+        this.setState({
+            isRenameFileVisible: true,
+            renamedItem: item,
+        });
+    }
+
     componentWillUnmount() {
         // console.log('Caching state...');
         // localStorage.setItem('appState', JSON.stringify(this.state));
@@ -352,12 +335,15 @@ class Drive extends React.Component {
             copyItems,
             pasteItems,
             clipboard,
+            renameItem,
         } = this.props;
 
         const {
             isConsentWindowVisible,
             isCreateFileVisible,
             isCreateFolderVisible,
+            isRenameFileVisible,
+            renamedItem,
         } = this.state;
 
         const CONTEXTMENU_OPTIONS = [
@@ -386,7 +372,7 @@ class Drive extends React.Component {
             },
             {
                 label: 'Rename',
-                onClick: (item) => fileUtils.renameItem(item),
+                onClick: (item) => this.openRenameFileWindow(item),
                 disabled: false,
             },
             {
@@ -409,6 +395,52 @@ class Drive extends React.Component {
                 disabled: false,
             },
         ];
+
+        const CONTEXTMENU_OPTIONS_DRIVE = [
+            {
+                label: 'Info',
+                onClick: (item) => fileUtils.getInfo(item),
+                disabled: false,
+            },
+            {
+                label: 'Copy',
+                onClick: (item) => {
+                    if (
+                        !selectedItems.includes(item) &&
+                        item !== webId.replace('profile/card#me', '')
+                    ) {
+                        selectedItems.push(item);
+                    }
+                    copyItems(selectedItems);
+                },
+                disabled: false,
+            },
+            {
+                label: 'Paste',
+                onClick: () => pasteItems(clipboard, currentPath),
+                disabled: clipboard.length === 0,
+            },
+            {
+                label: 'Manage Access',
+                onClick: (item) => fileUtils.changeAccess(item),
+                disabled: false,
+            },
+            // {
+            //     label: 'Share*',
+            //     onClick: (item) => fileUtils.changeAccess(item),
+            //     disabled: true,
+            // },
+            {
+                label: 'Create Folder',
+                onClick: () => this.openCreateFolderWindow(),
+            },
+            {
+                label: 'Delete',
+                onClick: (item) => this.openConsentWindow(item),
+                disabled: false,
+            },
+        ];
+
         const fileMarkup = this.state.file ? (
             <div className={styles.renderedFile}>
                 {this.state.image ? (
@@ -453,11 +485,6 @@ class Drive extends React.Component {
                 <DeleteWindow
                     windowName="Delete File"
                     selectedItems={selectedItems}
-                    info={
-                        selectedItems.length > 1
-                            ? 'Do you really want to delete these items?'
-                            : 'Do you really want to delete this item?'
-                    }
                     onSubmit={(selectedItems) => {
                         deleteItems(selectedItems, currentPath);
                     }}
@@ -485,6 +512,18 @@ class Drive extends React.Component {
                     }
                     onClose={this.closeCreateFileWindow}
                     placeholder={'Untitled'}
+                />
+                <RenameWindow
+                    windowName="Rename File"
+                    info="Enter a new name:"
+                    placeholder={renamedItem ? renamedItem : 'Untitled'}
+                    onSubmit={(value) =>
+                        renameItem(renamedItem, encodeURIComponent(value))
+                    }
+                    className={
+                        isRenameFileVisible ? styles.visible : styles.hidden
+                    }
+                    onClose={this.closeRenameFileWindow}
                 />
             </Fragment>
         );
@@ -557,8 +596,8 @@ class Drive extends React.Component {
                         className={styles.contextMenu}
                         id={'drive contextmenu'}
                     >
-                        {CONTEXTMENU_OPTIONS &&
-                            CONTEXTMENU_OPTIONS.map((option, index) => (
+                        {CONTEXTMENU_OPTIONS_DRIVE &&
+                            CONTEXTMENU_OPTIONS_DRIVE.map((option, index) => (
                                 <Item
                                     disabled={option.disabled}
                                     key={index + option.label}
@@ -607,6 +646,7 @@ export default withRouter(
             deleteItems,
             copyItems,
             pasteItems,
+            renameItem,
         }
     )(Drive)
 );

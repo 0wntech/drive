@@ -39,6 +39,9 @@ import {
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
     SET_CURRENT_CONTACT,
+    RENAME_ITEM,
+    RENAME_ITEM_SUCCESS,
+    RENAME_ITEM_FAILURE,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
@@ -374,5 +377,52 @@ export const changeProfilePhoto = (e, webId) => {
                 });
         };
         reader.readAsArrayBuffer(file);
+    };
+};
+
+export const renameItem = function(renamedItem, value) {
+    return (dispatch) => {
+        dispatch({ type: RENAME_ITEM });
+        auth.currentSession().then((session) => {
+            const fileClient = new PodClient({ podUrl: session.webId });
+            const rename = new Promise((resolve, reject) => {
+                if (renamedItem.endsWith('/')) {
+                    fileClient
+                        .renameFolder(renamedItem, value)
+                        .then(() => {
+                            resolve();
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                } else {
+                    fileClient
+                        .renameFile(renamedItem, value)
+                        .then(() => {
+                            resolve();
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                }
+            });
+            Promise.resolve(rename)
+                .then(() => {
+                    let location = renamedItem.split('/');
+                    if (renamedItem.endsWith('/')) {
+                        location.pop();
+                        location.pop();
+                    } else {
+                        location.pop();
+                    }
+
+                    location = location.join('/');
+                    dispatch({ type: RENAME_ITEM_SUCCESS });
+                    dispatch(setCurrentPath(location + '/'));
+                })
+                .catch((err) => {
+                    dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
+                });
+        });
     };
 };

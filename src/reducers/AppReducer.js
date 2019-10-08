@@ -35,6 +35,9 @@ import {
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
     SET_CURRENT_CONTACT,
+    RENAME_ITEM,
+    RENAME_ITEM_SUCCESS,
+    RENAME_ITEM_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -163,6 +166,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, updateProfilePic: false, error: payload };
         case SET_CURRENT_CONTACT:
             return { ...state, currentContact: payload };
+        case RENAME_ITEM:
+            return { ...state, renamingItem: true };
+        case RENAME_ITEM_SUCCESS:
+            return { ...state, renamingItem: false };
+        case RENAME_ITEM_FAILURE:
+            return { ...state, renamingItem: false, error: payload };
         default:
             return state;
     }

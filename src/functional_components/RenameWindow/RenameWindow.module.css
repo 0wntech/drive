@@ -7,11 +7,6 @@
     font-size: 0.8rem;
 }
 
-.selectedFiles {
-    max-height: 20rem;
-    overflow-y: auto;
-}
-
 .button {
     display: flex;
     justify-content: center;
@@ -30,6 +25,15 @@
     transform: scale(1.05);
 }
 
+.disabled {
+    opacity: 0.5;
+    cursor: initial;
+}
+
+.disabled:hover {
+    transform: initial;
+}
+
 .buttonBar {
     margin-top: 15px;
     width: 100%;
@@ -42,7 +46,7 @@
 }
 
 .confirm {
-    background: linear-gradient(to top, #cd0000, rgba(205, 0, 0, 0.5));
+    background: linear-gradient(to top, #0c89c6, rgba(0, 171, 255, 0.5));
     color: white;
     font-weight: 300;
     border-radius: 20px;

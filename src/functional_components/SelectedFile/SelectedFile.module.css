@@ -17,8 +17,8 @@
 }
 
 .listing > img {
-    min-width: 24px;
-    max-height: 20px;
+    max-width: 24px;
+    height: 20px;
     margin: 0 10px 0 5px;
 }
 
