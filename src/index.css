@@ -1,17 +1,22 @@
+@font-face {
+    font-family: 'Helvetica Neue Light';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Helvetica Neue Light'),
+        url('./assets/fonts/HelveticaNeueLight.woff') format('woff');
+}
+
 body {
     margin: 0;
-    font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
+    font-family: 'Helvetica-Neue-Light', 'Helvetica Neue', Helvetica, Arial,
         'Lucida Grande', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-@font-face {
-    font-family: 'Helvetica Neue';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Helvetica Neue'), url(./assets/fonts/HelveticaNeue-Light.otf),
-        format('otf');
+p,
+div {
+    font-family: 'Helvetica-Neue-Light';
 }
 
 code {

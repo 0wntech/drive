@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ContactsPage.module.css';
 import { connect } from 'react-redux';
-import { addContact, removeContact } from '../../actions/UserActions';
+import { addContact, setCurrentContact } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 
 import ContactList from '../ContactList/ContactsList';
@@ -9,9 +9,9 @@ import ContactList from '../ContactList/ContactsList';
 const ContactsPage = ({
     contacts,
     addContact,
-    removeContact,
     loadContacts,
     webId,
+    setCurrentContact,
 }) => {
     return (
         <div className={styles.grid}>
@@ -28,7 +28,10 @@ const ContactsPage = ({
                 </div>
             ) : (
                 <div className={styles.contactsContainer}>
-                    <ContactList contacts={contacts} />
+                    <ContactList
+                        onItemClick={setCurrentContact}
+                        contacts={contacts}
+                    />
                     {/* <button
                         onClick={() =>
                             addContact(
@@ -55,5 +58,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
     mapStateToProps,
-    { addContact, removeContact }
+    { setCurrentContact, addContact }
 )(ContactsPage);

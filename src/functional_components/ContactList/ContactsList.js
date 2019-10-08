@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import styles from './ContactList.module.css';
 import { ContactListItem } from '../ContactListItem';
 
-const ContactList = ({ contacts }) => {
+const ContactList = ({ contacts, onItemClick }) => {
     return (
         <div className={styles.container}>
             {contacts
                 ? contacts.map((contact) => (
                       <div className={styles.itemContainer}>
-                          <ContactListItem contact={contact} />
+                          <ContactListItem
+                              onClick={onItemClick}
+                              contact={contact}
+                          />
                       </div>
                   ))
                 : null}
@@ -19,6 +22,7 @@ const ContactList = ({ contacts }) => {
 
 ContactList.propTypes = {
     contacts: PropTypes.arrayOf(PropTypes.object),
+    onItemClick: PropTypes.func,
 };
 
 export default ContactList;

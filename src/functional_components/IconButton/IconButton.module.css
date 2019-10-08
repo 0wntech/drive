@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    border: 2px solid #36a510;
+    border-radius: 20px;
+    padding: 0 28px;
+    height: 35px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.container:hover .label {
+    color: white;
+}
+
+.container:hover svg path {
+    fill: white;
+}
+
+.container:hover {
+    background: linear-gradient(0deg, #36a510 0%, rgba(54, 165, 16, 0.5) 100%);
+}
+
+.label {
+    margin-left: 15px;
+    color: #36a510;
+    margin-top: 2px;
+}
