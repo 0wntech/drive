@@ -15,10 +15,12 @@ export default function RenameWindow({
     if (placeholder[placeholder.length - 1] === '') {
         placeholder = placeholder[placeholder.length - 2];
     } else {
-        placeholder = placeholder[placeholder.length - 1];
+        placeholder = placeholder[placeholder.length - 1].split('.')[0];
     }
 
     const [value, setValue] = useState('');
+    const re = new RegExp('^[a-zA-Z0-9]*$');
+    const allow = re.exec(value) && value !== '' ? true : false;
 
     return (
         <Window
@@ -29,7 +31,10 @@ export default function RenameWindow({
             }}
             className={className}
         >
-            <p>Enter a new name:</p>
+            <p className={styles.prompt}>Enter a new name:</p>
+            <p className={styles.description}>
+                Please only use valid characters (A-z, 0-9)
+            </p>
             <input
                 className={styles.input}
                 value={value}
@@ -53,11 +58,15 @@ export default function RenameWindow({
                 </div>
                 <div
                     onClick={() => {
-                        onSubmit(value);
-                        setValue('');
-                        onClose();
+                        if (allow) {
+                            onSubmit(value);
+                            setValue('');
+                            onClose();
+                        }
                     }}
-                    className={classNames(styles.button, styles.confirm)}
+                    className={classNames(styles.button, styles.confirm, {
+                        [styles.disabled]: !allow,
+                    })}
                 >
                     Rename
                 </div>

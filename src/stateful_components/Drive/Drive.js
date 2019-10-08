@@ -54,7 +54,6 @@ class Drive extends React.Component {
         this.uploadFile = this.uploadFile.bind(this);
         this.downloadItems = this.downloadItems.bind(this);
         this.loadFile = this.loadFile.bind(this);
-        this.loadCurrentFolder = this.loadCurrentFolder.bind(this);
         this.clearSelection = this.clearSelection.bind(this);
         this.openCreateFolderWindow = this.openCreateFolderWindow.bind(this);
         this.closeCreateFolderWindow = this.closeCreateFolderWindow.bind(this);
@@ -96,25 +95,6 @@ class Drive extends React.Component {
 
             return this.sortContainments(containments);
         });
-    }
-
-    loadCurrentFolder(path, newBreadcrumbs) {
-        const currPath = path
-            ? path
-            : 'https://' + this.props.webId.split('/')[2] + '/';
-        Promise.resolve(this.loadFolder(currPath, newBreadcrumbs)).then(
-            (sortedContainments) => {
-                this.setState({
-                    folders: sortedContainments[1],
-                    files: sortedContainments[0],
-                    currPath: currPath,
-                    breadcrumbs: newBreadcrumbs,
-                    file: undefined,
-                    image: undefined,
-                    selectedItems: [],
-                });
-            }
-        );
     }
 
     loadFile(url, event = {}) {
@@ -175,12 +155,14 @@ class Drive extends React.Component {
 
     uploadFile(e) {
         console.log(e);
-        const currPath = this.props.currentPath;
-        const filePath = e.target.files[0];
-
-        fileUtils.uploadFile(filePath, currPath).then(() => {
-            this.setCurrentPath(this.props.currentPath);
-        });
+        const { currentPath, fetchCurrentItems } = this.props;
+        const filePath =
+            e.target.files && e.target.files.length ? e.target.files[0] : null;
+        if (filePath) {
+            fileUtils.uploadFile(filePath, currentPath, () => {
+                fetchCurrentItems(currentPath);
+            });
+        }
     }
 
     clearSelection(e) {
@@ -200,8 +182,8 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                slug: folderAddress,
-                link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
+                'slug': folderAddress,
+                'link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
@@ -216,8 +198,8 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                slug: folderAddress,
-                link: '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
+                'slug': folderAddress,
+                'link': '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
@@ -239,25 +221,6 @@ class Drive extends React.Component {
             );
             fetchCurrentItems(currentPath);
         }
-
-        // if (webId) {
-        //     const object = webId.replace('/card#me', '');
-        //     console.log('sending notification...')
-        //     sendNotification({ actor: webId, object: object, target: webId });
-        // }
-        // try {
-        //     if (!JSON.parse(localStorage.getItem('appState')).currPath) {
-        //         this.loadCurrentFolder(this.state.currPath, ['/']);
-        //     } else {
-        //         console.log('Using cached state...');
-        //         this.loadCurrentFolder(
-        //             JSON.parse(localStorage.getItem('appState')).currPath,
-        //             JSON.parse(localStorage.getItem('appState')).breadcrumbs
-        //         );
-        //     }
-        // } catch (e) {
-        //     console.log(e);
-        // }
     }
 
     downloadItems() {
@@ -271,23 +234,23 @@ class Drive extends React.Component {
     }
 
     uploadFolder(e) {
+        const { currentPath } = this.props;
         const files = e.target.files;
-        for (let file = 0; file < files.length; file++) {
-            fileUtils
-                .uploadFolderOrFile(
-                    files[file],
-                    this.props.currentPath +
-                        encodeURIComponent(files[file].webkitRelativePath)
-                )
-                .then((response) => {
-                    console.log(file, response);
-                    if (file === files.length - 1) {
-                        this.loadCurrentFolder(
-                            this.props.currentPath,
-                            getBreadcrumbsFromUrl(this.props.currentPath)
-                        );
-                    }
-                });
+        if (files && files.length) {
+            for (let file = 0; file < files.length; file++) {
+                fileUtils
+                    .uploadFolderOrFile(
+                        files[file],
+                        currentPath +
+                            encodeURIComponent(files[file].webkitRelativePath)
+                    )
+                    .then((response) => {
+                        console.log(file, response);
+                        if (file === files.length - 1) {
+                            fetchCurrentItems(currentPath);
+                        }
+                    });
+            }
         }
     }
 
@@ -522,11 +485,6 @@ class Drive extends React.Component {
                 <DeleteWindow
                     windowName="Delete File"
                     selectedItems={selectedItems}
-                    info={
-                        selectedItems.length > 1
-                            ? 'Do you really want to delete these items?'
-                            : 'Do you really want to delete this item?'
-                    }
                     onSubmit={(selectedItems) => {
                         deleteItems(selectedItems, currentPath);
                     }}

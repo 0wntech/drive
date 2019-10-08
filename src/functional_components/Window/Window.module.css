@@ -30,6 +30,7 @@
     background-color: #ff697b;
     border-radius: 100%;
     margin-left: auto;
+    z-index: 1;
 }
 
 .close:hover {
@@ -37,17 +38,16 @@
 }
 
 .head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     height: 50px;
-    background-color: #e2e2e6;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #e2e2e6;
     padding: 0px 20px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    display: flex;
-    justify-content: center;
 }
 
 .body {
@@ -57,5 +57,7 @@
 .title {
     font-size: 1.1em;
     font-weight: 300;
-    margin-left: auto;
+    width: 100%;
+    position: absolute;
+    text-align: center;
 }

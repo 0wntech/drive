@@ -11,6 +11,7 @@
     letter-spacing: 0.05em;
     font-size: 18px;
     padding: 0 30px 0 15px;
+    cursor: pointer;
 }
 
 .imageContainer {

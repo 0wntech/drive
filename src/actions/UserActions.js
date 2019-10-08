@@ -111,6 +111,12 @@ const convertFileUrlToName = (fileUrl) => {
     return fileUrl.split('/').splice(-1)[0];
 };
 
+export const setCurrentContact = (profile) => {
+    return (dispatch) => {
+        dispatch({ type: SET_CURRENT_CONTACT, payload: profile });
+    };
+};
+
 export const fetchCurrentItems = (url) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CURRENT_ITEMS });
