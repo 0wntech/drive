@@ -37,6 +37,7 @@ const Navigation = ({
     const handleChange = (selected) => {
         if (selected.type === 'folder') {
             setCurrentPath(`${currentPath}/${selected.name}/`);
+            history.push('/home');
         } else if (selected.type === 'file') {
             console.log('implement redux on file click');
         } else if (selected.type === 'contact') {
@@ -57,7 +58,11 @@ const Navigation = ({
             value: { ...contact },
             type: 'contact',
         }));
-        const separator = { label: 'People', type: 'separator' };
+        const separator = {
+            label: 'People',
+            type: 'separator',
+            isDisabled: true,
+        };
         return [...filesAndFolders, separator, ...contactOptions];
     };
     return (
@@ -133,12 +138,14 @@ const formatOptionLabel = ({ value, label, name, type }) => {
     if (type === 'contact') {
         return (
             <div className={styles.optionContainer}>
-                <div
-                    className={styles.contactIcon}
-                    style={{
-                        backgroundImage: `url('${value.picture}')`,
-                    }}
-                />
+                <div className={styles.iconContainer}>
+                    <div
+                        className={styles.contactIcon}
+                        style={{
+                            backgroundImage: `url('${value.picture}')`,
+                        }}
+                    />
+                </div>
                 <span>{`${value.name} (${value.webId.replace(
                     '/profile/card#me',
                     ''
@@ -148,16 +155,24 @@ const formatOptionLabel = ({ value, label, name, type }) => {
     } else if (type === 'separator') {
         return (
             <div className={styles.separatorContainer}>
-                <div className={styles.separator}>{label}</div>
+                <div className={styles.iconContainer}>
+                    <div className={styles.separator}>{label}</div>
+                </div>
             </div>
         );
     } else {
         return (
             <div className={styles.optionContainer}>
-                <img
-                    className={styles.optionIcon}
-                    src={type === 'file' ? FileIcon : FolderIcon}
-                />
+                <div className={styles.iconContainer}>
+                    <img
+                        className={
+                            type === 'file'
+                                ? styles.fileIcon
+                                : styles.folderIcon
+                        }
+                        src={type === 'file' ? FileIcon : FolderIcon}
+                    />
+                </div>
                 <span>{name}</span>
             </div>
         );

@@ -149,7 +149,7 @@ class Drive extends React.Component {
             const newSelection = [...selectedItems, path];
             setSelection(newSelection);
         } else {
-            setCurrentPath();
+            setCurrentPath(path);
         }
     }
 

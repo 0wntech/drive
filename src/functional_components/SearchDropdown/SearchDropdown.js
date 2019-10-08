@@ -29,6 +29,7 @@ export default function SearchDropdown({
                 options={items}
                 onChange={onChange}
                 className={className}
+                value={null}
             />
         </div>
     );
@@ -51,6 +52,10 @@ const customStyles = {
     }),
     option: (provided, state) => ({
         ...provided,
+        padding: '8px 12px 8px 0',
+        height: 64,
+        display: 'flex',
+        alignItems: 'center',
     }),
     menu: (provided) => ({
         // none of react-select's styles are passed to <Control />
@@ -71,19 +76,24 @@ const customStyles = {
     indicatorSeparator: (provided) => ({
         display: 'none',
     }),
-    control: (provided, state) => ({
-        // none of react-select's styles are passed to <Control />
-        width: '100%',
-        height: '100%',
+    control: (provided, state) => {
+        console.log('staaaaaate', state);
+        return {
+            // none of react-select's styles are passed to <Control />
+            width: '100%',
+            height: '100%',
 
-        backgroundColor: state.isFocused ? '#ffffff' : '#F8F8F8',
-        borderRadius: state.isFocused ? '20px 20px 0 0' : '20px',
-        boxShadow: state.isFocused ? '0px 4px 6px rgba(0, 0, 0, 0.25)' : 'none',
-        borderWidth: 0,
-        display: 'flex',
-        flexDirection: 'row-reverse',
-        cursor: state.isFocused ? 'initial' : 'pointer',
-    }),
+            backgroundColor: state.menuIsOpen ? '#ffffff' : '#F8F8F8',
+            borderRadius: state.menuIsOpen ? '20px 20px 0 0' : '20px',
+            boxShadow: state.menuIsOpen
+                ? '0px 4px 6px rgba(0, 0, 0, 0.25)'
+                : 'none',
+            borderWidth: 0,
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            cursor: state.isFocused ? 'initial' : 'pointer',
+        };
+    },
     singleValue: (provided, state) => {
         const opacity = state.isDisabled ? 0.5 : 1;
         const transition = 'opacity 300ms';
