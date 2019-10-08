@@ -49,6 +49,89 @@ exports[`KeyValuePair should render expanded 1`] = `
 </div>
 `;
 
+exports[`KeyValuePair should render uneditable with multiple values 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="keyValueContainer"
+  >
+    <div
+      className="keyLabel"
+    >
+      Test
+    </div>
+    <div
+      className="valueContainer"
+    >
+      <div
+        className="multiValueContainer"
+      >
+        <div
+          className="valueWrapper"
+        >
+          <input
+            className="value"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="multiple"
+            readOnly={true}
+            value="multiple"
+          />
+        </div>
+        <div
+          className="valueWrapper"
+        >
+          <input
+            className="value"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="values"
+            readOnly={true}
+            value="values"
+          />
+        </div>
+        <div
+          className="valueWrapper"
+        >
+          <input
+            className="value"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="test"
+            readOnly={true}
+            value="test"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="ReactCollapse--collapse"
+    style={
+      Object {
+        "height": 0,
+        "overflow": "hidden",
+      }
+    }
+  >
+    <div
+      className="ReactCollapse--content"
+    >
+      <div
+        className="containerFooter addLabel"
+        onClick={[Function]}
+      >
+        + Add
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`KeyValuePair should render unexpanded 1`] = `
 <div
   className="container"

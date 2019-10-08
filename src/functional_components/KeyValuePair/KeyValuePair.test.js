@@ -1,6 +1,5 @@
 import React from 'react';
 import KeyValuePair from './KeyValuePair';
-import { shallow } from 'enzyme';
 import TestRenderer from 'react-test-renderer';
 
 describe('KeyValuePair', () => {
@@ -37,12 +36,34 @@ describe('KeyValuePair', () => {
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    xit('should trigger onClick function on click', () => {
-        const mockFunction = jest.fn();
-        const wrapper = shallow(
-            <KeyValuePair label={label} onClick={mockFunction} />
+    it('should render uneditable with multiple values', () => {
+        const editable = false;
+        const values = ['multiple', 'values', 'test'];
+        const tree = TestRenderer.create(
+            <KeyValuePair
+                editable={editable}
+                placeholder={placeholder}
+                dataKey={dataKey}
+                value={values}
+                label={label}
+            />
         );
-        wrapper.simulate('click');
-        expect(mockFunction).toHaveBeenCalled();
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    xit('should render editable with multiple values', () => {
+        const editable = true;
+        const values = ['multiple', 'values', 'test'];
+
+        const tree = TestRenderer.create(
+            <KeyValuePair
+                editable={editable}
+                placeholder={placeholder}
+                dataKey={dataKey}
+                value={values}
+                label={label}
+            />
+        );
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 });

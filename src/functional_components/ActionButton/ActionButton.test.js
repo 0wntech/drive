@@ -7,23 +7,36 @@ describe('ActionButton', () => {
     const label = 'TestButton';
 
     it('should render default', () => {
-        const tree = TestRenderer.create(<ActionButton label={label} />);
+        const mockFunction = jest.fn();
+
+        const tree = TestRenderer.create(
+            <ActionButton onClick={mockFunction} label={label} />
+        );
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
     it('should render blue small button', () => {
         const color = 'blue';
         const size = 'sm';
+        const mockFunction = jest.fn();
+
         const tree = TestRenderer.create(
-            <ActionButton label={label} size={size} color={color} />
+            <ActionButton
+                label={label}
+                onClick={mockFunction}
+                size={size}
+                color={color}
+            />
         );
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
     it('should render medium sized button', () => {
+        const mockFunction = jest.fn();
+
         const size = 'md';
         const tree = TestRenderer.create(
-            <ActionButton label={label} size={size} />
+            <ActionButton label={label} onClick={mockFunction} size={size} />
         );
         expect(tree.toJSON()).toMatchSnapshot();
     });
