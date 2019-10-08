@@ -11,4 +11,5 @@
     align-items: center;
     display: flex;
     margin-right: 4%;
+    z-index: 3;
 }

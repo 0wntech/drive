@@ -32,6 +32,7 @@ svg:hover {
     align-items: center;
     grid-area: settings;
     cursor: pointer;
+    z-index: 3;
 }
 
 .settings:hover path {
@@ -150,8 +151,18 @@ svg:hover {
     border-top-right-radius: 20px;
     width: 100%;
     display: grid;
+    position: relative;
     grid-template-columns: 11fr 1fr;
     grid-template-areas: '. settings';
+}
+
+.toolbarHeader {
+    letter-spacing: 0.05em;
+    font-size: 18px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    align-self: center;
 }
 
 .nameLabel {

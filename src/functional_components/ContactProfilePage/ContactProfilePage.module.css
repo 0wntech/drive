@@ -8,6 +8,13 @@
     border-radius: 20px;
 }
 
+.header {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    align-self: center;
+}
+
 svg:hover {
     cursor: pointer;
 }
@@ -26,6 +33,7 @@ svg:hover {
     align-items: center;
     grid-area: settings;
     cursor: pointer;
+    z-index: 3;
 }
 
 .addButtonWrapper {
@@ -114,6 +122,7 @@ svg:hover {
     display: grid;
     grid-template-columns: 11fr 1fr;
     grid-template-areas: '. settings';
+    position: relative;
 }
 
 .nameLabel {

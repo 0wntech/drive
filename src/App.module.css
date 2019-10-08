@@ -7,16 +7,18 @@
 }
 
 .grid {
-    padding: 40px 0;
     min-height: 0;
     display: grid;
     height: 100%;
     margin: 0 15% 0 15%;
-    grid-row-gap: 20px;
+
     grid-template-areas:
+        '.'
         'nav'
-        'main';
-    grid-template-rows: 80px 1fr;
+        '.'
+        'main'
+        '.';
+    grid-template-rows: 40px 80px 20px 1fr 40px;
 }
 
 .navArea {
@@ -31,4 +33,5 @@
 .mainArea {
     grid-area: main;
     height: 100%;
+    overflow: hidden;
 }

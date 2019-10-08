@@ -8,6 +8,11 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
     className="toolbarArea"
   >
     <div
+      className="toolbarHeader"
+    >
+      Profile
+    </div>
+    <div
       className="iconWrapper"
     >
       <svg

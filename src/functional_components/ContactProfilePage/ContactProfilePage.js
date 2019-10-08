@@ -15,6 +15,7 @@ const ContactProfilePage = ({ currentContact, addContact, webId }) => {
     return (
         <div className={styles.grid}>
             <div className={styles.toolbarArea}>
+                <div className={styles.header}>{currentContact.name}</div>
                 <div className={styles.iconWrapper}>
                     <Settings className={styles.settings} />
                 </div>
