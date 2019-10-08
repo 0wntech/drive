@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styles from './ContactPage.module.css';
+import styles from './ContactProfilePage.module.css';
 
 import { addContact } from '../../actions/UserActions';
 import { KeyValuePair } from '../KeyValuePair';
@@ -9,7 +9,9 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
 import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
-const ContactPage = ({ currentContact, addContact, webId }) => {
+import Plus from '../../assets/svgIcons/Plus';
+
+const ContactProfilePage = ({ currentContact, addContact, webId }) => {
     return (
         <div className={styles.grid}>
             <div className={styles.toolbarArea}>
@@ -57,7 +59,9 @@ const ContactPage = ({ currentContact, addContact, webId }) => {
                             onClick={() =>
                                 addContact(webId, currentContact.webId)
                             }
-                        />
+                        >
+                            <Plus className={styles.icon} />
+                        </IconButton>
                     </div>
                 </div>
                 <KeyValuePair
@@ -80,7 +84,7 @@ const ContactPage = ({ currentContact, addContact, webId }) => {
     );
 };
 
-ContactPage.propTypes = {
+ContactProfilePage.propTypes = {
     currentContact: PropTypes.object,
 };
 
@@ -92,4 +96,4 @@ const mapStateToProps = (state) => ({
 export default connect(
     mapStateToProps,
     { addContact }
-)(ContactPage);
+)(ContactProfilePage);

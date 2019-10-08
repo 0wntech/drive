@@ -12,7 +12,7 @@
     color: white;
 }
 
-.container:hover .icon path {
+.container:hover svg path {
     fill: white;
 }
 
@@ -24,8 +24,4 @@
     margin-left: 15px;
     color: #36a510;
     margin-top: 2px;
-}
-
-.icon svg {
-    fill: #36a510;
 }

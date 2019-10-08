@@ -15,7 +15,7 @@ import NotificationsPage from './stateful_components/NotificationsPage';
 import LandingPage from './functional_components/LandingPage';
 import { ProfilePage } from './functional_components/ProfilePage';
 import { ContactsPage } from './functional_components/ContactsPage';
-import { ContactPage } from './functional_components/ContactPage';
+import { ContactProfilePage } from './functional_components/ContactProfilePage';
 
 class App extends React.Component {
     constructor(props) {
@@ -138,7 +138,7 @@ class App extends React.Component {
                                 <PrivateRoute
                                     session={session}
                                     path="/contact"
-                                    component={<ContactPage />}
+                                    component={<ContactProfilePage />}
                                 />
                                 <PrivateRoute
                                     session={session}

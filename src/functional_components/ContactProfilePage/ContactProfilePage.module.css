@@ -16,6 +16,10 @@ svg:hover {
     fill: #c2c2c2;
 }
 
+.icon svg {
+    fill: #36a510;
+}
+
 .iconWrapper {
     height: 100%;
     display: flex;
