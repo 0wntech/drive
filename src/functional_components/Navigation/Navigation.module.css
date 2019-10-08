@@ -48,7 +48,7 @@
     font-size: 18px;
     font-weight: 300;
     font-style: normal;
-    font-family: Roboto;
+    font-family: 'Helvetica Neue Light';
     margin-left: 10px;
     margin-right: 10px;
     text-overflow: ellipsis;
@@ -72,23 +72,9 @@
     cursor: pointer;
 }
 
-.brand p {
-    margin: 0 10px;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 300;
-    align-self: center;
-    display: inline;
-    font-size: 1.5em;
-}
-
-.brand img {
-    height: auto;
-    max-height: 50px;
-}
-
 .profileIcon {
-    height: 64px;
-    width: 64px;
+    min-height: 64px;
+    min-width: 64px;
     border: 5px solid #e5e5e5;
     background-size: cover;
     background-position: center;

@@ -1,0 +1,41 @@
+.grid {
+    display: grid;
+    grid-template-rows: 23fr;
+    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-areas: '. main .';
+    background-color: #ffffff;
+    border-radius: 20px;
+    height: 100%;
+}
+
+.mainArea {
+    grid-area: main;
+    height: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    font-size: 5rem;
+    font-weight: 300;
+    color: #666;
+    text-align: center;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 64px;
+    font-size: 2rem;
+}
+
+.buttons p {
+    padding: 20px 20px;
+    margin: 0;
+}

@@ -6,9 +6,6 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
     SET_WEBID,
-    FETCH_FRIENDS,
-    FETCH_FRIENDS_FAIL,
-    FETCH_FRIENDS_SUCCESS,
     FETCH_CURRENT_ITEMS,
     FETCH_CURRENT_ITEMS_SUCCESS,
     FETCH_CURRENT_ITEMS_FAIL,
@@ -26,10 +23,31 @@ import {
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
+    COPY_ITEMS,
+    PASTE_ITEMS,
+    PASTE_ITEMS_SUCCESS,
+    PASTE_ITEMS_FAILURE,
+    FETCH_CONTACTS,
+    FETCH_CONTACTS_SUCCESS,
+    FETCH_CONTACTS_FAILURE,
+    ADD_CONTACT,
+    REMOVE_CONTACT,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_FAILURE,
+    UPDATE_PROFILE_SUCCESS,
+    CHANGE_PROFILE_PHOTO,
+    CHANGE_PROFILE_PHOTO_SUCCESS,
+    CHANGE_PROFILE_PHOTO_FAILURE,
+    SET_CURRENT_CONTACT,
+    RENAME_ITEM,
+    RENAME_ITEM_SUCCESS,
+    RENAME_ITEM_FAILURE,
 } from './types';
+import User from 'ownuser';
 import auth from 'solid-auth-client';
-import User from 'your-user';
+import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
+import PodClient from 'ownfiles';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -40,6 +58,7 @@ export const login = (username, password) => {
                     dispatch({ type: LOGIN_FAIL });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
+                    dispatch(fetchContacts(session.webId));
                 }
             })
             .catch((error) => {
@@ -84,26 +103,18 @@ export const fetchUser = (webId) => {
     };
 };
 
-export const fetchContacts = (yourUserObject) => {
-    return (dispatch) => {
-        dispatch({ type: FETCH_FRIENDS });
-        yourUserObject
-            .getFriends()
-            .then((friends) => {
-                dispatch({ type: FETCH_FRIENDS_SUCCESS, payload: friends });
-            })
-            .catch((error) => {
-                dispatch({ type: FETCH_FRIENDS_FAIL, payload: error });
-            });
-    };
-};
-
 const convertFolderUrlToName = (folderUrl) => {
     return folderUrl.split('/').splice(-2)[0];
 };
 
 const convertFileUrlToName = (fileUrl) => {
     return fileUrl.split('/').splice(-1)[0];
+};
+
+export const setCurrentContact = (profile) => {
+    return (dispatch) => {
+        dispatch({ type: SET_CURRENT_CONTACT, payload: profile });
+    };
 };
 
 export const fetchCurrentItems = (url) => {
@@ -148,11 +159,11 @@ export const fetchNotifications = (webId) => {
     };
 };
 
-export const sendNotification = (webId, notification) => {
+export const sendNotification = (to, notification) => {
     return (dispatch) => {
         dispatch({ type: SEND_NOTIFICATION });
         fileUtils
-            .sendNotification(webId, notification)
+            .sendNotification(to, notification)
             .then(() => {
                 dispatch({
                     type: SEND_NOTIFICATION_SUCCESS,
@@ -202,7 +213,216 @@ export const deleteItems = (items, currentPath = '/') => {
                 }, 2000);
             })
             .catch((err) => {
-                dispatch({ type: DELETE_ITEMS_FAILURE });
+                dispatch({ type: DELETE_ITEMS_FAILURE, payload: err });
             });
+    };
+};
+
+export const copyItems = (items) => {
+    return (dispatch) => {
+        dispatch({ type: COPY_ITEMS, payload: items });
+    };
+};
+
+export const pasteItems = (items, location) => {
+    return (dispatch) => {
+        dispatch({ type: PASTE_ITEMS });
+        auth.currentSession()
+            .then((session) => {
+                const pod = new PodClient({ podUrl: session.webId });
+                const paste = new Promise((resolve, reject) => {
+                    items.map((item, index) => {
+                        if (index == items.length - 1) {
+                            return pod.copy(item, location).then(() => {
+                                resolve();
+                            });
+                        } else {
+                            return pod.copy(item, location);
+                        }
+                    });
+                    Promise.all(items).catch((err) => {
+                        reject(err);
+                    });
+                });
+                Promise.resolve(paste)
+                    .then(() => {
+                        dispatch({ type: PASTE_ITEMS_SUCCESS });
+                        dispatch(setCurrentPath(location));
+                    })
+                    .catch((err) => {
+                        dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
+                    });
+            })
+            .catch((err) => {
+                dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
+            });
+    };
+};
+
+export const addContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: ADD_CONTACT });
+        const user = new User(webId);
+        user.addContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
+    };
+};
+
+export const removeContact = (webId, contactWebId) => {
+    return (dispatch) => {
+        dispatch({ type: REMOVE_CONTACT });
+        const user = new User(webId);
+        user.deleteContact(contactWebId).then(() =>
+            dispatch(fetchContacts(webId))
+        );
+    };
+};
+
+export const fetchDetailContacts = (contacts) => {
+    const requests = contacts.map((webid) => {
+        const request = new Promise((resolve, reject) => {
+            const contact = new User(webid);
+            contact
+                .getProfile()
+                .then((profileData) => {
+                    resolve(profileData);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+        return request;
+    });
+    return Promise.all(requests);
+};
+
+export const fetchContacts = (webId) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CONTACTS });
+        const user = new User(webId);
+        console.log(user);
+        user.getContacts()
+            .then((contacts) => {
+                fetchDetailContacts(contacts).then((detailContacts) => {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: detailContacts,
+                    });
+                });
+            })
+            .catch((error) =>
+                dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
+            );
+    };
+};
+export const updateProfile = (profileData, webId) => {
+    return (dispatch) => {
+        dispatch({ type: UPDATE_PROFILE });
+        const currUser = new User(webId);
+        currUser
+            .setProfile(profileData)
+            .then(() => {
+                dispatch({ type: UPDATE_PROFILE_SUCCESS });
+                dispatch(fetchUser(webId));
+            })
+            .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
+    };
+};
+
+export const changeProfilePhoto = (e, webId) => {
+    return (dispatch) => {
+        dispatch({ type: CHANGE_PROFILE_PHOTO });
+        const currUser = new User(webId);
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        const store = rdf.graph();
+        const fetcher = new rdf.Fetcher(store);
+        reader.onload = function() {
+            const data = this.result;
+            const contentType = file.type;
+            const pictureUrl = webId.replace(
+                'card#me',
+                encodeURIComponent(file.name)
+            );
+
+            fetcher
+                .webOperation('PUT', pictureUrl, {
+                    data: data,
+                    contentType: contentType,
+                })
+                .then((res) => {
+                    if (res.status == 201) {
+                        currUser
+                            .setPicture(pictureUrl)
+                            .then(() => {
+                                dispatch({
+                                    type: CHANGE_PROFILE_PHOTO_SUCCESS,
+                                });
+                                dispatch(fetchUser(webId));
+                            })
+                            .catch((err) => {
+                                dispatch({
+                                    type: CHANGE_PROFILE_PHOTO_FAILURE,
+                                    payload: err,
+                                });
+                            });
+                    }
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: CHANGE_PROFILE_PHOTO_FAILURE,
+                        payload: err,
+                    });
+                });
+        };
+        reader.readAsArrayBuffer(file);
+    };
+};
+
+export const renameItem = function(renamedItem, value) {
+    return (dispatch) => {
+        dispatch({ type: RENAME_ITEM });
+        auth.currentSession().then((session) => {
+            const fileClient = new PodClient({ podUrl: session.webId });
+            const rename = new Promise((resolve, reject) => {
+                if (renamedItem.endsWith('/')) {
+                    fileClient
+                        .renameFolder(renamedItem, value)
+                        .then(() => {
+                            resolve();
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                } else {
+                    fileClient
+                        .renameFile(renamedItem, value)
+                        .then(() => {
+                            resolve();
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                }
+            });
+            Promise.resolve(rename)
+                .then(() => {
+                    let location = renamedItem.split('/');
+                    if (renamedItem.endsWith('/')) {
+                        location.pop();
+                        location.pop();
+                    } else {
+                        location.pop();
+                    }
+
+                    location = location.join('/');
+                    dispatch({ type: RENAME_ITEM_SUCCESS });
+                    dispatch(setCurrentPath(location + '/'));
+                })
+                .catch((err) => {
+                    dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
+                });
+        });
     };
 };

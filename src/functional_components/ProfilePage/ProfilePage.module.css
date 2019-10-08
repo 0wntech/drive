@@ -3,11 +3,27 @@
     display: grid;
     grid-template-rows: 40px 23fr;
     grid-template-columns: 3fr 6fr 3fr;
-    grid-template-areas:
-        'toolbar toolbar toolbar'
-        '. profile .';
+    grid-template-areas: 'toolbar toolbar toolbar' '. profile .';
     background-color: #ffffff;
     border-radius: 20px;
+}
+
+svg:hover {
+    cursor: pointer;
+}
+
+.editButtons {
+    display: flex;
+    flex-direction: column;
+}
+
+svg:hover {
+    cursor: pointer;
+}
+
+.editButtons {
+    display: flex;
+    flex-direction: column;
 }
 
 .iconWrapper {
@@ -16,6 +32,7 @@
     align-items: center;
     grid-area: settings;
     cursor: pointer;
+    z-index: 3;
 }
 
 .settings:hover path {
@@ -24,9 +41,11 @@
 
 .profileContainer {
     grid-area: profile;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
     margin-top: 65px;
 }
 
@@ -40,6 +59,40 @@
     border-radius: 50%;
 }
 
+.editPhoto {
+    grid-area: profileImg;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 5, 0.5);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.editPhoto:hover {
+    cursor: pointer;
+}
+
+.editPhoto {
+    grid-area: profileImg;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 5, 0.5);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.editPhoto:hover {
+    cursor: pointer;
+}
+
 .nameContainer {
     grid-area: name;
     padding: 0 0 0 30px;
@@ -51,21 +104,25 @@
     overflow: hidden;
 }
 
+.bioLabel {
+    letter-spacing: 0.2em;
+    font-family: 'Helvetica Neue Light';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 21px;
+    width: 100% !important;
+}
+
 .bio {
     padding: 0 0 0 30px;
     grid-area: bio;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    letter-spacing: 0.2em;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    line-height: 21px;
 }
 
 .headInfoContainer {
@@ -77,13 +134,10 @@
     width: 100%;
     max-height: 100%;
     margin-bottom: 20px;
-
     display: grid;
     grid-template-columns: 10vw 3fr 1fr;
     grid-template-rows: 5vw 5vw;
-    grid-template-areas:
-        'profileImg name editIcon'
-        'profileImg bio .';
+    grid-template-areas: 'profileImg name editIcon' 'profileImg bio .';
 }
 
 .iconContainer {
@@ -97,15 +151,26 @@
     border-top-right-radius: 20px;
     width: 100%;
     display: grid;
+    position: relative;
     grid-template-columns: 11fr 1fr;
     grid-template-areas: '. settings';
 }
 
+.toolbarHeader {
+    letter-spacing: 0.05em;
+    font-size: 18px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    align-self: center;
+}
+
 .nameLabel {
-    font-family: Roboto;
+    font-family: 'Helvetica Neue Light';
     font-style: normal;
+    width: 100% !important;
     font-weight: 300;
-    font-size: 24px;
+    font-size: 24px !important;
     line-height: 28px;
     position: relative;
     letter-spacing: 0.2em;
@@ -116,7 +181,7 @@
 
 .webIdLabel {
     margin-top: 10px;
-    font-family: Roboto;
+    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
@@ -130,7 +195,7 @@
 
 .valueLabel {
     letter-spacing: 0.2em;
-    font-family: Roboto;
+    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
@@ -144,6 +209,6 @@
     justify-content: center;
 }
 
-.editIcon {
+.icon {
     cursor: pointer;
 }
