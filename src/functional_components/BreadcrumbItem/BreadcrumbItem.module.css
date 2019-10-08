@@ -2,7 +2,7 @@
     color: #5c94ff;
     cursor: pointer;
     letter-spacing: 0.05em;
-    font-family: 'Roboto';
+    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
@@ -10,6 +10,11 @@
 
 .seperator {
     margin: 0 10px 0 10px;
+    letter-spacing: 0.05em;
+    font-family: 'Helvetica Neue Light';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
 }
 
 .container {

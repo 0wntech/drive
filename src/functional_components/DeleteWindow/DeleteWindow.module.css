@@ -1,8 +1,22 @@
+.prompt {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.selectedFiles {
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
 .button {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 33%;
+    width: 25%;
     color: #0c89c6;
     height: 30px;
     background-color: white;

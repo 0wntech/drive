@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import styles from './Navigation.module.css';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
+import ActionButton from '../ActionButton/ActionButton';
 
 const Navigation = ({
     picture,
@@ -18,7 +19,7 @@ const Navigation = ({
         { onClick: () => history.push('/profile'), label: 'Profile' },
         { onClick: () => console.log('test2'), label: 'Settings*' },
         { onClick: () => console.log('test2'), label: 'Notifications*' },
-        { onClick: () => console.log('test2'), label: 'Contacts*' },
+        { onClick: () => history.push('/contacts'), label: 'Contacts' },
         { onClick: () => onLogout(), label: 'Logout' },
     ];
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
@@ -27,7 +28,13 @@ const Navigation = ({
         <div className={styles.container}>
             <div className={styles.brandWrapper}>
                 <img
-                    onClick={() => history.push('/home')}
+                    onClick={() => {
+                        if (webId) {
+                            history.push('/home');
+                        } else {
+                            history.push('/');
+                        }
+                    }}
                     className={styles.brand}
                     src="https://owntech.de/favicon.ico"
                 />
@@ -36,21 +43,16 @@ const Navigation = ({
                 {webId ? (
                     <div className={styles.dropdownWrapper}>
                         <div className={styles.profileSection}>
-                            {picture ? (
-                                <div
-                                    onClick={toggleSidebar}
-                                    className={styles.profileIcon}
-                                    style={{
-                                        backgroundImage: 'url(' + picture + ')',
-                                    }}
-                                />
-                            ) : (
-                                <img
-                                    onClick={() => history.push('/profile')}
-                                    className={styles.profileIcon}
-                                    src={defaultIcon}
-                                />
-                            )}
+                            <div
+                                onClick={() => history.push('/profile')}
+                                className={styles.profileIcon}
+                                style={{
+                                    backgroundImage: `url('${
+                                        picture ? picture : defaultIcon
+                                    }')`,
+                                }}
+                            />
+
                             <div className={styles.username}>{username}</div>
                         </div>
                         <DropdownMenu
@@ -65,9 +67,11 @@ const Navigation = ({
                         />
                     </div>
                 ) : (
-                    <div className={styles.loginButton}>
-                        <a href="/login">Login</a>
-                    </div>
+                    <ActionButton
+                        size="sm"
+                        label="Login"
+                        onClick={() => history.push('/login')}
+                    />
                 )}
             </div>
         </div>

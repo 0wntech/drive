@@ -32,6 +32,10 @@
     grid-area: main;
 }
 
+.mainArea::-webkit-scrollbar {
+    display: none;
+}
+
 .grid {
     display: grid;
     grid-template-rows: 40px 23fr;
@@ -39,6 +43,11 @@
     grid-template-areas: 'toolbar toolbar toolbar' '. main .';
     background-color: #ffffff;
     border-radius: 20px;
+    overflow-y: auto;
+}
+
+.container {
+    height: 100%;
 }
 
 .contextMenu {

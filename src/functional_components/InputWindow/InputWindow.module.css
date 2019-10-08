@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 33%;
+    width: 25%;
     color: #0c89c6;
     height: 30px;
     background-color: white;
@@ -28,7 +28,8 @@
 }
 
 .confirm {
-    background-color: #0c89c6;
+    background: linear-gradient(to top, #0c89c6, rgba(0, 171, 255, 0.5));
     color: white;
-    font-weight: 500;
+    font-weight: 300;
+    border-radius: 20px;
 }
