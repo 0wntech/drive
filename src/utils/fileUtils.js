@@ -295,7 +295,7 @@ function sendNotification(notifParams) {
         method: 'PUT',
         headers: {
             'content-type': 'text/turtle',
-            slug: notificationAddress.replace(inboxAddress + '/', ''),
+            'slug': notificationAddress.replace(inboxAddress + '/', ''),
         },
         body: notification,
     };

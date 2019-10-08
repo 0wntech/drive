@@ -182,8 +182,8 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                slug: folderAddress,
-                link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
+                'slug': folderAddress,
+                'link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
@@ -198,8 +198,8 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                slug: folderAddress,
-                link: '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
+                'slug': folderAddress,
+                'link': '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
@@ -556,11 +556,7 @@ class Drive extends React.Component {
                             <div className={styles.container}>
                                 {windows}
                                 {currentItems ? (
-                                    <div className={styles.contentWrapper}>
-                                        {/* <ContactSidebar /> */}
-                                        <div className={styles.header}>
-                                            Folders
-                                        </div>
+                                    <div>
                                         <ItemList
                                             selectedItems={selectedItems}
                                             items={currentItems.folders}
@@ -571,9 +567,6 @@ class Drive extends React.Component {
                                                 CONTEXTMENU_OPTIONS
                                             }
                                         />
-                                        <div className={styles.header}>
-                                            Files
-                                        </div>
                                         <ItemList
                                             selectedItems={selectedItems}
                                             isFile
