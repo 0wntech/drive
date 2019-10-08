@@ -9,7 +9,7 @@
     "enzyme-adapter-react-16": "^1.14.0",
     "flare-react": "^1.0.2",
     "mime": "^2.4.4",
-    "ownfiles": "^1.0.4",
+    "ownfiles": "^1.0.6",
     "ownuser": "^1.2.5",
     "rdflib": "^0.20.1",
     "react": "^16.8.6",
@@ -37,6 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "test:local": "react-scripts test",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
@@ -51,9 +52,9 @@
   },
   "lint-staged": {
     "linters": {
-      "*/**/*.js": [
+      "*.js": [
         "prettier --write",
-        "eslint",
+        "eslint --fix",
         "git add"
       ],
       "*.{json,css}": [

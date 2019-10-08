@@ -53,7 +53,7 @@ function uploadFolderOrFile(file, url) {
     });
 }
 
-function uploadFile(filePath, currPath) {
+function uploadFile(filePath, currPath, callback) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
 
@@ -71,6 +71,8 @@ function uploadFile(filePath, currPath) {
             })
             .then((response) => {
                 if (response.status === 201) {
+                    console.log('Successfully uploaded!');
+                    callback();
                     console.log('Successfully uploaded!');
                 }
             });
@@ -327,7 +329,7 @@ function sendNotification(notifParams) {
         method: 'PUT',
         headers: {
             'content-type': 'text/turtle',
-            slug: notificationAddress.replace(inboxAddress + '/', ''),
+            'slug': notificationAddress.replace(inboxAddress + '/', ''),
         },
         body: notification,
     };
