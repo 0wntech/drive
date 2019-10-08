@@ -33,6 +33,7 @@ svg:hover {
     align-items: center;
     grid-area: settings;
     cursor: pointer;
+    z-index: 3;
 }
 
 .addButtonWrapper {
