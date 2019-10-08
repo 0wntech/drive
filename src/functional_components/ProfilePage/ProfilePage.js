@@ -45,6 +45,7 @@ export const ProfilePage = ({
         return (
             <div className={styles.grid}>
                 <div className={styles.toolbarArea}>
+                    <div className={styles.toolbarHeader}>Profile</div>
                     <div className={styles.iconWrapper}>
                         <Settings className={styles.settings} />
                     </div>
