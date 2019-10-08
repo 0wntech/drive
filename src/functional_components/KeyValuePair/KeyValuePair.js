@@ -74,6 +74,9 @@ KeyValuePair.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     dataKey: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+    setValue: PropTypes.func,
+    editable: PropTypes.bool,
 };
 
 export default KeyValuePair;
