@@ -30,6 +30,11 @@
 
 .mainArea {
     grid-area: main;
+    overflow-y: auto;
+}
+
+.mainArea::-webkit-scrollbar {
+    display: none;
 }
 
 .grid {
@@ -42,6 +47,7 @@
 }
 
 .contentWrapper {
+    overflow: hidden;
     grid-area: content;
 }
 

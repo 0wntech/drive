@@ -37,6 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "test:local": "react-scripts test",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
@@ -51,9 +52,9 @@
   },
   "lint-staged": {
     "linters": {
-      "*/**/*.js": [
+      "*.js": [
         "prettier --write",
-        "eslint",
+        "eslint --fix",
         "git add"
       ],
       "*.{json,css}": [
