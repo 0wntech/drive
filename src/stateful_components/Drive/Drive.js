@@ -501,11 +501,7 @@ class Drive extends React.Component {
                             <div className={styles.container}>
                                 {windows}
                                 {currentItems ? (
-                                    <div className={styles.contentWrapper}>
-                                        {/* <ContactSidebar /> */}
-                                        <div className={styles.header}>
-                                            Folders
-                                        </div>
+                                    <div>
                                         <ItemList
                                             selectedItems={selectedItems}
                                             items={currentItems.folders}
@@ -516,9 +512,6 @@ class Drive extends React.Component {
                                                 CONTEXTMENU_OPTIONS
                                             }
                                         />
-                                        <div className={styles.header}>
-                                            Files
-                                        </div>
                                         <ItemList
                                             selectedItems={selectedItems}
                                             isFile
