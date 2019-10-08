@@ -59,20 +59,6 @@
     height: 100%;
 }
 
-.contentWrapper {
-    overflow-y: hidden;
-    height: 100%;
-    grid-area: content;
-}
-
-.header {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: 0.05em;
-    font-family: Source Sans Pro;
-    margin: 30px 0 20px 0;
-}
-
 .contextMenu {
     background-color: white;
     border-radius: 5px;
