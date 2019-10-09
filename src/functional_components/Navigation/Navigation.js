@@ -52,7 +52,6 @@ const Navigation = ({
             .map((item) => ({
                 ...item,
                 value: item.name,
-                label: item.label,
             }));
         const contactOptions = contacts.map((contact) => ({
             value: { ...contact },
