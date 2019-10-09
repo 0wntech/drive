@@ -8,6 +8,7 @@ export default function SearchDropdown({
     formatOptionLabel,
     className,
     onChange,
+    placeholder,
 }) {
     const DropdownIndicator = (props) => {
         return (
@@ -23,6 +24,7 @@ export default function SearchDropdown({
         <div className={classNames(styles.container, className)}>
             <Select
                 components={{ DropdownIndicator }}
+                placeholder={placeholder}
                 styles={customStyles}
                 defaultValue={items ? items[0] : 'no result'}
                 formatOptionLabel={formatOptionLabel}
@@ -43,6 +45,7 @@ const customStyles = {
     placeholder: (provided) => ({
         ...provided,
         fontSize: '22px',
+        marginLeft: '-9px',
     }),
     container: (provided) => ({
         ...provided,
@@ -50,12 +53,19 @@ const customStyles = {
         height: '80%',
         width: '100%    ',
     }),
+    input: (provided) => ({
+        ...provided,
+        marginLeft: '-9px',
+    }),
     option: (provided, state) => ({
         ...provided,
-        padding: '8px 12px 8px 0',
-        height: 64,
+        padding:
+            state.data.type === 'separator'
+                ? '8px 12px 3px 0'
+                : '8px 12px 8px 0',
+        height: state.data.type === 'separator' ? 25 : 64,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: state.data.type === 'separator' ? 'flex-end' : 'center',
     }),
     menu: (provided) => ({
         // none of react-select's styles are passed to <Control />
@@ -75,6 +85,11 @@ const customStyles = {
     }),
     indicatorSeparator: (provided) => ({
         display: 'none',
+    }),
+    indicatorsContainer: (provided) => ({
+        ...provided,
+        minWidth: 78,
+        justifyContent: 'center',
     }),
     control: (provided, state) => {
         console.log('staaaaaate', state);

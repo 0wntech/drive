@@ -63,7 +63,9 @@ const Navigation = ({
             type: 'separator',
             isDisabled: true,
         };
-        return [...filesAndFolders, separator, ...contactOptions];
+        return contactOptions.length > 0
+            ? [...filesAndFolders, separator, ...contactOptions]
+            : filesAndFolders;
     };
     return (
         <div className={styles.container}>
@@ -87,6 +89,7 @@ const Navigation = ({
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
                         onChange={handleChange}
+                        placeholder="Search..."
                         items={
                             items && contacts
                                 ? getSearchDropdownOptions()
