@@ -15,9 +15,7 @@ import ActionButton from '../ActionButton/ActionButton';
 const Navigation = ({
     picture,
     webId,
-    onLogin,
     onLogout,
-    toggleSidebar,
     setCurrentPath,
     username,
     history,
