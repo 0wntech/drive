@@ -3,7 +3,7 @@
 }
 
 .container {
-    z-index: 1;
+    z-index: 2;
     background-color: white;
     border-radius: 20px;
     display: grid;
