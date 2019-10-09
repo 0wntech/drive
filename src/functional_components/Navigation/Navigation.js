@@ -81,7 +81,6 @@ const Navigation = ({
                     src="https://owntech.de/favicon.ico"
                 />
             </div>
-            {console.log('iteeeeems', items)}
             <div className={styles.search}>
                 {items ? (
                     <SearchDropdown
