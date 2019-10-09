@@ -91,12 +91,9 @@ const customStyles = {
         justifyContent: 'center',
     }),
     control: (provided, state) => {
-        console.log('staaaaaate', state);
         return {
-            // none of react-select's styles are passed to <Control />
             width: '100%',
             height: '100%',
-
             backgroundColor: state.menuIsOpen ? '#ffffff' : '#F8F8F8',
             borderRadius: state.menuIsOpen ? '20px 20px 0 0' : '20px',
             boxShadow: state.menuIsOpen
@@ -111,7 +108,6 @@ const customStyles = {
     singleValue: (provided, state) => {
         const opacity = state.isDisabled ? 0.5 : 1;
         const transition = 'opacity 300ms';
-
         return { ...provided, opacity, transition };
     },
 };
