@@ -27,6 +27,7 @@
     min-width: 0; */
     align-items: center;
     display: flex;
+    z-index: 4;
 }
 
 .mainArea {
