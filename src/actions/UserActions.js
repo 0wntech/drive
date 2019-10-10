@@ -1,3 +1,5 @@
+import idps from '../assets/idps.json';
+
 import {
     LOGIN,
     LOGIN_SUCCESS,
@@ -42,6 +44,9 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    SEARCH_CONTACT,
+    SEARCH_CONTACT_SUCCESS,
+    SEARCH_CONTACT_FAILURE,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
@@ -327,6 +332,53 @@ export const updateProfile = (profileData, webId) => {
                 dispatch(fetchUser(webId));
             })
             .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
+    };
+};
+
+export const searchContact = (query) => {
+    return (dispatch) => {
+        dispatch({ type: SEARCH_CONTACT });
+        const lookups = idps.map((idp) => {
+            const url = idp.url.replace(idp.title, query + '.' + idp.title);
+            return auth
+                .fetch(url)
+                .then((res) => {
+                    if (res.status == 200) {
+                        return url;
+                    } else {
+                        return null;
+                    }
+                })
+                .catch((err) => {
+                    return null;
+                });
+        });
+        Promise.all(lookups)
+            .then((urls) => {
+                const result = [];
+                urls.forEach((url) => {
+                    if (url) {
+                        const user = new User(url);
+                        result.push(user.getProfile());
+                    }
+                });
+                Promise.all(result)
+                    .then((results) => {
+                        dispatch({
+                            type: SEARCH_CONTACT_SUCCESS,
+                            payload: results,
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch({
+                            type: SEARCH_CONTACT_FAILURE,
+                            payload: err,
+                        });
+                    });
+            })
+            .catch((err) => {
+                dispatch({ type: SEARCH_CONTACT_FAILURE, payload: err });
+            });
     };
 };
 

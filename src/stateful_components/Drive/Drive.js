@@ -23,6 +23,7 @@ import {
     copyItems,
     pasteItems,
     renameItem,
+    searchContact,
 } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -210,7 +211,13 @@ class Drive extends React.Component {
     }
 
     componentDidMount() {
-        const { currentItems, currentPath, loadCurrentItems } = this.props;
+        const {
+            currentItems,
+            currentPath,
+            loadCurrentItems,
+            contactsFound,
+            searchContact,
+        } = this.props;
 
         if (!currentItems && !currentPath && !loadCurrentItems) {
             console.log('fetching files');
@@ -220,6 +227,12 @@ class Drive extends React.Component {
                 currentItems
             );
             fetchCurrentItems(currentPath);
+        }
+
+        if (!contactsFound) {
+            searchContact('ludwig');
+        } else {
+            console.log(contactsFound);
         }
     }
 
@@ -627,6 +640,7 @@ const mapStateToProps = (state) => {
         loadDeletion: state.app.loadDeletion,
         clipboard: state.app.clipboard,
         loadPaste: state.app.loadPaste,
+        contactsFound: state.app.contactsFound,
     };
 };
 
@@ -642,6 +656,7 @@ export default withRouter(
             copyItems,
             pasteItems,
             renameItem,
+            searchContact,
         }
     )(Drive)
 );

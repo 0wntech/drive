@@ -1,5 +1,16 @@
 [
     {
+        "url": "https://owntech.de/",
+        "icon": "https://owntech.de/favicon.ico",
+        "icon_bg": "#fff",
+        "title": "owntech.de",
+        "title_color": "#000",
+        "policyURL": "https://owntech.de",
+        "description": "Owntech is a german identity provider, dedicated to Data Ownership",
+        "btn_bg": "#fff",
+        "btn_color": "#000"
+    },
+    {
         "url": "https://inrupt.net/",
         "icon": "https://static1.squarespace.com/static/5b3e3ef4ec4eb767a0513abb/t/5b900a3c4ae237882d673b18/1540234254934/",
         "icon_bg": "#ffffff",
