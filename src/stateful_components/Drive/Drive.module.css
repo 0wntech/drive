@@ -53,10 +53,6 @@
     border-radius: 20px;
 }
 
-.container {
-    height: 100%;
-}
-
 .breadcrumbsContainer {
     z-index: 1;
     display: flex;
