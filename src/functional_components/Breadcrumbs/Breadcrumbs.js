@@ -8,8 +8,7 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
     const breadcrumbMarkup = breadcrumbs
         ? breadcrumbs.map((currentBreadcrumb, currentIndex) => {
               if (currentBreadcrumb !== '/') {
-                  currentUrl = currentUrl + currentBreadcrumb;
-                  const breadcrumbUrl = currentUrl;
+                  const breadcrumbUrl = currentUrl + currentBreadcrumb;
                   const currentLabel = currentBreadcrumb.replace('/', '');
                   return (
                       <BreadcrumbItem
