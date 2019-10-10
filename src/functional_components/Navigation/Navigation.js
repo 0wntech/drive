@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import styles from './Navigation.module.css';
+import SearchDropdown from '../SearchDropdown/SearchDropdown';
+import FileIcon from '../../assets/icons/File.png';
+import FolderIcon from '../../assets/icons/Folder.png';
+import fileUtils from '../../utils/fileUtils';
+import { connect } from 'react-redux';
+import { setCurrentPath, setCurrentContact } from '../../actions/UserActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
 import ActionButton from '../ActionButton/ActionButton';
@@ -9,11 +15,14 @@ import ActionButton from '../ActionButton/ActionButton';
 const Navigation = ({
     picture,
     webId,
-    onLogin,
     onLogout,
-    toggleSidebar,
+    setCurrentPath,
     username,
     history,
+    items,
+    contacts,
+    currentPath,
+    setCurrentContact,
 }) => {
     const DROPDOWN_OPTIONS = [
         { onClick: () => history.push('/profile'), label: 'Profile' },
@@ -23,7 +32,38 @@ const Navigation = ({
         { onClick: () => onLogout(), label: 'Logout' },
     ];
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
+    const handleChange = (selected) => {
+        if (selected.type === 'folder') {
+            setCurrentPath(`${currentPath}/${selected.name}/`);
+            history.push('/home');
+        } else if (selected.type === 'file') {
+            console.log('implement redux on file click');
+        } else if (selected.type === 'contact') {
+            setCurrentContact(selected.value);
+            history.push('/contact');
+        }
+    };
 
+    const getSearchDropdownOptions = () => {
+        const filesAndFolders = fileUtils
+            .convertFilesAndFoldersToArray(items.files, items.folders)
+            .map((item) => ({
+                ...item,
+                value: item.name,
+            }));
+        const contactOptions = contacts.map((contact) => ({
+            value: { ...contact },
+            type: 'contact',
+        }));
+        const separator = {
+            label: 'People',
+            type: 'separator',
+            isDisabled: true,
+        };
+        return contactOptions.length > 0
+            ? [...filesAndFolders, separator, ...contactOptions]
+            : filesAndFolders;
+    };
     return (
         <div className={styles.container}>
             <div className={styles.brandWrapper}>
@@ -38,6 +78,21 @@ const Navigation = ({
                     className={styles.brand}
                     src="https://owntech.de/favicon.ico"
                 />
+            </div>
+            <div className={styles.search}>
+                {items ? (
+                    <SearchDropdown
+                        className={styles.searchDropdown}
+                        formatOptionLabel={formatOptionLabel}
+                        onChange={handleChange}
+                        placeholder="Search..."
+                        items={
+                            items && contacts
+                                ? getSearchDropdownOptions()
+                                : null
+                        }
+                    />
+                ) : null}
             </div>
             <div className={styles.menuWrapper}>
                 {webId ? (
@@ -78,4 +133,57 @@ const Navigation = ({
     );
 };
 
-export default withRouter(Navigation);
+const formatOptionLabel = ({ value, label, name, type }) => {
+    if (type === 'contact') {
+        return (
+            <div className={styles.optionContainer}>
+                <div className={styles.iconContainer}>
+                    <div
+                        className={styles.contactIcon}
+                        style={{
+                            backgroundImage: `url('${value.picture}')`,
+                        }}
+                    />
+                </div>
+                <span>{`${value.name} (${value.webId.replace(
+                    '/profile/card#me',
+                    ''
+                )})`}</span>
+            </div>
+        );
+    } else if (type === 'separator') {
+        return (
+            <div className={styles.separatorContainer}>
+                <div className={styles.iconContainer}>
+                    <div className={styles.separator}>{label}</div>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <div className={styles.optionContainer}>
+                <div className={styles.iconContainer}>
+                    <img
+                        className={
+                            type === 'file'
+                                ? styles.fileIcon
+                                : styles.folderIcon
+                        }
+                        src={type === 'file' ? FileIcon : FolderIcon}
+                    />
+                </div>
+                <span>{name}</span>
+            </div>
+        );
+    }
+};
+
+const mapStateToProps = (state) => ({
+    currentPath: state.app.currentPath,
+    items: state.app.currentItems,
+    contacts: state.app.contacts,
+});
+export default connect(
+    mapStateToProps,
+    { setCurrentPath, setCurrentContact }
+)(withRouter(Navigation));
