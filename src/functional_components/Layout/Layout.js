@@ -11,6 +11,7 @@ const Layout = ({
     toolbarChildrenLeft,
     toolbarClassName,
     label,
+    onClick,
 }) => {
     return (
         <div className={classNames(styles.grid)}>
@@ -27,7 +28,10 @@ const Layout = ({
                     </div>
                 </div>
             )}
-            <div className={classNames(styles.content, className)}>
+            <div
+                onClick={onClick}
+                className={classNames(styles.content, className)}
+            >
                 {children}
             </div>
         </div>
