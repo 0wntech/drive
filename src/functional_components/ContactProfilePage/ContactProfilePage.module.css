@@ -75,7 +75,6 @@ svg:hover {
 
 .bioLabel {
     letter-spacing: 0.2em;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 18px !important;
@@ -126,7 +125,6 @@ svg:hover {
 }
 
 .nameLabel {
-    font-family: Roboto;
     font-style: normal;
     width: 100% !important;
     font-weight: 300;
@@ -141,7 +139,6 @@ svg:hover {
 
 .webIdLabel {
     margin-top: 10px;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
@@ -155,7 +152,6 @@ svg:hover {
 
 .valueLabel {
     letter-spacing: 0.2em;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
