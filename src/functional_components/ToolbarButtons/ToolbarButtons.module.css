@@ -1,6 +1,6 @@
 .toolbarIcon {
     cursor: pointer;
-    margin: 0 20px 0 20px;
+    margin-left: 40px;
 }
 
 .toolbarIcon:hover path {
@@ -10,6 +10,4 @@
 .container {
     align-items: center;
     display: flex;
-    margin-right: 4%;
-    z-index: 3;
 }
