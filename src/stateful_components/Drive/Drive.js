@@ -456,15 +456,17 @@ class Drive extends React.Component {
         const toolbar = (
             <div className={styles.toolbarArea}>
                 {webId ? (
-                    <Breadcrumbs
-                        onClick={setCurrentPath}
-                        breadcrumbs={
-                            currentPath
-                                ? getBreadcrumbsFromUrl(currentPath)
-                                : null
-                        }
-                        webId={webId}
-                    />
+                    <div className={styles.breadcrumbsContainer}>
+                        <Breadcrumbs
+                            onClick={setCurrentPath}
+                            breadcrumbs={
+                                currentPath
+                                    ? getBreadcrumbsFromUrl(currentPath)
+                                    : null
+                            }
+                            webId={webId}
+                        />
+                    </div>
                 ) : null}
                 <div className={styles.toolbarHeader}>Drive</div>
                 <ToolbarButtons
