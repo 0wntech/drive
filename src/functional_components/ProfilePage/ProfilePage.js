@@ -12,6 +12,7 @@ import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
+import { Layout } from '../Layout';
 
 export const ProfilePage = ({
     webId,
@@ -41,15 +42,19 @@ export const ProfilePage = ({
         changeProfilePhoto(e, webId);
     };
 
+    const toolbarRight = (
+        <div className={styles.iconWrapper}>
+            <Settings className={styles.settings} />
+        </div>
+    );
+
     if (user || updateProfilePic) {
         return (
-            <div className={styles.grid}>
-                <div className={styles.toolbarArea}>
-                    <div className={styles.toolbarHeader}>Profile</div>
-                    <div className={styles.iconWrapper}>
-                        <Settings className={styles.settings} />
-                    </div>
-                </div>
+            <Layout
+                className={styles.grid}
+                toolbarChildrenRight={toolbarRight}
+                label="Profile"
+            >
                 <div className={styles.profileContainer}>
                     <div className={styles.headContainer}>
                         {isEditable ? (
@@ -154,7 +159,7 @@ export const ProfilePage = ({
                         }
                     />
                 </div>
-            </div>
+            </Layout>
         );
     } else {
         return (
