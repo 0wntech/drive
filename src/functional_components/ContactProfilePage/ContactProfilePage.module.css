@@ -36,8 +36,8 @@ svg:hover {
     z-index: 3;
 }
 
-.addButtonWrapper {
-    grid-area: addButton;
+.buttonWrapper {
+    grid-area: button;
     display: flex;
     align-items: center;
 }
@@ -106,7 +106,36 @@ svg:hover {
     display: grid;
     grid-template-columns: 10vw 3fr 1fr;
     grid-template-rows: 5vw 5vw;
-    grid-template-areas: 'profileImg name addButton' 'profileImg bio .';
+    grid-template-areas: 'profileImg name button' 'profileImg bio .';
+}
+
+.addButton {
+    background-color: #ffffff;
+    color: #36a510;
+}
+
+.addButton:hover svg path {
+    fill: white;
+}
+
+.addButton:hover {
+    background: linear-gradient(0deg, #36a510 0%, rgba(54, 165, 16, 0.5) 100%);
+    color: white;
+}
+
+.removeButton {
+    background-color: #ffffff;
+    color: #aaaaaa;
+    border: 2px solid #c4c4c4 !important;
+}
+
+.removeButton:hover {
+    background: linear-gradient(
+        0deg,
+        #aaaaaa 0%,
+        rgba(170, 170, 170, 0.5) 100%
+    );
+    color: white;
 }
 
 .iconContainer {
@@ -164,4 +193,5 @@ svg:hover {
 
 .icon {
     cursor: pointer;
+    margin-right: 15px;
 }
