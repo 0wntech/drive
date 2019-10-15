@@ -13,6 +13,7 @@ import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { InputWindow } from '../../functional_components/InputWindow';
 import { DeleteWindow } from '../../functional_components/DeleteWindow';
+import { Layout } from '../../functional_components/Layout';
 import RenameWindow from '../../functional_components/RenameWindow/RenameWindow';
 import {
     setCurrentPath,
@@ -321,6 +322,21 @@ class Drive extends React.Component {
         // localStorage.setItem('appState', JSON.stringify(this.state));
     }
 
+    toolbarRight() {
+        return (
+            <ToolbarButtons
+                onFileCreation={this.openCreateFileWindow}
+                onFolderCreation={this.openCreateFolderWindow}
+                onFolderUpload={this.uploadFolder}
+                onDownload={this.downloadItems}
+                uploadFile={this.uploadFile}
+                onDelete={() => {
+                    this.openConsentWindow();
+                }}
+            />
+        );
+    }
+
     render() {
         const {
             selectedItems,
@@ -453,34 +469,17 @@ class Drive extends React.Component {
             undefined
         );
 
-        const toolbar = (
-            <div className={styles.toolbarArea}>
-                {webId ? (
-                    <div className={styles.breadcrumbsContainer}>
-                        <Breadcrumbs
-                            onClick={setCurrentPath}
-                            breadcrumbs={
-                                currentPath
-                                    ? getBreadcrumbsFromUrl(currentPath)
-                                    : null
-                            }
-                            webId={webId}
-                        />
-                    </div>
-                ) : null}
-                <div className={styles.toolbarHeader}>Drive</div>
-                <ToolbarButtons
-                    onFileCreation={this.openCreateFileWindow}
-                    onFolderCreation={this.openCreateFolderWindow}
-                    onFolderUpload={this.uploadFolder}
-                    onDownload={this.downloadItems}
-                    uploadFile={this.uploadFile}
-                    onDelete={() => {
-                        this.openConsentWindow();
-                    }}
+        const toolbarLeft = webId ? (
+            <div className={styles.breadcrumbsContainer}>
+                <Breadcrumbs
+                    onClick={setCurrentPath}
+                    breadcrumbs={
+                        currentPath ? getBreadcrumbsFromUrl(currentPath) : null
+                    }
+                    webId={webId}
                 />
             </div>
-        );
+        ) : null;
 
         const windows = (
             <Fragment>
@@ -542,12 +541,13 @@ class Drive extends React.Component {
             );
         } else {
             return (
-                <div
+                <Layout
+                    toolbarChildrenLeft={toolbarLeft}
+                    toolbarChildrenRight={this.toolbarRight()}
                     className={styles.grid}
-                    style={{ height: '100%' }}
                     onClick={this.clearSelection}
+                    label="Drive"
                 >
-                    {toolbar}
                     <MenuProvider
                         className={styles.mainArea}
                         id="drive contextmenu"
@@ -611,7 +611,7 @@ class Drive extends React.Component {
                                 </Item>
                             ))}
                     </Menu>
-                </div>
+                </Layout>
             );
         }
     }
