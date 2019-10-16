@@ -92,7 +92,7 @@ export const fetchUser = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_USER });
         const currUser = new User(webId);
-        currUser
+        return currUser
             .getProfile()
             .then((profile) => {
                 dispatch({ type: FETCH_USER_SUCCESS, payload: profile });
@@ -112,9 +112,7 @@ const convertFileUrlToName = (fileUrl) => {
 };
 
 export const setCurrentContact = (profile) => {
-    return (dispatch) => {
-        dispatch({ type: SET_CURRENT_CONTACT, payload: profile });
-    };
+    return { type: SET_CURRENT_CONTACT, payload: profile };
 };
 
 export const fetchCurrentItems = (url) => {
@@ -179,9 +177,7 @@ export const sendNotification = (to, notification) => {
 };
 
 export const setSelection = (selection) => {
-    return (dispatch) => {
-        dispatch({ type: SET_SELECTION, payload: selection });
-    };
+    return { type: SET_SELECTION, payload: selection };
 };
 
 export const fetchIdps = () => {
@@ -326,7 +322,9 @@ export const updateProfile = (profileData, webId) => {
                 dispatch({ type: UPDATE_PROFILE_SUCCESS });
                 dispatch(fetchUser(webId));
             })
-            .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
+            .catch((error) =>
+                dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error })
+            );
     };
 };
 

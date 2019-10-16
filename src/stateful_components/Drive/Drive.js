@@ -8,7 +8,7 @@ import styles from './Drive.module.css';
 import Breadcrumbs from '../../functional_components/Breadcrumbs/Breadcrumbs';
 import { ItemList } from '../../functional_components/ItemList';
 import fileUtils from '../../utils/fileUtils';
-import { getBreadcrumbsFromUrl } from '../../utils/url';
+import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { InputWindow } from '../../functional_components/InputWindow';
@@ -316,11 +316,6 @@ class Drive extends React.Component {
         });
     }
 
-    componentWillUnmount() {
-        // console.log('Caching state...');
-        // localStorage.setItem('appState', JSON.stringify(this.state));
-    }
-
     render() {
         const {
             selectedItems,
@@ -357,7 +352,7 @@ class Drive extends React.Component {
                 onClick: (item) => {
                     if (
                         !selectedItems.includes(item) &&
-                        item !== webId.replace('profile/card#me', '')
+                        item !== getRootFromWebId(webId)
                     ) {
                         selectedItems.push(item);
                     }
