@@ -176,3 +176,14 @@ export default (state = INITIAL_STATE, action) => {
             return state;
     }
 };
+
+// selectors
+
+export const isContact = (state, webId) => {
+    state.contacts.forEach((contact) => {
+        if (contact.webId === webId) {
+            return true;
+        }
+    });
+    return false;
+};

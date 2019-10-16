@@ -6,18 +6,8 @@
     height: 35px;
     align-items: center;
     cursor: pointer;
-}
-
-.container:hover .label {
-    color: white;
-}
-
-.container:hover svg path {
-    fill: white;
-}
-
-.container:hover {
-    background: linear-gradient(0deg, #36a510 0%, rgba(54, 165, 16, 0.5) 100%);
+    justify-content: space-around;
+    letter-spacing: 0.05em;
 }
 
 .label {

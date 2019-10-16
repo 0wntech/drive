@@ -3,15 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './ContactProfilePage.module.css';
 
-import { addContact } from '../../actions/UserActions';
+import { addContact, removeContact } from '../../actions/UserActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
 import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
+import { isContact } from '../../reducers/AppReducer';
 
-const ContactProfilePage = ({ currentContact, addContact, webId }) => {
+const ContactProfilePage = ({
+    currentContact,
+    addContact,
+    removeContact,
+    webId,
+}) => {
     return (
         <div className={styles.grid}>
             <div className={styles.toolbarArea}>
@@ -54,15 +60,28 @@ const ContactProfilePage = ({ currentContact, addContact, webId }) => {
                             placeholder="no bio"
                         />
                     </div>
-                    <div className={styles.addButtonWrapper}>
-                        <IconButton
-                            label={'Add'}
-                            onClick={() =>
-                                addContact(webId, currentContact.webId)
-                            }
-                        >
-                            <Plus className={styles.icon} />
-                        </IconButton>
+                    <div className={styles.buttonWrapper}>
+                        {isContact ? (
+                            <IconButton
+                                onClick={() =>
+                                    removeContact(webId, currentContact.webId)
+                                }
+                                className={styles.removeButton}
+                            >
+                                Remove
+                            </IconButton>
+                        ) : (
+                            <IconButton
+                                label="Add"
+                                className={styles.addButton}
+                                onClick={() =>
+                                    addContact(webId, currentContact.webId)
+                                }
+                            >
+                                <Plus className={styles.icon} />
+                                Add
+                            </IconButton>
+                        )}
                     </div>
                 </div>
                 <KeyValuePair
@@ -92,9 +111,10 @@ ContactProfilePage.propTypes = {
 const mapStateToProps = (state) => ({
     currentContact: state.app.currentContact,
     webId: state.app.webId,
+    isContact: isContact(state.app, state.app.currentContact.webId),
 });
 
 export default connect(
     mapStateToProps,
-    { addContact }
+    { addContact, removeContact }
 )(ContactProfilePage);
