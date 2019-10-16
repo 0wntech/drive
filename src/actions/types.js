@@ -72,3 +72,7 @@ export const SET_CURRENT_CONTACT = 'set_current_contact';
 export const RENAME_ITEM = 'rename_item';
 export const RENAME_ITEM_SUCCESS = 'rename_item_success';
 export const RENAME_ITEM_FAILURE = 'rename_item_failure';
+
+export const FETCH_APPS = 'fetch_apps';
+export const FETCH_APPS_SUCCESS = 'fetch_apps_success';
+export const FETCH_APPS_FAILURE = 'fetch_apps_failure';

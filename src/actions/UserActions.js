@@ -301,7 +301,6 @@ export const fetchContacts = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
         const user = new User(webId);
-        console.log(user);
         user.getContacts()
             .then((contacts) => {
                 fetchDetailContacts(contacts).then((detailContacts) => {
@@ -378,6 +377,10 @@ export const changeProfilePhoto = (e, webId) => {
         };
         reader.readAsArrayBuffer(file);
     };
+};
+
+export const fetchApps = () => {
+    return (dispatch) => {};
 };
 
 export const renameItem = function(renamedItem, value) {

@@ -38,6 +38,8 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    FETCH_APPS,
+    FETCH_APPS_SUCCESS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -50,6 +52,7 @@ const INITIAL_STATE = {
     loadNotifications: false,
     loadCurrentItems: false,
     loadDeletion: false,
+    loadApps: false,
     error: null,
     contacts: null,
     session: null,
@@ -66,6 +69,7 @@ const INITIAL_STATE = {
     updateProfile: false,
     updateProfileError: false,
     updateProfilePic: false,
+    apps: [],
     // [
     //     {
     //         name: 'testdata',
@@ -172,6 +176,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, renamingItem: false };
         case RENAME_ITEM_FAILURE:
             return { ...state, renamingItem: false, error: payload };
+        case FETCH_APPS:
+            return { ...state, loadApps: true };
+        case FETCH_APPS_SUCCESS:
+            return { ...state, loadApps: false, apps: payload };
+        case FETCH_CONTACTS_FAILURE:
+            return { ...state, loadApps: false, error: payload };
         default:
             return state;
     }
