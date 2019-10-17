@@ -42,6 +42,8 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    FETCH_APPS_SUCCESS,
+    FETCH_APPS,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
@@ -380,7 +382,10 @@ export const changeProfilePhoto = (e, webId) => {
 };
 
 export const fetchApps = () => {
-    return (dispatch) => {};
+    return (dispatch) => {
+        dispatch({ type: FETCH_APPS });
+        dispatch({ type: FETCH_APPS_SUCCESS });
+    };
 };
 
 export const renameItem = function(renamedItem, value) {
