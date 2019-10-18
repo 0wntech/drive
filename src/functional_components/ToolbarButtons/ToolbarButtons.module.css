@@ -3,6 +3,10 @@
     margin-left: 40px;
 }
 
+.toolbarIcon:first-child {
+    margin-left: 0;
+}
+
 .toolbarIcon:hover path {
     fill: #c2c2c2;
 }
