@@ -52,9 +52,7 @@ describe('redux actions', () => {
                     type: SET_WEBID,
                     payload: webId,
                 };
-                expect(
-                    setWebId('https://bejow.owntech.de/profile/card#me')
-                ).toEqual(expectedAction);
+                expect(setWebId(webId)).toEqual(expectedAction);
             });
         });
         describe('setCurrentContact', () => {
@@ -67,7 +65,7 @@ describe('redux actions', () => {
             });
         });
         describe('setSelection', () => {
-            it('should create action to set currentContact', () => {
+            it('should create action to set selection', () => {
                 const selection = [
                     'https://bejow.owntech.de/favicon.ico',
                     'https://bejow.owntech.de/profile/',
