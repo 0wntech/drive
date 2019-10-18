@@ -48,6 +48,18 @@ class Drive extends React.Component {
             renamedItem: undefined,
         };
 
+        this.toolbarRight = (
+            <ToolbarButtons
+                onFileCreation={this.openCreateFileWindow}
+                onFolderCreation={this.openCreateFolderWindow}
+                onFolderUpload={this.uploadFolder}
+                onDownload={this.downloadItems}
+                uploadFile={this.uploadFile}
+                onDelete={() => {
+                    this.openConsentWindow();
+                }}
+            />
+        );
         this.createFolder = this.createFolder.bind(this);
         this.createFile = this.createFile.bind(this);
         this.followPath = this.followPath.bind(this);
@@ -320,21 +332,6 @@ class Drive extends React.Component {
     componentWillUnmount() {
         // console.log('Caching state...');
         // localStorage.setItem('appState', JSON.stringify(this.state));
-    }
-
-    toolbarRight() {
-        return (
-            <ToolbarButtons
-                onFileCreation={this.openCreateFileWindow}
-                onFolderCreation={this.openCreateFolderWindow}
-                onFolderUpload={this.uploadFolder}
-                onDownload={this.downloadItems}
-                uploadFile={this.uploadFile}
-                onDelete={() => {
-                    this.openConsentWindow();
-                }}
-            />
-        );
     }
 
     render() {
