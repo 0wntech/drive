@@ -11,9 +11,9 @@ import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
+import { isContact } from '../../reducers/AppReducer';
 
 const toolbarRight = <Settings className={styles.settings} />;
-import { isContact } from '../../reducers/AppReducer';
 
 const ContactProfilePage = ({
     currentContact,
