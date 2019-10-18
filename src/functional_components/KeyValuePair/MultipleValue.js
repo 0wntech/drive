@@ -23,7 +23,6 @@ const MultipleValue = ({
                         setValue={(value) => {
                             const valueCopy = [...values];
                             valueCopy[index] = value;
-                            console.log('set value: ', dataKey, valueCopy);
                             setValue(dataKey, valueCopy);
                         }}
                         placeholder={placeholder}

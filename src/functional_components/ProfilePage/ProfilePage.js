@@ -22,7 +22,6 @@ export const ProfilePage = ({
 }) => {
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
-    console.log('userdata: ', userData);
     const updateUserData = (key, value) => {
         setUserData({ ...userData, [key]: value });
     };
