@@ -1,18 +1,9 @@
 .grid {
     height: 100%;
     display: grid;
-    grid-template-rows: 40px 23fr;
     grid-template-columns: 3fr 6fr 3fr;
-    grid-template-areas: 'toolbar toolbar toolbar' '. profile .';
+    grid-template-areas: '. profile .';
     background-color: #ffffff;
-    border-radius: 20px;
-}
-
-.header {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    align-self: center;
 }
 
 svg:hover {
@@ -28,12 +19,7 @@ svg:hover {
 }
 
 .iconWrapper {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    grid-area: settings;
     cursor: pointer;
-    z-index: 3;
 }
 
 .buttonWrapper {
@@ -75,7 +61,6 @@ svg:hover {
 
 .bioLabel {
     letter-spacing: 0.2em;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 18px !important;
@@ -155,7 +140,6 @@ svg:hover {
 }
 
 .nameLabel {
-    font-family: Roboto;
     font-style: normal;
     width: 100% !important;
     font-weight: 300;
@@ -170,7 +154,6 @@ svg:hover {
 
 .webIdLabel {
     margin-top: 10px;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
@@ -184,7 +167,6 @@ svg:hover {
 
 .valueLabel {
     letter-spacing: 0.2em;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 18px;

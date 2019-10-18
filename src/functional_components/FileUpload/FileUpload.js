@@ -1,8 +1,9 @@
 import React from 'react';
 
-const FileUpload = ({ folder, children, onChange }) => {
+const FileUpload = ({ folder, children, onChange, className }) => {
     return (
         <label
+            className={className}
             style={{ marginBottom: 0, display: 'flex' }}
             htmlFor={folder ? 'folderUpload' : 'fileUpload'}
         >
