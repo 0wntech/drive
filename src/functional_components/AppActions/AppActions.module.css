@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+}
+
+.icon {
+    margin-right: 20px;
+}
+
+.icon:last-child {
+    margin-right: 0;
+}

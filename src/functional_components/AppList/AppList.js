@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppListItem from '../AppListItem';
+import { AppListItem } from '../AppListItem';
+import styles from './AppList.module.css';
 
 const AppList = ({ apps }) => {
     return (
-        <div>
+        <div className={styles.container}>
             {apps
                 ? apps.map((app, index) => (
-                      <AppListItem iconSrc={app.logo} name={app.title} />
+                      <AppListItem
+                          key={app.name + index}
+                          iconSrc={app.icon}
+                          name={app.title}
+                      />
                   ))
                 : null}
         </div>

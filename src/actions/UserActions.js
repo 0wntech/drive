@@ -50,6 +50,7 @@ import auth from 'solid-auth-client';
 import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
+import { apps } from '../constants/appsMock';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -384,7 +385,7 @@ export const changeProfilePhoto = (e, webId) => {
 export const fetchApps = () => {
     return (dispatch) => {
         dispatch({ type: FETCH_APPS });
-        dispatch({ type: FETCH_APPS_SUCCESS });
+        dispatch({ type: FETCH_APPS_SUCCESS, payload: apps });
     };
 };
 

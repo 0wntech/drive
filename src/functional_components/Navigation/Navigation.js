@@ -28,6 +28,7 @@ const Navigation = ({
         { onClick: () => history.push('/profile'), label: 'Profile' },
         { onClick: () => console.log('test2'), label: 'Settings*' },
         { onClick: () => console.log('test2'), label: 'Notifications*' },
+        { onClick: () => history.push('/apps'), label: 'Apps' },
         { onClick: () => history.push('/contacts'), label: 'Contacts' },
         { onClick: () => onLogout(), label: 'Logout' },
     ];

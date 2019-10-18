@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { AppList } from '../AppList';
 import { connect } from 'react-redux';
+import { fetchApps } from '../../actions/UserActions';
 
-const AppOverviewPage = ({ apps }) => {
+const AppOverviewPage = ({ apps, fetchApps }) => {
+    useEffect(() => {
+        fetchApps();
+    }, []);
+
     return (
         <div>
             <AppList apps={apps} />
@@ -30,5 +35,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
     mapStateToProps,
-    {}
+    { fetchApps }
 )(AppOverviewPage);

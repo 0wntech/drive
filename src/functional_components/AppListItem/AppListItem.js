@@ -9,9 +9,12 @@ const AppListItem = ({ iconSrc, name }) => {
     return (
         <div className={styles.container}>
             <div className={styles.deleteButton}>
-                <X />{' '}
+                <X />
             </div>
-            <div className={styles.appIcon} src={iconSrc} />
+            <div
+                className={styles.appIcon}
+                style={{ backgroundImage: `url('${iconSrc}')` }}
+            />
             <div className={styles.name}>{name}</div>
             <AppActions />
         </div>

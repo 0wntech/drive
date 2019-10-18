@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './AppActions.module.css';
 
 import Alert from '../../assets/svgIcons/Alert';
-import Arrow from '../../assets/svgIcons/Arrow';
+import Arrow from '../../assets/svgIcons/ArrowRight';
 import Folder from '../../assets/svgIcons/Folder';
 import Settings from '../../assets/svgIcons/Settings';
 
@@ -15,10 +15,10 @@ const AppActions = ({
 }) => {
     return (
         <div className={styles.container}>
-            {alert ? <Alert /> : null}
-            <Arrow onClick={onArrowClick} />
-            <Folder onClick={onFolderClick} />
-            <Settings onClick={onSettingsClick} />
+            {!alert ? <Alert className={styles.icon} /> : null}
+            <Arrow onClick={onArrowClick} className={styles.icon} />
+            <Folder onClick={onFolderClick} className={styles.icon} />
+            <Settings onClick={onSettingsClick} className={styles.icon} />
         </div>
     );
 };
