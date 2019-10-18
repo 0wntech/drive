@@ -1,13 +1,23 @@
 language: node_js
 node_js: node
 install: npm ci
-before_script: npm run test
-script: npm build
-deploy:
-    provider: s3
-    access_key_id: $AWS_KEY
-    secret_access_key: $AWS_SECRET
-    bucket: 'drive.owntech.de'
-    skip_cleanup: true
-    acl: public_read
-    local_dir: public
+jobs:
+  include:
+    stage: "Tests"
+    name: "Frontend Tests"
+    script: npm run test
+    stage: "Build"
+    name: "Build Application"
+    script: npm build
+    stage: "Deploy"
+    name: "Deploy Application"
+    script: skip
+    deploy:
+      provider: s3
+      access_key_id: $AWS_KEY
+      secret_access_key: $AWS_SECRET
+      bucket: 'drive.owntech.de'
+      skip_cleanup: true
+      acl: public_read
+      local_dir: public
+    
