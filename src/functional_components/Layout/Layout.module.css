@@ -48,4 +48,5 @@
 
 .content {
     grid-area: content;
+    overflow-y: auto;
 }

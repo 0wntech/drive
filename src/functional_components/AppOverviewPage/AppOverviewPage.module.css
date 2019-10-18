@@ -1,0 +1,9 @@
+.appList {
+    grid-area: applist;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 8fr 2fr;
+    grid-template-areas: '. applist .';
+}

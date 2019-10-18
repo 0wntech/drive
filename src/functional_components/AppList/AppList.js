@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AppListItem } from '../AppListItem';
 import styles from './AppList.module.css';
+import classNames from 'classnames';
 
-const AppList = ({ apps }) => {
+const AppList = ({ apps, className }) => {
     return (
-        <div className={styles.container}>
+        <div className={classNames(styles.container, className)}>
             {apps
                 ? apps.map((app, index) => (
                       <AppListItem

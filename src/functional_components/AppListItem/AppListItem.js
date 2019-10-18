@@ -1,16 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './AppListItem.module.css';
+import useHover from '../../hooks/useHover';
 
 import X from '../../assets/svgIcons/X';
 import AppActions from '../AppActions/AppActions';
 
 const AppListItem = ({ iconSrc, name }) => {
+    const [hoverRef, isHovered] = useHover();
     return (
-        <div className={styles.container}>
-            <div className={styles.deleteButton}>
-                <X />
-            </div>
+        <div ref={hoverRef} className={styles.container}>
+            {isHovered ? (
+                <div className={styles.deleteButton}>
+                    <X viewBox="0 0 32 32" className={styles.xIcon} />
+                </div>
+            ) : null}
             <div
                 className={styles.appIcon}
                 style={{ backgroundImage: `url('${iconSrc}')` }}

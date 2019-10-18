@@ -8,7 +8,6 @@
     width: 204px;
     height: 286px;
     position: relative;
-    margin: 0 10px;
 }
 
 .deleteButton {
@@ -22,6 +21,11 @@
     justify-content: center;
     border-radius: 50%;
     background: #f4f4f4;
+}
+
+.xIcon {
+    width: 24px;
+    height: 24px;
 }
 
 .appIcon {

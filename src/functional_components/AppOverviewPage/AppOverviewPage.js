@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { AppList } from '../AppList';
 import { connect } from 'react-redux';
+import styles from './AppOverviewPage.module.css';
+import { AppList } from '../AppList';
 import { fetchApps } from '../../actions/UserActions';
+import { Layout } from '../Layout';
 
 const AppOverviewPage = ({ apps, fetchApps }) => {
     useEffect(() => {
@@ -10,9 +12,9 @@ const AppOverviewPage = ({ apps, fetchApps }) => {
     }, []);
 
     return (
-        <div>
-            <AppList apps={apps} />
-        </div>
+        <Layout label="App Overview" className={styles.grid}>
+            <AppList className={styles.appList} apps={apps} />
+        </Layout>
     );
 };
 
