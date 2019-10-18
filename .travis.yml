@@ -1,6 +1,7 @@
 language: node_js
 node_js: node
-install: npm
+install: npm ci
+before_script: npm run test
 script: npm build
 deploy:
     provider: s3
