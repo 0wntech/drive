@@ -540,7 +540,7 @@ class Drive extends React.Component {
             return (
                 <Layout
                     toolbarChildrenLeft={toolbarLeft}
-                    toolbarChildrenRight={this.toolbarRight()}
+                    toolbarChildrenRight={this.toolbarRight}
                     className={styles.grid}
                     onClick={this.clearSelection}
                     label="Drive"
