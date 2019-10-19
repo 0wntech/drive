@@ -2,21 +2,20 @@ language: node_js
 node_js: node
 install: npm ci
 jobs:
-  include:
-    - stage: "Tests"
-    script: npm run test
-    - stage: "Build"
-    script: npm build
-    - stage: "Deploy"
-    script: skip
-    deploy:
-      on:
-        branch: "#130-Add-CI/CD"
-      provider: s3
-      access_key_id: $AWS_KEY
-      secret_access_key: $AWS_SECRET
-      bucket: 'drive.owntech.de'
-      skip_cleanup: true
-      acl: public_read
-      local_dir: public
-    
+    include:
+        - stage: 'Tests'
+          script: npm run test
+        - stage: 'Build'
+          script: npm build
+        - stage: 'Deploy'
+          script: skip
+          deploy:
+              on:
+                  branch: '#130-Add-CI/CD'
+              provider: s3
+              access_key_id: $AWS_KEY
+              secret_access_key: $AWS_SECRET
+              bucket: 'drive.owntech.de'
+              skip_cleanup: true
+              acl: public_read
+              local_dir: public
