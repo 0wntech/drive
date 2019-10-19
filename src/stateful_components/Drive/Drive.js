@@ -110,7 +110,7 @@ class Drive extends React.Component {
             newSelection.push(url);
             setSelection(newSelection);
         } else if (isCmdPressed(event) && selectedItems.includes(url)) {
-            const newSelection = selectedItems.filter((item) => item != url);
+            const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
             const newBreadCrumbs = getBreadcrumbsFromUrl(url);
@@ -143,7 +143,7 @@ class Drive extends React.Component {
     followPath(path, event = {}) {
         const { selectedItems, setCurrentPath, setSelection } = this.props;
         if (isCmdPressed(event) && selectedItems.includes(path)) {
-            const newSelection = selectedItems.filter((item) => item != path);
+            const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else if (isCmdPressed(event) && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];

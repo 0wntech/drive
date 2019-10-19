@@ -232,7 +232,7 @@ export const pasteItems = (items, location) => {
                 const pod = new PodClient({ podUrl: session.webId });
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
-                        if (index == items.length - 1) {
+                        if (index === items.length - 1) {
                             return pod.copy(item, location).then(() => {
                                 resolve();
                             });
@@ -352,7 +352,7 @@ export const changeProfilePhoto = (e, webId) => {
                     contentType: contentType,
                 })
                 .then((res) => {
-                    if (res.status == 201) {
+                    if (res.status === 201) {
                         currUser
                             .setPicture(pictureUrl)
                             .then(() => {

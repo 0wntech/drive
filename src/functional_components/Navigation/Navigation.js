@@ -68,6 +68,7 @@ const Navigation = ({
         <div className={styles.container}>
             <div className={styles.brandWrapper}>
                 <img
+                    alt="logo"
                     onClick={() => {
                         if (webId) {
                             history.push('/home');
@@ -164,6 +165,7 @@ const formatOptionLabel = ({ value, label, name, type }) => {
             <div className={styles.optionContainer}>
                 <div className={styles.iconContainer}>
                     <img
+                        alt="icon"
                         className={
                             type === 'file'
                                 ? styles.fileIcon

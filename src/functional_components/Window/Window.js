@@ -12,6 +12,7 @@ export default function Window({ windowName, className, children, onClose }) {
                         className={styles.close}
                         src={closeIcon}
                         onClick={onClose}
+                        alt="close"
                     />
                 </div>
                 <div className={styles.body}>{children}</div>
