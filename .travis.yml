@@ -13,6 +13,8 @@ jobs:
     name: "Deploy Application"
     script: skip
     deploy:
+      on:
+        branch: "#130-Add-CI/CD"
       provider: s3
       access_key_id: $AWS_KEY
       secret_access_key: $AWS_SECRET
