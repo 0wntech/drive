@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot 1`] = `
+exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
 <div
   className="grid"
 >
