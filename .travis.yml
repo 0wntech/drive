@@ -3,13 +3,13 @@ node_js: node
 install: npm ci
 jobs:
   include:
-    stage: "Tests"
+    - stage: "Tests"
     name: "Frontend Tests"
     script: npm run test
-    stage: "Build"
+    - stage: "Build"
     name: "Build Application"
     script: npm build
-    stage: "Deploy"
+    - stage: "Deploy"
     name: "Deploy Application"
     script: skip
     deploy:
