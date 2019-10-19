@@ -3,10 +3,10 @@ node_js:
     - 10
 install: npm ci
 before_script: npm run test
-script: npm build
+script: npm run build
 deploy:
     on:
-        branch: '#130-Add-CI/CD'
+        all_branch: true
     provider: s3
     access_key_id: $AWS_KEY
     secret_access_key: $AWS_SECRET
