@@ -26,6 +26,18 @@ function getContentType(file) {
     }
 }
 
+function namingConflict(name, currentFolder) {
+    console.log(name, currentFolder);
+    if (currentFolder) {
+        if (currentFolder.files.indexOf(name) !== -1) {
+            return true;
+        } else if (currentFolder.folders.indexOf(name) !== -1) {
+            return true;
+        }
+        return false;
+    }
+}
+
 function uploadFolderOrFile(file, url) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
@@ -367,4 +379,5 @@ export default {
     sendNotification: sendNotification,
     getFileType: getFileType,
     convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
+    namingConflict: namingConflict,
 };

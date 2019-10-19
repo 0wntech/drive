@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Window } from '../Window';
 import styles from './RenameWindow.module.css';
 import classNames from 'classnames';
+import utils from '../../utils/fileUtils';
 
 export default function RenameWindow({
     className,
@@ -10,23 +11,34 @@ export default function RenameWindow({
     onCancel,
     windowName,
     placeholder,
+    currentFolder,
 }) {
+    let fileSuffix;
     placeholder = placeholder.split('/');
     if (placeholder[placeholder.length - 1] === '') {
         placeholder = placeholder[placeholder.length - 2];
     } else {
-        placeholder = placeholder[placeholder.length - 1].split('.')[0];
+        const fileNameFragments = placeholder[placeholder.length - 1].split(
+            '.'
+        );
+        placeholder = fileNameFragments[0];
+        fileSuffix = fileNameFragments[1];
     }
 
-    const [value, setValue] = useState('');
+    const [newName, setNewName] = useState('');
+    const newFileName = `${newName}.${fileSuffix}`;
+
     const re = new RegExp('^[a-zA-Z0-9]*$');
-    const allow = re.exec(value) && value !== '' ? true : false;
+    const allow = re.exec(newName) && newName !== '' ? true : false;
+
+    const warning = utils.namingConflict(newFileName, currentFolder);
+    console.log(warning);
 
     return (
         <Window
             windowName={windowName}
             onClose={() => {
-                setValue('');
+                setNewName('');
                 onClose();
             }}
             className={className}
@@ -35,20 +47,26 @@ export default function RenameWindow({
             <p className={styles.description}>
                 Please only use valid characters (A-z, 0-9)
             </p>
+            {warning ? (
+                <p className={classNames(styles.description, styles.warning)}>
+                    A file or folder named {newFileName} already exists.
+                    Renaming will replace the already existing resource.
+                </p>
+            ) : null}
             <input
                 className={styles.input}
-                value={value}
-                onChange={(event) => setValue(event.target.value)}
+                value={newName}
+                onChange={(event) => setNewName(event.target.value)}
                 placeholder={placeholder}
             ></input>
             <div className={styles.buttonBar}>
                 <div
                     onClick={() => {
                         if (onCancel) {
-                            setValue('');
+                            setNewName('');
                             onCancel();
                         } else {
-                            setValue('');
+                            setNewName('');
                             onClose();
                         }
                     }}
@@ -59,8 +77,8 @@ export default function RenameWindow({
                 <div
                     onClick={() => {
                         if (allow) {
-                            onSubmit(value);
-                            setValue('');
+                            onSubmit(newName);
+                            setNewName('');
                             onClose();
                         }
                     }}
