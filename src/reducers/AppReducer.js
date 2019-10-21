@@ -1,4 +1,4 @@
-import idps from '../assets/idps';
+import idps from '../constants/idps';
 
 import {
     LOGIN,
@@ -69,7 +69,7 @@ const INITIAL_STATE = {
     updateProfile: false,
     updateProfileError: false,
     updateProfilePic: false,
-    contactsFound: null,
+    contactSearchResult: null,
     searchingContacts: false,
     // [
     //     {

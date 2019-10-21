@@ -1,4 +1,4 @@
-import idps from '../assets/idps.json';
+import idps from '../constants/idps.json';
 
 import {
     LOGIN,
@@ -361,6 +361,8 @@ export const searchContact = (query) => {
                         const user = new User(url);
                         result.push(user.getProfile());
                     }
+                }).catch((err) => {
+                    console.log(err);
                 });
                 Promise.all(result)
                     .then((results) => {
