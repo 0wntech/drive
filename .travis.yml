@@ -9,6 +9,8 @@ deploy:
     on:
         all_branches: true
     provider: s3
+    region: eu-central-1
+    endpoint: 'http://drive.owntech.de.s3-website.eu-central-1.amazonaws.com'
     access_key_id: $AWS_KEY
     secret_access_key: $AWS_SECRET
     bucket: 'drive.owntech.de'
