@@ -10,7 +10,10 @@ import SingleValue from '../KeyValuePair/SingleValue';
 import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
+import { Layout } from '../Layout';
 import { isContact } from '../../reducers/AppReducer';
+
+const toolbarRight = <Settings className={styles.settings} />;
 
 const ContactProfilePage = ({
     currentContact,
@@ -19,13 +22,11 @@ const ContactProfilePage = ({
     webId,
 }) => {
     return (
-        <div className={styles.grid}>
-            <div className={styles.toolbarArea}>
-                <div className={styles.header}>{currentContact.name}</div>
-                <div className={styles.iconWrapper}>
-                    <Settings className={styles.settings} />
-                </div>
-            </div>
+        <Layout
+            className={styles.grid}
+            label={currentContact.name}
+            toolbarChildrenRight={toolbarRight}
+        >
             <div className={styles.profileContainer}>
                 <div className={styles.headContainer}>
                     <div
@@ -100,7 +101,7 @@ const ContactProfilePage = ({
                     value={currentContact.telephones}
                 />
             </div>
-        </div>
+        </Layout>
     );
 };
 
