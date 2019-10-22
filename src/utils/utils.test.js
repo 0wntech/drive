@@ -32,12 +32,13 @@ expect.extend({
 
 describe('Testing util functions', () => {
     describe('Testing url utils', () => {
-        const url = 'https://www.heise.de/newsticker/it/';
+        const folderUrl = 'https://www.heise.de/newsticker/it/';
+        const fileUrl = 'https://www.heise.de/favicon.ico';
         const emptyUrl = '';
         const invalidUrl = 'ich bin keine url';
 
         test('getBreadcrumbsfromURL(url) should return Breadcrumbs as array', () => {
-            expect(JSON.stringify(getBreadcrumbsFromUrl(url))).toBe(
+            expect(JSON.stringify(getBreadcrumbsFromUrl(folderUrl))).toBe(
                 JSON.stringify(['/', '/newsticker', '/it'])
             );
         });
@@ -48,6 +49,15 @@ describe('Testing util functions', () => {
 
         test('test getBreadcrumbsfromURL(url=invalidUrl) should throw', () => {
             expect(() => getBreadcrumbsFromUrl(invalidUrl)).toThrow();
+        });
+
+        test('getSuffixAndPlaceholder(url) should return a placeholder for rename input + fileSuffix if present', () => {
+            expect(() => fileUtils.getSuffixAndPlaceholder(fileUrl)).toEqual(
+                JSON.stringify({
+                    fileSuffix: 'ico',
+                    placeholder: 'favicon',
+                })
+            );
         });
     });
     describe('Testing file utils', () => {
