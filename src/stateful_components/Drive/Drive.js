@@ -551,16 +551,18 @@ class Drive extends React.Component {
                                 {windows}
                                 {currentItems ? (
                                     <div>
-                                        <ItemList
-                                            selectedItems={selectedItems}
-                                            items={currentItems.folders}
-                                            currPath={currentPath}
-                                            image={folder}
-                                            onItemClick={this.followPath}
-                                            contextMenuOptions={
-                                                CONTEXTMENU_OPTIONS
-                                            }
-                                        />
+                                        {currentItems.folders.length > 0 ? (
+                                            <ItemList
+                                                selectedItems={selectedItems}
+                                                items={currentItems.folders}
+                                                currPath={currentPath}
+                                                image={folder}
+                                                onItemClick={this.followPath}
+                                                contextMenuOptions={
+                                                    CONTEXTMENU_OPTIONS
+                                                }
+                                            />
+                                        ) : null}
                                         <ItemList
                                             selectedItems={selectedItems}
                                             isFile
