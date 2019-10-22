@@ -343,7 +343,7 @@ export const searchContact = (query) => {
             return auth
                 .fetch(url)
                 .then((res) => {
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         return url;
                     } else {
                         return null;

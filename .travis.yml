@@ -4,7 +4,7 @@ node_js:
 warnings_are_errors: false
 install: npm ci
 before_script: npm run test
-script: npm run build
+script: CI=false npm run build
 deploy:
     on:
         all_branch: true
