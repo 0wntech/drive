@@ -4,7 +4,7 @@ import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
 import PropTypes from 'prop-types';
 const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
     const root = 'https://' + webId.split('/')[2];
-    let currentUrl = root;
+    const currentUrl = root;
     const breadcrumbMarkup = breadcrumbs
         ? breadcrumbs.map((currentBreadcrumb, currentIndex) => {
               if (currentBreadcrumb !== '/') {

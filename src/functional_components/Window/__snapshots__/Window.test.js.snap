@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Window should render correctly 1`] = `
+<div
+  className="chicken"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="head"
+    >
+      <span
+        className="title"
+      >
+        Test Window
+      </span>
+      <img
+        className="close"
+        onClick={[MockFunction]}
+        src="x.png"
+      />
+    </div>
+    <div
+      className="body"
+    >
+      <div>
+        I'm a child
+      </div>
+      <button>
+        child button
+      </button>
+    </div>
+  </div>
+  <div
+    className="opacity"
+  />
+</div>
+`;
