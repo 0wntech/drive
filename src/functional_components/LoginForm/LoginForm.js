@@ -8,18 +8,6 @@ export default function LoginForm({ idps, onLogin, getIdpStyles }) {
             <div className={styles.idpList}>
                 <h1>Login</h1>
                 <p>Choose an identity provider</p>
-                <IdentityProvider
-                    description={
-                        'Owntech is a german identity provider, dedicated to Data Ownership'
-                    }
-                    url={'https://owntech.de/'}
-                    icon={'https://owntech.de/favicon.ico'}
-                    title={'owntech.de'}
-                    key="aa"
-                    onLogin={onLogin}
-                    color="#fff"
-                    textColor={'#000'}
-                />
                 {idps
                     ? idps.map((idp, index) => {
                           const { color, textColor } = getIdpStyles(idp.title);

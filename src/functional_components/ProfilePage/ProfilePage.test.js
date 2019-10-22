@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProfilePage } from './ProfilePage.js';
-// import { FETCH_USER_SUCCESS } from '../../actions/types';
-// import appReducer from '../../reducers/appReducer';
+import { FETCH_USER_SUCCESS } from '../../actions/types';
+import appReducer from '../../reducers/AppReducer';
 import TestRenderer from 'react-test-renderer';
 describe('ProfilePage', () => {
     const user = {
@@ -13,21 +13,21 @@ describe('ProfilePage', () => {
         job: 'Software Engineer',
         telephones: ['0177313131'],
     };
-    // describe('ProfilePage Redux', () => {
-    //     // passing undefined to get initial state
-    //     const initialState = appReducer(undefined, {});
-    //     it('receives user', () => {
-    //         const result = appReducer(initialState, {
-    //             type: FETCH_USER_SUCCESS,
-    //             payload: user,
-    //         });
+    describe('ProfilePage Redux', () => {
+        // passing undefined to get initial state
+        const initialState = appReducer(undefined, {});
+        it('receives user', () => {
+            const result = appReducer(initialState, {
+                type: FETCH_USER_SUCCESS,
+                payload: user,
+            });
 
-    //         expect(result).toEqual({
-    //             ...initialState,
-    //             user: user,
-    //         });
-    //     });
-    // });
+            expect(result).toEqual({
+                ...initialState,
+                user: user,
+            });
+        });
+    });
     describe('ProfilePage Snapshot', () => {
         it('matches the snapshot', () => {
             const tree = TestRenderer.create(<ProfilePage user={user} />);
