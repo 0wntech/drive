@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProfilePage } from './ProfilePage.js';
 import { FETCH_USER_SUCCESS } from '../../actions/types';
-import appReducer from '../../reducers/appReducer';
+import appReducer from '../../reducers/AppReducer';
 import TestRenderer from 'react-test-renderer';
 describe('ProfilePage', () => {
     const user = {
