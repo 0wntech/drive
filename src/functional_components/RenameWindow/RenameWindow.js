@@ -20,7 +20,7 @@ export default function RenameWindow({
         fileSuffix,
         placeholder: cleanPlaceholder,
     } = utils.getSuffixAndPlaceholder(placeholder);
-    const newFileName = `${newName}.${fileSuffix}`;
+    const newFileName = fileSuffix ? `${newName}.${fileSuffix}` : newName;
 
     let allow;
     let warning;

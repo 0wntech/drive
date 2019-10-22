@@ -52,12 +52,10 @@ describe('Testing util functions', () => {
         });
 
         test('getSuffixAndPlaceholder(url) should return a placeholder for rename input + fileSuffix if present', () => {
-            expect(() => fileUtils.getSuffixAndPlaceholder(fileUrl)).toEqual(
-                JSON.stringify({
-                    fileSuffix: 'ico',
-                    placeholder: 'favicon',
-                })
-            );
+            expect(fileUtils.getSuffixAndPlaceholder(fileUrl)).toStrictEqual({
+                fileSuffix: 'ico',
+                placeholder: 'favicon',
+            });
         });
     });
     describe('Testing file utils', () => {
@@ -128,6 +126,24 @@ describe('Testing util functions', () => {
 
         it('getContentType() handles multiple dots', () => {
             expect(fileUtils.getContentType('test.exe.png')).toEqual('image');
+        });
+
+        test('namingConflict(name, folder) should return false if the there is no folder or file with name in the specified folder', () => {
+            expect(
+                fileUtils.namingConflict('hehe', {
+                    files: files,
+                    folders: folders,
+                })
+            ).toBe(false);
+        });
+
+        test('namingConflict(name, folder) should return true if the there is a folder or file with name in the specified folder', () => {
+            expect(
+                fileUtils.namingConflict('doge', {
+                    files: files,
+                    folders: folders,
+                })
+            ).toBe(true);
         });
     });
 });
