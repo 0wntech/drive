@@ -27,7 +27,6 @@ function getContentType(file) {
 }
 
 function namingConflict(name, currentFolder) {
-    console.log(name, currentFolder);
     if (currentFolder) {
         if (currentFolder.files.indexOf(name) !== -1) {
             return true;
@@ -36,6 +35,21 @@ function namingConflict(name, currentFolder) {
         }
         return false;
     }
+}
+
+function getSuffixAndPlaceholder(placeholder) {
+    let fileSuffix;
+    placeholder = placeholder.split('/');
+    if (placeholder[placeholder.length - 1] === '') {
+        placeholder = placeholder[placeholder.length - 2];
+    } else {
+        const fileNameFragments = placeholder[placeholder.length - 1].split(
+            '.'
+        );
+        placeholder = fileNameFragments[0];
+        fileSuffix = fileNameFragments[1];
+    }
+    return { fileSuffix: fileSuffix, placeholder: placeholder };
 }
 
 function uploadFolderOrFile(file, url) {
@@ -380,4 +394,5 @@ export default {
     getFileType: getFileType,
     convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
     namingConflict: namingConflict,
+    getSuffixAndPlaceholder: getSuffixAndPlaceholder,
 };
