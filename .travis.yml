@@ -28,11 +28,11 @@ jobs:
     include:
         - stage: test
           script:
-              - npm run test:coverage -- --runInBand
               - npm run lint
-              - codecov
+              - npm run test:coverage -- --runInBand && codecov
 
         - stage: deploy_production
+          warnings_are_errors: false
           script: npm run build
           deploy:
               on:
@@ -47,6 +47,7 @@ jobs:
               local_dir: build
 
         - stage: deploy_staging
+          warnings_are_errors: false
           script: npm run build
           deploy:
               on:
