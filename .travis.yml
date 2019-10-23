@@ -32,7 +32,7 @@ jobs:
               - npm run test:coverage -- --runInBand && codecov
 
         - stage: deploy_production
-          script: npm run build
+          script: CI=false npm run build
           deploy:
               on:
                   branch: production
