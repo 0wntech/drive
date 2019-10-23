@@ -10,7 +10,6 @@ script: npm run test -- -runInBand
 stages:
     - name: lint
     - name: test
-    - name: coverage
     - name: deploy_production
       if: type != pull_request AND branch = production
     - name: deploy_staging
@@ -23,11 +22,7 @@ jobs:
               - npm run lint
         - stage: test
           script:
-              - npm run test
-        - stage: coverage
-          script:
-              - npm run test:coverage -- --runInBand
-              - codecov -f coverage/*.json
+              - npm run test:coverage -- --runInBand && codecov
 
         - stage: deploy_production
           deploy:
