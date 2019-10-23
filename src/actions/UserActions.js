@@ -60,7 +60,7 @@ export const login = (username, password) => {
         auth.currentSession()
             .then((session) => {
                 if (!session) {
-                    dispatch({ type: LOGIN_FAIL });
+                    dispatch({ type: LOGIN_FAIL, payload: 'No Session' });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
                     dispatch(fetchContacts(session.webId));

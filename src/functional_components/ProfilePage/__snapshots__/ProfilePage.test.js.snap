@@ -105,8 +105,9 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="Add bio.."
+            placeholder="This is bens Bio!"
             readOnly={true}
+            value="This is bens Bio!"
           />
         </div>
         <div
