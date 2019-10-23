@@ -20,5 +20,5 @@ Feel free to contribute.
 
 ## Tests and Coverage
 
--   Test are written with the Jest framework
--   Travis CI + codecov for testing and coverage report
+-   Tests are written with the Jest framework
+-   Travis CI + codecov for testing and coverage report (report at [codecov](https://codecov.io/gh/0wntech/drive))
