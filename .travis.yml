@@ -3,13 +3,19 @@ node_js:
     - 10
 warnings_are_errors: false
 
-install: npm ci
-
 branches:
     only:
         - master
         - staging
         - production
+
+notifications:
+    slack: codeuniversity:bJz9OM3Vf7qJgNsdKsFtDC5K
+    email:
+        - ben.wetzel@code.berlin
+        - ludwig.schubert@code.berlin
+
+install: npm ci
 
 stages:
     - name: lint
