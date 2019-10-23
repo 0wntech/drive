@@ -5,7 +5,11 @@ warnings_are_errors: false
 
 install: npm ci
 
-script: npm run test -- -runInBand
+branches:
+    only:
+        - master
+        - staging
+        - production
 
 stages:
     - name: lint
@@ -25,6 +29,7 @@ jobs:
               - npm run test:coverage -- --runInBand && codecov
 
         - stage: deploy_production
+          script: npm run build
           deploy:
               on:
                   branch: production
@@ -38,6 +43,7 @@ jobs:
               local_dir: build
 
         - stage: deploy_staging
+          script: npm run build
           deploy:
               on:
                   branch: staging
