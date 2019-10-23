@@ -7,12 +7,6 @@ install: npm ci
 
 script: npm run test -- -runInBand
 
-branches:
-    only:
-        - production
-        - staging
-        - master
-
 stages:
     - name: lint
     - name: coverage
