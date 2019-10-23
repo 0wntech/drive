@@ -18,7 +18,6 @@ notifications:
 install: npm ci
 
 stages:
-    - name: lint
     - name: test
     - name: deploy_production
       if: type != pull_request AND branch = production
@@ -27,12 +26,9 @@ stages:
 
 jobs:
     include:
-        - stage: lint
-          script:
-              - npm run lint
         - stage: test
           script:
-              - npm run test:coverage -- --runInBand && codecov
+              - npm run test:coverage -- --runInBand && npm run lint && codecov
 
         - stage: deploy_production
           script: npm run build
