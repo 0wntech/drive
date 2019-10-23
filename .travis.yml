@@ -28,7 +28,9 @@ jobs:
     include:
         - stage: test
           script:
-              - npm run test:coverage -- --runInBand && npm run lint && codecov
+              - npm run test:coverage -- --runInBand
+              - npm run lint
+              - codecov
 
         - stage: deploy_production
           script: npm run build
