@@ -84,6 +84,7 @@
   },
   "devDependencies": {
     "@svgr/cli": "^4.3.3",
+    "codecov": "^3.6.1",
     "enzyme-to-json": "^3.4.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
