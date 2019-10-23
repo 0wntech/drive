@@ -8,47 +8,51 @@ install: npm ci
 script: npm run test -- -runInBand
 
 branches:
-  only:
-    - production
-    - staging
-    - master
+    only:
+        - production
+        - staging
+        - master
 
 stages:
-  - lint
-  - coverage
-  - deploy_production
-    if: type != pull_request AND branch = production
-  - deploy_staging
-    if: type != pull_request AND branch = staging
+    - name: lint
+    - name: coverage
+    - name: deploy_production
+      if: type != pull_request AND branch = production
+    - name: deploy_staging
+      if: type != pull_request AND branch = staging
 
 jobs:
-  include:
-    - stage: lint
-      script:
-        - npm run lint
-    - stage: coverage
-        - npm run test:coverage -- --runInBand
-    - stage: deploy_production
-        deploy:
-          on:
-              branch: production
-          provider: s3
-          region: eu-central-1
-          access_key_id: $AWS_KEY
-          secret_access_key: $AWS_SECRET
-          bucket: 'drive.owntech.io'
-          skip_cleanup: true
-          acl: public_read
-          local_dir: build
-    - stage: deploy_staging
-        deploy:
-          on:
-              branch: staging
-          provider: s3
-          region: eu-central-1
-          access_key_id: $AWS_KEY
-          secret_access_key: $AWS_SECRET
-          bucket: 'drive.owntech.de'
-          skip_cleanup: true
-          acl: public_read
-          local_dir: build
+    include:
+        - stage: lint
+          script:
+              - npm run lint
+
+        - stage: coverage
+              - npm run test:coverage -- --runInBand
+              - bash <(curl -s https://codecov.io/bash)
+
+        - stage: deploy_production
+          deploy:
+              on:
+                  branch: production
+              provider: s3
+              region: eu-central-1
+              access_key_id: $AWS_KEY
+              secret_access_key: $AWS_SECRET
+              bucket: 'drive.owntech.io'
+              skip_cleanup: true
+              acl: public_read
+              local_dir: build
+
+        - stage: deploy_staging
+          deploy:
+              on:
+                  branch: staging
+              provider: s3
+              region: eu-central-1
+              access_key_id: $AWS_KEY
+              secret_access_key: $AWS_SECRET
+              bucket: 'drive.owntech.de'
+              skip_cleanup: true
+              acl: public_read
+              local_dir: build
