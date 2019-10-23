@@ -48,7 +48,7 @@ jobs:
 
         - stage: deploy_staging
           warnings_are_errors: false
-          script: npm run build
+          script: CI=false npm run build
           deploy:
               on:
                   branch: staging
