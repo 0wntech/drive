@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './SearchDropdown.module.css';
 import classNames from 'classnames';
-import { components } from 'react-select';
-import AsyncSelect from 'react-select/async';
+import Select, { components } from 'react-select';
+import { ClassicSpinner } from 'react-spinners-kit';
 import Search from '../../assets/svgIcons/Search';
 export default function SearchDropdown({
     items,
@@ -11,12 +11,21 @@ export default function SearchDropdown({
     onChange,
     placeholder,
     onInputChange,
+    loading,
 }) {
     const DropdownIndicator = (props) => {
         return (
             components.DropdownIndicator && (
                 <components.DropdownIndicator {...props}>
-                    <Search />
+                    {loading ? (
+                        <ClassicSpinner
+                            size={20}
+                            color="#686769"
+                            loading={loading}
+                        />
+                    ) : (
+                        <Search />
+                    )}
                 </components.DropdownIndicator>
             )
         );
@@ -24,7 +33,7 @@ export default function SearchDropdown({
 
     return (
         <div className={classNames(styles.container, className)}>
-            <AsyncSelect
+            <Select
                 components={{ DropdownIndicator }}
                 placeholder={placeholder}
                 styles={customStyles}

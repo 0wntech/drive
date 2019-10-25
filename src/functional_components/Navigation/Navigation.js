@@ -62,7 +62,6 @@ const Navigation = ({
     };
 
     const getSearchDropdownOptions = () => {
-        console.log('contact search result', contactSearchResult);
         const filesAndFolders = fileUtils
             .convertFilesAndFoldersToArray(items.files, items.folders)
             .map((item) => ({
@@ -77,7 +76,6 @@ const Navigation = ({
                 contact,
             })
         );
-        console.log('contact options', contactOptions);
 
         const separator = {
             label: 'People',
@@ -102,6 +100,7 @@ const Navigation = ({
                     className={styles.brand}
                     src="https://owntech.de/favicon.ico"
                 />
+                {console.log('-------------------------- ', searchingContacts)}
             </div>
             <div className={styles.search}>
                 {items ? (
@@ -112,6 +111,7 @@ const Navigation = ({
                         onInputChange={handleInputChange}
                         placeholder="Search..."
                         items={getSearchDropdownOptions()}
+                        loading={searchingContacts}
                     />
                 ) : null}
             </div>
@@ -155,7 +155,6 @@ const Navigation = ({
 };
 
 const formatOptionLabel = ({ value, label, name, type, contact }) => {
-    console.log(('formatOptionLabel ', value, label));
     if (type === 'contact') {
         return (
             <div className={styles.optionContainer}>
