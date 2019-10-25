@@ -1,4 +1,9 @@
-import { getBreadcrumbsFromUrl } from './url';
+import {
+    getBreadcrumbsFromUrl,
+    getWebIdFromRoot,
+    isValidUrl,
+    getUsernameFromWebId,
+} from './url';
 import fileUtils from './fileUtils';
 
 expect.extend({
@@ -48,6 +53,41 @@ describe('Testing util functions', () => {
 
         test('test getBreadcrumbsfromURL(url=invalidUrl) should throw', () => {
             expect(() => getBreadcrumbsFromUrl(invalidUrl)).toThrow();
+        });
+        describe('getWebIdFromRoot()', () => {
+            test('Should return webId', () => {
+                const rootUrl = 'https://ludwigschubert.solid.community/';
+                const webId =
+                    'https://ludwigschubert.solid.community/profile/card#me';
+                expect(getWebIdFromRoot(rootUrl)).toBe(webId);
+            });
+            test('Should return webId when rootUrl has no slash in the end', () => {
+                const rootUrl = 'https://ludwigschubert.solid.community';
+                const webId =
+                    'https://ludwigschubert.solid.community/profile/card#me';
+                expect(getWebIdFromRoot(rootUrl)).toBe(webId);
+            });
+            test('Should throw if root is no url', () => {
+                const rootUrl = 'ludwigschubert';
+                expect(() => getWebIdFromRoot(rootUrl)).toThrow();
+            });
+        });
+
+        describe('isValidUrl()', () => {
+            test('Should return true if url is valid', () => {
+                const url = 'https://react.statuscode.com/';
+                expect(isValidUrl(url)).toBe(true);
+            });
+            test('Should return false if url is invalid', () => {
+                const url = 'Im not valid';
+                expect(isValidUrl(url)).toBe(false);
+            });
+        });
+        describe('getUsernameFromWebId()', () => {
+            test('should return username', () => {
+                const webId = 'https://ludwigschubert.solid.community';
+                expect(getUsernameFromWebId(webId)).toBe('ludwigschubert');
+            });
         });
     });
     describe('Testing file utils', () => {

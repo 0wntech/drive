@@ -53,6 +53,7 @@ import auth from 'solid-auth-client';
 import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
+import { getWebIdFromRoot } from '../utils/url.js';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -351,30 +352,36 @@ export const searchContact = (query) => {
                     return null;
                 });
         });
+        // const filteredLookups = lookups.filter((url) => url !== null)
         Promise.all(lookups)
             .then((urls) => {
+                console.log('urls in lookups ', urls);
                 const result = [];
-                urls.forEach((url) => {
-                    if (url) {
-                        const user = new User(url);
+                urls.forEach((rootUrl) => {
+                    if (rootUrl) {
+                        const user = new User(getWebIdFromRoot(rootUrl));
                         result.push(user.getProfile());
                     }
-                }).catch((err) => {
-                    console.log(err);
                 });
-                Promise.all(result)
-                    .then((results) => {
-                        dispatch({
-                            type: SEARCH_CONTACT_SUCCESS,
-                            payload: results,
+                console.log('results ', result);
+
+                if (result.length > 0) {
+                    Promise.all(result)
+                        .then((results) => {
+                            console.log('resolved results ', results);
+
+                            dispatch({
+                                type: SEARCH_CONTACT_SUCCESS,
+                                payload: results,
+                            });
+                        })
+                        .catch((err) => {
+                            dispatch({
+                                type: SEARCH_CONTACT_FAILURE,
+                                payload: err,
+                            });
                         });
-                    })
-                    .catch((err) => {
-                        dispatch({
-                            type: SEARCH_CONTACT_FAILURE,
-                            payload: err,
-                        });
-                    });
+                }
             })
             .catch((err) => {
                 dispatch({ type: SEARCH_CONTACT_FAILURE, payload: err });
