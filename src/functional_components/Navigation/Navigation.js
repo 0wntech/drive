@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styles from './Navigation.module.css';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
-import { connect } from 'react-redux';
-import { setCurrentPath, setCurrentContact } from '../../actions/UserActions';
+import {
+    setCurrentPath,
+    setCurrentContact,
+    searchContact,
+} from '../../actions/UserActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
 import ActionButton from '../ActionButton/ActionButton';
+import { getUsernameFromWebId } from '../../utils/url';
 
 const Navigation = ({
     picture,
@@ -23,6 +28,9 @@ const Navigation = ({
     contacts,
     currentPath,
     setCurrentContact,
+    contactSearchResult,
+    searchingContacts,
+    searchContact,
 }) => {
     const DROPDOWN_OPTIONS = [
         { onClick: () => history.push('/profile'), label: 'Profile' },
@@ -32,6 +40,8 @@ const Navigation = ({
         { onClick: () => onLogout(), label: 'Logout' },
     ];
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
+    const [typingTimer, setTypingTimer] = useState(null);
+
     const handleChange = (selected) => {
         if (selected.type === 'folder') {
             setCurrentPath(`${currentPath}/${selected.name}/`);
@@ -39,22 +49,36 @@ const Navigation = ({
         } else if (selected.type === 'file') {
             console.log('implement redux on file click');
         } else if (selected.type === 'contact') {
-            setCurrentContact(selected.value);
+            setCurrentContact(selected.contact);
             history.push('/contact');
         }
     };
 
+    const handleInputChange = (searchText) => {
+        clearTimeout(typingTimer);
+        if (searchText !== '') {
+            setTypingTimer(setTimeout(() => searchContact(searchText), 500));
+        }
+    };
+
     const getSearchDropdownOptions = () => {
+        console.log('contact search result', contactSearchResult);
         const filesAndFolders = fileUtils
             .convertFilesAndFoldersToArray(items.files, items.folders)
             .map((item) => ({
                 ...item,
                 value: item.name,
             }));
-        const contactOptions = contacts.map((contact) => ({
-            value: { ...contact },
-            type: 'contact',
-        }));
+
+        const contactOptions = [...contactSearchResult, ...contacts].map(
+            (contact) => ({
+                value: getUsernameFromWebId(contact.webId),
+                type: 'contact',
+                contact,
+            })
+        );
+        console.log('contact options', contactOptions);
+
         const separator = {
             label: 'People',
             type: 'separator',
@@ -85,12 +109,9 @@ const Navigation = ({
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
                         onChange={handleChange}
+                        onInputChange={handleInputChange}
                         placeholder="Search..."
-                        items={
-                            items && contacts
-                                ? getSearchDropdownOptions()
-                                : null
-                        }
+                        items={getSearchDropdownOptions()}
                     />
                 ) : null}
             </div>
@@ -133,7 +154,8 @@ const Navigation = ({
     );
 };
 
-const formatOptionLabel = ({ value, label, name, type }) => {
+const formatOptionLabel = ({ value, label, name, type, contact }) => {
+    console.log(('formatOptionLabel ', value, label));
     if (type === 'contact') {
         return (
             <div className={styles.optionContainer}>
@@ -141,11 +163,13 @@ const formatOptionLabel = ({ value, label, name, type }) => {
                     <div
                         className={styles.contactIcon}
                         style={{
-                            backgroundImage: `url('${value.picture}')`,
+                            backgroundImage: `url('${
+                                contact.picture ? contact.picture : defaultIcon
+                            }')`,
                         }}
                     />
                 </div>
-                <span>{`${value.name} (${value.webId.replace(
+                <span>{`${contact.name} (${contact.webId.replace(
                     '/profile/card#me',
                     ''
                 )})`}</span>
@@ -182,8 +206,10 @@ const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
     items: state.app.currentItems,
     contacts: state.app.contacts,
+    searchingContacts: state.app.searchingContacts,
+    contactSearchResult: state.app.contactSearchResult,
 });
 export default connect(
     mapStateToProps,
-    { setCurrentPath, setCurrentContact }
+    { setCurrentPath, setCurrentContact, searchContact }
 )(withRouter(Navigation));

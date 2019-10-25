@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './SearchDropdown.module.css';
 import classNames from 'classnames';
-import Select, { components } from 'react-select';
+import { components } from 'react-select';
+import AsyncSelect from 'react-select/async';
 import Search from '../../assets/svgIcons/Search';
 export default function SearchDropdown({
     items,
@@ -9,6 +10,7 @@ export default function SearchDropdown({
     className,
     onChange,
     placeholder,
+    onInputChange,
 }) {
     const DropdownIndicator = (props) => {
         return (
@@ -22,7 +24,7 @@ export default function SearchDropdown({
 
     return (
         <div className={classNames(styles.container, className)}>
-            <Select
+            <AsyncSelect
                 components={{ DropdownIndicator }}
                 placeholder={placeholder}
                 styles={customStyles}
@@ -31,6 +33,7 @@ export default function SearchDropdown({
                 onChange={onChange}
                 className={className}
                 value={null}
+                onInputChange={onInputChange}
             />
         </div>
     );

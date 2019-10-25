@@ -20,6 +20,7 @@ const ContactProfilePage = ({
     addContact,
     removeContact,
     webId,
+    isContact,
 }) => {
     return (
         <Layout
@@ -62,6 +63,7 @@ const ContactProfilePage = ({
                         />
                     </div>
                     <div className={styles.buttonWrapper}>
+                        {console.log(isContact)}
                         {isContact ? (
                             <IconButton
                                 onClick={() =>
