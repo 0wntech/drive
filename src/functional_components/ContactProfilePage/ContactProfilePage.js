@@ -63,7 +63,6 @@ const ContactProfilePage = ({
                         />
                     </div>
                     <div className={styles.buttonWrapper}>
-                        {console.log(isContact)}
                         {isContact ? (
                             <IconButton
                                 onClick={() =>

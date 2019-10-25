@@ -42,6 +42,8 @@ export const sortContainments = (urls) => {
     return [files, folders];
 };
 
+// converts https://ludwigschubert.solid.community/profile/card#me
+// into ludwigschubert
 export const getUsernameFromWebId = (webId) => {
     if (isValidUrl(webId)) {
         return webId.substring(webId.indexOf('://') + 3, webId.indexOf('.'));

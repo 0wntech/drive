@@ -100,7 +100,6 @@ const Navigation = ({
                     className={styles.brand}
                     src="https://owntech.de/favicon.ico"
                 />
-                {console.log('-------------------------- ', searchingContacts)}
             </div>
             <div className={styles.search}>
                 {items ? (

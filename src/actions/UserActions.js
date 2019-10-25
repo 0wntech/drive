@@ -352,10 +352,8 @@ export const searchContact = (query) => {
                     return null;
                 });
         });
-        // const filteredLookups = lookups.filter((url) => url !== null)
         Promise.all(lookups)
             .then((urls) => {
-                console.log('urls in lookups ', urls);
                 const result = [];
                 urls.forEach((rootUrl) => {
                     if (rootUrl) {
@@ -363,13 +361,9 @@ export const searchContact = (query) => {
                         result.push(user.getProfile());
                     }
                 });
-                console.log('results ', result);
-
                 if (result.length > 0) {
                     Promise.all(result)
                         .then((results) => {
-                            console.log('resolved results ', results);
-
                             dispatch({
                                 type: SEARCH_CONTACT_SUCCESS,
                                 payload: results,
