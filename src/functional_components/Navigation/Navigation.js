@@ -155,7 +155,6 @@ const Navigation = ({
 };
 
 const customFilter = (option, searchText) => {
-    console.log('option', option);
     if (!option.value) {
         return true;
     }
