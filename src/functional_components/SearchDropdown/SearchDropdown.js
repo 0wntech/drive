@@ -11,6 +11,7 @@ export default function SearchDropdown({
     onChange,
     placeholder,
     onInputChange,
+    filterOption,
     loading,
 }) {
     const DropdownIndicator = (props) => {
@@ -43,6 +44,7 @@ export default function SearchDropdown({
                 className={className}
                 value={null}
                 onInputChange={onInputChange}
+                filterOption={filterOption}
             />
         </div>
     );

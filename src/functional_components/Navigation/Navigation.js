@@ -111,6 +111,7 @@ const Navigation = ({
                         placeholder="Search..."
                         items={getSearchDropdownOptions()}
                         loading={searchingContacts}
+                        filterOption={customFilter}
                     />
                 ) : null}
             </div>
@@ -151,6 +152,29 @@ const Navigation = ({
             </div>
         </div>
     );
+};
+
+const customFilter = (option, searchText) => {
+    console.log('option', option);
+    if (!option.value) {
+        return true;
+    }
+    if (option.data.type === 'contact') {
+        if (
+            option.value.toLowerCase().includes(searchText.toLowerCase()) ||
+            (option.data.contact.name &&
+                option.data.contact.name
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase()))
+        ) {
+            return true;
+        }
+        return false;
+    }
+    if (option.value.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+    }
+    return false;
 };
 
 const formatOptionLabel = ({ value, label, name, type, contact }) => {
