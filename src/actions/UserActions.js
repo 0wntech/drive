@@ -47,6 +47,20 @@ import {
     SEARCH_CONTACT,
     SEARCH_CONTACT_SUCCESS,
     SEARCH_CONTACT_FAILURE,
+    CLOSE_CREATE_FILE_WINDOW,
+    OPEN_CREATE_FILE_WINDOW,
+    CLOSE_CREATE_FOLDER_WINDOW,
+    OPEN_CREATE_FOLDER_WINDOW,
+    OPEN_CONSENT_WINDOW,
+    CLOSE_CONSENT_WINDOW,
+    OPEN_RENAME_WINDOW,
+    CLOSE_RENAME_WINDOW,
+    CREATE_FILE,
+    CREATE_FOLDER,
+    CREATE_FOLDER_SUCCESS,
+    CREATE_FILE_FAILURE,
+    CREATE_FILE_SUCCESS,
+    CREATE_FOLDER_FAILURE,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
@@ -476,5 +490,99 @@ export const renameItem = function(renamedItem, value) {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
                 });
         });
+    };
+};
+
+export const openCreateFileWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CREATE_FILE_WINDOW });
+    };
+};
+
+export const closeCreateFileWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CREATE_FILE_WINDOW });
+    };
+};
+
+export const openCreateFolderWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CREATE_FOLDER_WINDOW });
+    };
+};
+
+export const closeCreateFolderWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CREATE_FOLDER_WINDOW });
+    };
+};
+
+export const openConsentWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CONSENT_WINDOW });
+    };
+};
+
+export const closeConsentWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CONSENT_WINDOW });
+    };
+};
+
+export const openRenameWindow = function(item) {
+    return (dispatch) => {
+        dispatch({ type: OPEN_RENAME_WINDOW, payload: item });
+    };
+};
+
+export const closeRenameWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_RENAME_WINDOW });
+    };
+};
+
+export const createFile = function(fileName, currentPath) {
+    return (dispatch) => {
+        dispatch({ type: CREATE_FILE });
+        const request = {
+            method: 'POST',
+            headers: {
+                'slug': fileName,
+                'link': '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
+                'Content-Type': 'text/turtle',
+            },
+        };
+
+        auth.fetch(currentPath, request)
+            .then(() => {
+                dispatch({ type: CREATE_FILE_SUCCESS });
+                dispatch(setCurrentPath(currentPath));
+            })
+            .catch(() => {
+                dispatch({ type: CREATE_FILE_FAILURE });
+            });
+    };
+};
+
+export const createFolder = function(folderName, currentPath) {
+    return (dispatch) => {
+        dispatch({ type: CREATE_FOLDER });
+        const request = {
+            method: 'POST',
+            headers: {
+                'slug': folderName,
+                'link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
+                'Content-Type': 'text/turtle',
+            },
+        };
+
+        auth.fetch(currentPath, request)
+            .then(() => {
+                dispatch({ type: CREATE_FOLDER_SUCCESS });
+                dispatch(setCurrentPath(currentPath));
+            })
+            .catch(() => {
+                dispatch({ type: CREATE_FOLDER_FAILURE });
+            });
     };
 };

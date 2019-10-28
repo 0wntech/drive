@@ -41,6 +41,20 @@ import {
     SEARCH_CONTACT,
     SEARCH_CONTACT_SUCCESS,
     SEARCH_CONTACT_FAILURE,
+    OPEN_CREATE_FILE_WINDOW,
+    CLOSE_CREATE_FOLDER_WINDOW,
+    OPEN_CREATE_FOLDER_WINDOW,
+    CLOSE_CREATE_FILE_WINDOW,
+    OPEN_RENAME_WINDOW,
+    CLOSE_RENAME_WINDOW,
+    OPEN_CONSENT_WINDOW,
+    CLOSE_CONSENT_WINDOW,
+    CREATE_FILE,
+    CREATE_FILE_SUCCESS,
+    CREATE_FILE_FAILURE,
+    CREATE_FOLDER,
+    CREATE_FOLDER_SUCCESS,
+    CREATE_FOLDER_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -71,6 +85,13 @@ const INITIAL_STATE = {
     updateProfilePic: false,
     contactSearchResult: null,
     searchingContacts: false,
+    isRenameWindowVisible: false,
+    renamedItem: null,
+    isCreateFileVisible: false,
+    isCreateFolderVisible: false,
+    isConsentWindowVisible: false,
+    creatingFile: false,
+    creatingFolder: false,
     // [
     //     {
     //         name: 'testdata',
@@ -187,6 +208,42 @@ export default (state = INITIAL_STATE, action) => {
             };
         case SEARCH_CONTACT_FAILURE:
             return { ...state, searchingContacts: false, error: payload };
+        case OPEN_CREATE_FILE_WINDOW:
+            return { ...state, isCreateFileVisible: true };
+        case CLOSE_CREATE_FILE_WINDOW:
+            return { ...state, isCreateFileVisible: false };
+        case OPEN_CREATE_FOLDER_WINDOW:
+            return { ...state, isCreateFolderVisible: true };
+        case CLOSE_CREATE_FOLDER_WINDOW:
+            return { ...state, isCreateFolderVisible: false };
+        case OPEN_RENAME_WINDOW:
+            return {
+                ...state,
+                isRenameWindowVisible: true,
+                renamedItem: payload,
+            };
+        case CLOSE_RENAME_WINDOW:
+            return {
+                ...state,
+                isRenameWindowVisible: false,
+                renamedItem: null,
+            };
+        case OPEN_CONSENT_WINDOW:
+            return { ...state, isConsentWindowVisible: true };
+        case CLOSE_CONSENT_WINDOW:
+            return { ...state, isConsentWindowVisible: false };
+        case CREATE_FILE:
+            return { ...state, creatingFile: true };
+        case CREATE_FILE_SUCCESS:
+            return { ...state, creatingFile: false };
+        case CREATE_FILE_FAILURE:
+            return { ...state, creatingFile: false };
+        case CREATE_FOLDER:
+            return { ...state, creatingFolder: true };
+        case CREATE_FOLDER_SUCCESS:
+            return { ...state, creatingFolder: false };
+        case CREATE_FOLDER_FAILURE:
+            return { ...state, creatingFolder: false };
         default:
             return state;
     }
