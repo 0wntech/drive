@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot 1`] = `
+exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
 <div
   className="grid"
 >
@@ -105,8 +105,9 @@ exports[`ProfilePage ProfilePage Redux ProfilePage Snapshot matches the snapshot
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="Add bio.."
+            placeholder="This is bens Bio!"
             readOnly={true}
+            value="This is bens Bio!"
           />
         </div>
         <div

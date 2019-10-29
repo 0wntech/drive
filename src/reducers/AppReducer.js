@@ -1,4 +1,4 @@
-import idps from '../assets/idps';
+import idps from '../constants/idps';
 
 import {
     LOGIN,
@@ -40,6 +40,9 @@ import {
     RENAME_ITEM_FAILURE,
     FETCH_APPS,
     FETCH_APPS_SUCCESS,
+    SEARCH_CONTACT,
+    SEARCH_CONTACT_SUCCESS,
+    SEARCH_CONTACT_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -54,14 +57,13 @@ const INITIAL_STATE = {
     loadDeletion: false,
     loadApps: false,
     error: null,
-    contacts: null,
+    contacts: [],
     session: null,
     currentPath: null,
     currentItems: null,
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-    idps: idps,
     clipboard: [],
     loadPaste: false,
     idps: idps,
@@ -70,6 +72,8 @@ const INITIAL_STATE = {
     updateProfileError: false,
     updateProfilePic: false,
     apps: [],
+    contactSearchResult: [],
+    searchingContacts: false,
     // [
     //     {
     //         name: 'testdata',
@@ -182,6 +186,16 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadApps: false, apps: payload };
         case FETCH_CONTACTS_FAILURE:
             return { ...state, loadApps: false, error: payload };
+        case SEARCH_CONTACT:
+            return { ...state, searchingContacts: true };
+        case SEARCH_CONTACT_SUCCESS:
+            return {
+                ...state,
+                searchingContacts: false,
+                contactSearchResult: payload,
+            };
+        case SEARCH_CONTACT_FAILURE:
+            return { ...state, searchingContacts: false, error: payload };
         default:
             return state;
     }
@@ -190,10 +204,10 @@ export default (state = INITIAL_STATE, action) => {
 // selectors
 
 export const isContact = (state, webId) => {
-    state.contacts.forEach((contact) => {
-        if (contact.webId === webId) {
+    for (let i = 0; i < state.contacts.length; i++) {
+        if (state.contacts[i].webId === webId) {
             return true;
         }
-    });
+    }
     return false;
 };

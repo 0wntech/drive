@@ -12,7 +12,11 @@ export default function SelectedFile({ fileName }) {
     return (
         <div className={styles.container}>
             <div className={styles.listing}>
-                {file ? <img src={fileIcon} /> : <img src={folderIcon} />}
+                {file ? (
+                    <img alt="file" src={fileIcon} />
+                ) : (
+                    <img alt="folder" src={folderIcon} />
+                )}
                 <div className={styles.labelText}>{label}</div>
             </div>
         </div>

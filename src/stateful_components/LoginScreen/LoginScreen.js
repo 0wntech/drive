@@ -34,6 +34,10 @@ class LoginScreen extends React.Component {
             case 'solid.authing':
                 idp.color = '#fff';
                 idp.textColor = '#18A9E6';
+                break;
+            default:
+                idp.color = '#fff';
+                idp.textColor = '#18A9E6';
         }
         return idp;
     }
@@ -63,9 +67,9 @@ class LoginScreen extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        idps: state.app.idps,
         loadIdps: state.app.loadIdps,
         webId: state.app.webId,
+        idps: state.app.idps,
     };
 };
 

@@ -8,7 +8,7 @@ import styles from './Drive.module.css';
 import Breadcrumbs from '../../functional_components/Breadcrumbs/Breadcrumbs';
 import { ItemList } from '../../functional_components/ItemList';
 import fileUtils from '../../utils/fileUtils';
-import { getBreadcrumbsFromUrl } from '../../utils/url';
+import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { InputWindow } from '../../functional_components/InputWindow';
@@ -123,7 +123,7 @@ class Drive extends React.Component {
             newSelection.push(url);
             setSelection(newSelection);
         } else if (isCmdPressed(event) && selectedItems.includes(url)) {
-            const newSelection = selectedItems.filter((item) => item != url);
+            const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
             const newBreadCrumbs = getBreadcrumbsFromUrl(url);
@@ -156,7 +156,7 @@ class Drive extends React.Component {
     followPath(path, event = {}) {
         const { selectedItems, setCurrentPath, setSelection } = this.props;
         if (isCmdPressed(event) && selectedItems.includes(path)) {
-            const newSelection = selectedItems.filter((item) => item != path);
+            const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else if (isCmdPressed(event) && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];
@@ -329,11 +329,6 @@ class Drive extends React.Component {
         });
     }
 
-    componentWillUnmount() {
-        // console.log('Caching state...');
-        // localStorage.setItem('appState', JSON.stringify(this.state));
-    }
-
     render() {
         const {
             selectedItems,
@@ -370,7 +365,7 @@ class Drive extends React.Component {
                 onClick: (item) => {
                     if (
                         !selectedItems.includes(item) &&
-                        item !== webId.replace('profile/card#me', '')
+                        item !== getRootFromWebId(webId)
                     ) {
                         selectedItems.push(item);
                     }
@@ -515,6 +510,7 @@ class Drive extends React.Component {
                     windowName="Rename File"
                     info="Enter a new name:"
                     placeholder={renamedItem ? renamedItem : 'Untitled'}
+                    currentFolder={currentItems}
                     onSubmit={(value) =>
                         renameItem(renamedItem, encodeURIComponent(value))
                     }
@@ -556,16 +552,18 @@ class Drive extends React.Component {
                                 {windows}
                                 {currentItems ? (
                                     <div>
-                                        <ItemList
-                                            selectedItems={selectedItems}
-                                            items={currentItems.folders}
-                                            currPath={currentPath}
-                                            image={folder}
-                                            onItemClick={this.followPath}
-                                            contextMenuOptions={
-                                                CONTEXTMENU_OPTIONS
-                                            }
-                                        />
+                                        {currentItems.folders.length > 0 ? (
+                                            <ItemList
+                                                selectedItems={selectedItems}
+                                                items={currentItems.folders}
+                                                currPath={currentPath}
+                                                image={folder}
+                                                onItemClick={this.followPath}
+                                                contextMenuOptions={
+                                                    CONTEXTMENU_OPTIONS
+                                                }
+                                            />
+                                        ) : null}
                                         <ItemList
                                             selectedItems={selectedItems}
                                             isFile

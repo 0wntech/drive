@@ -1,3 +1,5 @@
+import idps from '../constants/idps.json';
+
 import {
     LOGIN,
     LOGIN_SUCCESS,
@@ -44,6 +46,9 @@ import {
     RENAME_ITEM_FAILURE,
     FETCH_APPS_SUCCESS,
     FETCH_APPS,
+    SEARCH_CONTACT,
+    SEARCH_CONTACT_SUCCESS,
+    SEARCH_CONTACT_FAILURE,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
@@ -51,6 +56,7 @@ import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
 import { apps } from '../constants/appsMock';
+import { getWebIdFromRoot } from '../utils/url.js';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -58,7 +64,7 @@ export const login = (username, password) => {
         auth.currentSession()
             .then((session) => {
                 if (!session) {
-                    dispatch({ type: LOGIN_FAIL });
+                    dispatch({ type: LOGIN_FAIL, payload: 'No Session' });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
                     dispatch(fetchContacts(session.webId));
@@ -95,7 +101,7 @@ export const fetchUser = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_USER });
         const currUser = new User(webId);
-        currUser
+        return currUser
             .getProfile()
             .then((profile) => {
                 dispatch({ type: FETCH_USER_SUCCESS, payload: profile });
@@ -115,9 +121,7 @@ const convertFileUrlToName = (fileUrl) => {
 };
 
 export const setCurrentContact = (profile) => {
-    return (dispatch) => {
-        dispatch({ type: SET_CURRENT_CONTACT, payload: profile });
-    };
+    return { type: SET_CURRENT_CONTACT, payload: profile };
 };
 
 export const fetchCurrentItems = (url) => {
@@ -182,9 +186,7 @@ export const sendNotification = (to, notification) => {
 };
 
 export const setSelection = (selection) => {
-    return (dispatch) => {
-        dispatch({ type: SET_SELECTION, payload: selection });
-    };
+    return { type: SET_SELECTION, payload: selection };
 };
 
 export const fetchIdps = () => {
@@ -235,7 +237,7 @@ export const pasteItems = (items, location) => {
                 const pod = new PodClient({ podUrl: session.webId });
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
-                        if (index == items.length - 1) {
+                        if (index === items.length - 1) {
                             return pod.copy(item, location).then(() => {
                                 resolve();
                             });
@@ -328,7 +330,63 @@ export const updateProfile = (profileData, webId) => {
                 dispatch({ type: UPDATE_PROFILE_SUCCESS });
                 dispatch(fetchUser(webId));
             })
-            .catch(dispatch({ type: UPDATE_PROFILE_FAILURE }));
+            .catch((error) =>
+                dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error })
+            );
+    };
+};
+
+export const searchContact = (query) => {
+    return (dispatch) => {
+        dispatch({ type: SEARCH_CONTACT });
+        const lookups = idps.map((idp) => {
+            const url = idp.url.replace(idp.title, query + '.' + idp.title);
+            return auth
+                .fetch(url)
+                .then((res) => {
+                    if (res.status === 200) {
+                        return url;
+                    } else {
+                        return null;
+                    }
+                })
+                .catch((err) => {
+                    return null;
+                });
+        });
+        Promise.all(lookups)
+            .then((urls) => {
+                const result = [];
+                urls.forEach((rootUrl) => {
+                    if (rootUrl) {
+                        const user = new User(getWebIdFromRoot(rootUrl));
+                        result.push(user.getProfile());
+                    }
+                });
+                if (result.length > 0) {
+                    Promise.all(result)
+                        .then((results) => {
+                            dispatch({
+                                type: SEARCH_CONTACT_SUCCESS,
+                                payload: results,
+                            });
+                        })
+                        .catch((err) => {
+                            dispatch({
+                                type: SEARCH_CONTACT_FAILURE,
+                                payload: err,
+                            });
+                        });
+                } else {
+                    dispatch({
+                        type: SEARCH_CONTACT_FAILURE,
+                        payload: 'No Result',
+                    });
+                }
+            })
+            .catch((err) => {
+                dispatch({ type: SEARCH_CONTACT_FAILURE, payload: err });
+            });
     };
 };
 
@@ -354,7 +412,7 @@ export const changeProfilePhoto = (e, webId) => {
                     contentType: contentType,
                 })
                 .then((res) => {
-                    if (res.status == 201) {
+                    if (res.status === 201) {
                         currUser
                             .setPicture(pictureUrl)
                             .then(() => {

@@ -76,3 +76,7 @@ export const RENAME_ITEM_FAILURE = 'rename_item_failure';
 export const FETCH_APPS = 'fetch_apps';
 export const FETCH_APPS_SUCCESS = 'fetch_apps_success';
 export const FETCH_APPS_FAILURE = 'fetch_apps_failure';
+
+export const SEARCH_CONTACT = 'search_contact';
+export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
+export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';

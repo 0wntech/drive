@@ -1,8 +1,9 @@
 import React from 'react';
 import styles from './Window.module.css';
 import closeIcon from '../../assets/icons/x.png';
+import PropTypes from 'prop-types';
 
-export default function Window({ windowName, className, children, onClose }) {
+function Window({ windowName, className, children, onClose }) {
     return (
         <div className={className}>
             <div className={styles.container}>
@@ -12,6 +13,7 @@ export default function Window({ windowName, className, children, onClose }) {
                         className={styles.close}
                         src={closeIcon}
                         onClick={onClose}
+                        alt="close"
                     />
                 </div>
                 <div className={styles.body}>{children}</div>
@@ -20,3 +22,12 @@ export default function Window({ windowName, className, children, onClose }) {
         </div>
     );
 }
+
+Window.propTypes = {
+    windowName: PropTypes.string,
+    className: PropTypes.string,
+    children: PropTypes.array,
+    onClose: PropTypes.func,
+};
+
+export default Window;

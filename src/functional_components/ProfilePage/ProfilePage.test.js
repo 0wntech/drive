@@ -1,12 +1,13 @@
 import React from 'react';
 import { ProfilePage } from './ProfilePage.js';
 import { FETCH_USER_SUCCESS } from '../../actions/types';
-import appReducer from '../../reducers/appReducer';
+import appReducer from '../../reducers/AppReducer';
 import TestRenderer from 'react-test-renderer';
 describe('ProfilePage', () => {
     const user = {
         webId: 'https://bejow.owntech.de/profile/card#me',
         name: 'Ben',
+        bio: 'This is bens Bio!',
         picture:
             'https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png',
         emails: ['ben.test@owntech.de'],
@@ -27,14 +28,13 @@ describe('ProfilePage', () => {
                 user: user,
             });
         });
-
-        describe('ProfilePage Snapshot', () => {
-            it('matches the snapshot', () => {
-                const tree = TestRenderer.create(<ProfilePage user={user} />);
-                expect(tree.toJSON()).toMatchSnapshot();
-            });
-        });
-
-        describe('ProfilePage UnitTest', () => {});
     });
+    describe('ProfilePage Snapshot', () => {
+        it('matches the snapshot', () => {
+            const tree = TestRenderer.create(<ProfilePage user={user} />);
+            expect(tree.toJSON()).toMatchSnapshot();
+        });
+    });
+
+    describe('ProfilePage UnitTest', () => {});
 });

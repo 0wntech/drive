@@ -180,7 +180,6 @@ const mapStateToProps = (state) => {
         session: state.app.session,
         loadLogin: state.app.loadLogin,
         loadUser: state.app.loadUser,
-        session: state.app.session,
         currentFolderTree: state.app.currentFolderTree,
         currentPath: state.app.currentPath,
     };
