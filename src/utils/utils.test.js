@@ -125,18 +125,18 @@ describe('Testing util functions', () => {
                 });
             });
 
-            test('test getFileType(regularFileName) should return file type', () => {
+            test('getFileType(regularFileName) should return file type', () => {
                 expect(fileUtils.getFileType('fav.ico')).toBe('ico');
             });
-            test('test getFileType(fileNameWithoutDot) should return null', () => {
+            test('getFileType(fileNameWithoutDot) should return null', () => {
                 expect(fileUtils.getFileType('fav')).toBeNull();
             });
 
-            test('test getFileType(fileNameWithDotAtTheEnd.) should return null', () => {
+            test('getFileType(NameWithDotAtTheEnd.) should return null', () => {
                 expect(fileUtils.getFileType('fav.')).toBeNull();
             });
 
-            test('test convertFilesAndFoldersToArray(files, folder) should return arrayOfObjects', () => {
+            test('convertFilesAndFoldersToArray() should return arrayOfObjects', () => {
                 const converted = fileUtils.convertFilesAndFoldersToArray(
                     files,
                     folders
@@ -173,7 +173,7 @@ describe('Testing util functions', () => {
                 );
             });
 
-            test('namingConflict(name, folder) should return false if the there is no folder or file with name in the specified folder', () => {
+            test('namingConflict() should return false if the there is no conflict', () => {
                 expect(
                     fileUtils.namingConflict('hehe', {
                         files: files,
@@ -182,7 +182,7 @@ describe('Testing util functions', () => {
                 ).toBe(false);
             });
 
-            test('namingConflict(name, folder) should return true if the there is a folder or file with name in the specified folder', () => {
+            test('namingConflict() should return true if the there is a conflict', () => {
                 expect(
                     fileUtils.namingConflict('doge', {
                         files: files,

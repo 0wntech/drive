@@ -9,3 +9,11 @@
 .icon:last-child {
     margin-right: 0;
 }
+
+.icon_danger {
+    margin-right: 20px;
+}
+
+.icon:hover path {
+    fill: #c2c2c2;
+}

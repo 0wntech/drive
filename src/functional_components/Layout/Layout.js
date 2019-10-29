@@ -41,7 +41,7 @@ const Layout = ({
 Layout.propTypes = {
     className: PropTypes.string,
     hideToolbar: PropTypes.bool,
-    children: PropTypes.object,
+    children: PropTypes.array,
     toolbarChildrenLeft: PropTypes.object,
     toolbarChildrenRight: PropTypes.object,
     label: PropTypes.string,

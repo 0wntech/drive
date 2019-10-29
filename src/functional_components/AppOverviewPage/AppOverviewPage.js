@@ -25,7 +25,7 @@ AppOverviewPage.propTypes = {
             title: PropTypes.string,
             description: PropTypes.string,
             settings: PropTypes.string,
-            contents: PropTypes.string,
+            contents: PropTypes.array,
             permissions: PropTypes.object,
         })
     ),

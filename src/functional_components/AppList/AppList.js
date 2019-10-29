@@ -13,6 +13,7 @@ const AppList = ({ apps, className }) => {
                           key={app.name + index}
                           iconSrc={app.icon}
                           name={app.title}
+                          onClick={() => console.log('Implement on Click')}
                       />
                   ))
                 : null}
@@ -27,7 +28,7 @@ AppList.propTypes = {
             title: PropTypes.string,
             description: PropTypes.string,
             settings: PropTypes.string,
-            contents: PropTypes.string,
+            contents: PropTypes.array,
             permissions: PropTypes.object,
         })
     ),

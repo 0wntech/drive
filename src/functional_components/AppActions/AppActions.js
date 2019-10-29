@@ -15,7 +15,7 @@ const AppActions = ({
 }) => {
     return (
         <div className={styles.container}>
-            {!alert ? <Alert className={styles.icon} /> : null}
+            {!alert ? <Alert className={styles.icon_danger} /> : null}
             <Arrow onClick={onArrowClick} className={styles.icon} />
             <Folder onClick={onFolderClick} className={styles.icon} />
             <Settings onClick={onSettingsClick} className={styles.icon} />
