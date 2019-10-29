@@ -375,6 +375,11 @@ export const searchContact = (query) => {
                                 payload: err,
                             });
                         });
+                } else {
+                    dispatch({
+                        type: SEARCH_CONTACT_FAILURE,
+                        payload: 'No Result',
+                    });
                 }
             })
             .catch((err) => {
