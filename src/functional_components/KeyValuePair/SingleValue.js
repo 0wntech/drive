@@ -19,7 +19,7 @@ const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
             setValue(fallbackValue);
         }
         // set new fallback value
-        if (value != '') {
+        if (value !== '') {
             setFallbackValue(e.target.value);
         }
     };

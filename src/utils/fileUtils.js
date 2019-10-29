@@ -135,7 +135,7 @@ function getFileType(file) {
     // no dot || nothing after dot
     if (
         splittedFile.length === 1 ||
-        splittedFile[splittedFile.length - 1] == ''
+        splittedFile[splittedFile.length - 1] === ''
     ) {
         return null;
     }
@@ -252,7 +252,7 @@ function getFolderFiles(path) {
         const folderFiles = { folders: [], files: [] };
         results.forEach((result) => {
             const resultFragments = result.split('/');
-            if (resultFragments[resultFragments.length - 1] == '') {
+            if (resultFragments[resultFragments.length - 1] === '') {
                 folderFiles['folders'].push(result);
             } else {
                 folderFiles['files'].push(result);
@@ -264,16 +264,22 @@ function getFolderFiles(path) {
 
 function getFolderContents(folderUrl) {
     const store = rdf.graph();
-    const fetcher = new rdf.Fetcher(store);
 
-    return fetcher.load(folderUrl).then(() => {
-        const containments = store
-            .each(rdf.sym(folderUrl), ns.ldp('contains'), undefined)
-            .map((containment) => {
-                return containment.value;
+    return auth
+        .fetch(folderUrl, {
+            headers: { Accept: 'text/turtle' },
+        })
+        .then((res) => {
+            return res.text().then((body) => {
+                rdf.parse(body, store, folderUrl, 'text/turtle');
+                const containments = store
+                    .each(rdf.sym(folderUrl), ns.ldp('contains'), undefined)
+                    .map((containment) => {
+                        return containment.value;
+                    });
+                return containments;
             });
-        return containments;
-    });
+        });
 }
 
 function getNotificationFiles(webId) {

@@ -1,4 +1,4 @@
-import idps from '../assets/idps';
+import idps from '../constants/idps';
 
 import {
     LOGIN,
@@ -38,6 +38,9 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    SEARCH_CONTACT,
+    SEARCH_CONTACT_SUCCESS,
+    SEARCH_CONTACT_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -58,7 +61,6 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-    idps: idps,
     clipboard: [],
     loadPaste: false,
     idps: idps,
@@ -66,6 +68,8 @@ const INITIAL_STATE = {
     updateProfile: false,
     updateProfileError: false,
     updateProfilePic: false,
+    contactSearchResult: null,
+    searchingContacts: false,
     // [
     //     {
     //         name: 'testdata',
@@ -172,6 +176,16 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, renamingItem: false };
         case RENAME_ITEM_FAILURE:
             return { ...state, renamingItem: false, error: payload };
+        case SEARCH_CONTACT:
+            return { ...state, searchingContacts: true };
+        case SEARCH_CONTACT_SUCCESS:
+            return {
+                ...state,
+                searchingContacts: false,
+                contactsFound: payload,
+            };
+        case SEARCH_CONTACT_FAILURE:
+            return { ...state, searchingContacts: false, error: payload };
         default:
             return state;
     }

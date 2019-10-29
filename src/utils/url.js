@@ -3,6 +3,8 @@ export const getBreadcrumbsFromUrl = (url) => {
     if (
         typeof url !== 'string' ||
         !url.match(
+            /* eslint-disable no-useless-escape */
+
             /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
         )
     ) {
@@ -38,13 +40,8 @@ export const sortContainments = (urls) => {
 };
 
 // converts webId into url to fetch folders
-export const getUrlFromWebId = (webId) => {
+export const getRootFromWebId = (webId) => {
     return 'https://' + webId.split('/')[2] + '/';
-};
-
-// add a breadcrumb to url
-export const addToUrl = (baseUrl, breadcrumb) => {
-    return baseUrl + breadcrumb;
 };
 
 // removes the last element of an url
@@ -69,15 +66,4 @@ export const matchPathInUrlList = (list, path) => {
         }
     }
     return matches;
-};
-
-export const getCurrentDirectory = (urlTree, currentWorkingDirectory) => {
-    // returns all files and folder within the currentWOrkingDirectory in the form {files:[...], folders:[...]}
-
-    const folders = matchPathInUrlList(
-        urlTree.folders,
-        currentWorkingDirectory
-    );
-    const files = matchPathInUrlList(urlTree.files, currentWorkingDirectory);
-    return { folders, files };
 };

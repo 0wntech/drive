@@ -72,3 +72,7 @@ export const SET_CURRENT_CONTACT = 'set_current_contact';
 export const RENAME_ITEM = 'rename_item';
 export const RENAME_ITEM_SUCCESS = 'rename_item_success';
 export const RENAME_ITEM_FAILURE = 'rename_item_failure';
+
+export const SEARCH_CONTACT = 'search_contact';
+export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
+export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';

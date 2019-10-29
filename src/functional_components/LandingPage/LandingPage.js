@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styles from './LandingPage.module.css';
 import Slogan from '../../assets/svgIcons/Slogan';
 import ActionButton from '../ActionButton/ActionButton';
+import { Layout } from '../Layout';
 
 const LandingPage = ({ webId, history }) => {
     const login = function() {
@@ -16,7 +17,7 @@ const LandingPage = ({ webId, history }) => {
     console.log(webId);
 
     return (
-        <div className={styles.grid}>
+        <Layout className={styles.grid} hideToolbar>
             <div className={styles.mainArea}>
                 <div className={styles.container}>
                     <Slogan width="100%" viewBox="0 0 971 219" />
@@ -39,7 +40,7 @@ const LandingPage = ({ webId, history }) => {
                     )}
                 </div>
             </div>
-        </div>
+        </Layout>
     );
 };
 

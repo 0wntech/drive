@@ -5,6 +5,7 @@ import { addContact, setCurrentContact } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 
 import ContactList from '../ContactList/ContactsList';
+import { Layout } from '../Layout';
 
 const ContactsPage = ({
     contacts,
@@ -14,10 +15,7 @@ const ContactsPage = ({
     setCurrentContact,
 }) => {
     return (
-        <div className={styles.grid}>
-            <div className={styles.toolbarArea}>
-                <div className={styles.toolbarTitle}>Contacts</div>
-            </div>
+        <Layout label="Contacts" className={styles.grid}>
             {loadContacts ? (
                 <div className={styles.spinner}>
                     <ClassicSpinner
@@ -44,7 +42,7 @@ const ContactsPage = ({
                     </button>
                 </div>
             )}
-        </div>
+        </Layout>
     );
 };
 
