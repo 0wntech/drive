@@ -32,12 +32,13 @@ expect.extend({
 
 describe('Testing util functions', () => {
     describe('Testing url utils', () => {
-        const url = 'https://www.heise.de/newsticker/it/';
+        const folderUrl = 'https://www.heise.de/newsticker/it/';
+        const fileUrl = 'https://www.heise.de/favicon.ico';
         const emptyUrl = '';
         const invalidUrl = 'ich bin keine url';
 
         test('getBreadcrumbsfromURL(url) should return Breadcrumbs as array', () => {
-            expect(JSON.stringify(getBreadcrumbsFromUrl(url))).toBe(
+            expect(JSON.stringify(getBreadcrumbsFromUrl(folderUrl))).toBe(
                 JSON.stringify(['/', '/newsticker', '/it'])
             );
         });
@@ -48,6 +49,13 @@ describe('Testing util functions', () => {
 
         test('test getBreadcrumbsfromURL(url=invalidUrl) should throw', () => {
             expect(() => getBreadcrumbsFromUrl(invalidUrl)).toThrow();
+        });
+
+        test('getSuffixAndPlaceholder(url) should return a placeholder for rename input + fileSuffix if present', () => {
+            expect(fileUtils.getSuffixAndPlaceholder(fileUrl)).toStrictEqual({
+                fileSuffix: 'ico',
+                placeholder: 'favicon',
+            });
         });
     });
     describe('Testing file utils', () => {
@@ -118,6 +126,24 @@ describe('Testing util functions', () => {
 
         it('getContentType() handles multiple dots', () => {
             expect(fileUtils.getContentType('test.exe.png')).toEqual('image');
+        });
+
+        test('namingConflict(name, folder) should return false if the there is no folder or file with name in the specified folder', () => {
+            expect(
+                fileUtils.namingConflict('hehe', {
+                    files: files,
+                    folders: folders,
+                })
+            ).toBe(false);
+        });
+
+        test('namingConflict(name, folder) should return true if the there is a folder or file with name in the specified folder', () => {
+            expect(
+                fileUtils.namingConflict('doge', {
+                    files: files,
+                    folders: folders,
+                })
+            ).toBe(true);
         });
     });
 });

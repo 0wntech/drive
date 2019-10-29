@@ -1,5 +1,5 @@
 .container {
-    z-index: 3;
+    z-index: 5;
     position: fixed;
     margin: auto;
     top: 50%;
@@ -12,7 +12,7 @@
 }
 
 .opacity {
-    z-index: 2;
+    z-index: 4;
     position: fixed;
     top: 0;
     right: 0;

@@ -26,6 +26,32 @@ function getContentType(file) {
     }
 }
 
+function namingConflict(name, currentFolder) {
+    if (currentFolder) {
+        if (currentFolder.files.indexOf(name) !== -1) {
+            return true;
+        } else if (currentFolder.folders.indexOf(name) !== -1) {
+            return true;
+        }
+        return false;
+    }
+}
+
+function getSuffixAndPlaceholder(placeholder) {
+    let fileSuffix;
+    placeholder = placeholder.split('/');
+    if (placeholder[placeholder.length - 1] === '') {
+        placeholder = placeholder[placeholder.length - 2];
+    } else {
+        const fileNameFragments = placeholder[placeholder.length - 1].split(
+            '.'
+        );
+        placeholder = fileNameFragments[0];
+        fileSuffix = fileNameFragments[1];
+    }
+    return { fileSuffix: fileSuffix, placeholder: placeholder };
+}
+
 function uploadFolderOrFile(file, url) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
@@ -373,4 +399,6 @@ export default {
     sendNotification: sendNotification,
     getFileType: getFileType,
     convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
+    namingConflict: namingConflict,
+    getSuffixAndPlaceholder: getSuffixAndPlaceholder,
 };

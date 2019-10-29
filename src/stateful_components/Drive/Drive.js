@@ -510,6 +510,7 @@ class Drive extends React.Component {
                     windowName="Rename File"
                     info="Enter a new name:"
                     placeholder={renamedItem ? renamedItem : 'Untitled'}
+                    currentFolder={currentItems}
                     onSubmit={(value) =>
                         renameItem(renamedItem, encodeURIComponent(value))
                     }
