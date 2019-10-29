@@ -61,7 +61,6 @@ const INITIAL_STATE = {
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-    idps: idps,
     clipboard: [],
     loadPaste: false,
     idps: idps,

@@ -3,6 +3,8 @@ export const getBreadcrumbsFromUrl = (url) => {
     if (
         typeof url !== 'string' ||
         !url.match(
+            /* eslint-disable no-useless-escape */
+
             /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
         )
     ) {
