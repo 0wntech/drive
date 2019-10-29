@@ -61,7 +61,7 @@ export const login = (username, password) => {
         auth.currentSession()
             .then((session) => {
                 if (!session) {
-                    dispatch({ type: LOGIN_FAIL });
+                    dispatch({ type: LOGIN_FAIL, payload: 'No Session' });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
                     dispatch(fetchContacts(session.webId));
@@ -234,7 +234,7 @@ export const pasteItems = (items, location) => {
                 const pod = new PodClient({ podUrl: session.webId });
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
-                        if (index == items.length - 1) {
+                        if (index === items.length - 1) {
                             return pod.copy(item, location).then(() => {
                                 resolve();
                             });
@@ -342,7 +342,7 @@ export const searchContact = (query) => {
             return auth
                 .fetch(url)
                 .then((res) => {
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         return url;
                     } else {
                         return null;
@@ -410,7 +410,7 @@ export const changeProfilePhoto = (e, webId) => {
                     contentType: contentType,
                 })
                 .then((res) => {
-                    if (res.status == 201) {
+                    if (res.status === 201) {
                         currUser
                             .setPicture(pictureUrl)
                             .then(() => {

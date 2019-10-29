@@ -120,21 +120,21 @@ class NotificationsPage extends React.Component {
         });
     }
 
-    componentDidMount() {
-        const { fetchNotifications, webId } = this.props;
-        if (webId && fetchNotifications) {
-            console.log(webId, fetchNotifications);
-            fetchNotifications(webId).then((results) => {
-                results.map((notification) => {
-                    this.getNotificationContent(notification).then(
-                        (content) => {
-                            console.log(content);
-                        }
-                    );
-                });
-            });
-        }
-    }
+    // componentDidMount() {
+    //     const { fetchNotifications, webId } = this.props;
+    //     if (webId && fetchNotifications) {
+    //         console.log(webId, fetchNotifications);
+    //         fetchNotifications(webId).then((results) => {
+    //             results.map((notification) => {
+    //                 this.getNotificationContent(notification).then(
+    //                     (content) => {
+    //                         console.log(content);
+    //                     }
+    //                 );
+    //             });
+    //         });
+    //     }
+    // }
 
     render() {
         const { notifications } = this.props;

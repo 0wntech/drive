@@ -21,7 +21,7 @@ const MyItem = ({
         >
             <div className={classNames(styles.container)} onClick={onClick}>
                 <div className={styles.innerContainer}>
-                    <img className={styles.icon} src={image} />
+                    <img alt="item" className={styles.icon} src={image} />
                 </div>
                 <div className={styles.label}>{label}</div>
             </div>

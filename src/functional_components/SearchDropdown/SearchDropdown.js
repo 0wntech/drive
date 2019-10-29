@@ -51,10 +51,6 @@ export default function SearchDropdown({
 }
 
 const customStyles = {
-    input: (provided) => ({
-        ...provided,
-        fontSize: '22px',
-    }),
     placeholder: (provided) => ({
         ...provided,
         fontSize: '22px',
@@ -68,6 +64,7 @@ const customStyles = {
     }),
     input: (provided) => ({
         ...provided,
+        fontSize: '22px',
         marginLeft: '-9px',
     }),
     option: (provided, state) => ({
