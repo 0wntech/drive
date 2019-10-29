@@ -1,10 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import SvgDropdown from '../../assets/svgIcons/Dropdown';
 import styles from './DropdownMenu.module.css';
 import classNames from 'classnames';
 
-function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
+function DropdownMenu({
+    menuHead,
+    options,
+    renderOption,
+    isExpanded,
+    setExpanded,
+}) {
+    const dropdownWrapper = useRef(null);
+    const headArea = useRef(null);
+    useEffect(() => {
+        if (dropdownWrapper.current && headArea.current) {
+            headArea.current.style.height = `${dropdownWrapper.current.clientHeight}px`;
+        }
+    }, []);
     const defaultRender = (option) => {
         return (
             <div
@@ -21,25 +34,36 @@ function DropdownMenu({ options, renderOption, isExpanded, setExpanded }) {
     };
 
     return (
-        <Fragment>
-            <SvgDropdown
-                className={styles.icon}
-                onClick={() => setExpanded(!isExpanded)}
-            />
+        <div ref={dropdownWrapper} className={styles.dropdownWrapper}>
             <div
-                className={classNames(styles.dropdownContent, {
-                    [styles.hide]: !isExpanded,
+                className={classNames(styles.container, {
+                    [styles.active]: isExpanded,
                 })}
             >
-                {renderOption
-                    ? options.map((option, index) => (
-                          <div key={index} className={styles.option}>
-                              {renderOption(option)}
-                          </div>
-                      ))
-                    : options.map((option) => defaultRender(option))}
+                <div className={styles.head} ref={headArea}>
+                    {menuHead}
+                    <div className={styles.iconWrapper}>
+                        <SvgDropdown
+                            className={styles.icon}
+                            onClick={() => setExpanded(!isExpanded)}
+                        />
+                    </div>
+                </div>
+                <div
+                    className={classNames(styles.dropdownContent, {
+                        [styles.hide]: !isExpanded,
+                    })}
+                >
+                    {renderOption
+                        ? options.map((option, index) => (
+                              <div key={index} className={styles.option}>
+                                  {renderOption(option)}
+                              </div>
+                          ))
+                        : options.map((option) => defaultRender(option))}
+                </div>
             </div>
-        </Fragment>
+        </div>
     );
 }
 
