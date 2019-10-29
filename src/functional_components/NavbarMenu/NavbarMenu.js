@@ -7,7 +7,7 @@ import styles from './NavbarMenu.module.css';
 import ActionButton from '../ActionButton/ActionButton';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 
-const NavbarMenu = ({
+export const NavbarMenu = ({
     className,
     history,
     webId,

@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavbarMenu Should render correctly 1`] = `
+<div
+  className="test"
+>
+  <div
+    className="dropdownWrapper"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="head"
+      >
+        <div
+          className="profileSection"
+        >
+          <div
+            className="profileIcon"
+            onClick={[Function]}
+            style={
+              Object {
+                "backgroundImage": "url('https://bejow.solid.community/profile/meme_ben_gang.jpg')",
+              }
+            }
+          />
+          <div
+            className="username"
+          >
+            Ben
+          </div>
+        </div>
+        <div
+          className="iconWrapper"
+        >
+          <svg
+            className="icon"
+            fill="none"
+            height={10}
+            onClick={[Function]}
+            width={14}
+          >
+            <path
+              d="M0 0h14L7 10 0 0z"
+              fill="#C4C4C4"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        className="dropdownContent hide"
+      >
+        <div
+          className="option"
+          onClick={[Function]}
+        >
+          Profile
+        </div>
+        <div
+          className="option"
+          onClick={[Function]}
+        >
+          Settings*
+        </div>
+        <div
+          className="option"
+          onClick={[Function]}
+        >
+          Notifications*
+        </div>
+        <div
+          className="option"
+          onClick={[Function]}
+        >
+          Contacts
+        </div>
+        <div
+          className="option"
+          onClick={[Function]}
+        >
+          Logout
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NavbarMenu Should render login if no webId 1`] = `
+<div
+  className="test"
+>
+  <div
+    className="container blue sm"
+    onClick={[Function]}
+  >
+    Login
+  </div>
+</div>
+`;
