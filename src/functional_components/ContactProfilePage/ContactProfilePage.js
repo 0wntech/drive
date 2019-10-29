@@ -20,6 +20,7 @@ const ContactProfilePage = ({
     addContact,
     removeContact,
     webId,
+    isContact,
 }) => {
     return (
         <Layout
