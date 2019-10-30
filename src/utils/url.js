@@ -1,12 +1,9 @@
 export const getBreadcrumbsFromUrl = (url) => {
     // check if url is a valid url
-    if (
-        typeof url !== 'string' ||
-        !url.match(
-            /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
-        )
-    ) {
-        throw new Error('getBreadcrumbsFromUrl received an invalid url');
+    if (!isValidUrl(url)) {
+        throw new Error(
+            `getBreadcrumbsFromUrl received an invalid url: ${url}`
+        );
     }
     const breadcrumbs = url.replace('https://', '').split('/');
     breadcrumbs.shift();
@@ -17,6 +14,14 @@ export const getBreadcrumbsFromUrl = (url) => {
         }
     });
     return newBreadcrumbs;
+};
+
+export const isValidUrl = (url) => {
+    return url.match(
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    )
+        ? true
+        : false;
 };
 
 // sorts files and folder
@@ -37,9 +42,31 @@ export const sortContainments = (urls) => {
     return [files, folders];
 };
 
+// converts https://ludwigschubert.solid.community/profile/card#me
+// into ludwigschubert
+export const getUsernameFromWebId = (webId) => {
+    if (isValidUrl(webId)) {
+        return webId.substring(webId.indexOf('://') + 3, webId.indexOf('.'));
+    }
+};
+
 // converts webId into url to fetch folders
 export const getRootFromWebId = (webId) => {
     return 'https://' + webId.split('/')[2] + '/';
+};
+
+// converts https://ludwigschubert.solid.community/
+// into https://ludwigschubert.solid.community/profile/card#me
+export const getWebIdFromRoot = (rootUrl) => {
+    if (!isValidUrl(rootUrl)) {
+        throw new Error(`getWebIdFromRoot received an invalid url: ${rootUrl}`);
+    }
+
+    if (rootUrl[rootUrl.length - 1] !== '/') {
+        return rootUrl + '/profile/card#me';
+    } else {
+        return rootUrl + 'profile/card#me';
+    }
 };
 
 // removes the last element of an url

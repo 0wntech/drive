@@ -16,6 +16,7 @@ exports[`Window should render correctly 1`] = `
         Test Window
       </span>
       <img
+        alt="close"
         className="close"
         onClick={[MockFunction]}
         src="x.png"

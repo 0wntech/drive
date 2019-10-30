@@ -68,14 +68,13 @@ const INITIAL_STATE = {
     loadCurrentItems: false,
     loadDeletion: false,
     error: null,
-    contacts: null,
+    contacts: [],
     session: null,
     currentPath: null,
     currentItems: null,
     currentFolderTree: null,
     notifications: null,
     selectedItems: [],
-    idps: idps,
     clipboard: [],
     loadPaste: false,
     idps: idps,
@@ -83,7 +82,7 @@ const INITIAL_STATE = {
     updateProfile: false,
     updateProfileError: false,
     updateProfilePic: false,
-    contactSearchResult: null,
+    contactSearchResult: [],
     searchingContacts: false,
     isRenameWindowVisible: false,
     renamedItem: null,
@@ -204,7 +203,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 searchingContacts: false,
-                contactsFound: payload,
+                contactSearchResult: payload,
             };
         case SEARCH_CONTACT_FAILURE:
             return { ...state, searchingContacts: false, error: payload };
@@ -252,10 +251,10 @@ export default (state = INITIAL_STATE, action) => {
 // selectors
 
 export const isContact = (state, webId) => {
-    state.contacts.forEach((contact) => {
-        if (contact.webId === webId) {
+    for (let i = 0; i < state.contacts.length; i++) {
+        if (state.contacts[i].webId === webId) {
             return true;
         }
-    });
+    }
     return false;
 };

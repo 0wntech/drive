@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './SearchDropdown.module.css';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
+import { ClassicSpinner } from 'react-spinners-kit';
 import Search from '../../assets/svgIcons/Search';
 export default function SearchDropdown({
     items,
@@ -9,12 +10,23 @@ export default function SearchDropdown({
     className,
     onChange,
     placeholder,
+    onInputChange,
+    filterOption,
+    loading,
 }) {
     const DropdownIndicator = (props) => {
         return (
             components.DropdownIndicator && (
                 <components.DropdownIndicator {...props}>
-                    <Search />
+                    {loading ? (
+                        <ClassicSpinner
+                            size={20}
+                            color="#686769"
+                            loading={loading}
+                        />
+                    ) : (
+                        <Search />
+                    )}
                 </components.DropdownIndicator>
             )
         );
@@ -31,16 +43,14 @@ export default function SearchDropdown({
                 onChange={onChange}
                 className={className}
                 value={null}
+                onInputChange={onInputChange}
+                filterOption={filterOption}
             />
         </div>
     );
 }
 
 const customStyles = {
-    input: (provided) => ({
-        ...provided,
-        fontSize: '22px',
-    }),
     placeholder: (provided) => ({
         ...provided,
         fontSize: '22px',
@@ -54,6 +64,7 @@ const customStyles = {
     }),
     input: (provided) => ({
         ...provided,
+        fontSize: '22px',
         marginLeft: '-9px',
     }),
     option: (provided, state) => ({

@@ -21,17 +21,18 @@ export default function File({
                 <div className={styles.innerContainer}>
                     <div className={styles.iconContainer}>
                         <img
+                            alt="file"
                             className={styles.thumbnail}
                             src={currPath + label}
                         />
-                        <img className={styles.icon} src={image} />
+                        <img alt="file" className={styles.icon} src={image} />
                     </div>
                 </div>
             );
         } else {
             return (
                 <div className={styles.innerContainer}>
-                    <img className={styles.icon} src={image} />
+                    <img alt="file" className={styles.icon} src={image} />
                 </div>
             );
         }

@@ -67,6 +67,7 @@ import auth from 'solid-auth-client';
 import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
+import { getWebIdFromRoot } from '../utils/url.js';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -74,7 +75,7 @@ export const login = (username, password) => {
         auth.currentSession()
             .then((session) => {
                 if (!session) {
-                    dispatch({ type: LOGIN_FAIL });
+                    dispatch({ type: LOGIN_FAIL, payload: 'No Session' });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
                     dispatch(fetchContacts(session.webId));
@@ -247,7 +248,7 @@ export const pasteItems = (items, location) => {
                 const pod = new PodClient({ podUrl: session.webId });
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
-                        if (index == items.length - 1) {
+                        if (index === items.length - 1) {
                             return pod.copy(item, location).then(() => {
                                 resolve();
                             });
@@ -355,7 +356,7 @@ export const searchContact = (query) => {
             return auth
                 .fetch(url)
                 .then((res) => {
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         return url;
                     } else {
                         return null;
@@ -368,27 +369,32 @@ export const searchContact = (query) => {
         Promise.all(lookups)
             .then((urls) => {
                 const result = [];
-                urls.forEach((url) => {
-                    if (url) {
-                        const user = new User(url);
+                urls.forEach((rootUrl) => {
+                    if (rootUrl) {
+                        const user = new User(getWebIdFromRoot(rootUrl));
                         result.push(user.getProfile());
                     }
-                }).catch((err) => {
-                    console.log(err);
                 });
-                Promise.all(result)
-                    .then((results) => {
-                        dispatch({
-                            type: SEARCH_CONTACT_SUCCESS,
-                            payload: results,
+                if (result.length > 0) {
+                    Promise.all(result)
+                        .then((results) => {
+                            dispatch({
+                                type: SEARCH_CONTACT_SUCCESS,
+                                payload: results,
+                            });
+                        })
+                        .catch((err) => {
+                            dispatch({
+                                type: SEARCH_CONTACT_FAILURE,
+                                payload: err,
+                            });
                         });
-                    })
-                    .catch((err) => {
-                        dispatch({
-                            type: SEARCH_CONTACT_FAILURE,
-                            payload: err,
-                        });
+                } else {
+                    dispatch({
+                        type: SEARCH_CONTACT_FAILURE,
+                        payload: 'No Result',
                     });
+                }
             })
             .catch((err) => {
                 dispatch({ type: SEARCH_CONTACT_FAILURE, payload: err });
@@ -418,7 +424,7 @@ export const changeProfilePhoto = (e, webId) => {
                     contentType: contentType,
                 })
                 .then((res) => {
-                    if (res.status == 201) {
+                    if (res.status === 201) {
                         currUser
                             .setPicture(pictureUrl)
                             .then(() => {
