@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
 import styles from './LoginScreen.module.css';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
-import { fetchIdps, login } from '../../actions/userActions';
+import { login } from '../../actions/userActions';
+import { fetchIdps } from '../../actions/appActions';
 
 class LoginScreen extends React.Component {
     constructor(props) {

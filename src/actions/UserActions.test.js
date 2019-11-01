@@ -12,8 +12,8 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
 } from './types';
-import { setWebId, setSelection, fetchUser } from './userActions';
-
+import { setSelection } from './appActions';
+import { fetchUser, setWebId } from './userActions';
 import { setCurrentContact } from './contactActions';
 
 import { user } from '../test/fixtures/user';

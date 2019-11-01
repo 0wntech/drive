@@ -7,10 +7,8 @@ import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
-import { setCurrentPath } from '../../actions/userActions';
-import { searchContact } from '../../actions/contactActions';
-import { setCurrentContact } from '../../actions/contactActions';
-
+import { setCurrentPath } from '../../actions/appActions';
+import { searchContact, setCurrentContact } from '../../actions/contactActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
 import ActionButton from '../ActionButton/ActionButton';
