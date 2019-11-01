@@ -111,9 +111,9 @@ ContactProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    currentContact: state.app.currentContact,
-    webId: state.app.webId,
-    isContact: isContact(state.app, state.app.currentContact.webId),
+    currentContact: state.contact.currentContact,
+    webId: state.user.webId,
+    isContact: isContact(state.contact, state.contact.currentContact.webId),
 });
 
 export default connect(

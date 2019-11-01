@@ -49,9 +49,9 @@ const ContactsPage = ({
 ContactsPage.propTypes = {};
 
 const mapStateToProps = (state) => ({
-    contacts: state.app.contacts,
-    webId: state.app.webId,
-    loadContacts: state.app.loadContacts,
+    contacts: state.contact.contacts,
+    webId: state.user.webId,
+    loadContacts: state.contact.loadContacts,
 });
 
 export default connect(

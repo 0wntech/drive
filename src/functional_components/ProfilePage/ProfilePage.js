@@ -170,9 +170,9 @@ export const ProfilePage = ({
 };
 
 const mapStateToProps = (state) => ({
-    user: state.app.user,
-    webId: state.app.webId,
-    updateProfilePic: state.app.updateProfilePic,
+    user: state.user.user,
+    webId: state.user.webId,
+    updateProfilePic: state.user.updateProfilePic,
 });
 
 export default connect(

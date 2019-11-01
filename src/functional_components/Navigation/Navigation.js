@@ -228,9 +228,9 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
     items: state.app.currentItems,
-    contacts: state.app.contacts,
-    searchingContacts: state.app.searchingContacts,
-    contactSearchResult: state.app.contactSearchResult,
+    contacts: state.contact.contacts,
+    searchingContacts: state.contact.searchingContacts,
+    contactSearchResult: state.contact.contactSearchResult,
 });
 export default connect(
     mapStateToProps,

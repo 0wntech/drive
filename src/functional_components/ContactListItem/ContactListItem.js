@@ -54,7 +54,7 @@ ContactListItem.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    webId: state.app.webId,
+    webId: state.user.webId,
 });
 
 export default connect(

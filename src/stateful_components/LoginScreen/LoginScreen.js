@@ -68,7 +68,7 @@ class LoginScreen extends React.Component {
 const mapStateToProps = (state) => {
     return {
         loadIdps: state.app.loadIdps,
-        webId: state.app.webId,
+        webId: state.user.webId,
         idps: state.app.idps,
     };
 };

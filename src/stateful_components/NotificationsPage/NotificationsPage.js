@@ -156,7 +156,7 @@ class NotificationsPage extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        webId: state.app.webId,
+        webId: state.user.webId,
         loadNotifications: state.app.loadNotifications,
         notifications: state.app.notifications,
     };

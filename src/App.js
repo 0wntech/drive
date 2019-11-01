@@ -169,11 +169,11 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        webId: state.app.webId,
-        user: state.app.user,
-        session: state.app.session,
-        loadLogin: state.app.loadLogin,
-        loadUser: state.app.loadUser,
+        webId: state.user.webId,
+        user: state.user.user,
+        session: state.user.session,
+        loadLogin: state.user.loadLogin,
+        loadUser: state.user.loadUser,
         currentFolderTree: state.app.currentFolderTree,
         currentPath: state.app.currentPath,
     };
