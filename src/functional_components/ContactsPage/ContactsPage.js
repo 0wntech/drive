@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './ContactsPage.module.css';
 import { connect } from 'react-redux';
-import { addContact, setCurrentContact } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
+import { setCurrentContact, addContact } from '../../actions/contactActions';
 
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';

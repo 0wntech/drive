@@ -1,5 +1,3 @@
-import idps from '../constants/idps.json';
-
 import {
     LOGIN,
     LOGIN_SUCCESS,
@@ -29,31 +27,22 @@ import {
     PASTE_ITEMS,
     PASTE_ITEMS_SUCCESS,
     PASTE_ITEMS_FAILURE,
-    FETCH_CONTACTS,
-    FETCH_CONTACTS_SUCCESS,
-    FETCH_CONTACTS_FAILURE,
-    ADD_CONTACT,
-    REMOVE_CONTACT,
     UPDATE_PROFILE,
     UPDATE_PROFILE_FAILURE,
     UPDATE_PROFILE_SUCCESS,
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
-    SET_CURRENT_CONTACT,
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
-    SEARCH_CONTACT,
-    SEARCH_CONTACT_SUCCESS,
-    SEARCH_CONTACT_FAILURE,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
 import rdf from 'rdflib';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
-import { getWebIdFromRoot } from '../utils/url.js';
+import { fetchContacts } from './contactActions';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -115,10 +104,6 @@ const convertFolderUrlToName = (folderUrl) => {
 
 const convertFileUrlToName = (fileUrl) => {
     return fileUrl.split('/').splice(-1)[0];
-};
-
-export const setCurrentContact = (profile) => {
-    return { type: SET_CURRENT_CONTACT, payload: profile };
 };
 
 export const fetchCurrentItems = (url) => {
@@ -261,63 +246,6 @@ export const pasteItems = (items, location) => {
     };
 };
 
-export const addContact = (webId, contactWebId) => {
-    return (dispatch) => {
-        dispatch({ type: ADD_CONTACT });
-        const user = new User(webId);
-        user.addContact(contactWebId).then(() =>
-            dispatch(fetchContacts(webId))
-        );
-    };
-};
-
-export const removeContact = (webId, contactWebId) => {
-    return (dispatch) => {
-        dispatch({ type: REMOVE_CONTACT });
-        const user = new User(webId);
-        user.deleteContact(contactWebId).then(() =>
-            dispatch(fetchContacts(webId))
-        );
-    };
-};
-
-export const fetchDetailContacts = (contacts) => {
-    const requests = contacts.map((webid) => {
-        const request = new Promise((resolve, reject) => {
-            const contact = new User(webid);
-            contact
-                .getProfile()
-                .then((profileData) => {
-                    resolve(profileData);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-        return request;
-    });
-    return Promise.all(requests);
-};
-
-export const fetchContacts = (webId) => {
-    return (dispatch) => {
-        dispatch({ type: FETCH_CONTACTS });
-        const user = new User(webId);
-        console.log(user);
-        user.getContacts()
-            .then((contacts) => {
-                fetchDetailContacts(contacts).then((detailContacts) => {
-                    dispatch({
-                        type: FETCH_CONTACTS_SUCCESS,
-                        payload: detailContacts,
-                    });
-                });
-            })
-            .catch((error) =>
-                dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
-            );
-    };
-};
 export const updateProfile = (profileData, webId) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_PROFILE });
@@ -331,60 +259,6 @@ export const updateProfile = (profileData, webId) => {
             .catch((error) =>
                 dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error })
             );
-    };
-};
-
-export const searchContact = (query) => {
-    return (dispatch) => {
-        dispatch({ type: SEARCH_CONTACT });
-        const lookups = idps.map((idp) => {
-            const url = idp.url.replace(idp.title, query + '.' + idp.title);
-            return auth
-                .fetch(url)
-                .then((res) => {
-                    if (res.status === 200) {
-                        return url;
-                    } else {
-                        return null;
-                    }
-                })
-                .catch((err) => {
-                    return null;
-                });
-        });
-        Promise.all(lookups)
-            .then((urls) => {
-                const result = [];
-                urls.forEach((rootUrl) => {
-                    if (rootUrl) {
-                        const user = new User(getWebIdFromRoot(rootUrl));
-                        result.push(user.getProfile());
-                    }
-                });
-                if (result.length > 0) {
-                    Promise.all(result)
-                        .then((results) => {
-                            dispatch({
-                                type: SEARCH_CONTACT_SUCCESS,
-                                payload: results,
-                            });
-                        })
-                        .catch((err) => {
-                            dispatch({
-                                type: SEARCH_CONTACT_FAILURE,
-                                payload: err,
-                            });
-                        });
-                } else {
-                    dispatch({
-                        type: SEARCH_CONTACT_FAILURE,
-                        payload: 'No Result',
-                    });
-                }
-            })
-            .catch((err) => {
-                dispatch({ type: SEARCH_CONTACT_FAILURE, payload: err });
-            });
     };
 };
 

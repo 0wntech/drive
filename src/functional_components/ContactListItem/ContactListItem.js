@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styles from './ContactListItem.module.css';
 import defaultIcon from '../../assets/icons/defaultUserPic2.png';
 import Delete from '../../assets/svgIcons/Delete';
-import { removeContact } from '../../actions/UserActions';
+import { removeContact } from '../../actions/contactActions';
 import { withRouter } from 'react-router-dom';
 
 const ContactListItem = ({

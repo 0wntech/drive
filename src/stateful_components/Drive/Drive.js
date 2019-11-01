@@ -24,7 +24,7 @@ import {
     copyItems,
     pasteItems,
     renameItem,
-} from '../../actions/UserActions';
+} from '../../actions/userActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';

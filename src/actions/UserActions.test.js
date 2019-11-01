@@ -12,12 +12,9 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
 } from './types';
-import {
-    setWebId,
-    setCurrentContact,
-    setSelection,
-    fetchUser,
-} from './UserActions';
+import { setWebId, setSelection, fetchUser } from './userActions';
+
+import { setCurrentContact } from './contactActions';
 
 import { user } from '../test/fixtures/user';
 import { card } from '../test/fixtures/card';

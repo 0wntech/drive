@@ -8,7 +8,7 @@ import LoginScreen from './stateful_components/LoginScreen';
 import auth from 'solid-auth-client';
 import User from 'your-user';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
-import { login, fetchUser, setWebId } from './actions/UserActions';
+import { login, fetchUser, setWebId } from './actions/userActions';
 import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';

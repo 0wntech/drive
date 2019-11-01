@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { ClassicSpinner } from 'react-spinners-kit';
 
-import { updateProfile, changeProfilePhoto } from '../../actions/UserActions';
+import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
 import Settings from '../../assets/svgIcons/Settings';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
