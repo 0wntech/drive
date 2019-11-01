@@ -11,7 +11,7 @@ import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
-import { isContact } from '../../reducers/AppReducer';
+import { isContact } from '../../reducers/contactReducer';
 
 const toolbarRight = <Settings className={styles.settings} />;
 
