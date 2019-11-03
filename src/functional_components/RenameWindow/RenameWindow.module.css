@@ -7,6 +7,10 @@
     font-size: 0.8rem;
 }
 
+.warning {
+    color: #f00;
+}
+
 .button {
     display: flex;
     justify-content: center;
