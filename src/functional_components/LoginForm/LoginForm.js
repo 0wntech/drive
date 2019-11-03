@@ -25,6 +25,7 @@ export default function LoginForm({ idps, onLogin, getIdpStyles }) {
                           );
                       })
                     : ''}
+                <IdentityProvider custom onLogin={onLogin} />
             </div>
         </div>
     );
