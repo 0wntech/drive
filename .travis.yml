@@ -54,7 +54,7 @@ jobs:
               region: eu-central-1
               access_key_id: $AWS_KEY
               secret_access_key: $AWS_SECRET
-              bucket: 'drive.owntech.de'
+              bucket: 'staging.drive.owntech.io'
               skip_cleanup: true
               acl: public_read
               local_dir: build
