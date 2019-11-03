@@ -1,8 +1,7 @@
 .container {
-    padding: 10px;
     border: solid #e4e4e4 0.5px;
     border-radius: 5px;
-    width: 80%;
+    width: 40%;
     height: 100%;
     cursor: pointer;
 }
@@ -12,6 +11,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: left;
+    padding: 5px;
 }
 
 .container img {
@@ -30,26 +30,6 @@
     width: 100%;
 }
 
-/* 
-.buttons {
-    padding: 0 10px;
-    max-width: 15%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.wrapper input {
+    width: 100%;
 }
-
-.buttons button,
-.buttons a {
-    border: solid #0c89c6 1px;
-    border-radius: 5px;
-    background-color: #fff;
-    color: #000;
-    padding: 5px;
-    margin: 5px;
-}
-
-.buttons button:hover .buttons a:hover {
-    background-color: #f4f4f4;
-    text-decoration: none;
-} */

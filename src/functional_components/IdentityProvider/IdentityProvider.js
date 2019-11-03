@@ -38,7 +38,7 @@ export default function IdentityProvider({
                 <div className={styles.wrapper}>
                     <input
                         className={styles.customIdp}
-                        placeholder="Custom idp..."
+                        placeholder="Custom idp: e.g. inrupt.net"
                         onChange={(e) => {
                             setIdp(e.target.value);
                         }}

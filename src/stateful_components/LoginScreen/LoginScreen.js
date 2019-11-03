@@ -2,9 +2,9 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
-import styles from './LoginScreen.module.css';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
 import { fetchIdps, login } from '../../actions/UserActions';
+import { Layout } from '../../functional_components/Layout';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -54,13 +54,13 @@ class LoginScreen extends React.Component {
     render() {
         const { idps } = this.props;
         return (
-            <div className={styles.container}>
+            <Layout label="Login">
                 <LoginForm
                     idps={idps}
                     onLogin={this.onLogin}
                     getIdpStyles={this.getIdpStyles}
                 />
-            </div>
+            </Layout>
         );
     }
 }

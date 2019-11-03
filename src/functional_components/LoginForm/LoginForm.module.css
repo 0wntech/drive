@@ -8,15 +8,7 @@
     height: 100%;
 }
 
-.idpList h1 {
-    margin-right: auto;
-    font-size: 36px;
-    font-weight: 600;
-    /* padding-top: 20px;  */
-}
-
-.idpList p {
-    margin-right: auto;
+.container p {
     margin-bottom: 0;
 }
 
@@ -24,7 +16,7 @@
     border-radius: 20px;
     padding: 35px;
     display: grid;
-    max-width: 40%;
+    width: 100%;
     grid-auto-rows: 60px;
     grid-row-gap: 10px;
     justify-items: center;

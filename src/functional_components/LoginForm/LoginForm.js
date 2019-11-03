@@ -5,9 +5,8 @@ import IdentityProvider from '../IdentityProvider/IdentityProvider';
 export default function LoginForm({ idps, onLogin, getIdpStyles }) {
     return (
         <div className={styles.container}>
+            <p>Choose an identity provider</p>
             <div className={styles.idpList}>
-                <h1>Login</h1>
-                <p>Choose an identity provider</p>
                 {idps
                     ? idps.map((idp, index) => {
                           const { color, textColor } = getIdpStyles(idp.title);
