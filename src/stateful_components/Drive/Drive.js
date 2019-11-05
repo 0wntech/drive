@@ -24,7 +24,7 @@ import {
     copyItems,
     pasteItems,
     renameItem,
-} from '../../actions/UserActions';
+} from '../../actions/appActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
@@ -618,7 +618,7 @@ const mapStateToProps = (state) => {
         currentItems: state.app.currentItems,
         currentPath: state.app.currentPath,
         selectedItems: state.app.selectedItems,
-        webId: state.app.webId,
+        webId: state.user.webId,
         loadCurrentItems: state.app.loadCurrentItems,
         loadDeletion: state.app.loadDeletion,
         clipboard: state.app.clipboard,
