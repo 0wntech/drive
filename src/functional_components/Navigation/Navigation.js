@@ -61,6 +61,10 @@ const Navigation = ({
         }
     };
 
+    const onRegister = () => {
+        window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
+    };
+
     const getSearchDropdownOptions = () => {
         const filesAndFolders = fileUtils
             .convertFilesAndFoldersToArray(items.files, items.folders)
@@ -146,8 +150,9 @@ const Navigation = ({
                 ) : (
                     <ActionButton
                         size="sm"
-                        label="Login"
-                        onClick={() => history.push('/login')}
+                        label="Register"
+                        color="green"
+                        onClick={onRegister}
                     />
                 )}
             </div>
