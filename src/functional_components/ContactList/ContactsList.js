@@ -4,12 +4,11 @@ import styles from './ContactList.module.css';
 import { ContactListItem } from '../ContactListItem';
 
 const ContactList = ({ contacts, onItemClick, webId, removeContact }) => {
-    console.log(contacts);
     return (
         <div className={styles.container}>
             {contacts
                 ? contacts.map((contact) => (
-                      <div className={styles.itemContainer}>
+                      <div key={contact.webId} className={styles.itemContainer}>
                           <ContactListItem
                               removeContact={() =>
                                   removeContact(webId, contact.webId)
