@@ -24,6 +24,14 @@ export const isValidUrl = (url) => {
         : false;
 };
 
+export const getSafeLogin = (url) => {
+    if (url.lastIndexOf('https://') === -1) {
+        url = 'https://' + url;
+    }
+    url = url.endsWith('/') ? url + 'login' : url + '/login';
+    return url;
+};
+
 // sorts files and folder
 export const sortContainments = (urls) => {
     const folders = [];

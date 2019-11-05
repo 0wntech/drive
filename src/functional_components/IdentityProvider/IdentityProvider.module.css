@@ -12,11 +12,12 @@
     align-items: center;
     justify-content: left;
     padding: 5px;
+    height: 100%;
 }
 
 .container img {
-    height: auto;
-    width: 20%;
+    height: 48px;
+    width: 48px;
 }
 
 .info {

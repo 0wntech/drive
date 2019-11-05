@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './IdentityProvider.module.css';
+import { getSafeLogin } from '../../utils/url';
 
 export default function IdentityProvider({
     title,
@@ -18,16 +19,8 @@ export default function IdentityProvider({
         <button
             className={styles.container}
             onClick={() => {
-                let idpUrl = customIdp;
                 if (custom && customIdp != '') {
-                    if (customIdp.lastIndexOf('https://') === -1) {
-                        idpUrl = 'https://' + idpUrl;
-                    }
-                    idpUrl = customIdp.endsWith('/')
-                        ? idpUrl + 'login'
-                        : idpUrl + '/login';
-                    console.log(idpUrl);
-                    onLogin(idpUrl);
+                    onLogin(getSafeLogin(customIdp));
                 } else if (!custom) {
                     onLogin(url + 'login');
                 }
