@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import SvgDropdown from '../../assets/svgIcons/Dropdown';
 import styles from './DropdownMenu.module.css';
 import classNames from 'classnames';
+import useClickOutside from '../../hooks/useClickOutside';
 
 function DropdownMenu({
     menuHead,
@@ -18,6 +19,10 @@ function DropdownMenu({
             headArea.current.style.height = `${dropdownWrapper.current.clientHeight}px`;
         }
     }, []);
+    useClickOutside(dropdownWrapper, () => {
+        setExpanded(false);
+    });
+
     const defaultRender = (option) => {
         return (
             <div
