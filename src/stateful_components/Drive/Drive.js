@@ -154,6 +154,7 @@ class Drive extends React.Component {
     }
 
     followPath(path, event = {}) {
+        if (this.props.loadFolder) return;
         const { selectedItems, setCurrentPath, setSelection } = this.props;
         if (isCmdPressed(event) && selectedItems.includes(path)) {
             const newSelection = selectedItems.filter((item) => item !== path);
@@ -622,6 +623,7 @@ const mapStateToProps = (state) => {
         loadDeletion: state.app.loadDeletion,
         clipboard: state.app.clipboard,
         loadPaste: state.app.loadPaste,
+        loadFolder: state.app.loadFolder,
     };
 };
 
