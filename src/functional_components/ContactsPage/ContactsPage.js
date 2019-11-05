@@ -2,8 +2,9 @@ import React from 'react';
 import styles from './ContactsPage.module.css';
 import { connect } from 'react-redux';
 import { addContact, setCurrentContact } from '../../actions/UserActions';
+import { removeContact } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
-
+import { withRouter } from 'react-router-dom';
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';
 
@@ -13,6 +14,8 @@ const ContactsPage = ({
     loadContacts,
     webId,
     setCurrentContact,
+    removeContact,
+    history,
 }) => {
     return (
         <Layout label="Contacts" className={styles.grid}>
@@ -27,8 +30,13 @@ const ContactsPage = ({
             ) : (
                 <div className={styles.contactsContainer}>
                     <ContactList
-                        onItemClick={setCurrentContact}
+                        onItemClick={(contact) => {
+                            setCurrentContact(contact);
+                            history.push('/contact');
+                        }}
                         contacts={contacts}
+                        webId={webId}
+                        removeContact={removeContact}
                     />
                     <button
                         onClick={() =>
@@ -56,5 +64,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
     mapStateToProps,
-    { setCurrentContact, addContact }
-)(ContactsPage);
+    { setCurrentContact, addContact, removeContact }
+)(withRouter(ContactsPage));

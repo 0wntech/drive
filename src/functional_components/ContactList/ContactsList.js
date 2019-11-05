@@ -3,14 +3,20 @@ import PropTypes from 'prop-types';
 import styles from './ContactList.module.css';
 import { ContactListItem } from '../ContactListItem';
 
-const ContactList = ({ contacts, onItemClick }) => {
+const ContactList = ({ contacts, onItemClick, webId, removeContact }) => {
+    console.log(contacts);
     return (
         <div className={styles.container}>
             {contacts
                 ? contacts.map((contact) => (
                       <div className={styles.itemContainer}>
                           <ContactListItem
-                              onClick={onItemClick}
+                              removeContact={() =>
+                                  removeContact(webId, contact.webId)
+                              }
+                              onClick={(contact) => {
+                                  onItemClick(contact);
+                              }}
                               contact={contact}
                           />
                       </div>
@@ -23,6 +29,8 @@ const ContactList = ({ contacts, onItemClick }) => {
 ContactList.propTypes = {
     contacts: PropTypes.arrayOf(PropTypes.object),
     onItemClick: PropTypes.func,
+    webId: PropTypes.string,
+    removeContact: PropTypes.func,
 };
 
 export default ContactList;
