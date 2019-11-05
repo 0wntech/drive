@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
 import styles from './LoginScreen.module.css';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
-import { fetchIdps, login } from '../../actions/UserActions';
+import { login } from '../../actions/userActions';
+import { fetchIdps } from '../../actions/appActions';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -68,7 +69,7 @@ class LoginScreen extends React.Component {
 const mapStateToProps = (state) => {
     return {
         loadIdps: state.app.loadIdps,
-        webId: state.app.webId,
+        webId: state.user.webId,
         idps: state.app.idps,
     };
 };

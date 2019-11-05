@@ -1,10 +1,14 @@
 import React from 'react';
 import styles from './ContactsPage.module.css';
 import { connect } from 'react-redux';
-import { addContact, setCurrentContact } from '../../actions/UserActions';
-import { removeContact } from '../../actions/UserActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import { withRouter } from 'react-router-dom';
+import {
+    setCurrentContact,
+    addContact,
+    removeContact,
+} from '../../actions/contactActions';
+
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';
 
@@ -57,9 +61,9 @@ const ContactsPage = ({
 ContactsPage.propTypes = {};
 
 const mapStateToProps = (state) => ({
-    contacts: state.app.contacts,
-    webId: state.app.webId,
-    loadContacts: state.app.loadContacts,
+    contacts: state.contact.contacts,
+    webId: state.user.webId,
+    loadContacts: state.contact.loadContacts,
 });
 
 export default connect(

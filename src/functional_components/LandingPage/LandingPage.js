@@ -32,7 +32,7 @@ const LandingPage = ({ webId, history }) => {
 };
 
 const mapStateToProps = (state) => ({
-    webId: state.app.webId,
+    webId: state.user.webId,
 });
 
 export default connect(

@@ -4,7 +4,7 @@ import styles from './NotificationsPage.module.css';
 import { Notification } from '../../functional_components/Notification';
 import Container from 'react-bootstrap/Container';
 import { connect } from 'react-redux';
-import { fetchNotifications } from '../../actions/UserActions';
+import { fetchNotifications } from '../../actions/appActions';
 import fileUtils from '../../utils/fileUtils';
 const ns = require('solid-namespace')(rdf);
 
@@ -156,7 +156,7 @@ class NotificationsPage extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        webId: state.app.webId,
+        webId: state.user.webId,
         loadNotifications: state.app.loadNotifications,
         notifications: state.app.notifications,
     };
