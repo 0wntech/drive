@@ -7,11 +7,8 @@ import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
-import {
-    setCurrentPath,
-    setCurrentContact,
-    searchContact,
-} from '../../actions/UserActions';
+import { setCurrentPath } from '../../actions/appActions';
+import { searchContact, setCurrentContact } from '../../actions/contactActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import DropdownMenu from '../DropdownMenu';
 import ActionButton from '../ActionButton/ActionButton';
@@ -59,6 +56,10 @@ const Navigation = ({
         if (searchText !== '') {
             setTypingTimer(setTimeout(() => searchContact(searchText), 500));
         }
+    };
+
+    const onRegister = () => {
+        window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
     };
 
     const getSearchDropdownOptions = () => {
@@ -146,8 +147,9 @@ const Navigation = ({
                 ) : (
                     <ActionButton
                         size="sm"
-                        label="Login"
-                        onClick={() => history.push('/login')}
+                        label="Register"
+                        color="green"
+                        onClick={onRegister}
                     />
                 )}
             </div>
@@ -228,9 +230,9 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
     items: state.app.currentItems,
-    contacts: state.app.contacts,
-    searchingContacts: state.app.searchingContacts,
-    contactSearchResult: state.app.contactSearchResult,
+    contacts: state.contact.contacts,
+    searchingContacts: state.contact.searchingContacts,
+    contactSearchResult: state.contact.contactSearchResult,
 });
 export default connect(
     mapStateToProps,

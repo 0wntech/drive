@@ -16,6 +16,14 @@ export const getBreadcrumbsFromUrl = (url) => {
     return newBreadcrumbs;
 };
 
+export const convertFolderUrlToName = (folderUrl) => {
+    return folderUrl.split('/').splice(-2)[0];
+};
+
+export const convertFileUrlToName = (fileUrl) => {
+    return fileUrl.split('/').splice(-1)[0];
+};
+
 export const isValidUrl = (url) => {
     return url.match(
         /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/

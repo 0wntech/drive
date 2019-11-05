@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './ContactProfilePage.module.css';
-
-import { addContact, removeContact } from '../../actions/UserActions';
+import { addContact, removeContact } from '../../actions/contactActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
@@ -11,7 +10,7 @@ import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
-import { isContact } from '../../reducers/AppReducer';
+import { isContact } from '../../reducers/contactReducer';
 
 const toolbarRight = <Settings className={styles.settings} />;
 
@@ -111,9 +110,9 @@ ContactProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    currentContact: state.app.currentContact,
-    webId: state.app.webId,
-    isContact: isContact(state.app, state.app.currentContact.webId),
+    currentContact: state.contact.currentContact,
+    webId: state.user.webId,
+    isContact: isContact(state.contact, state.contact.currentContact.webId),
 });
 
 export default connect(

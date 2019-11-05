@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
 import styles from './ContactListItem.module.css';
 import defaultIcon from '../../assets/icons/defaultUserPic2.png';
 import Delete from '../../assets/svgIcons/Delete';
-import { removeContact } from '../../actions/UserActions';
-import { withRouter } from 'react-router-dom';
 
 const ContactListItem = ({
     contact,
@@ -14,14 +11,10 @@ const ContactListItem = ({
     className,
     removeContact,
     onClick,
-    history,
 }) => {
     return (
         <div
-            onClick={() => {
-                onClick(contact);
-                history.push('/contact');
-            }}
+            onClick={() => onClick(contact)}
             className={classNames(styles.container, className)}
         >
             <div className={styles.imageContainer}>
@@ -42,7 +35,12 @@ const ContactListItem = ({
                 {contact.name ? contact.name : 'No Name'}
             </div>
             <div className={styles.iconContainer}>
-                <Delete onClick={() => removeContact(webId, contact.webId)} />
+                <Delete
+                    onClick={(e) => {
+                        removeContact(webId, contact.webId);
+                        e.stopPropagation();
+                    }}
+                />
             </div>
         </div>
     );
@@ -53,11 +51,4 @@ ContactListItem.propTypes = {
     className: PropTypes.string,
 };
 
-const mapStateToProps = (state) => ({
-    webId: state.app.webId,
-});
-
-export default connect(
-    mapStateToProps,
-    { removeContact }
-)(withRouter(ContactListItem));
+export default ContactListItem;
