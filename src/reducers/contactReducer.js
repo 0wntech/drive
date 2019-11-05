@@ -14,6 +14,7 @@ const INITIAL_STATE = {
     currentContact: null,
     contactSearchResult: [],
     searchingContacts: false,
+    error: null,
     // [
     //     {
     //         name: 'testdata',
