@@ -23,6 +23,7 @@ const INITIAL_STATE = {
     updateProfile: false,
     updateProfileError: false,
     updateProfilePic: false,
+    error: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
