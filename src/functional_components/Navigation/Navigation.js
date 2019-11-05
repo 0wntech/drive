@@ -6,11 +6,8 @@ import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
-import {
-    setCurrentPath,
-    setCurrentContact,
-    searchContact,
-} from '../../actions/UserActions';
+import { setCurrentPath } from '../../actions/appActions';
+import { searchContact, setCurrentContact } from '../../actions/contactActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import { getUsernameFromWebId } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
@@ -190,9 +187,9 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
     items: state.app.currentItems,
-    contacts: state.app.contacts,
-    searchingContacts: state.app.searchingContacts,
-    contactSearchResult: state.app.contactSearchResult,
+    contacts: state.contact.contacts,
+    searchingContacts: state.contact.searchingContacts,
+    contactSearchResult: state.contact.contactSearchResult,
 });
 export default connect(
     mapStateToProps,

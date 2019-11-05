@@ -7,6 +7,10 @@ import styles from './NavbarMenu.module.css';
 import ActionButton from '../ActionButton/ActionButton';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 
+const onRegister = () => {
+    window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
+};
+
 export const NavbarMenu = ({
     className,
     history,
@@ -53,8 +57,9 @@ export const NavbarMenu = ({
             ) : (
                 <ActionButton
                     size="sm"
-                    label="Login"
-                    onClick={() => history.push('/login')}
+                    label="Register"
+                    color="green"
+                    onClick={onRegister}
                 />
             )}
         </div>

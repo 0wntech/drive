@@ -92,10 +92,10 @@ exports[`NavbarMenu Should render login if no webId 1`] = `
   className="test"
 >
   <div
-    className="container blue sm"
+    className="container green sm"
     onClick={[Function]}
   >
-    Login
+    Register
   </div>
 </div>
 `;

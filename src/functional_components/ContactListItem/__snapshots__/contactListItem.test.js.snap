@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactListItem should render correctly 1`] = `
+<div
+  className="container test"
+  onClick={[Function]}
+>
+  <div
+    className="imageContainer"
+  >
+    <div
+      className="image"
+      style={
+        Object {
+          "backgroundImage": "url('https://ludwigschubert.solid.community/profile/aa.jpeg')",
+        }
+      }
+    />
+  </div>
+  <div
+    className="nameContainer"
+  >
+    Ludwig Faust Schubert
+  </div>
+  <div
+    className="iconContainer"
+  >
+    <svg
+      fill="none"
+      height={28}
+      onClick={[Function]}
+      width={28}
+    >
+      <ellipse
+        cx={13.879}
+        cy={13.901}
+        fill="#C4C4C4"
+        rx={13.879}
+        ry={13.901}
+      />
+      <path
+        d="M19.69 18.505a.84.84 0 010 1.216.787.787 0 01-.606.261.787.787 0 01-.608-.26l-4.597-4.605-4.597 4.604a.787.787 0 01-.608.261.787.787 0 01-.607-.26.84.84 0 010-1.217l4.598-4.604-4.598-4.605a.84.84 0 010-1.216.838.838 0 011.215 0l4.597 4.604 4.597-4.604a.838.838 0 011.215 0 .84.84 0 010 1.216L15.093 13.9l4.598 4.605z"
+        fill="#E5E5E5"
+      />
+      <mask
+        height={13}
+        id="delete_svg__a"
+        maskUnits="userSpaceOnUse"
+        width={13}
+        x={7}
+        y={7}
+      >
+        <path
+          d="M19.69 18.505a.84.84 0 010 1.216.787.787 0 01-.606.261.787.787 0 01-.608-.26l-4.597-4.605-4.597 4.604a.787.787 0 01-.608.261.787.787 0 01-.607-.26.84.84 0 010-1.217l4.598-4.604-4.598-4.605a.84.84 0 010-1.216.838.838 0 011.215 0l4.597 4.604 4.597-4.604a.838.838 0 011.215 0 .84.84 0 010 1.216L15.093 13.9l4.598 4.605z"
+          fill="#fff"
+        />
+      </mask>
+      <g
+        mask="url(#delete_svg__a)"
+      >
+        <path
+          clipRule="evenodd"
+          d="M3.47 3.475h20.818v20.851H3.47V3.475z"
+          fill="#E5E5E5"
+          fillRule="evenodd"
+        />
+      </g>
+    </svg>
+  </div>
+</div>
+`;

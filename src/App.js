@@ -8,7 +8,7 @@ import LoginScreen from './stateful_components/LoginScreen';
 import auth from 'solid-auth-client';
 import User from 'your-user';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
-import { login, fetchUser, setWebId } from './actions/UserActions';
+import { login, fetchUser, setWebId } from './actions/userActions';
 import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.css';
 import NotificationsPage from './stateful_components/NotificationsPage';
@@ -169,11 +169,11 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        webId: state.app.webId,
-        user: state.app.user,
-        session: state.app.session,
-        loadLogin: state.app.loadLogin,
-        loadUser: state.app.loadUser,
+        webId: state.user.webId,
+        user: state.user.user,
+        session: state.user.session,
+        loadLogin: state.user.loadLogin,
+        loadUser: state.user.loadUser,
         currentFolderTree: state.app.currentFolderTree,
         currentPath: state.app.currentPath,
     };

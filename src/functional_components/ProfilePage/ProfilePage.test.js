@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProfilePage } from './ProfilePage.js';
 import { FETCH_USER_SUCCESS } from '../../actions/types';
-import appReducer from '../../reducers/AppReducer';
+import userReducer from '../../reducers/userReducer';
 import TestRenderer from 'react-test-renderer';
 describe('ProfilePage', () => {
     const user = {
@@ -16,9 +16,9 @@ describe('ProfilePage', () => {
     };
     describe('ProfilePage Redux', () => {
         // passing undefined to get initial state
-        const initialState = appReducer(undefined, {});
+        const initialState = userReducer(undefined, {});
         it('receives user', () => {
-            const result = appReducer(initialState, {
+            const result = userReducer(initialState, {
                 type: FETCH_USER_SUCCESS,
                 payload: user,
             });

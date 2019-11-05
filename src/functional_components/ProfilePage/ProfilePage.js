@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { ClassicSpinner } from 'react-spinners-kit';
 
-import { updateProfile, changeProfilePhoto } from '../../actions/UserActions';
+import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
 import Settings from '../../assets/svgIcons/Settings';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
@@ -170,9 +170,9 @@ export const ProfilePage = ({
 };
 
 const mapStateToProps = (state) => ({
-    user: state.app.user,
-    webId: state.app.webId,
-    updateProfilePic: state.app.updateProfilePic,
+    user: state.user.user,
+    webId: state.user.webId,
+    updateProfilePic: state.user.updateProfilePic,
 });
 
 export default connect(
