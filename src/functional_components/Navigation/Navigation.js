@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './Navigation.module.css';
@@ -10,9 +9,8 @@ import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath } from '../../actions/appActions';
 import { searchContact, setCurrentContact } from '../../actions/contactActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
-import DropdownMenu from '../DropdownMenu';
-import ActionButton from '../ActionButton/ActionButton';
 import { getUsernameFromWebId } from '../../utils/url';
+import NavbarMenu from '../NavbarMenu/NavbarMenu';
 
 const Navigation = ({
     picture,
@@ -29,14 +27,6 @@ const Navigation = ({
     searchingContacts,
     searchContact,
 }) => {
-    const DROPDOWN_OPTIONS = [
-        { onClick: () => history.push('/profile'), label: 'Profile' },
-        { onClick: () => console.log('test2'), label: 'Settings*' },
-        { onClick: () => console.log('test2'), label: 'Notifications*' },
-        { onClick: () => history.push('/contacts'), label: 'Contacts' },
-        { onClick: () => onLogout(), label: 'Logout' },
-    ];
-    const [isDropdownExpanded, setDropdownExpanded] = useState(false);
     const [typingTimer, setTypingTimer] = useState(null);
 
     const handleChange = (selected) => {
@@ -56,10 +46,6 @@ const Navigation = ({
         if (searchText !== '') {
             setTypingTimer(setTimeout(() => searchContact(searchText), 500));
         }
-    };
-
-    const onRegister = () => {
-        window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
     };
 
     const getSearchDropdownOptions = () => {
@@ -117,42 +103,13 @@ const Navigation = ({
                     />
                 ) : null}
             </div>
-            <div className={styles.menuWrapper}>
-                {webId ? (
-                    <div className={styles.dropdownWrapper}>
-                        <div className={styles.profileSection}>
-                            <div
-                                onClick={() => history.push('/profile')}
-                                className={styles.profileIcon}
-                                style={{
-                                    backgroundImage: `url('${
-                                        picture ? picture : defaultIcon
-                                    }')`,
-                                }}
-                            />
-
-                            <div className={styles.username}>{username}</div>
-                        </div>
-                        <DropdownMenu
-                            options={DROPDOWN_OPTIONS}
-                            isExpanded={isDropdownExpanded}
-                            setExpanded={setDropdownExpanded}
-                        />
-                        <div
-                            className={classNames(styles.mask, {
-                                [styles.active]: isDropdownExpanded,
-                            })}
-                        />
-                    </div>
-                ) : (
-                    <ActionButton
-                        size="sm"
-                        label="Register"
-                        color="green"
-                        onClick={onRegister}
-                    />
-                )}
-            </div>
+            <NavbarMenu
+                className={styles.menuWrapper}
+                onLogout={onLogout}
+                webId={webId}
+                picture={picture}
+                username={username}
+            />
         </div>
     );
 };
