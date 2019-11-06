@@ -465,7 +465,10 @@ class Drive extends React.Component {
         const toolbarLeft = webId ? (
             <div className={styles.breadcrumbsContainer}>
                 <Breadcrumbs
-                    onClick={setCurrentPath}
+                    onClick={(path) => {
+                        setCurrentPath(path);
+                        this.setState({ file: null });
+                    }}
                     breadcrumbs={
                         currentPath ? getBreadcrumbsFromUrl(currentPath) : null
                     }
