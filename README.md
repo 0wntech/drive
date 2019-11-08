@@ -1,6 +1,6 @@
 # This is the Owndrive Repository
 
-This application is supposed to be an alternative interface to the Solid Pod interface that allows for an easier interaction with the files and folders within your Solid Pod.
+[This application](https://drive.owntech.io) is supposed to be an alternative interface to the Solid Pod interface that allows for an easier interaction with the files and folders within your Solid Pod.
 
 Feel free to contribute.
 
@@ -15,10 +15,43 @@ Feel free to contribute.
 
 ## Precommit- / Prepush- hook
 
--   This Project runs all test and applyies all linter rules before commit or push
+-   This Project runs all tests and applyies all linter rules before commit or push
 -   If you have linter errors try `eslint "**/*.js` in terminal or remove the linter errors by hand
 
 ## Tests and Coverage
 
 -   Tests are written with the Jest framework
 -   Travis CI + codecov for testing and coverage report (report at [codecov](https://codecov.io/gh/0wntech/drive))
+-   To test in a live environment push your branch to [staging](https://github.com/0wntech/drive/tree/staging) it will deployed at [staging.drive.owntech](https://staging.drive.owntech.io/)
+
+-   Test Local
+
+```
+npm run test:local
+```
+
+-   Coverage Report
+
+```
+npm run test:coverage
+```
+
+## Contribution Guidline
+
+This is an OpenSource Project, be part of it!
+
+### Workflow
+
+-   Select a Ticket from the [Project board](https://github.com/orgs/0wntech/projects/1)
+-   Check all the Ticket requirements
+-   Do your magic
+-   Write Tests for it (we can only accept tested code)
+-   Create a Pull request
+-   Let someone review it
+-   Congratulation, if your Pull Request gets accepted you contributed to the private web v1.0
+
+## Deployment
+
+-   We use Travis CI to deploy our Application
+-   create a pull request for [production](https://github.com/0wntech/drive/tree/staging)
+-   If the PR is accepted the build will start automatically and deploy the application to an AWS S3 Bucket
