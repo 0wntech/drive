@@ -1,6 +1,11 @@
 # This is the Owndrive Repository
 
-[This application](https://drive.owntech.io) is supposed to be an alternative interface to the Solid Pod interface that allows for an easier interaction with the files and folders within your Solid Pod.
+[This application](https://drive.owntech.io) is an interface for the [Solid Pod](https://solid.mit.edu/). It allows you to manage your Web Identity by giving you information about
+
+-   Your Profile
+-   Stored Data
+-   Applications you're using and their access rights
+-   Contacts
 
 Feel free to contribute.
 
