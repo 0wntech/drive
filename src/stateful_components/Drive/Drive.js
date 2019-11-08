@@ -450,18 +450,6 @@ class Drive extends React.Component {
             },
         ];
 
-        const fileMarkup = this.state.file ? (
-            <div className={styles.renderedFile}>
-                {this.state.image ? (
-                    <img src={this.state.image} alt="requested file"></img>
-                ) : (
-                    this.state.file
-                )}
-            </div>
-        ) : (
-            undefined
-        );
-
         const toolbarLeft = webId ? (
             <div className={styles.breadcrumbsContainer}>
                 <Breadcrumbs
@@ -549,42 +537,36 @@ class Drive extends React.Component {
                         className={styles.mainArea}
                         id="drive contextmenu"
                     >
-                        {fileMarkup ? (
-                            <div className={styles.container}>{fileMarkup}</div>
-                        ) : (
-                            <div className={styles.container}>
-                                {windows}
-                                {currentItems ? (
-                                    <div>
-                                        {currentItems.folders.length > 0 ? (
-                                            <ItemList
-                                                selectedItems={selectedItems}
-                                                items={currentItems.folders}
-                                                currPath={currentPath}
-                                                image={folder}
-                                                onItemClick={this.followPath}
-                                                contextMenuOptions={
-                                                    CONTEXTMENU_OPTIONS
-                                                }
-                                            />
-                                        ) : null}
+                        <div className={styles.container}>
+                            {windows}
+                            {currentItems ? (
+                                <div>
+                                    {currentItems.folders.length > 0 ? (
                                         <ItemList
                                             selectedItems={selectedItems}
-                                            isFile
-                                            items={currentItems.files}
+                                            items={currentItems.folders}
                                             currPath={currentPath}
-                                            image={fileIcon}
-                                            onItemClick={this.loadFile}
+                                            image={folder}
+                                            onItemClick={this.followPath}
                                             contextMenuOptions={
                                                 CONTEXTMENU_OPTIONS
                                             }
                                         />
-                                    </div>
-                                ) : (
-                                    undefined
-                                )}
-                            </div>
-                        )}
+                                    ) : null}
+                                    <ItemList
+                                        selectedItems={selectedItems}
+                                        isFile
+                                        items={currentItems.files}
+                                        currPath={currentPath}
+                                        image={fileIcon}
+                                        onItemClick={this.loadFile}
+                                        contextMenuOptions={CONTEXTMENU_OPTIONS}
+                                    />
+                                </div>
+                            ) : (
+                                undefined
+                            )}
+                        </div>
                     </MenuProvider>
                     <Menu
                         className={styles.contextMenu}
