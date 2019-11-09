@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+// import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-export const FileView = (props) => {
-    const [file, setFile] = useState('');
-    useEffect(() => {
-        setFile(props.file);
-    });
-    return <div>{file}</div>;
+export const FileView = ({ currentItem }) => {
+    // const [file, setFile] = useState('');
+    // useEffect(() => {
+    //     setFile();
+    // });
+    return <div>{currentItem ? currentItem.body : 'empty file'}</div>;
 };
 
-const mapStateToProps = () => {
-    return {};
+const mapStateToProps = (state) => {
+    return { currentItem: state.app.currentItem };
 };
 
 export default connect(

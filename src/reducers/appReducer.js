@@ -1,9 +1,9 @@
 import idps from '../constants/idps';
 
 import {
-    FETCH_CURRENT_ITEMS,
-    FETCH_CURRENT_ITEMS_SUCCESS,
-    FETCH_CURRENT_ITEMS_FAIL,
+    FETCH_CURRENT_ITEM,
+    FETCH_CURRENT_ITEM_SUCCESS,
+    FETCH_CURRENT_ITEM_FAIL,
     SET_CURRENT_PATH,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
@@ -25,11 +25,11 @@ import {
 
 const INITIAL_STATE = {
     loadNotifications: false,
-    loadCurrentItems: false,
+    loadcurrentItem: false,
     loadDeletion: false,
     error: null,
     currentPath: null,
-    currentItems: null,
+    currentItem: null,
     notifications: null,
     selectedItems: [],
     clipboard: [],
@@ -45,12 +45,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, currentPath: payload, selectedItem: [] };
         case SET_SELECTION:
             return { ...state, selectedItems: [...payload] };
-        case FETCH_CURRENT_ITEMS:
-            return { ...state, loadFolder: true };
-        case FETCH_CURRENT_ITEMS_SUCCESS:
-            return { ...state, loadFolder: false, currentItems: payload };
-        case FETCH_CURRENT_ITEMS_FAIL:
-            return { ...state, loadFolder: false, error: payload };
+        case FETCH_CURRENT_ITEM:
+            return { ...state, loadCurrentItem: true };
+        case FETCH_CURRENT_ITEM_SUCCESS:
+            return { ...state, loadCurrentItem: false, currentItem: payload };
+        case FETCH_CURRENT_ITEM_FAIL:
+            return { ...state, loadCurrentItem: false, error: payload };
         case FETCH_NOTIFICATIONS:
             return {
                 ...state,

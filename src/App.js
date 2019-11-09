@@ -16,7 +16,7 @@ import LandingPage from './functional_components/LandingPage';
 import { ProfilePage } from './functional_components/ProfilePage';
 import { ContactsPage } from './functional_components/ContactsPage';
 import { ContactProfilePage } from './functional_components/ContactProfilePage';
-import { FileView } from './functional_components/FileView/FileView';
+import FileView from './functional_components/FileView/FileView';
 
 class App extends React.Component {
     constructor(props) {

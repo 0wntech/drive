@@ -1,7 +1,7 @@
 import {
-    FETCH_CURRENT_ITEMS,
-    FETCH_CURRENT_ITEMS_SUCCESS,
-    FETCH_CURRENT_ITEMS_FAIL,
+    FETCH_CURRENT_ITEM,
+    FETCH_CURRENT_ITEM_SUCCESS,
+    FETCH_CURRENT_ITEM_FAIL,
     SET_CURRENT_PATH,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
@@ -33,30 +33,52 @@ export const setCurrentPath = (newPath) => {
     return (dispatch) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
-        dispatch(fetchCurrentItems(newPath));
+        dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
     };
 };
 
-export const fetchCurrentItems = (url) => {
+export const fetchCurrentItem = (url, folder = false) => {
     return (dispatch) => {
-        dispatch({ type: FETCH_CURRENT_ITEMS });
-        fileUtils
-            .getFolderFiles(url)
-            .then((items) => {
-                const fileNames = items.files.map((file) => {
-                    return convertFileUrlToName(file);
-                });
-                const folderNames = items.folders.map((folder) => {
-                    return convertFolderUrlToName(folder);
-                });
-                dispatch({
-                    type: FETCH_CURRENT_ITEMS_SUCCESS,
-                    payload: { files: fileNames, folders: folderNames },
-                });
-            })
-            .catch((error) =>
-                dispatch({ type: FETCH_CURRENT_ITEMS_FAIL, payload: error })
-            );
+        auth.currentSession().then((session) => {
+            const fileClient = new PodClient({ podUrl: session.webId });
+            dispatch({ type: FETCH_CURRENT_ITEM });
+            const options = {};
+            if (folder) {
+                options.auth = auth;
+                options.headers = { Accept: 'text/turtle' };
+            }
+            fileClient
+                .read(url, options)
+                .then((item) => {
+                    if (item.folders || item.files) {
+                        const fileNames = item.files.map((file) => {
+                            return convertFileUrlToName(file);
+                        });
+                        const folderNames = item.folders.map((folder) => {
+                            return convertFolderUrlToName(folder);
+                        });
+                        const payload = {
+                            files: fileNames,
+                            folders: folderNames,
+                        };
+                        dispatch({
+                            type: FETCH_CURRENT_ITEM_SUCCESS,
+                            payload: payload,
+                        });
+                    } else {
+                        dispatch({
+                            type: FETCH_CURRENT_ITEM_SUCCESS,
+                            payload: { body: item, url: url },
+                        });
+                    }
+                })
+                .catch((error) =>
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_FAIL,
+                        payload: error,
+                    })
+                );
+        });
     };
 };
 
@@ -216,6 +238,7 @@ export const renameItem = function(renamedItem, value) {
                     location = location.join('/');
                     dispatch({ type: RENAME_ITEM_SUCCESS });
                     dispatch(setCurrentPath(location + '/'));
+                    dispatch(fetchCurrentItem(location + '/'));
                 })
                 .catch((err) => {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });

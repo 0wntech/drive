@@ -19,7 +19,7 @@ import {
     setCurrentPath,
     setSelection,
     sendNotification,
-    fetchCurrentItems,
+    fetchCurrentItem,
     deleteItems,
     copyItems,
     pasteItems,
@@ -52,7 +52,7 @@ class Drive extends React.Component {
             <ToolbarButtons
                 onFileCreation={this.openCreateFileWindow}
                 onFolderCreation={this.openCreateFolderWindow}
-                onFolderUpload={this.uploadFolder}
+                onFolderUpload={this.uploadCurrentItem}
                 onDownload={this.downloadItems}
                 uploadFile={this.uploadFile}
                 onDelete={() => {
@@ -63,7 +63,7 @@ class Drive extends React.Component {
         this.createFolder = this.createFolder.bind(this);
         this.createFile = this.createFile.bind(this);
         this.followPath = this.followPath.bind(this);
-        this.uploadFolder = this.uploadFolder.bind(this);
+        this.uploadCurrentItem = this.uploadCurrentItem.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
         this.downloadItems = this.downloadItems.bind(this);
         this.loadFile = this.loadFile.bind(this);
@@ -95,7 +95,7 @@ class Drive extends React.Component {
         return [files, folders];
     }
 
-    loadFolder(url) {
+    loadCurrentItem(url) {
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
 
@@ -111,7 +111,13 @@ class Drive extends React.Component {
     }
 
     loadFile(url, event = {}) {
-        const { selectedItems, setSelection } = this.props;
+        const {
+            selectedItems,
+            setSelection,
+            fetchCurrentItem,
+            setCurrentPath,
+            history,
+        } = this.props;
         if (url.endsWith('/')) {
             url = url.split('/');
             url.pop();
@@ -140,22 +146,21 @@ class Drive extends React.Component {
                 return;
             }
 
-            auth.fetch(url).then((response) => {
-                response.text().then((text) => {
-                    this.setState({
-                        file: text,
-                        currPath: url,
-                        breadcrumbs: newBreadCrumbs,
-                        selectedItems: [],
-                    });
-                });
-            });
+            fetchCurrentItem(url);
+            setCurrentPath(url);
+            setSelection([]);
+            history.push(`/file?q=${url}`);
         }
     }
 
     followPath(path, event = {}) {
-        if (this.props.loadFolder) return;
-        const { selectedItems, setCurrentPath, setSelection } = this.props;
+        if (this.props.loadCurrentItem) return;
+        const {
+            selectedItems,
+            setCurrentPath,
+            setSelection,
+            fetchCurrentItem,
+        } = this.props;
         if (isCmdPressed(event) && selectedItems.includes(path)) {
             const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
@@ -164,17 +169,18 @@ class Drive extends React.Component {
             setSelection(newSelection);
         } else {
             setCurrentPath(path);
+            fetchCurrentItem(path, true);
         }
     }
 
     uploadFile(e) {
         console.log(e);
-        const { currentPath, fetchCurrentItems } = this.props;
+        const { currentPath, fetchCurrentItem } = this.props;
         const filePath =
             e.target.files && e.target.files.length ? e.target.files[0] : null;
         if (filePath) {
             fileUtils.uploadFile(filePath, currentPath, () => {
-                fetchCurrentItems(currentPath);
+                fetchCurrentItem(currentPath);
             });
         }
     }
@@ -204,6 +210,7 @@ class Drive extends React.Component {
 
         auth.fetch(currentPath, request).then(() => {
             setCurrentPath(currentPath);
+            fetchCurrentItem(currentPath);
         });
     }
 
@@ -220,20 +227,24 @@ class Drive extends React.Component {
 
         auth.fetch(currentPath, request).then(() => {
             setCurrentPath(currentPath);
+            fetchCurrentItem(currentPath, true);
         });
     }
 
     componentDidMount() {
-        const { currentItems, currentPath, loadCurrentItems } = this.props;
+        const { currentItem, loadcurrentItem, webId } = this.props;
+        let { currentPath } = this.props;
 
-        if (!currentItems && !currentPath && !loadCurrentItems) {
+        if (!currentPath && !loadcurrentItem && webId) {
             console.log('fetching files');
             console.log(
                 'current path + current items: ',
+                webId,
                 currentPath,
-                currentItems
+                currentItem
             );
-            fetchCurrentItems(currentPath);
+            currentPath = webId.replace('profile/card#me', '');
+            fetchCurrentItem(currentPath, true);
         }
     }
 
@@ -247,13 +258,13 @@ class Drive extends React.Component {
         });
     }
 
-    uploadFolder(e) {
+    uploadCurrentItem(e) {
         const { currentPath } = this.props;
         const files = e.target.files;
         if (files && files.length) {
             for (let file = 0; file < files.length; file++) {
                 fileUtils
-                    .uploadFolderOrFile(
+                    .uploadCurrentItemOrFile(
                         files[file],
                         currentPath +
                             encodeURIComponent(files[file].webkitRelativePath)
@@ -261,7 +272,7 @@ class Drive extends React.Component {
                     .then((response) => {
                         console.log(file, response);
                         if (file === files.length - 1) {
-                            fetchCurrentItems(currentPath);
+                            fetchCurrentItem(currentPath);
                         }
                     });
             }
@@ -333,10 +344,10 @@ class Drive extends React.Component {
     render() {
         const {
             selectedItems,
-            currentItems,
+            currentItem,
             currentPath,
             deleteItems,
-            loadCurrentItems,
+            loadcurrentItem,
             webId,
             setCurrentPath,
             loadDeletion,
@@ -455,6 +466,7 @@ class Drive extends React.Component {
                 <Breadcrumbs
                     onClick={(path) => {
                         setCurrentPath(path);
+                        fetchCurrentItem(currentPath);
                         this.setState({ file: null });
                     }}
                     breadcrumbs={
@@ -502,7 +514,7 @@ class Drive extends React.Component {
                     windowName="Rename File"
                     info="Enter a new name:"
                     placeholder={renamedItem ? renamedItem : 'Untitled'}
-                    currentFolder={currentItems}
+                    currentFolder={currentItem}
                     onSubmit={(value) =>
                         renameItem(renamedItem, encodeURIComponent(value))
                     }
@@ -514,13 +526,13 @@ class Drive extends React.Component {
             </Fragment>
         );
 
-        if ((loadCurrentItems, loadDeletion, loadPaste)) {
+        if ((loadcurrentItem, loadDeletion, loadPaste)) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
                         size={30}
                         color="#686769"
-                        loading={(loadCurrentItems, loadDeletion, loadPaste)}
+                        loading={(loadcurrentItem, loadDeletion, loadPaste)}
                     />
                 </div>
             );
@@ -539,12 +551,13 @@ class Drive extends React.Component {
                     >
                         <div className={styles.container}>
                             {windows}
-                            {currentItems ? (
+                            {currentItem &&
+                            (currentItem.folders || currentItem.files) ? (
                                 <div>
-                                    {currentItems.folders.length > 0 ? (
+                                    {currentItem.folders.length > 0 ? (
                                         <ItemList
                                             selectedItems={selectedItems}
-                                            items={currentItems.folders}
+                                            items={currentItem.folders}
                                             currPath={currentPath}
                                             image={folder}
                                             onItemClick={this.followPath}
@@ -556,7 +569,7 @@ class Drive extends React.Component {
                                     <ItemList
                                         selectedItems={selectedItems}
                                         isFile
-                                        items={currentItems.files}
+                                        items={currentItem.files}
                                         currPath={currentPath}
                                         image={fileIcon}
                                         onItemClick={this.loadFile}
@@ -600,15 +613,15 @@ class Drive extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentItems: state.app.currentItems,
+        currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         selectedItems: state.app.selectedItems,
         webId: state.user.webId,
-        loadCurrentItems: state.app.loadCurrentItems,
+        loadcurrentItem: state.app.loadcurrentItem,
         loadDeletion: state.app.loadDeletion,
         clipboard: state.app.clipboard,
         loadPaste: state.app.loadPaste,
-        loadFolder: state.app.loadFolder,
+        loadCurrentItem: state.app.loadCurrentItem,
     };
 };
 
@@ -618,7 +631,7 @@ export default withRouter(
         {
             setCurrentPath,
             sendNotification,
-            fetchCurrentItems,
+            fetchCurrentItem,
             setSelection,
             deleteItems,
             copyItems,

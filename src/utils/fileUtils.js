@@ -52,7 +52,7 @@ function getSuffixAndPlaceholder(placeholder) {
     return { fileSuffix: fileSuffix, placeholder: placeholder };
 }
 
-function uploadFolderOrFile(file, url) {
+function uploadCurrentItemOrFile(file, url) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
 
@@ -387,7 +387,7 @@ export default {
     getContentType: getContentType,
     getFolderContents: getFolderContents,
     getFolderTree: getFolderTree,
-    uploadFolderOrFile: uploadFolderOrFile,
+    uploadCurrentItemOrFile: uploadCurrentItemOrFile,
     deleteItems: deleteItems,
     changeAccess: changeAccess,
     getInfo: getInfo,

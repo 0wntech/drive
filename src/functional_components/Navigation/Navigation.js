@@ -19,7 +19,7 @@ const Navigation = ({
     setCurrentPath,
     username,
     history,
-    items,
+    currentItem,
     contacts,
     currentPath,
     setCurrentContact,
@@ -49,13 +49,6 @@ const Navigation = ({
     };
 
     const getSearchDropdownOptions = () => {
-        const filesAndFolders = fileUtils
-            .convertFilesAndFoldersToArray(items.files, items.folders)
-            .map((item) => ({
-                ...item,
-                value: item.name,
-            }));
-
         const contactOptions = [...contactSearchResult, ...contacts].map(
             (contact) => ({
                 value: getUsernameFromWebId(contact.webId),
@@ -69,9 +62,23 @@ const Navigation = ({
             type: 'separator',
             isDisabled: true,
         };
-        return contactOptions.length > 0
-            ? [...filesAndFolders, separator, ...contactOptions]
-            : filesAndFolders;
+
+        if (!currentItem.files && !currentItem.folders) {
+            return contactOptions.length > 0 ? contactOptions : undefined;
+        } else {
+            const filesAndFolders = fileUtils
+                .convertFilesAndFoldersToArray(
+                    currentItem.files,
+                    currentItem.folders
+                )
+                .map((resource) => ({
+                    ...resource,
+                    value: resource.name,
+                }));
+            return contactOptions.length > 0
+                ? [...filesAndFolders, separator, ...contactOptions]
+                : filesAndFolders;
+        }
     };
     return (
         <div className={styles.container}>
@@ -90,14 +97,14 @@ const Navigation = ({
                 />
             </div>
             <div className={styles.search}>
-                {items ? (
+                {currentItem ? (
                     <SearchDropdown
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
                         onChange={handleChange}
                         onInputChange={handleInputChange}
                         placeholder="Search..."
-                        items={getSearchDropdownOptions()}
+                        currentItem={getSearchDropdownOptions()}
                         loading={searchingContacts}
                         filterOption={customFilter}
                     />
@@ -186,7 +193,7 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
-    items: state.app.currentItems,
+    currentItem: state.app.currentcurrentItem,
     contacts: state.contact.contacts,
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
