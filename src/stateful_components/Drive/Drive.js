@@ -149,7 +149,7 @@ class Drive extends React.Component {
             fetchCurrentItem(url);
             setCurrentPath(url);
             setSelection([]);
-            history.push(`/file?q=${url}`);
+            history.push(`/file?f=${url}`);
         }
     }
 
@@ -465,8 +465,8 @@ class Drive extends React.Component {
             <div className={styles.breadcrumbsContainer}>
                 <Breadcrumbs
                     onClick={(path) => {
+                        console.log(path);
                         setCurrentPath(path);
-                        fetchCurrentItem(currentPath);
                         this.setState({ file: null });
                     }}
                     breadcrumbs={

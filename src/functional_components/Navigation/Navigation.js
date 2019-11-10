@@ -63,7 +63,7 @@ const Navigation = ({
             isDisabled: true,
         };
 
-        if (currentItem) {
+        if (currentItem && currentItem.files && currentItem.folders) {
             const filesAndFolders = fileUtils
                 .convertFilesAndFoldersToArray(
                     currentItem.files,
