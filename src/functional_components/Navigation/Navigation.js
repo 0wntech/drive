@@ -63,9 +63,7 @@ const Navigation = ({
             isDisabled: true,
         };
 
-        if (!currentItem.files && !currentItem.folders) {
-            return contactOptions.length > 0 ? contactOptions : undefined;
-        } else {
+        if (currentItem) {
             const filesAndFolders = fileUtils
                 .convertFilesAndFoldersToArray(
                     currentItem.files,
@@ -193,7 +191,7 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
-    currentItem: state.app.currentcurrentItem,
+    currentItem: state.app.currentItem,
     contacts: state.contact.contacts,
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
