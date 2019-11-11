@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
 import url from 'url';
+import mime from 'mime';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.css';
@@ -216,14 +217,23 @@ class Drive extends React.Component {
 
     createFile(folderAddress) {
         const { currentPath, setCurrentPath } = this.props;
+        const contentType = mime.getType(folderAddress);
         const request = {
             method: 'POST',
             headers: {
                 'slug': folderAddress,
-                'link': '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
-                'Content-Type': 'text/turtle',
+                'Content-Type': contentType
+                    ? contentType === 'markdown'
+                        ? 'text/markdown'
+                        : contentType
+                    : 'text/turtle',
             },
         };
+
+        if (request.headers['Content-Type'] === 'text/turtle') {
+            request.headers.link =
+                '<http://www.w3.org/ns/ldp#Resource>; rel="type"';
+        }
 
         auth.fetch(currentPath, request).then(() => {
             setCurrentPath(currentPath);
@@ -453,6 +463,10 @@ class Drive extends React.Component {
             {
                 label: 'Create Folder',
                 onClick: () => this.openCreateFolderWindow(),
+            },
+            {
+                label: 'Create File',
+                onClick: () => this.openCreateFileWindow(),
             },
             {
                 label: 'Delete',

@@ -21,12 +21,16 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    UPDATE_FILE,
+    UPDATE_FILE_SUCCESS,
+    UPDATE_FILE_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
     loadNotifications: false,
     loadcurrentItem: false,
     loadDeletion: false,
+    updatingFile: false,
     error: null,
     currentPath: null,
     currentItem: null,
@@ -88,6 +92,13 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, renamingItem: false };
         case RENAME_ITEM_FAILURE:
             return { ...state, renamingItem: false, error: payload };
+        case UPDATE_FILE:
+            return { ...state, updatingFile: true };
+        case UPDATE_FILE_SUCCESS:
+            return { ...state, updatingFile: false, currentItem: payload };
+        case UPDATE_FILE_FAILURE:
+            return { ...state, updatingFile: false, error: payload };
+
         default:
             return state;
     }

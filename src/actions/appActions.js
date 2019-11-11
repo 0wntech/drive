@@ -23,10 +23,14 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    UPDATE_FILE,
+    UPDATE_FILE_SUCCESS,
+    UPDATE_FILE_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
+import mime from 'mime';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
 export const setCurrentPath = (newPath) => {
@@ -98,6 +102,53 @@ export const fetchNotifications = (webId) => {
                     type: FETCH_NOTIFICATIONS_FAILURE,
                 });
             });
+    };
+};
+
+export const updateFile = (file, body) => {
+    return (dispatch) => {
+        dispatch({ type: UPDATE_FILE });
+        const contentType = mime.getType(file);
+        const almostHost = file.split('.');
+        const topDomainPart = almostHost.pop();
+        const topDomain = topDomainPart.split('/')[0];
+        const fileClient = new PodClient({
+            podUrl: almostHost.join('.') + topDomain + '/',
+        });
+        if (body !== '') {
+            fileClient
+                .delete(file)
+                .then(() => {
+                    fileClient
+                        .create(file, {
+                            contents: body,
+                            contentType: contentType,
+                        })
+                        .then(() => {
+                            dispatch({
+                                type: UPDATE_FILE_SUCCESS,
+                                payload: { body: body, url: file },
+                            });
+                        })
+                        .catch((err) => {
+                            dispatch({
+                                type: UPDATE_FILE_FAILURE,
+                                payload: { body: body, url: file },
+                            });
+                        });
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: UPDATE_FILE_FAILURE,
+                        payload: { body: body, url: file },
+                    });
+                });
+        } else {
+            dispatch({
+                type: UPDATE_FILE_FAILURE,
+                payload: { body: body, url: file },
+            });
+        }
     };
 };
 

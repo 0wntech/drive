@@ -4,36 +4,42 @@ import { withRouter } from 'react-router';
 import classNames from 'classnames';
 import { Layout } from '../Layout';
 import styles from './FileView.module.css';
-import { setCurrentPath } from '../../actions/appActions';
+import { setCurrentPath, updateFile } from '../../actions/appActions';
 import { getBreadcrumbsFromUrl, getFileParamFromUrl } from '../../utils/url';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
+import { ClassicSpinner } from 'react-spinners-kit';
 
 export const FileView = ({
     currentItem,
     currentPath,
     webId,
     setCurrentPath,
+    updateFile,
+    updatingFile,
     history,
 }) => {
     const fileParam = getFileParamFromUrl(window.location.href);
     if (fileParam) {
         if (!currentPath || !currentItem.body) {
             setCurrentPath(fileParam);
+        } else if (currentItem.files || currentItem.folders) {
+            history.push('/home');
         }
     }
 
     const [isEditable, setEditable] = useState(true);
-    const [newBody, setNewBody] = useState('');
+    const [newBody, setNewBody] = useState('Empty');
 
     const onCancel = () => {
-        setEditable(false);
         setNewBody(currentItem.body);
+        setEditable(false);
     };
 
     const onSubmit = () => {
+        if (currentItem.body !== newBody) updateFile(currentItem.url, newBody);
         setEditable(false);
     };
 
@@ -86,19 +92,31 @@ export const FileView = ({
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={toolbarRight}
         >
-            {currentItem.body ? (
+            {updatingFile ? (
+                <div className={styles.spinner}>
+                    <ClassicSpinner
+                        size={30}
+                        color="#686769"
+                        loading={updatingFile}
+                    />
+                </div>
+            ) : currentItem.body ? (
                 isEditable ? (
                     <textarea
                         autoFocus
                         className={classNames(styles.editor, {
                             [styles.enabled]: isEditable,
                         })}
-                        type="text"
-                        value={newBody === '' ? currentItem.body : newBody}
+                        value={
+                            newBody === '' || currentItem.body !== ''
+                                ? currentItem.body
+                                : newBody
+                        }
                         onChange={(e) => {
-                            setNewBody(e.target.value);
+                            if (currentItem.body !== e.target.value) {
+setNewBody(e.target.value);
+}
                         }}
-                        onBlur={onCancel}
                         placeholder={currentItem.body}
                     />
                 ) : (
@@ -110,7 +128,7 @@ export const FileView = ({
                             setEditable(true);
                         }}
                     >
-                        {currentItem.body}
+                        {newBody === '' ? currentItem.body : newBody}
                     </pre>
                 )
             ) : null}
@@ -123,12 +141,13 @@ const mapStateToProps = (state) => {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         webId: state.user.webId,
+        updatingFile: state.app.updatingFile,
     };
 };
 
 export default withRouter(
     connect(
         mapStateToProps,
-        { setCurrentPath }
+        { setCurrentPath, updateFile }
     )(FileView)
 );

@@ -87,6 +87,10 @@ const Navigation = ({
                     alt="logo"
                     onClick={() => {
                         if (webId) {
+                            setCurrentPath(
+                                webId.replace('/profile/card#me', ''),
+                                true
+                            );
                             history.push('/home');
                         } else {
                             history.push('/');
