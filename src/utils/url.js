@@ -1,3 +1,5 @@
+import urlUtils from 'url';
+
 export const getBreadcrumbsFromUrl = (url) => {
     // check if url is a valid url
     if (!isValidUrl(url)) {
@@ -14,6 +16,13 @@ export const getBreadcrumbsFromUrl = (url) => {
         }
     });
     return newBreadcrumbs;
+};
+
+export const getFileParamFromUrl = (url) => {
+    return urlUtils
+        .parse(url)
+        .search.split('f=')[1]
+        .split('&')[0];
 };
 
 export const convertFolderUrlToName = (folderUrl) => {

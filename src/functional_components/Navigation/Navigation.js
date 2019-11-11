@@ -76,6 +76,8 @@ const Navigation = ({
             return contactOptions.length > 0
                 ? [...filesAndFolders, separator, ...contactOptions]
                 : filesAndFolders;
+        } else {
+            return contactOptions;
         }
     };
     return (
@@ -102,7 +104,7 @@ const Navigation = ({
                         onChange={handleChange}
                         onInputChange={handleInputChange}
                         placeholder="Search..."
-                        currentItem={getSearchDropdownOptions()}
+                        items={getSearchDropdownOptions()}
                         loading={searchingContacts}
                         filterOption={customFilter}
                     />
