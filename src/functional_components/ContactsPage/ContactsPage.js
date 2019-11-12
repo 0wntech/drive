@@ -18,6 +18,7 @@ const ContactsPage = ({
     loadContacts,
     webId,
     setCurrentContact,
+    contactRecommendations,
     removeContact,
     history,
 }) => {
@@ -42,16 +43,11 @@ const ContactsPage = ({
                         webId={webId}
                         removeContact={removeContact}
                     />
-                    <button
-                        onClick={() =>
-                            addContact(
-                                webId,
-                                'https://ludwigschubert.solid.community/profile/card#me'
-                            )
-                        }
-                    >
-                        add
-                    </button>
+                    {contactRecommendations ? (
+                        <div>People you might know:</div>
+                    ) : (
+                        <div>People you might know:</div>
+                    )}
                 </div>
             )}
         </Layout>
