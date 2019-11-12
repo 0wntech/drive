@@ -8,6 +8,9 @@ import {
     SEARCH_CONTACT,
     SEARCH_CONTACT_SUCCESS,
     SEARCH_CONTACT_FAILURE,
+    FETCH_CONTACT_RECOMMENDATIONS,
+    FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
+    FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
 } from './types';
 import User from 'ownuser';
 import idps from '../constants/idps.json';
@@ -42,7 +45,6 @@ export const fetchContacts = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
         const user = new User(webId);
-        console.log(user);
         user.getContacts()
             .then((contacts) => {
                 fetchDetailContacts(contacts).then((detailContacts) => {
@@ -54,6 +56,29 @@ export const fetchContacts = (webId) => {
             })
             .catch((error) =>
                 dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
+            );
+    };
+};
+
+export const fetchContactRecommendations = (webId) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CONTACT_RECOMMENDATIONS });
+        console.log('IN FUNCTION');
+        const user = new User(webId);
+        user.getContacts() // TODO change this to the proper function
+            .then((recommendations) => {
+                fetchDetailContacts(recommendations).then((detailContacts) => {
+                    dispatch({
+                        type: FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
+                        payload: detailContacts,
+                    });
+                });
+            })
+            .catch((error) =>
+                dispatch({
+                    type: FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
+                    payload: error,
+                })
             );
     };
 };
