@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ContactsPage.module.css';
 import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
@@ -28,6 +28,12 @@ const ContactsPage = ({
         fetchContactRecommendations(webId);
     }, []);
 
+    const [displayedRows, setDisplayedRows] = useState(2);
+    const contactRecommendationsToDisplay = contactRecommendations.slice(
+        0,
+        displayedRows * 3
+    );
+
     return (
         <Layout label="Contacts" className={styles.grid}>
             {loadContacts ? (
@@ -51,20 +57,35 @@ const ContactsPage = ({
                     />
                     {contactRecommendations ? (
                         <>
-                            <div>People you might know:</div>
+                            <div className={styles.recommendLabel}>
+                                People you might know:
+                            </div>
                             <ContactList
                                 onItemClick={(contact) => {
                                     setCurrentContact(contact);
                                     history.push('/contact');
                                 }}
-                                contacts={contactRecommendations}
+                                contacts={contactRecommendationsToDisplay}
                                 webId={webId}
-                                removeContact={removeContact}
+                                addContact={addContact}
+                                recommended
                             />
+                            {displayedRows * 3 <
+                            contactRecommendations.length ? (
+                                <div
+                                    onClick={() =>
+                                        setDisplayedRows(displayedRows + 2)
+                                    }
+                                    className={styles.showMoreWrapper}
+                                >
+                                    <div>Show more</div>
+                                    <div className={styles.showMoreIcon}>
+                                        ...
+                                    </div>
+                                </div>
+                            ) : null}
                         </>
-                    ) : (
-                        <div>People you might know:</div>
-                    )}
+                    ) : null}
                 </div>
             )}
         </Layout>

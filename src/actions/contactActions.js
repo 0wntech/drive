@@ -25,9 +25,10 @@ export const addContact = (webId, contactWebId) => {
     return (dispatch) => {
         dispatch({ type: ADD_CONTACT });
         const user = new User(webId);
-        user.addContact(contactWebId).then(() =>
-            dispatch(fetchContacts(webId))
-        );
+        user.addContact(contactWebId).then(() => {
+            dispatch(fetchContacts(webId));
+            dispatch(fetchContactRecommendations(webId));
+        });
     };
 };
 
@@ -65,7 +66,7 @@ export const fetchContactRecommendations = (webId) => {
         dispatch({ type: FETCH_CONTACT_RECOMMENDATIONS });
         console.log('IN FUNCTION');
         const user = new User(webId);
-        user.getContacts() // TODO change this to the proper function
+        user.getContactRecommendations() // TODO change this to the proper function
             .then((recommendations) => {
                 fetchDetailContacts(recommendations).then((detailContacts) => {
                     dispatch({
