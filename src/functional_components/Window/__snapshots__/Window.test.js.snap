@@ -15,12 +15,20 @@ exports[`Window should render correctly 1`] = `
       >
         Test Window
       </span>
-      <img
-        alt="close"
+      <svg
         className="close"
+        fill="none"
+        height={32}
         onClick={[MockFunction]}
-        src="x.png"
-      />
+        preserveAspectRatio="none"
+        viewBox="5 4 24 24"
+        width={32}
+      >
+        <path
+          d="M24.933 23.067a1.289 1.289 0 010 1.866c-.266.267-.533.4-.933.4s-.667-.133-.933-.4L16 17.867l-7.067 7.066c-.266.267-.533.4-.933.4s-.667-.133-.933-.4a1.289 1.289 0 010-1.866L14.133 16 7.067 8.933a1.289 1.289 0 010-1.866 1.289 1.289 0 011.866 0L16 14.133l7.067-7.066a1.289 1.289 0 011.866 0 1.289 1.289 0 010 1.866L17.867 16l7.066 7.067z"
+          fill="#F41818"
+        />
+      </svg>
     </div>
     <div
       className="body"
@@ -35,6 +43,7 @@ exports[`Window should render correctly 1`] = `
   </div>
   <div
     className="opacity"
+    onClick={[MockFunction]}
   />
 </div>
 `;

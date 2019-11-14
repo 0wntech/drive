@@ -7,11 +7,12 @@ import Warning from '../Warning';
 
 export default function RenameWindow({
     className,
-    onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
+    onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
     windowName,
     placeholder,
+    visible,
     currentFolder,
 }) {
     const [newName, setNewName] = useState('');
@@ -36,6 +37,7 @@ export default function RenameWindow({
     return (
         <Window
             windowName={windowName}
+            visible={visible}
             onClose={() => {
                 setNewName('');
                 onClose();
@@ -56,6 +58,7 @@ export default function RenameWindow({
                 />
             ) : null}
             <input
+                autoFocus
                 className={styles.input}
                 value={newName}
                 onChange={(event) => setNewName(event.target.value)}

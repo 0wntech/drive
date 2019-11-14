@@ -5,12 +5,12 @@ import classNames from 'classnames';
 import SelectedFile from '../SelectedFile/SelectedFile';
 
 export default function DeleteWindow({
-    className,
     selectedItems,
-    onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
+    onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
     windowName,
+    visible,
 }) {
     const multiple = selectedItems.length > 1;
 
@@ -18,7 +18,7 @@ export default function DeleteWindow({
         <Window
             windowName={windowName}
             onClose={onCancel ? onCancel : onClose}
-            className={className}
+            visible={visible}
         >
             <p className={styles.prompt}>
                 {multiple

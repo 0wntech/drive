@@ -4,23 +4,24 @@ import styles from './InputWindow.module.css';
 import classNames from 'classnames';
 
 export default function CreateWindow({
-    className,
-    onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
+    onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
     windowName,
     info,
     placeholder,
+    visible,
 }) {
     const [value, setValue] = useState('');
     return (
-        <Window windowName={windowName} onClose={onClose} className={className}>
+        <Window visible={visible} windowName={windowName} onClose={onClose}>
             <p>{info}</p>
             <input
                 className={styles.input}
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
                 placeholder={placeholder}
+                autoFocus
             ></input>
             <div className={styles.buttonBar}>
                 <div
