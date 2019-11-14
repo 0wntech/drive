@@ -356,7 +356,6 @@ class Drive extends React.Component {
             renamedItem,
         } = this.state;
 
-        console.log('drive visible', isCreateFolderVisible);
         const CONTEXTMENU_OPTIONS = [
             {
                 label: 'Info',
