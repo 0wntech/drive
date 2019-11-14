@@ -31,7 +31,7 @@ export const FileView = ({
     }
 
     const [isEditable, setEditable] = useState(true);
-    const [newBody, setNewBody] = useState('Empty');
+    const [newBody, setNewBody] = useState('');
 
     const onCancel = () => {
         setNewBody(currentItem.body);
@@ -108,14 +108,12 @@ export const FileView = ({
                             [styles.enabled]: isEditable,
                         })}
                         value={
-                            newBody === '' || currentItem.body !== ''
+                            newBody === '' && currentItem.body !== ''
                                 ? currentItem.body
                                 : newBody
                         }
                         onChange={(e) => {
-                            if (currentItem.body !== e.target.value) {
-setNewBody(e.target.value);
-}
+                            setNewBody(e.target.value);
                         }}
                         placeholder={currentItem.body}
                     />
