@@ -26,11 +26,15 @@ import {
     UPDATE_FILE,
     UPDATE_FILE_SUCCESS,
     UPDATE_FILE_FAILURE,
+    CREATE_FILE,
+    CREATE_FILE_SUCCESS,
+    CREATE_FILE_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
 import mime from 'mime';
+import url from 'url';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
 export const setCurrentPath = (newPath) => {
@@ -54,25 +58,29 @@ export const fetchCurrentItem = (url, folder = false) => {
             fileClient
                 .read(url, options)
                 .then((item) => {
-                    if (item.folders || item.files) {
+                    if (item && item.folders) {
                         const fileNames = item.files.map((file) => {
                             return convertFileUrlToName(file);
                         });
                         const folderNames = item.folders.map((folder) => {
                             return convertFolderUrlToName(folder);
                         });
-                        const payload = {
-                            files: fileNames,
-                            folders: folderNames,
-                        };
                         dispatch({
                             type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: payload,
+                            payload: {
+                                files: fileNames,
+                                folders: folderNames,
+                            },
+                        });
+                    } else if (item) {
+                        dispatch({
+                            type: FETCH_CURRENT_ITEM_SUCCESS,
+                            payload: { body: item, url: url },
                         });
                     } else {
                         dispatch({
                             type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: { body: item, url: url },
+                            payload: { body: 'Empty', url: url },
                         });
                     }
                 })
@@ -109,11 +117,8 @@ export const updateFile = (file, body) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_FILE });
         const contentType = mime.getType(file);
-        const almostHost = file.split('.');
-        const topDomainPart = almostHost.pop();
-        const topDomain = topDomainPart.split('/')[0];
         const fileClient = new PodClient({
-            podUrl: almostHost.join('.') + topDomain + '/',
+            podUrl: 'https://' + url.parse(file).host + '/',
         });
         if (body !== '') {
             fileClient
@@ -133,14 +138,14 @@ export const updateFile = (file, body) => {
                         .catch((err) => {
                             dispatch({
                                 type: UPDATE_FILE_FAILURE,
-                                payload: { body: body, url: file },
+                                payload: err,
                             });
                         });
                 })
                 .catch((err) => {
                     dispatch({
                         type: UPDATE_FILE_FAILURE,
-                        payload: { body: body, url: file },
+                        payload: err,
                     });
                 });
         } else {
@@ -246,6 +251,25 @@ export const pasteItems = (items, location) => {
             })
             .catch((err) => {
                 dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
+            });
+    };
+};
+
+export const createFile = function(name, path) {
+    return (dispatch) => {
+        dispatch({ type: CREATE_FILE });
+        const contentType = mime.getType(name);
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(name).host + '/',
+        });
+        return fileClient
+            .create(path + name, { contentType: contentType })
+            .then(() => {
+                dispatch({ type: CREATE_FILE_SUCCESS });
+                dispatch(setCurrentPath(path));
+            })
+            .catch((err) => {
+                dispatch({ type: CREATE_FILE_FAILURE });
             });
     };
 };

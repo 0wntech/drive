@@ -34,7 +34,7 @@ const Navigation = ({
             setCurrentPath(`${currentPath}/${selected.name}/`);
             history.push('/home');
         } else if (selected.type === 'file') {
-            console.log('implement redux on file click');
+            history.push(`/file?f=${currentPath + selected.value}`);
         } else if (selected.type === 'contact') {
             setCurrentContact(selected.contact);
             history.push('/contact');
@@ -88,8 +88,7 @@ const Navigation = ({
                     onClick={() => {
                         if (webId) {
                             setCurrentPath(
-                                webId.replace('/profile/card#me', ''),
-                                true
+                                webId.replace('/profile/card#me', '')
                             );
                             history.push('/home');
                         } else {

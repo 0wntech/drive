@@ -77,6 +77,10 @@ export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
 export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
 
+export const CREATE_FILE = 'create_file';
+export const CREATE_FILE_SUCCESS = 'create_file_success';
+export const CREATE_FILE_FAILURE = 'create_file_failure';
+
 export const UPDATE_FILE = 'update_file';
 export const UPDATE_FILE_SUCCESS = 'update_file_success';
 export const UPDATE_FILE_FAILURE = 'update_file_failure';

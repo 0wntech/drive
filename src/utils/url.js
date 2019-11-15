@@ -18,11 +18,18 @@ export const getBreadcrumbsFromUrl = (url) => {
     return newBreadcrumbs;
 };
 
-export const getFileParamFromUrl = (url) => {
-    return urlUtils
+export const getFileParamsFromUrl = (url) => {
+    const params = urlUtils
         .parse(url)
-        .search.split('f=')[1]
-        .split('&')[0];
+        .search.replace('?', '')
+        .split('&');
+    const paramObj = {};
+    params.forEach((param) => {
+        const paramName = param.split('=')[0];
+        const paramVal = param.split('=')[1];
+        paramObj[paramName] = paramVal;
+    });
+    return paramObj;
 };
 
 export const convertFolderUrlToName = (folderUrl) => {

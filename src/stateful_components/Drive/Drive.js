@@ -25,6 +25,7 @@ import {
     copyItems,
     pasteItems,
     renameItem,
+    createFile,
 } from '../../actions/appActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -242,19 +243,12 @@ class Drive extends React.Component {
     }
 
     componentDidMount() {
-        const { currentItem, loadcurrentItem, webId } = this.props;
+        const { setCurrentPath, loadcurrentItem, webId } = this.props;
         let { currentPath } = this.props;
 
         if (!currentPath && !loadcurrentItem && webId) {
-            console.log('fetching files');
-            console.log(
-                'current path + current items: ',
-                webId,
-                currentPath,
-                currentItem
-            );
             currentPath = webId.replace('profile/card#me', '');
-            fetchCurrentItem(currentPath, true);
+            setCurrentPath(currentPath, true);
         }
     }
 
@@ -366,6 +360,7 @@ class Drive extends React.Component {
             pasteItems,
             clipboard,
             renameItem,
+            createFile,
         } = this.props;
 
         const {
@@ -517,7 +512,7 @@ class Drive extends React.Component {
                 <InputWindow
                     windowName="Create File"
                     info=""
-                    onSubmit={(value) => this.createFile(value)}
+                    onSubmit={(value) => createFile(value, currentPath)}
                     className={
                         isCreateFileVisible ? styles.visible : styles.hidden
                     }
@@ -651,6 +646,7 @@ export default withRouter(
             copyItems,
             pasteItems,
             renameItem,
+            createFile,
         }
     )(Drive)
 );

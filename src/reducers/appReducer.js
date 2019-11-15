@@ -24,6 +24,9 @@ import {
     UPDATE_FILE,
     UPDATE_FILE_SUCCESS,
     UPDATE_FILE_FAILURE,
+    CREATE_FILE,
+    CREATE_FILE_SUCCESS,
+    CREATE_FILE_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -98,7 +101,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, updatingFile: false, currentItem: payload };
         case UPDATE_FILE_FAILURE:
             return { ...state, updatingFile: false, error: payload };
-
+        case CREATE_FILE:
+            return { ...state, creatingFile: true };
+        case CREATE_FILE_SUCCESS:
+            return { ...state, creatingFile: false };
+        case CREATE_FILE_FAILURE:
+            return { ...state, creatingFile: false, error: payload };
         default:
             return state;
     }

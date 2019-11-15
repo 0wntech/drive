@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Layout } from '../Layout';
 import styles from './FileView.module.css';
 import { setCurrentPath, updateFile } from '../../actions/appActions';
-import { getBreadcrumbsFromUrl, getFileParamFromUrl } from '../../utils/url';
+import { getBreadcrumbsFromUrl, getFileParamsFromUrl } from '../../utils/url';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
@@ -21,7 +21,7 @@ export const FileView = ({
     updatingFile,
     history,
 }) => {
-    const fileParam = getFileParamFromUrl(window.location.href);
+    const fileParam = getFileParamsFromUrl(window.location.href).f;
     if (fileParam) {
         if (!currentPath || !currentItem.body) {
             setCurrentPath(fileParam);
@@ -31,7 +31,7 @@ export const FileView = ({
     }
 
     const [isEditable, setEditable] = useState(true);
-    const [newBody, setNewBody] = useState('');
+    const [newBody, setNewBody] = useState('Blank');
 
     const onCancel = () => {
         setNewBody(currentItem.body);
@@ -108,14 +108,20 @@ export const FileView = ({
                             [styles.enabled]: isEditable,
                         })}
                         value={
-                            newBody === '' && currentItem.body !== ''
+                            newBody === 'Blank' &&
+                            currentItem.body &&
+                            currentItem.body !== ''
                                 ? currentItem.body
                                 : newBody
                         }
                         onChange={(e) => {
-                            setNewBody(e.target.value);
+                            if (currentItem.body !== e.target.value) {
+                                setNewBody(e.target.value);
+                            }
                         }}
-                        placeholder={currentItem.body}
+                        placeholder={
+                            currentItem.body !== '' ? currentItem.body : 'Blank'
+                        }
                     />
                 ) : (
                     <pre
