@@ -3,10 +3,10 @@ import Drive from './Drive.js';
 import TestRenderer from 'react-test-renderer';
 import { withRouter } from 'react-router-dom';
 import appReducer from '../../reducers/AppReducer.js';
-import { FETCH_CURRENT_ITEMS_SUCCESS } from '../../actions/types';
+import { FETCH_CURRENT_ITEM_SUCCESS } from '../../actions/types';
 
 describe('Drive', () => {
-    const currentItems = {
+    const currentItem = {
         files: ['haha.jpg'],
         folders: ['hehe', 'hihi'],
     };
@@ -15,14 +15,14 @@ describe('Drive', () => {
         const initialState = appReducer(undefined, {});
         it('receives current folder', () => {
             const result = appReducer(initialState, {
-                type: FETCH_CURRENT_ITEMS_SUCCESS,
-                payload: currentItems,
+                type: FETCH_CURRENT_ITEM_SUCCESS,
+                payload: currentItem,
             });
 
             expect(result).toStrictEqual({
                 ...initialState,
-                loadFolder: false,
-                currentItems: currentItems,
+                loadCurrentItem: false,
+                currentItem: currentItem,
             });
         });
 
