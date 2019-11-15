@@ -30,11 +30,16 @@
     margin: 15px 0 40px 0;
 }
 
+.showMoreLabel {
+    color: #2791ff;
+}
+
 .showMoreIcon {
     font-size: 32px;
     font-weight: bold;
     height: 20px;
     margin-top: -20px;
+    color: #2791ff;
     text-align: center;
 }
 

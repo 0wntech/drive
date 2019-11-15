@@ -78,7 +78,9 @@ const ContactsPage = ({
                                     }
                                     className={styles.showMoreWrapper}
                                 >
-                                    <div>Show more</div>
+                                    <div className={styles.showMoreLabel}>
+                                        Show more
+                                    </div>
                                     <div className={styles.showMoreIcon}>
                                         ...
                                     </div>
