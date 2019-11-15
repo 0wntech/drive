@@ -7,6 +7,7 @@ export const getBreadcrumbsFromUrl = (url) => {
             `getBreadcrumbsFromUrl received an invalid url: ${url}`
         );
     }
+    url = decodeURIComponent(url);
     const breadcrumbs = url.replace('https://', '').split('/');
     breadcrumbs.shift();
     const newBreadcrumbs = ['/'];
@@ -42,7 +43,7 @@ export const convertFileUrlToName = (fileUrl) => {
 
 export const isValidUrl = (url) => {
     return url.match(
-        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&%'\(\)\*\+,;=.]+$/
     )
         ? true
         : false;

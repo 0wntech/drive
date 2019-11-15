@@ -225,15 +225,15 @@ export const pasteItems = (items, location) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()
             .then((session) => {
-                const pod = new PodClient({ podUrl: session.webId });
+                const fileClient = new PodClient({ podUrl: session.webId });
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
                         if (index === items.length - 1) {
-                            return pod.copy(item, location).then(() => {
+                            return fileClient.copy(item, location).then(() => {
                                 resolve();
                             });
                         } else {
-                            return pod.copy(item, location);
+                            return fileClient.copy(item, location);
                         }
                     });
                     Promise.all(items).catch((err) => {
@@ -269,7 +269,7 @@ export const createFile = function(name, path) {
                 dispatch(setCurrentPath(path));
             })
             .catch((err) => {
-                dispatch({ type: CREATE_FILE_FAILURE });
+                dispatch({ type: CREATE_FILE_FAILURE, payload: err });
             });
     };
 };

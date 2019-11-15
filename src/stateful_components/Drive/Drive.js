@@ -121,11 +121,8 @@ class Drive extends React.Component {
             history,
         } = this.props;
         if (url.endsWith('/')) {
-            url = url.split('/');
-            url.pop();
-            url = url.join('/');
+            url = url.substr(0, url.lastIndexOf('/'));
         }
-        console.log(url);
         if (isCmdPressed(event) && selectedItems.includes(url) === false) {
             const newSelection = [...selectedItems];
             newSelection.push(url);
@@ -134,20 +131,6 @@ class Drive extends React.Component {
             const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
-            const newBreadCrumbs = getBreadcrumbsFromUrl(url);
-
-            const contentType = fileUtils.getContentType(url);
-            if (contentType === 'image') {
-                this.setState({
-                    file: url,
-                    image: url,
-                    currPath: url,
-                    breadcrumbs: newBreadCrumbs,
-                    selectedItems: [],
-                });
-                return;
-            }
-
             fetchCurrentItem(url);
             setCurrentPath(url);
             setSelection([]);
@@ -243,12 +226,21 @@ class Drive extends React.Component {
     }
 
     componentDidMount() {
-        const { setCurrentPath, loadcurrentItem, webId } = this.props;
+        const {
+            setCurrentPath,
+            loadcurrentItem,
+            currentItem,
+            webId,
+        } = this.props;
         let { currentPath } = this.props;
 
         if (!currentPath && !loadcurrentItem && webId) {
             currentPath = webId.replace('profile/card#me', '');
             setCurrentPath(currentPath, true);
+        } else if (currentPath && currentItem && currentItem.body) {
+            currentPath =
+                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
+            setCurrentPath(currentPath);
         }
     }
 
