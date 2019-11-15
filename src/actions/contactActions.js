@@ -64,9 +64,8 @@ export const fetchContacts = (webId) => {
 export const fetchContactRecommendations = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACT_RECOMMENDATIONS });
-        console.log('IN FUNCTION');
         const user = new User(webId);
-        user.getContactRecommendations() // TODO change this to the proper function
+        user.getContactRecommendations()
             .then((recommendations) => {
                 fetchDetailContacts(recommendations).then((detailContacts) => {
                     dispatch({
