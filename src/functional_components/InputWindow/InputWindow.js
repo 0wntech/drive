@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Window } from '../Window';
 import styles from './InputWindow.module.css';
-import classNames from 'classnames';
+import ActionButton from '../ActionButton/ActionButton';
 
 export default function CreateWindow({
     onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
@@ -24,21 +24,23 @@ export default function CreateWindow({
                 autoFocus
             ></input>
             <div className={styles.buttonBar}>
-                <div
+                <ActionButton
                     onClick={onCancel ? onCancel : onClose}
                     className={styles.button}
-                >
-                    Cancel
-                </div>
-                <div
+                    color="white"
+                    label="Cancel"
+                    size="lg"
+                />
+                <ActionButton
+                    className={styles.button}
                     onClick={() => {
                         onSubmit(value);
                         onClose();
                     }}
-                    className={classNames(styles.button, styles.confirm)}
-                >
-                    Confirm
-                </div>
+                    size="lg"
+                    color="green"
+                    label="Confirm"
+                />
             </div>
         </Window>
     );

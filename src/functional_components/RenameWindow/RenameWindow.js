@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Window } from '../Window';
 import styles from './RenameWindow.module.css';
-import classNames from 'classnames';
 import utils from '../../utils/fileUtils';
 import Warning from '../Warning';
+import ActionButton from '../ActionButton/ActionButton';
 
 export default function RenameWindow({
     className,
@@ -65,7 +65,7 @@ export default function RenameWindow({
                 placeholder={cleanPlaceholder}
             ></input>
             <div className={styles.buttonBar}>
-                <div
+                <ActionButton
                     onClick={() => {
                         if (onCancel) {
                             setNewName('');
@@ -76,10 +76,11 @@ export default function RenameWindow({
                         }
                     }}
                     className={styles.button}
-                >
-                    Cancel
-                </div>
-                <div
+                    label="Cancel"
+                    color="white"
+                    size="lg"
+                />
+                <ActionButton
                     onClick={() => {
                         if (allow) {
                             onSubmit(newName);
@@ -87,12 +88,12 @@ export default function RenameWindow({
                             onClose();
                         }
                     }}
-                    className={classNames(styles.button, styles.confirm, {
-                        [styles.disabled]: !allow,
-                    })}
-                >
-                    Rename
-                </div>
+                    className={styles.button}
+                    disabled={!allow}
+                    color="green"
+                    size="lg"
+                    label="Rename"
+                />
             </div>
         </Window>
     );
