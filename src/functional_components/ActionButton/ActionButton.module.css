@@ -12,6 +12,23 @@
     background: #2791ff;
 }
 
+.red {
+    color: #fff;
+    background: #aa0000;
+}
+
+.red:hover {
+    background: #cd0000;
+}
+
+.white {
+    background: #fff;
+}
+
+.white:hover {
+    box-shadow: 0 0 5px grey;
+}
+
 .blue:hover {
     cursor: pointer;
     background-color: #2771ff;
@@ -43,4 +60,9 @@
     font-size: 1em;
     padding: 0.2em 1.5em;
     font-weight: 400;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: initial;
 }
