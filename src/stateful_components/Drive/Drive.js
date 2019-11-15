@@ -39,8 +39,6 @@ class Drive extends React.Component {
         super(props);
         this.state = {
             currPath: undefined,
-            file: undefined,
-            image: undefined,
             folders: undefined,
             isCreateFolderVisible: false,
             isConsentWindowVisible: false,
@@ -133,7 +131,6 @@ class Drive extends React.Component {
         } else {
             fetchCurrentItem(url);
             setCurrentPath(url);
-            setSelection([]);
             history.push(`/file?f=${url}`);
         }
     }
