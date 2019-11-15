@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
+import mime from 'mime';
+import { ClassicSpinner } from 'react-spinners-kit';
 import { Layout } from '../Layout';
 import styles from './FileView.module.css';
 import { setCurrentPath, updateFile } from '../../actions/appActions';
@@ -10,7 +12,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
-import { ClassicSpinner } from 'react-spinners-kit';
+import { FileEditor } from '../FileEditor/FileEditor';
 
 export const FileView = ({
     currentItem,
@@ -29,6 +31,9 @@ export const FileView = ({
             history.push('/home');
         }
     }
+
+    const fileType = mime.getType(currentItem.url);
+    const isImage = fileType && fileType.split('/')[0] === 'image';
 
     const [isEditable, setEditable] = useState(true);
     const [newBody, setNewBody] = useState('Blank');
@@ -90,7 +95,7 @@ export const FileView = ({
         <Layout
             className={styles.container}
             toolbarChildrenLeft={toolbarLeft}
-            toolbarChildrenRight={toolbarRight}
+            toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
         >
             {updatingFile ? (
                 <div className={styles.spinner}>
@@ -101,39 +106,42 @@ export const FileView = ({
                     />
                 </div>
             ) : currentItem.body ? (
-                isEditable ? (
-                    <textarea
-                        autoFocus
-                        className={classNames(styles.editor, {
-                            [styles.enabled]: isEditable,
-                        })}
-                        value={
-                            newBody === 'Blank' &&
-                            currentItem.body &&
-                            currentItem.body !== ''
-                                ? currentItem.body
-                                : newBody
-                        }
-                        onChange={(e) => {
-                            if (currentItem.body !== e.target.value) {
-                                setNewBody(e.target.value);
+                !isImage ? (
+                    isEditable ? (
+                        <FileEditor
+                            edit={isEditable}
+                            value={
+                                newBody === 'Blank' &&
+                                currentItem.body &&
+                                currentItem.body !== ''
+                                    ? currentItem.body
+                                    : newBody
                             }
-                        }}
-                        placeholder={
-                            currentItem.body !== '' ? currentItem.body : 'Blank'
-                        }
-                    />
+                            onChange={(e) => {
+                                if (currentItem.body !== e.target.value) {
+                                    setNewBody(e.target.value);
+                                }
+                            }}
+                            placeholder={
+                                currentItem.body !== ''
+                                    ? currentItem.body
+                                    : 'Blank'
+                            }
+                        />
+                    ) : (
+                        <pre
+                            className={classNames(styles.editor, {
+                                [styles.enabled]: isEditable,
+                            })}
+                            onClick={() => {
+                                setEditable(true);
+                            }}
+                        >
+                            {newBody === '' ? currentItem.body : newBody}
+                        </pre>
+                    )
                 ) : (
-                    <pre
-                        className={classNames(styles.editor, {
-                            [styles.enabled]: isEditable,
-                        })}
-                        onClick={() => {
-                            setEditable(true);
-                        }}
-                    >
-                        {newBody === '' ? currentItem.body : newBody}
-                    </pre>
+                    <img src={currentItem.url} className={styles.image} />
                 )
             ) : null}
         </Layout>
