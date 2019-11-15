@@ -29,7 +29,11 @@
 }
 
 .iconContainer:hover ellipse {
-    fill: #ff697b;
+    fill: #36a510;
+}
+
+.iconContainer ellipse {
+    fill: #36c510;
 }
 
 .image {
