@@ -1,11 +1,10 @@
 .container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-flow: row wrap;
     width: 100%;
 }
 
 .itemContainer {
     width: calc(33% - 10px);
-    margin-bottom: 20px;
+    margin: 0 0 20px 10px;
 }
