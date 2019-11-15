@@ -12,20 +12,26 @@ import {
     closeRenameWindow,
     createFile,
     createFolder,
-} from '../../actions/UserActions';
+} from '../../actions/appActions';
 import { connect } from 'react-redux';
 
-export const Windows = (props) => {
-    const {
-        isConsentWindowVisible,
-        isCreateFileVisible,
-        isCreateFolderVisible,
-        isRenameWindowVisible,
-        renamedItem,
-        selectedItems,
-        currentPath,
-    } = props;
-
+export const Windows = ({
+    isConsentWindowVisible,
+    isCreateFileVisible,
+    isCreateFolderVisible,
+    isRenameWindowVisible,
+    renamedItem,
+    selectedItems,
+    currentPath,
+    deleteItems,
+    renameItem,
+    closeConsentWindow,
+    closeCreateFileWindow,
+    closeCreateFolderWindow,
+    closeRenameWindow,
+    createFile,
+    createFolder,
+}) => {
     return (
         <Fragment>
             <DeleteWindow

@@ -1,0 +1,13 @@
+@prefix dct: <http://purl.org/dc/terms/description>.
+@prefix app: <http://schema.org/SoftwareApplication>.
+@prefix ldp: <http://www.w3.org/ns/ldp#>.
+<https://drive.owntech.io/> 
+    app:installUrl "https://github.com/0wntech/drive";
+    app:permissions [
+        dct:description ldp:Container;
+        dct:description ldp:Resource;
+    ];
+    dct:title "Owndrive";
+    dct:description "Owndrive is every file on the web";
+    dct:identifier "https://drive.owntech.io/";
+    app:applicationCategory "Data Management".

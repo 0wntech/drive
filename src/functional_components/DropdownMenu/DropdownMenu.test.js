@@ -13,11 +13,13 @@ describe('DropdownMenu', () => {
 
     it('should render correctly expanded', () => {
         const mockFunction = jest.fn();
+        const menuHead = <p>Test</p>;
         const tree = TestRenderer.create(
             <DropdownMenu
                 options={DROPDOWN_OPTIONS}
                 isExpanded={true}
                 setExpanded={mockFunction}
+                menuHead={menuHead}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();

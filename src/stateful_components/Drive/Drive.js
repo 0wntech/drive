@@ -1,6 +1,4 @@
 import React from 'react';
-import rdf from 'rdflib';
-import auth from 'solid-auth-client';
 import url from 'url';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -16,31 +14,26 @@ import {
     setCurrentPath,
     setSelection,
     sendNotification,
-    fetchCurrentItems,
-    deleteItems,
+    fetchCurrentItem,
     copyItems,
     pasteItems,
-    renameItem,
     openConsentWindow,
     openCreateFileWindow,
     openCreateFolderWindow,
     openRenameWindow,
-} from '../../actions/UserActions';
+} from '../../actions/appActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
 import { MenuProvider, Menu, Item } from 'react-contexify';
 import classNames from 'classnames';
-import { Windows } from '../../functional_components/Windows/Windows';
-const ns = require('solid-namespace')(rdf);
+import Windows from '../../functional_components/Windows/Windows';
 
 class Drive extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             currPath: undefined,
-            file: undefined,
-            image: undefined,
             folders: undefined,
             files: undefined,
         };
@@ -58,7 +51,7 @@ class Drive extends React.Component {
             />
         );
         this.followPath = this.followPath.bind(this);
-        this.uploadFolder = this.uploadFolder.bind(this);
+        this.uploadCurrentItem = this.uploadCurrentItem.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
         this.downloadItems = this.downloadItems.bind(this);
         this.loadFile = this.loadFile.bind(this);
@@ -82,29 +75,17 @@ class Drive extends React.Component {
         return [files, folders];
     }
 
-    loadFolder(url) {
-        const store = rdf.graph();
-        const fetcher = new rdf.Fetcher(store);
-
-        return fetcher.load(url).then(() => {
-            const containments = store.each(
-                rdf.sym(url),
-                ns.ldp('contains'),
-                null
-            );
-
-            return this.sortContainments(containments);
-        });
-    }
-
     loadFile(url, event = {}) {
-        const { selectedItems, setSelection } = this.props;
+        const {
+            selectedItems,
+            setSelection,
+            fetchCurrentItem,
+            setCurrentPath,
+            history,
+        } = this.props;
         if (url.endsWith('/')) {
-            url = url.split('/');
-            url.pop();
-            url = url.join('/');
+            url = url.substr(0, url.lastIndexOf('/'));
         }
-        console.log(url);
         if (isCmdPressed(event) && selectedItems.includes(url) === false) {
             const newSelection = [...selectedItems];
             newSelection.push(url);
@@ -113,35 +94,20 @@ class Drive extends React.Component {
             const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
-            const newBreadCrumbs = getBreadcrumbsFromUrl(url);
-
-            const contentType = fileUtils.getContentType(url);
-            if (contentType === 'image') {
-                this.setState({
-                    file: url,
-                    image: url,
-                    currPath: url,
-                    breadcrumbs: newBreadCrumbs,
-                    selectedItems: [],
-                });
-                return;
-            }
-
-            auth.fetch(url).then((response) => {
-                response.text().then((text) => {
-                    this.setState({
-                        file: text,
-                        currPath: url,
-                        breadcrumbs: newBreadCrumbs,
-                        selectedItems: [],
-                    });
-                });
-            });
+            fetchCurrentItem(url);
+            setCurrentPath(url);
+            history.push(`/file?f=${url}`);
         }
     }
 
     followPath(path, event = {}) {
-        const { selectedItems, setCurrentPath, setSelection } = this.props;
+        if (this.props.loadCurrentItem) return;
+        const {
+            selectedItems,
+            setCurrentPath,
+            setSelection,
+            fetchCurrentItem,
+        } = this.props;
         if (isCmdPressed(event) && selectedItems.includes(path)) {
             const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
@@ -150,17 +116,18 @@ class Drive extends React.Component {
             setSelection(newSelection);
         } else {
             setCurrentPath(path);
+            fetchCurrentItem(path, true);
         }
     }
 
     uploadFile(e) {
         console.log(e);
-        const { currentPath, fetchCurrentItems } = this.props;
+        const { currentPath, fetchCurrentItem } = this.props;
         const filePath =
             e.target.files && e.target.files.length ? e.target.files[0] : null;
         if (filePath) {
             fileUtils.uploadFile(filePath, currentPath, () => {
-                fetchCurrentItems(currentPath);
+                fetchCurrentItem(currentPath);
             });
         }
     }
@@ -178,16 +145,21 @@ class Drive extends React.Component {
     }
 
     componentDidMount() {
-        const { currentItems, currentPath, loadCurrentItems } = this.props;
+        const {
+            setCurrentPath,
+            loadCurrentItem,
+            currentItem,
+            webId,
+        } = this.props;
+        let { currentPath } = this.props;
 
-        if (!currentItems && !currentPath && !loadCurrentItems) {
-            console.log('fetching files');
-            console.log(
-                'current path + current items: ',
-                currentPath,
-                currentItems
-            );
-            fetchCurrentItems(currentPath);
+        if (!currentPath && !loadCurrentItem && webId) {
+            currentPath = webId.replace('profile/card#me', '');
+            setCurrentPath(currentPath, true);
+        } else if (currentPath && currentItem && currentItem.body) {
+            currentPath =
+                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
+            setCurrentPath(currentPath);
         }
     }
 
@@ -201,13 +173,13 @@ class Drive extends React.Component {
         });
     }
 
-    uploadFolder(e) {
+    uploadCurrentItem(e) {
         const { currentPath } = this.props;
         const files = e.target.files;
         if (files && files.length) {
             for (let file = 0; file < files.length; file++) {
                 fileUtils
-                    .uploadFolderOrFile(
+                    .uploadCurrentItemOrFile(
                         files[file],
                         currentPath +
                             encodeURIComponent(files[file].webkitRelativePath)
@@ -215,7 +187,7 @@ class Drive extends React.Component {
                     .then((response) => {
                         console.log(file, response);
                         if (file === files.length - 1) {
-                            fetchCurrentItems(currentPath);
+                            fetchCurrentItem(currentPath);
                         }
                     });
             }
@@ -241,9 +213,9 @@ class Drive extends React.Component {
     render() {
         const {
             selectedItems,
-            currentItems,
+            currentItem,
             currentPath,
-            loadCurrentItems,
+            loadCurrentItem,
             webId,
             setCurrentPath,
             loadDeletion,
@@ -251,6 +223,10 @@ class Drive extends React.Component {
             copyItems,
             pasteItems,
             clipboard,
+            openConsentWindow,
+            openCreateFileWindow,
+            openCreateFolderWindow,
+            openRenameWindow,
         } = this.props;
 
         const CONTEXTMENU_OPTIONS = [
@@ -345,28 +321,24 @@ class Drive extends React.Component {
                 onClick: openCreateFolderWindow,
             },
             {
+                label: 'Create File',
+                onClick: openCreateFileWindow,
+            },
+            {
                 label: 'Delete',
                 onClick: (item) => openConsentWindow(item),
                 disabled: false,
             },
         ];
 
-        const fileMarkup = this.state.file ? (
-            <div className={styles.renderedFile}>
-                {this.state.image ? (
-                    <img src={this.state.image} alt="requested file"></img>
-                ) : (
-                    this.state.file
-                )}
-            </div>
-        ) : (
-            undefined
-        );
-
         const toolbarLeft = webId ? (
             <div className={styles.breadcrumbsContainer}>
                 <Breadcrumbs
-                    onClick={setCurrentPath}
+                    onClick={(path) => {
+                        console.log(path);
+                        setCurrentPath(path);
+                        this.setState({ file: null });
+                    }}
                     breadcrumbs={
                         currentPath ? getBreadcrumbsFromUrl(currentPath) : null
                     }
@@ -375,13 +347,13 @@ class Drive extends React.Component {
             </div>
         ) : null;
 
-        if ((loadCurrentItems, loadDeletion, loadPaste)) {
+        if ((loadCurrentItem, loadDeletion, loadPaste)) {
             return (
                 <div className={styles.spinner}>
                     <ClassicSpinner
                         size={30}
                         color="#686769"
-                        loading={(loadCurrentItems, loadDeletion, loadPaste)}
+                        loading={(loadCurrentItem, loadDeletion, loadPaste)}
                     />
                 </div>
             );
@@ -398,42 +370,37 @@ class Drive extends React.Component {
                         className={styles.mainArea}
                         id="drive contextmenu"
                     >
-                        {fileMarkup ? (
-                            <div className={styles.container}>{fileMarkup}</div>
-                        ) : (
-                            <div className={styles.container}>
-                                {<Windows />}
-                                {currentItems ? (
-                                    <div>
-                                        {currentItems.folders.length > 0 ? (
-                                            <ItemList
-                                                selectedItems={selectedItems}
-                                                items={currentItems.folders}
-                                                currPath={currentPath}
-                                                image={folder}
-                                                onItemClick={this.followPath}
-                                                contextMenuOptions={
-                                                    CONTEXTMENU_OPTIONS
-                                                }
-                                            />
-                                        ) : null}
+                        <div className={styles.container}>
+                            <Windows />
+                            {currentItem &&
+                            (currentItem.folders || currentItem.files) ? (
+                                <div>
+                                    {currentItem.folders.length > 0 ? (
                                         <ItemList
                                             selectedItems={selectedItems}
-                                            isFile
-                                            items={currentItems.files}
+                                            items={currentItem.folders}
                                             currPath={currentPath}
-                                            image={fileIcon}
-                                            onItemClick={this.loadFile}
+                                            image={folder}
+                                            onItemClick={this.followPath}
                                             contextMenuOptions={
                                                 CONTEXTMENU_OPTIONS
                                             }
                                         />
-                                    </div>
-                                ) : (
-                                    undefined
-                                )}
-                            </div>
-                        )}
+                                    ) : null}
+                                    <ItemList
+                                        selectedItems={selectedItems}
+                                        isFile
+                                        items={currentItem.files}
+                                        currPath={currentPath}
+                                        image={fileIcon}
+                                        onItemClick={this.loadFile}
+                                        contextMenuOptions={CONTEXTMENU_OPTIONS}
+                                    />
+                                </div>
+                            ) : (
+                                undefined
+                            )}
+                        </div>
                     </MenuProvider>
                     <Menu
                         className={styles.contextMenu}
@@ -467,14 +434,15 @@ class Drive extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentItems: state.app.currentItems,
+        currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         selectedItems: state.app.selectedItems,
-        webId: state.app.webId,
-        loadCurrentItems: state.app.loadCurrentItems,
+        webId: state.user.webId,
+        loadCurrentItem: state.app.loadCurrentItem,
         loadDeletion: state.app.loadDeletion,
         clipboard: state.app.clipboard,
         loadPaste: state.app.loadPaste,
+        loadCurrentItem: state.app.loadCurrentItem,
     };
 };
 
@@ -484,12 +452,10 @@ export default withRouter(
         {
             setCurrentPath,
             sendNotification,
-            fetchCurrentItems,
+            fetchCurrentItem,
             setSelection,
-            deleteItems,
             copyItems,
             pasteItems,
-            renameItem,
             openConsentWindow,
             openCreateFileWindow,
             openCreateFolderWindow,

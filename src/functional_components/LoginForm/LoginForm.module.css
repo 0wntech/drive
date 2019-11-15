@@ -1,5 +1,4 @@
 .container {
-    flex: 1;
     display: flex;
     flex-direction: column;
     border-radius: 20px;
@@ -8,13 +7,7 @@
     height: 100%;
 }
 
-.idpList h1 {
-    margin-right: auto;
-    /* padding-top: 20px;  */
-}
-
-.idpList p {
-    margin-right: auto;
+.container p {
     margin-bottom: 0;
 }
 
@@ -22,10 +15,11 @@
     border-radius: 20px;
     padding: 35px;
     display: grid;
-    max-width: 40%;
+    width: 100%;
     grid-auto-rows: 60px;
     grid-row-gap: 10px;
     justify-items: center;
+    align-items: center;
     overflow-y: auto;
     background: #fff;
     max-height: 90%;
