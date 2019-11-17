@@ -16,10 +16,6 @@
     margin-left: 5px;
 }
 
-.button:hover {
-    transform: scale(1.05);
-}
-
 .disabled:hover {
     transform: initial;
 }
