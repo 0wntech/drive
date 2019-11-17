@@ -9,13 +9,12 @@
     min-width: 30%;
     max-width: 30%;
     border-radius: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #000;
 }
 
 .opacity {
     z-index: 4;
     position: fixed;
-
     top: 0;
     right: 0;
     bottom: 0;
