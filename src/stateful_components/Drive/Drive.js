@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
@@ -196,8 +197,8 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                'slug': folderAddress,
-                'link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
+                slug: folderAddress,
+                link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
@@ -212,8 +213,8 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                'slug': folderAddress,
-                'link': '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
+                slug: folderAddress,
+                link: '<http://www.w3.org/ns/ldp#Resource>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
@@ -485,18 +486,14 @@ class Drive extends React.Component {
                     onSubmit={(selectedItems) => {
                         deleteItems(selectedItems, currentPath);
                     }}
-                    className={
-                        isConsentWindowVisible ? styles.visible : styles.hidden
-                    }
                     onClose={this.closeConsentWindow}
+                    visible={isConsentWindowVisible}
                 ></DeleteWindow>
                 <InputWindow
                     windowName="Create Folder"
                     info=""
+                    visible={isCreateFolderVisible}
                     onSubmit={(value) => this.createFolder(value)}
-                    className={
-                        isCreateFolderVisible ? styles.visible : styles.hidden
-                    }
                     onClose={this.closeCreateFolderWindow}
                     placeholder={'Untitled'}
                 />
@@ -504,9 +501,7 @@ class Drive extends React.Component {
                     windowName="Create File"
                     info=""
                     onSubmit={(value) => this.createFile(value)}
-                    className={
-                        isCreateFileVisible ? styles.visible : styles.hidden
-                    }
+                    visible={isCreateFileVisible}
                     onClose={this.closeCreateFileWindow}
                     placeholder={'Untitled'}
                 />
@@ -518,9 +513,7 @@ class Drive extends React.Component {
                     onSubmit={(value) =>
                         renameItem(renamedItem, encodeURIComponent(value))
                     }
-                    className={
-                        isRenameFileVisible ? styles.visible : styles.hidden
-                    }
+                    visible={isRenameFileVisible}
                     onClose={this.closeRenameFileWindow}
                 />
             </Fragment>

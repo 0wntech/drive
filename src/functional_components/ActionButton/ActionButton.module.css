@@ -1,6 +1,6 @@
 .container {
     border-radius: 20px;
-    color: #666;
+    color: #000;
     display: flex;
     align-items: center;
     font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
@@ -10,6 +10,23 @@
 .blue {
     color: #fff;
     background: #2791ff;
+}
+
+.red {
+    color: #fff;
+    background: #cd0000;
+}
+
+.red:hover {
+    background: #bd0000;
+}
+
+.white {
+    background: #fff;
+}
+
+.white:hover {
+    color: #333;
 }
 
 .blue:hover {
@@ -43,4 +60,9 @@
     font-size: 1em;
     padding: 0.2em 1.5em;
     font-weight: 400;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: initial;
 }
