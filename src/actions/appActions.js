@@ -72,15 +72,10 @@ export const fetchCurrentItem = (url, folder = false) => {
                                 folders: folderNames,
                             },
                         });
-                    } else if (item) {
+                    } else if (item || item === '') {
                         dispatch({
                             type: FETCH_CURRENT_ITEM_SUCCESS,
                             payload: { body: item, url: url },
-                        });
-                    } else {
-                        dispatch({
-                            type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: { body: 'Empty', url: url },
                         });
                     }
                 })

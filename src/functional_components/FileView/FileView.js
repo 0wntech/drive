@@ -39,7 +39,7 @@ export const FileView = ({
     const isImage = fileType && fileType.split('/')[0] === 'image';
 
     const [isEditable, setEditable] = useState(true);
-    const [newBody, setNewBody] = useState('Blank');
+    const [newBody, setNewBody] = useState('');
 
     const onCancel = () => {
         setNewBody(currentItem.body);
@@ -100,7 +100,7 @@ export const FileView = ({
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
         >
-            {updatingFile || loadCurrentItem ? (
+            {(updatingFile, loadCurrentItem) ? (
                 <div className={styles.spinner}>
                     <ClassicSpinner
                         size={30}
@@ -108,32 +108,30 @@ export const FileView = ({
                         loading={(updatingFile, loadCurrentItem)}
                     />
                 </div>
-            ) : currentItem.body ? (
+            ) : currentItem.body || currentItem.body === '' ? (
                 !isImage ? (
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
                             value={
-                                newBody === 'Blank' &&
+                                newBody === '' &&
                                 currentItem.body &&
                                 currentItem.body !== ''
                                     ? currentItem.body
                                     : newBody
                             }
                             onChange={(e) => {
-                                if (currentItem.body !== e.target.value) {
-                                    setNewBody(e.target.value);
-                                }
+                                setNewBody(e.target.value);
                             }}
                             placeholder={
-                                currentItem.body !== ''
+                                currentItem.body && currentItem.body !== ''
                                     ? currentItem.body
-                                    : 'Blank'
+                                    : 'Empty'
                             }
                         />
                     ) : (
                         <pre
-                            className={classNames(styles.editor, {
+                            className={classNames(styles.file, {
                                 [styles.enabled]: isEditable,
                             })}
                             onClick={() => {

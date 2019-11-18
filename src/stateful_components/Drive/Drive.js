@@ -1,8 +1,8 @@
+/* eslint-disable quote-props */
 import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
 import url from 'url';
-import mime from 'mime';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.css';
@@ -61,7 +61,6 @@ class Drive extends React.Component {
             />
         );
         this.createFolder = this.createFolder.bind(this);
-        this.createFile = this.createFile.bind(this);
         this.followPath = this.followPath.bind(this);
         this.uploadCurrentItem = this.uploadCurrentItem.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
@@ -176,8 +175,8 @@ class Drive extends React.Component {
         const request = {
             method: 'POST',
             headers: {
-                'slug': folderAddress,
-                'link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
+                slug: folderAddress,
+                link: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
                 'Content-Type': 'text/turtle',
             },
         };
@@ -185,32 +184,6 @@ class Drive extends React.Component {
         auth.fetch(currentPath, request).then(() => {
             setCurrentPath(currentPath);
             fetchCurrentItem(currentPath);
-        });
-    }
-
-    createFile(folderAddress) {
-        const { currentPath, setCurrentPath } = this.props;
-        const contentType = mime.getType(folderAddress);
-        const request = {
-            method: 'POST',
-            headers: {
-                'slug': folderAddress,
-                'Content-Type': contentType
-                    ? contentType === 'markdown'
-                        ? 'text/markdown'
-                        : contentType
-                    : 'text/turtle',
-            },
-        };
-
-        if (request.headers['Content-Type'] === 'text/turtle') {
-            request.headers.link =
-                '<http://www.w3.org/ns/ldp#Resource>; rel="type"';
-        }
-
-        auth.fetch(currentPath, request).then(() => {
-            setCurrentPath(currentPath);
-            fetchCurrentItem(currentPath, true);
         });
     }
 
@@ -475,18 +448,14 @@ class Drive extends React.Component {
                     onSubmit={(selectedItems) => {
                         deleteItems(selectedItems, currentPath);
                     }}
-                    className={
-                        isConsentWindowVisible ? styles.visible : styles.hidden
-                    }
                     onClose={this.closeConsentWindow}
+                    visible={isConsentWindowVisible}
                 ></DeleteWindow>
                 <InputWindow
                     windowName="Create Folder"
                     info=""
+                    visible={isCreateFolderVisible}
                     onSubmit={(value) => this.createFolder(value)}
-                    className={
-                        isCreateFolderVisible ? styles.visible : styles.hidden
-                    }
                     onClose={this.closeCreateFolderWindow}
                     placeholder={'Untitled'}
                 />
@@ -497,6 +466,7 @@ class Drive extends React.Component {
                     className={
                         isCreateFileVisible ? styles.visible : styles.hidden
                     }
+                    visible={isCreateFileVisible}
                     onClose={this.closeCreateFileWindow}
                     placeholder={'Untitled'}
                 />
@@ -508,9 +478,7 @@ class Drive extends React.Component {
                     onSubmit={(value) =>
                         renameItem(renamedItem, encodeURIComponent(value))
                     }
-                    className={
-                        isRenameFileVisible ? styles.visible : styles.hidden
-                    }
+                    visible={isRenameFileVisible}
                     onClose={this.closeRenameFileWindow}
                 />
             </Fragment>

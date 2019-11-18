@@ -25,6 +25,10 @@
     width: 24px;
 }
 
+.file {
+    padding: 1em;
+}
+
 .image {
     max-width: 50vw;
     position: absolute;
