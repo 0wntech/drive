@@ -33,14 +33,14 @@ export const setCurrentPath = (newPath) => {
     return (dispatch) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
-        dispatch(fetchCurrentItems(newPath));
+        return dispatch(fetchCurrentItems(newPath));
     };
 };
 
 export const fetchCurrentItems = (url) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CURRENT_ITEMS });
-        fileUtils
+        return fileUtils
             .getFolderFiles(url)
             .then((items) => {
                 const fileNames = items.files.map((file) => {
