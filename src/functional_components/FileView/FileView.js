@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
@@ -15,6 +15,7 @@ import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
 
 export const FileView = ({
+    loadCurrentItem,
     currentItem,
     currentPath,
     webId,
@@ -23,14 +24,16 @@ export const FileView = ({
     updatingFile,
     history,
 }) => {
-    const fileParam = getFileParamsFromUrl(window.location.href).f;
-    if (fileParam) {
-        if (!currentPath || !currentItem.body) {
-            setCurrentPath(fileParam);
-        } else if (currentItem.files || currentItem.folders) {
-            history.push('/home');
+    useEffect(() => {
+        const fileParam = getFileParamsFromUrl(window.location.href).f;
+        if (fileParam) {
+            if (!currentItem.body || !currentPath) {
+                setCurrentPath(fileParam);
+            } else if (currentItem.files || currentItem.folders) {
+                history.push('/home');
+            }
         }
-    }
+    }, []);
 
     const fileType = mime.getType(currentItem.url);
     const isImage = fileType && fileType.split('/')[0] === 'image';
@@ -150,6 +153,7 @@ export const FileView = ({
 
 const mapStateToProps = (state) => {
     return {
+        loadCurrentItem: state.app.loadCurrentItem,
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         webId: state.user.webId,

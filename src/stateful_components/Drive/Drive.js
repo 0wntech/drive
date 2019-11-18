@@ -111,13 +111,7 @@ class Drive extends React.Component {
     }
 
     loadFile(url, event = {}) {
-        const {
-            selectedItems,
-            setSelection,
-            fetchCurrentItem,
-            setCurrentPath,
-            history,
-        } = this.props;
+        const { selectedItems, setSelection, history } = this.props;
         if (url.endsWith('/')) {
             url = url.substr(0, url.lastIndexOf('/'));
         }
@@ -129,8 +123,6 @@ class Drive extends React.Component {
             const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
-            fetchCurrentItem(url);
-            setCurrentPath(url);
             history.push(`/file?f=${url}`);
         }
     }
