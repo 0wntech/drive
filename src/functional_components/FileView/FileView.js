@@ -100,12 +100,12 @@ export const FileView = ({
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
         >
-            {updatingFile ? (
+            {updatingFile || loadCurrentItem ? (
                 <div className={styles.spinner}>
                     <ClassicSpinner
                         size={30}
                         color="#686769"
-                        loading={updatingFile}
+                        loading={(updatingFile, loadCurrentItem)}
                     />
                 </div>
             ) : currentItem.body ? (
