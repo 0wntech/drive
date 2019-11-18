@@ -20,7 +20,7 @@ Feel free to contribute.
 
 ## Precommit- / Prepush- hook
 
--   This Project runs all tests and applyies all linter rules before commit or push
+-   This Project runs all tests and applies all linter rules before commit or push
 -   If you have linter errors try `eslint "**/*.js` in terminal or remove the linter errors by hand
 
 ## Tests and Coverage
@@ -52,8 +52,8 @@ This is an OpenSource Project, be part of it!
 -   Do your magic
 -   Write Tests for it (we can only accept tested code)
 -   Create a Pull request
--   Let someone review it
--   Congratulation, if your Pull Request gets accepted you contributed to the private web v1.0
+-   Wait for somebody to review your changes
+-   Congratulations, if your Pull Request gets accepted you contributed to the private web v1.0
 
 ## Deployment
 
