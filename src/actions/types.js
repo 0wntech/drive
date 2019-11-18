@@ -76,3 +76,9 @@ export const RENAME_ITEM_FAILURE = 'rename_item_failure';
 export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
 export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
+
+export const FETCH_CONTACT_RECOMMENDATIONS = 'fetch_contact_recommendations';
+export const FETCH_CONTACT_RECOMMENDATIONS_SUCCESS =
+    'fetch_contact_recommendations_success';
+export const FETCH_CONTACT_RECOMMENDATIONS_FAILURE =
+    'fetch_contact_recommendations_failure';

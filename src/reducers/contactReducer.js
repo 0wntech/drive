@@ -6,25 +6,20 @@ import {
     SEARCH_CONTACT,
     SEARCH_CONTACT_SUCCESS,
     SEARCH_CONTACT_FAILURE,
+    FETCH_CONTACT_RECOMMENDATIONS,
+    FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
+    FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
     loadContacts: false,
     contacts: [],
+    contactRecommendations: [],
     currentContact: null,
     contactSearchResult: [],
     searchingContacts: false,
     error: null,
-    // [
-    //     {
-    //         name: 'testdata',
-    //         webId: 'https://bejow.solid.community/profile/card#me',
-    //     },
-    //     {
-    //         name: 'testdata2',
-    //         webId: 'https://bejow.solid.community/profile/card#me',
-    //     },
-    // ],
+    loadContactRecommendations: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -49,6 +44,20 @@ export default (state = INITIAL_STATE, action) => {
             };
         case SEARCH_CONTACT_FAILURE:
             return { ...state, searchingContacts: false, error: payload };
+        case FETCH_CONTACT_RECOMMENDATIONS:
+            return { ...state, loadContactRecommendations: true };
+        case FETCH_CONTACT_RECOMMENDATIONS_SUCCESS:
+            return {
+                ...state,
+                loadContactRecommendations: false,
+                contactRecommendations: payload,
+            };
+        case FETCH_CONTACT_RECOMMENDATIONS_FAILURE:
+            return {
+                ...state,
+                loadContactRecommendations: false,
+                error: payload,
+            };
         default:
             return state;
     }
