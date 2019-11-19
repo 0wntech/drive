@@ -8,6 +8,9 @@ import {
     SEARCH_CONTACT,
     SEARCH_CONTACT_SUCCESS,
     SEARCH_CONTACT_FAILURE,
+    FETCH_CONTACT_RECOMMENDATIONS,
+    FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
+    FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
 } from './types';
 import User from 'ownuser';
 import idps from '../constants/idps.json';
@@ -22,9 +25,10 @@ export const addContact = (webId, contactWebId) => {
     return (dispatch) => {
         dispatch({ type: ADD_CONTACT });
         const user = new User(webId);
-        user.addContact(contactWebId).then(() =>
-            dispatch(fetchContacts(webId))
-        );
+        user.addContact(contactWebId).then(() => {
+            dispatch(fetchContacts(webId));
+            dispatch(fetchContactRecommendations(webId));
+        });
     };
 };
 
@@ -42,7 +46,6 @@ export const fetchContacts = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
         const user = new User(webId);
-        console.log(user);
         user.getContacts()
             .then((contacts) => {
                 fetchDetailContacts(contacts).then((detailContacts) => {
@@ -54,6 +57,28 @@ export const fetchContacts = (webId) => {
             })
             .catch((error) =>
                 dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
+            );
+    };
+};
+
+export const fetchContactRecommendations = (webId) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CONTACT_RECOMMENDATIONS });
+        const user = new User(webId);
+        user.getContactRecommendations()
+            .then((recommendations) => {
+                fetchDetailContacts(recommendations).then((detailContacts) => {
+                    dispatch({
+                        type: FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
+                        payload: detailContacts,
+                    });
+                });
+            })
+            .catch((error) =>
+                dispatch({
+                    type: FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
+                    payload: error,
+                })
             );
     };
 };
