@@ -23,6 +23,7 @@ export const FileView = ({
     updateFile,
     updatingFile,
     history,
+    error,
 }) => {
     useEffect(() => {
         const fileParam = getFileParamsFromUrl(window.location.href).f;
@@ -38,7 +39,7 @@ export const FileView = ({
     const fileType = mime.getType(currentItem.url);
     const isImage = fileType && fileType.split('/')[0] === 'image';
 
-    const [isEditable, setEditable] = useState(true);
+    const [isEditable, setEditable] = useState(false);
     const [newBody, setNewBody] = useState('');
 
     const onCancel = () => {
@@ -108,6 +109,11 @@ export const FileView = ({
                         loading={(updatingFile, loadCurrentItem)}
                     />
                 </div>
+            ) : error ? (
+                <>
+                    <div>Sorry, we cannot load this file.</div>
+                    <p className={styles.error}>{error.message}</p>
+                </>
             ) : currentItem.body || currentItem.body === '' ? (
                 !isImage ? (
                     isEditable ? (
@@ -156,6 +162,7 @@ const mapStateToProps = (state) => {
         currentPath: state.app.currentPath,
         webId: state.user.webId,
         updatingFile: state.app.updatingFile,
+        error: state.app.error,
     };
 };
 

@@ -55,7 +55,12 @@ export default (state = INITIAL_STATE, action) => {
         case FETCH_CURRENT_ITEM:
             return { ...state, loadCurrentItem: true };
         case FETCH_CURRENT_ITEM_SUCCESS:
-            return { ...state, loadCurrentItem: false, currentItem: payload };
+            return {
+                ...state,
+                loadCurrentItem: false,
+                currentItem: payload,
+                error: false,
+            };
         case FETCH_CURRENT_ITEM_FAIL:
             return { ...state, loadCurrentItem: false, error: payload };
         case FETCH_NOTIFICATIONS:

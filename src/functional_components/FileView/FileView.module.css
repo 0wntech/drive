@@ -21,6 +21,11 @@
     z-index: 3;
 }
 
+.error {
+    margin-top: 10px;
+    color: #f41818;
+}
+
 .icon {
     width: 24px;
 }
