@@ -1,9 +1,9 @@
 import idps from '../constants/idps';
 
 import {
-    FETCH_CURRENT_ITEMS,
-    FETCH_CURRENT_ITEMS_SUCCESS,
-    FETCH_CURRENT_ITEMS_FAIL,
+    FETCH_CURRENT_ITEM,
+    FETCH_CURRENT_ITEM_SUCCESS,
+    FETCH_CURRENT_ITEM_FAIL,
     SET_CURRENT_PATH,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
@@ -21,15 +21,22 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    UPDATE_FILE,
+    UPDATE_FILE_SUCCESS,
+    UPDATE_FILE_FAILURE,
+    CREATE_FILE,
+    CREATE_FILE_SUCCESS,
+    CREATE_FILE_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
     loadNotifications: false,
-    loadCurrentItems: false,
+    loadcurrentItem: false,
     loadDeletion: false,
+    updatingFile: false,
     error: null,
     currentPath: null,
-    currentItems: null,
+    currentItem: null,
     notifications: null,
     selectedItems: [],
     clipboard: [],
@@ -45,12 +52,17 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, currentPath: payload, selectedItem: [] };
         case SET_SELECTION:
             return { ...state, selectedItems: [...payload] };
-        case FETCH_CURRENT_ITEMS:
-            return { ...state, loadFolder: true };
-        case FETCH_CURRENT_ITEMS_SUCCESS:
-            return { ...state, loadFolder: false, currentItems: payload };
-        case FETCH_CURRENT_ITEMS_FAIL:
-            return { ...state, loadFolder: false, error: payload };
+        case FETCH_CURRENT_ITEM:
+            return { ...state, loadCurrentItem: true };
+        case FETCH_CURRENT_ITEM_SUCCESS:
+            return {
+                ...state,
+                loadCurrentItem: false,
+                currentItem: payload,
+                error: false,
+            };
+        case FETCH_CURRENT_ITEM_FAIL:
+            return { ...state, loadCurrentItem: false, error: payload };
         case FETCH_NOTIFICATIONS:
             return {
                 ...state,
@@ -88,6 +100,18 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, renamingItem: false };
         case RENAME_ITEM_FAILURE:
             return { ...state, renamingItem: false, error: payload };
+        case UPDATE_FILE:
+            return { ...state, updatingFile: true };
+        case UPDATE_FILE_SUCCESS:
+            return { ...state, updatingFile: false, currentItem: payload };
+        case UPDATE_FILE_FAILURE:
+            return { ...state, updatingFile: false, error: payload };
+        case CREATE_FILE:
+            return { ...state, creatingFile: true };
+        case CREATE_FILE_SUCCESS:
+            return { ...state, creatingFile: false };
+        case CREATE_FILE_FAILURE:
+            return { ...state, creatingFile: false, error: payload };
         default:
             return state;
     }
