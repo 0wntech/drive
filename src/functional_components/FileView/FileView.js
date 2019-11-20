@@ -29,7 +29,11 @@ export const FileView = ({
         const fileParam = getFileParamsFromUrl(window.location.href).f;
         if (fileParam) {
             if (!currentItem.body || !currentPath) {
-                setCurrentPath(fileParam);
+                let options = {};
+                if (mime.getType(currentItem.url).includes('image')) {
+                    options = { noFetch: true };
+                }
+                setCurrentPath(fileParam, options);
             } else if (currentItem.files || currentItem.folders) {
                 history.push('/home');
             }
@@ -37,7 +41,7 @@ export const FileView = ({
     }, []);
 
     const fileType = mime.getType(currentItem.url);
-    const isImage = fileType && fileType.split('/')[0] === 'image';
+    const isImage = fileType ? fileType.includes('image') : null;
 
     const [isEditable, setEditable] = useState(false);
     const [newBody, setNewBody] = useState('');
