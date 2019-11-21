@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
@@ -15,6 +15,7 @@ import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
 
 export const FileView = ({
+    loadCurrentItem,
     currentItem,
     currentPath,
     webId,
@@ -22,21 +23,24 @@ export const FileView = ({
     updateFile,
     updatingFile,
     history,
+    error,
 }) => {
-    const fileParam = getFileParamsFromUrl(window.location.href).f;
-    if (fileParam) {
-        if (!currentPath || !currentItem.body) {
-            setCurrentPath(fileParam);
-        } else if (currentItem.files || currentItem.folders) {
-            history.push('/home');
+    useEffect(() => {
+        const fileParam = getFileParamsFromUrl(window.location.href).f;
+        if (fileParam) {
+            if (!currentItem.body || !currentPath) {
+                setCurrentPath(fileParam);
+            } else if (currentItem.files || currentItem.folders) {
+                history.push('/home');
+            }
         }
-    }
+    }, []);
 
     const fileType = mime.getType(currentItem.url);
     const isImage = fileType && fileType.split('/')[0] === 'image';
 
-    const [isEditable, setEditable] = useState(true);
-    const [newBody, setNewBody] = useState('Blank');
+    const [isEditable, setEditable] = useState(false);
+    const [newBody, setNewBody] = useState('');
 
     const onCancel = () => {
         setNewBody(currentItem.body);
@@ -97,40 +101,43 @@ export const FileView = ({
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
         >
-            {updatingFile ? (
+            {(updatingFile, loadCurrentItem) ? (
                 <div className={styles.spinner}>
                     <ClassicSpinner
                         size={30}
                         color="#686769"
-                        loading={updatingFile}
+                        loading={(updatingFile, loadCurrentItem)}
                     />
                 </div>
-            ) : currentItem.body ? (
+            ) : error ? (
+                <>
+                    <div>Sorry, we cannot load this file.</div>
+                    <p className={styles.error}>{error.message}</p>
+                </>
+            ) : currentItem.body || currentItem.body === '' ? (
                 !isImage ? (
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
                             value={
-                                newBody === 'Blank' &&
+                                newBody === '' &&
                                 currentItem.body &&
                                 currentItem.body !== ''
                                     ? currentItem.body
                                     : newBody
                             }
                             onChange={(e) => {
-                                if (currentItem.body !== e.target.value) {
-                                    setNewBody(e.target.value);
-                                }
+                                setNewBody(e.target.value);
                             }}
                             placeholder={
-                                currentItem.body !== ''
+                                currentItem.body && currentItem.body !== ''
                                     ? currentItem.body
-                                    : 'Blank'
+                                    : 'Empty'
                             }
                         />
                     ) : (
                         <pre
-                            className={classNames(styles.editor, {
+                            className={classNames(styles.file, {
                                 [styles.enabled]: isEditable,
                             })}
                             onClick={() => {
@@ -150,10 +157,12 @@ export const FileView = ({
 
 const mapStateToProps = (state) => {
     return {
+        loadCurrentItem: state.app.loadCurrentItem,
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         webId: state.user.webId,
         updatingFile: state.app.updatingFile,
+        error: state.app.error,
     };
 };
 

@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Window } from '../Window';
 import styles from './RenameWindow.module.css';
-import classNames from 'classnames';
 import utils from '../../utils/fileUtils';
 import Warning from '../Warning';
+import ActionButton from '../ActionButton/ActionButton';
 
 export default function RenameWindow({
     className,
-    onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
+    onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
     windowName,
     placeholder,
+    visible,
     currentFolder,
 }) {
     const [newName, setNewName] = useState('');
@@ -40,6 +41,7 @@ export default function RenameWindow({
     return (
         <Window
             windowName={windowName}
+            visible={visible}
             onClose={() => {
                 setNewName('');
                 onClose();
@@ -60,13 +62,14 @@ export default function RenameWindow({
                 />
             ) : null}
             <input
+                autoFocus
                 className={styles.input}
                 value={newName}
                 onChange={(event) => setNewName(event.target.value)}
                 placeholder={cleanPlaceholder}
             ></input>
             <div className={styles.buttonBar}>
-                <div
+                <ActionButton
                     onClick={() => {
                         if (onCancel) {
                             setNewName('');
@@ -77,10 +80,11 @@ export default function RenameWindow({
                         }
                     }}
                     className={styles.button}
-                >
-                    Cancel
-                </div>
-                <div
+                    label="Cancel"
+                    color="white"
+                    size="lg"
+                />
+                <ActionButton
                     onClick={() => {
                         if (allow) {
                             onSubmit(newName);
@@ -88,12 +92,12 @@ export default function RenameWindow({
                             onClose();
                         }
                     }}
-                    className={classNames(styles.button, styles.confirm, {
-                        [styles.disabled]: !allow,
-                    })}
-                >
-                    Rename
-                </div>
+                    className={styles.button}
+                    disabled={!allow}
+                    color="green"
+                    size="lg"
+                    label="Rename"
+                />
             </div>
         </Window>
     );

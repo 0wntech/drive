@@ -145,12 +145,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, creatingFile: false };
         case CREATE_FILE_FAILURE:
             return { ...state, creatingFile: false, error: payload };
-        case CREATE_FOLDER:
-            return { ...state, creatingFolder: true };
         case OPEN_CREATE_FOLDER_WINDOW:
             return { ...state, isCreateFolderVisible: true };
         case CLOSE_CREATE_FOLDER_WINDOW:
             return { ...state, isCreateFolderVisible: false };
+        case CREATE_FOLDER:
+            return { ...state, creatingFolder: true };
         case CREATE_FOLDER_SUCCESS:
             return { ...state, creatingFolder: false };
         case CREATE_FOLDER_FAILURE:

@@ -42,7 +42,7 @@ class Drive extends React.Component {
             <ToolbarButtons
                 onFileCreation={openCreateFileWindow}
                 onFolderCreation={openCreateFolderWindow}
-                onFolderUpload={this.uploadFolder}
+                onFolderUpload={this.uploadCurrentItem}
                 onDownload={this.downloadItems}
                 uploadFile={this.uploadFile}
                 onDelete={() => {
@@ -76,13 +76,7 @@ class Drive extends React.Component {
     }
 
     loadFile(url, event = {}) {
-        const {
-            selectedItems,
-            setSelection,
-            fetchCurrentItem,
-            setCurrentPath,
-            history,
-        } = this.props;
+        const { selectedItems, setSelection, history } = this.props;
         if (url.endsWith('/')) {
             url = url.substr(0, url.lastIndexOf('/'));
         }
@@ -94,8 +88,6 @@ class Drive extends React.Component {
             const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
-            fetchCurrentItem(url);
-            setCurrentPath(url);
             history.push(`/file?f=${url}`);
         }
     }
@@ -323,6 +315,10 @@ class Drive extends React.Component {
             {
                 label: 'Create File',
                 onClick: openCreateFileWindow,
+            },
+            {
+                label: 'Create File',
+                onClick: () => this.openCreateFileWindow(),
             },
             {
                 label: 'Delete',

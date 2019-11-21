@@ -83,15 +83,10 @@ export const fetchCurrentItem = (url, folder = false) => {
                                 folders: folderNames,
                             },
                         });
-                    } else if (item) {
+                    } else if (item || item === '') {
                         dispatch({
                             type: FETCH_CURRENT_ITEM_SUCCESS,
                             payload: { body: item, url: url },
-                        });
-                    } else {
-                        dispatch({
-                            type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: { body: 'Empty', url: url },
                         });
                     }
                 })
@@ -162,7 +157,7 @@ export const updateFile = (file, body) => {
         } else {
             dispatch({
                 type: UPDATE_FILE_FAILURE,
-                payload: { body: body, url: file },
+                payload: 'File can\'t be set to empty',
             });
         }
     };
@@ -266,6 +261,25 @@ export const pasteItems = (items, location) => {
     };
 };
 
+export const createFile = function(name, path) {
+    return (dispatch) => {
+        dispatch({ type: CREATE_FILE });
+        const contentType = mime.getType(name);
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(name).host + '/',
+        });
+        return fileClient
+            .create(path + name, { contentType: contentType })
+            .then(() => {
+                dispatch({ type: CREATE_FILE_SUCCESS });
+                dispatch(setCurrentPath(path));
+            })
+            .catch((err) => {
+                dispatch({ type: CREATE_FILE_FAILURE, payload: err });
+            });
+    };
+};
+
 export const renameItem = function(renamedItem, value) {
     return (dispatch) => {
         dispatch({ type: RENAME_ITEM });
@@ -361,48 +375,6 @@ export const closeRenameWindow = function() {
         dispatch({ type: CLOSE_RENAME_WINDOW });
     };
 };
-
-export const createFile = function(name, path) {
-    return (dispatch) => {
-        dispatch({ type: CREATE_FILE });
-        const contentType = mime.getType(name);
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(path).host + '/',
-        });
-        return fileClient
-            .create(path + name, { contentType: contentType })
-            .then(() => {
-                dispatch({ type: CREATE_FILE_SUCCESS });
-                dispatch(setCurrentPath(path));
-            })
-            .catch((err) => {
-                dispatch({ type: CREATE_FILE_FAILURE, payload: err });
-            });
-    };
-};
-
-// export const createFolder = function(folderName, currentPath) {
-//     return (dispatch) => {
-//         dispatch({ type: CREATE_FOLDER });
-//         const request = {
-//             method: 'POST',
-//             headers: {
-//                 'slug': folderName,
-//                 'link': '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
-//                 'Content-Type': 'text/turtle',
-//             },
-//         };
-
-//         auth.fetch(currentPath, request)
-//             .then(() => {
-//                 dispatch({ type: CREATE_FOLDER_SUCCESS });
-//                 dispatch(setCurrentPath(currentPath));
-//             })
-//             .catch(() => {
-//                 dispatch({ type: CREATE_FOLDER_FAILURE });
-//             });
-//     };
-// };
 
 export const createFolder = function(name, path) {
     return (dispatch) => {

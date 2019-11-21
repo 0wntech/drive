@@ -100,3 +100,9 @@ export const CREATE_FILE_FAILURE = 'create_file_failure';
 export const UPDATE_FILE = 'update_file';
 export const UPDATE_FILE_SUCCESS = 'update_file_success';
 export const UPDATE_FILE_FAILURE = 'update_file_failure';
+
+export const FETCH_CONTACT_RECOMMENDATIONS = 'fetch_contact_recommendations';
+export const FETCH_CONTACT_RECOMMENDATIONS_SUCCESS =
+    'fetch_contact_recommendations_success';
+export const FETCH_CONTACT_RECOMMENDATIONS_FAILURE =
+    'fetch_contact_recommendations_failure';
