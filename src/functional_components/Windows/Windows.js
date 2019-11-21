@@ -40,18 +40,14 @@ export const Windows = ({
                 onSubmit={(selectedItems) => {
                     deleteItems(selectedItems, currentPath);
                 }}
-                className={
-                    isConsentWindowVisible ? styles.visible : styles.hidden
-                }
+                visible={isConsentWindowVisible}
                 onClose={closeConsentWindow}
             ></DeleteWindow>
             <InputWindow
                 windowName="Create Folder"
                 info=""
-                onSubmit={(value) => createFolder(value, currentPath)}
-                className={
-                    isCreateFolderVisible ? styles.visible : styles.hidden
-                }
+                visible={isCreateFolderVisible}
+                onSubmit={(value) => createFolder(value)}
                 onClose={closeCreateFolderWindow}
                 placeholder={'Untitled'}
             />
@@ -60,6 +56,7 @@ export const Windows = ({
                 info=""
                 onSubmit={(value) => createFile(value, currentPath)}
                 className={isCreateFileVisible ? styles.visible : styles.hidden}
+                visible={isCreateFileVisible}
                 onClose={closeCreateFileWindow}
                 placeholder={'Untitled'}
             />
@@ -70,9 +67,7 @@ export const Windows = ({
                 onSubmit={(value) =>
                     renameItem(renamedItem, encodeURIComponent(value))
                 }
-                className={
-                    isRenameWindowVisible ? styles.visible : styles.hidden
-                }
+                visible={isRenameWindowVisible}
                 onClose={closeRenameWindow}
             />
         </Fragment>

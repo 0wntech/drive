@@ -27,16 +27,11 @@ import ToolbarButtons from '../../functional_components/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
 import { MenuProvider, Menu, Item } from 'react-contexify';
 import classNames from 'classnames';
-import Windows from '../../functional_components/Windows/Windows';
+import Windows from '../../functional_components/Windows';
 
 class Drive extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            currPath: undefined,
-            folders: undefined,
-            files: undefined,
-        };
 
         this.toolbarRight = (
             <ToolbarButtons
@@ -46,7 +41,8 @@ class Drive extends React.Component {
                 onDownload={this.downloadItems}
                 uploadFile={this.uploadFile}
                 onDelete={() => {
-                    openConsentWindow();
+                    const deletable = this.addForDelete();
+                    if (deletable) openConsentWindow();
                 }}
             />
         );
@@ -125,14 +121,12 @@ class Drive extends React.Component {
     }
 
     clearSelection(e) {
+        const { setSelection } = this.props;
         if (
-            e.target.nodeName !== 'IMG' &&
-            e.target.nodeName !== 'P' &&
-            e.target.innerHTML !== 'Delete'
+            !e.target.className.includes('Item_') &&
+            !e.target.className.includes('File_')
         ) {
-            this.setState({
-                selectedItems: [],
-            });
+            setSelection([]);
         }
     }
 
@@ -317,10 +311,6 @@ class Drive extends React.Component {
                 onClick: openCreateFileWindow,
             },
             {
-                label: 'Create File',
-                onClick: () => this.openCreateFileWindow(),
-            },
-            {
                 label: 'Delete',
                 onClick: (item) => openConsentWindow(item),
                 disabled: false,
@@ -333,7 +323,6 @@ class Drive extends React.Component {
                     onClick={(path) => {
                         console.log(path);
                         setCurrentPath(path);
-                        this.setState({ file: null });
                     }}
                     breadcrumbs={
                         currentPath ? getBreadcrumbsFromUrl(currentPath) : null
@@ -359,8 +348,8 @@ class Drive extends React.Component {
                     toolbarChildrenLeft={toolbarLeft}
                     toolbarChildrenRight={this.toolbarRight}
                     className={styles.grid}
-                    onClick={this.clearSelection}
                     label="Drive"
+                    onClick={this.clearSelection}
                 >
                     <MenuProvider
                         className={styles.mainArea}
