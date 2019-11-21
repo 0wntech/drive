@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
 import url from 'url';
+import mime from 'mime';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.css';
@@ -26,6 +27,7 @@ import {
     pasteItems,
     renameItem,
     createFile,
+    downloadFile,
 } from '../../actions/appActions';
 import { ClassicSpinner } from 'react-spinners-kit';
 import ToolbarButtons from '../../functional_components/ToolbarButtons';
@@ -48,18 +50,6 @@ class Drive extends React.Component {
             renamedItem: undefined,
         };
 
-        this.toolbarRight = (
-            <ToolbarButtons
-                onFileCreation={this.openCreateFileWindow}
-                onFolderCreation={this.openCreateFolderWindow}
-                onFolderUpload={this.uploadCurrentItem}
-                onDownload={this.downloadItems}
-                uploadFile={this.uploadFile}
-                onDelete={() => {
-                    this.openConsentWindow();
-                }}
-            />
-        );
         this.createFolder = this.createFolder.bind(this);
         this.followPath = this.followPath.bind(this);
         this.uploadCurrentItem = this.uploadCurrentItem.bind(this);
@@ -75,6 +65,19 @@ class Drive extends React.Component {
         this.closeCreateFileWindow = this.closeCreateFileWindow.bind(this);
         this.openRenameFileWindow = this.openRenameFileWindow.bind(this);
         this.closeRenameFileWindow = this.closeRenameFileWindow.bind(this);
+
+        this.toolbarRight = (
+            <ToolbarButtons
+                onFileCreation={this.openCreateFileWindow}
+                onFolderCreation={this.openCreateFolderWindow}
+                onFolderUpload={this.uploadCurrentItem}
+                onDownload={this.downloadItems}
+                uploadFile={this.uploadFile}
+                onDelete={() => {
+                    this.openConsentWindow();
+                }}
+            />
+        );
     }
 
     sortContainments(urls) {
@@ -207,12 +210,17 @@ class Drive extends React.Component {
     }
 
     downloadItems() {
-        const { selectedItems, webId } = this.props;
+        const { selectedItems, webId, downloadFile } = this.props;
         selectedItems.forEach((item) => {
-            const download =
-                webId.replace('profile/card#me', 'download?path=') +
-                url.parse(item).pathname;
-            window.open(download.replace(/\/+$/, ''));
+            const file = mime.getType(item);
+            if (file) {
+                downloadFile(item);
+            } else {
+                const download =
+                    webId.replace('profile/card#me', 'download?path=') +
+                    url.parse(item).pathname;
+                window.open(download.replace(/\/+$/, ''));
+            }
         });
     }
 
@@ -596,6 +604,7 @@ export default withRouter(
             pasteItems,
             renameItem,
             createFile,
+            downloadFile,
         }
     )(Drive)
 );

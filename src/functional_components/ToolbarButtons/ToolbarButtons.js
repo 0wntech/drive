@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styles from './ToolbarButtons.module.css';
 import SvgShare from '../../assets/svgIcons/Share';
 import SvgDownload from '../../assets/svgIcons/Download';
