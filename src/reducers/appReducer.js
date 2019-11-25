@@ -41,25 +41,25 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    loadNotifications: false,
-    loadcurrentItem: false,
-    loadDeletion: false,
-    updatingFile: false,
+    loadNotifications: null,
+    loadcurrentItem: null,
+    loadDeletion: null,
+    updatingFile: null,
     error: null,
     currentPath: null,
     currentItem: null,
     notifications: null,
     selectedItems: [],
     clipboard: [],
-    loadPaste: false,
+    loadPaste: null,
     idps: idps,
-    isRenameWindowVisible: false,
+    isRenameWindowVisible: null,
     renamedItem: null,
-    isCreateFileVisible: false,
-    isCreateFolderVisible: false,
-    isConsentWindowVisible: false,
-    creatingFile: false,
-    creatingFolder: false,
+    isCreateFileVisible: null,
+    isCreateFolderVisible: null,
+    isConsentWindowVisible: null,
+    creatingFile: null,
+    creatingFolder: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -73,9 +73,14 @@ export default (state = INITIAL_STATE, action) => {
         case FETCH_CURRENT_ITEM:
             return { ...state, loadCurrentItem: true };
         case FETCH_CURRENT_ITEM_SUCCESS:
-            return { ...state, loadCurrentItem: false, currentItem: payload };
+            return {
+                ...state,
+                loadCurrentItem: null,
+                currentItem: payload,
+                error: null,
+            };
         case FETCH_CURRENT_ITEM_FAIL:
-            return { ...state, loadCurrentItem: false, error: payload };
+            return { ...state, loadCurrentItem: null, error: payload };
         case FETCH_NOTIFICATIONS:
             return {
                 ...state,
@@ -84,33 +89,34 @@ export default (state = INITIAL_STATE, action) => {
         case FETCH_NOTIFICATIONS_SUCCESS:
             return {
                 ...state,
-                loadNotifications: false,
+                loadNotifications: null,
                 notifications: payload,
+                error: null,
             };
         case FETCH_IDPS:
             return { ...state, loadIdps: true };
         case FETCH_IDPS_SUCCESS:
-            return { ...state, idps: payload, loadIdps: false };
+            return { ...state, idps: payload, loadIdps: null, error: null };
         case FETCH_IDPS_FAILED:
-            return { ...state, error: payload, loadIdps: false };
+            return { ...state, error: payload, loadIdps: null };
         case OPEN_CONSENT_WINDOW:
             return { ...state, isConsentWindowVisible: true };
         case CLOSE_CONSENT_WINDOW:
-            return { ...state, isConsentWindowVisible: false };
+            return { ...state, isConsentWindowVisible: null };
         case DELETE_ITEMS:
             return { ...state, loadDeletion: true };
         case DELETE_ITEMS_SUCCESS:
-            return { ...state, loadDeletion: false };
+            return { ...state, loadDeletion: null, error: null };
         case DELETE_ITEMS_FAILURE:
-            return { ...state, error: payload, loadDeletion: false };
+            return { ...state, error: payload, loadDeletion: null };
         case COPY_ITEMS:
             return { ...state, clipboard: payload };
         case PASTE_ITEMS:
             return { ...state, loadPaste: true };
         case PASTE_ITEMS_SUCCESS:
-            return { ...state, loadPaste: false };
+            return { ...state, loadPaste: null, error: null };
         case PASTE_ITEMS_FAILURE:
-            return { ...state, error: payload, loadPaste: false };
+            return { ...state, error: payload, loadPaste: null };
         case OPEN_RENAME_WINDOW:
             return {
                 ...state,
@@ -120,41 +126,46 @@ export default (state = INITIAL_STATE, action) => {
         case CLOSE_RENAME_WINDOW:
             return {
                 ...state,
-                isRenameWindowVisible: false,
+                isRenameWindowVisible: null,
                 renamedItem: null,
             };
         case RENAME_ITEM:
             return { ...state, renamingItem: true };
         case RENAME_ITEM_SUCCESS:
-            return { ...state, renamingItem: false };
+            return { ...state, renamingItem: null, error: null };
         case RENAME_ITEM_FAILURE:
-            return { ...state, renamingItem: false, error: payload };
+            return { ...state, renamingItem: null, error: payload };
         case UPDATE_FILE:
             return { ...state, updatingFile: true };
         case UPDATE_FILE_SUCCESS:
-            return { ...state, updatingFile: false, currentItem: payload };
+            return {
+                ...state,
+                updatingFile: null,
+                currentItem: payload,
+                error: null,
+            };
         case UPDATE_FILE_FAILURE:
-            return { ...state, updatingFile: false, error: payload };
+            return { ...state, updatingFile: null, error: payload };
         case OPEN_CREATE_FILE_WINDOW:
             return { ...state, isCreateFileVisible: true };
         case CLOSE_CREATE_FILE_WINDOW:
-            return { ...state, isCreateFileVisible: false };
+            return { ...state, isCreateFileVisible: null };
         case CREATE_FILE:
             return { ...state, creatingFile: true };
         case CREATE_FILE_SUCCESS:
-            return { ...state, creatingFile: false };
+            return { ...state, creatingFile: null, error: null };
         case CREATE_FILE_FAILURE:
-            return { ...state, creatingFile: false, error: payload };
+            return { ...state, creatingFile: null, error: payload };
         case OPEN_CREATE_FOLDER_WINDOW:
             return { ...state, isCreateFolderVisible: true };
         case CLOSE_CREATE_FOLDER_WINDOW:
-            return { ...state, isCreateFolderVisible: false };
+            return { ...state, isCreateFolderVisible: null };
         case CREATE_FOLDER:
             return { ...state, creatingFolder: true };
         case CREATE_FOLDER_SUCCESS:
-            return { ...state, creatingFolder: false };
+            return { ...state, creatingFolder: null, error: null };
         case CREATE_FOLDER_FAILURE:
-            return { ...state, creatingFolder: false };
+            return { ...state, creatingFolder: null };
         default:
             return state;
     }

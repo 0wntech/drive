@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styles from './Windows.module.css';
 import { DeleteWindow } from '../DeleteWindow';
 import { InputWindow } from '../InputWindow';
@@ -33,7 +33,7 @@ export const Windows = ({
     createFolder,
 }) => {
     return (
-        <Fragment>
+        <>
             <DeleteWindow
                 windowName="Delete File"
                 selectedItems={selectedItems}
@@ -70,7 +70,7 @@ export const Windows = ({
                 visible={isRenameWindowVisible}
                 onClose={closeRenameWindow}
             />
-        </Fragment>
+        </>
     );
 };
 
