@@ -1,0 +1,52 @@
+.dropdown a {
+    padding: inherit 0;
+    width: 100%;
+}
+
+.profileIcon {
+    min-height: 56px;
+    min-width: 56px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 18px;
+}
+
+.profileSection {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+}
+
+.username {
+    display: table-cell;
+    vertical-align: middle;
+    letter-spacing: 0.2em;
+    max-height: 63px;
+    width: 100%;
+    line-height: 21px;
+    font-size: 16px;
+    font-family: 'Helvetica Neue Light';
+    margin: 0 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.mask {
+    border-radius: 20px;
+    -webkit-z-index: -1;
+    -moz-z-index: -1;
+    -ms-z-index: -1;
+    -o-z-index: -1;
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    background: #ffffff;
+    height: 100%;
+}
+
+.mask.active {
+    border-radius: 20px 20px 0px 20px;
+}
