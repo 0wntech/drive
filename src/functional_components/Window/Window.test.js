@@ -11,6 +11,7 @@ describe('Window', () => {
                 windowName="Test Window"
                 className="chicken"
                 onClose={mockFunction}
+                visible
             >
                 <div>I'm a child</div>
                 <button>child button</button>
@@ -24,6 +25,7 @@ describe('Window', () => {
         const wrapper = shallow(
             <Window
                 windowName="Test Window"
+                visible
                 className="chicken"
                 onClose={mockFunction}
             />

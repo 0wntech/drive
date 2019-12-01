@@ -1,0 +1,47 @@
+.container {
+    height: 100%;
+    padding: 1em 6.3%;
+}
+
+.spinner {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.editIconWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.error {
+    margin-top: 10px;
+    color: #f41818;
+}
+
+.icon {
+    width: 24px;
+}
+
+.file {
+    padding: 1em;
+}
+
+.image {
+    max-width: 50vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.editButtons .icon {
+    margin-left: 1em;
+}

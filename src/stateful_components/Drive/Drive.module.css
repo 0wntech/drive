@@ -17,15 +17,8 @@
     display: initial;
 }
 
-.toolbarArea {
-    grid-area: toolbar;
-    background-color: #e2e2e6;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    width: 100%;
-    display: flex;
-    position: relative;
-    justify-content: space-between;
+.toolbar {
+    grid-template-rows: 5fr;
 }
 
 .toolbarHeader {
@@ -41,7 +34,6 @@
     grid-area: main;
     height: 100%;
     padding: 0 6.3%;
-    overflow: auto;
 }
 
 .grid {

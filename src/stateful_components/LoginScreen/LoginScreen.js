@@ -2,9 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
-import styles from './LoginScreen.module.css';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
-import { fetchIdps, login } from '../../actions/UserActions';
+import { Layout } from '../../functional_components/Layout';
+import { login } from '../../actions/userActions';
+import { fetchIdps } from '../../actions/appActions';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -34,6 +35,10 @@ class LoginScreen extends React.Component {
             case 'solid.authing':
                 idp.color = '#fff';
                 idp.textColor = '#18A9E6';
+                break;
+            default:
+                idp.color = '#fff';
+                idp.textColor = '#18A9E6';
         }
         return idp;
     }
@@ -50,26 +55,25 @@ class LoginScreen extends React.Component {
     render() {
         const { idps } = this.props;
         return (
-            <div className={styles.container}>
+            <Layout label="Login">
                 <LoginForm
                     idps={idps}
                     onLogin={this.onLogin}
                     getIdpStyles={this.getIdpStyles}
                 />
-            </div>
+            </Layout>
         );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        idps: state.app.idps,
         loadIdps: state.app.loadIdps,
-        webId: state.app.webId,
+        webId: state.user.webId,
+        idps: state.app.idps,
     };
 };
 
-export default connect(
-    mapStateToProps,
-    { fetchIdps, login }
-)(withRouter(LoginScreen));
+export default connect(mapStateToProps, { fetchIdps, login })(
+    withRouter(LoginScreen)
+);

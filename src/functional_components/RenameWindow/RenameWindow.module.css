@@ -7,27 +7,13 @@
     font-size: 0.8rem;
 }
 
+.warning {
+    color: #f00;
+}
+
 .button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 25%;
-    color: #0c89c6;
-    height: 30px;
-    background-color: white;
     cursor: pointer;
     margin-left: 5px;
-    font-size: 0.9em;
-    border-radius: 3px;
-}
-
-.button:hover {
-    transform: scale(1.05);
-}
-
-.disabled {
-    opacity: 0.5;
-    cursor: initial;
 }
 
 .disabled:hover {

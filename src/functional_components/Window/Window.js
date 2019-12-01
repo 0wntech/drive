@@ -1,25 +1,26 @@
 import React from 'react';
 import styles from './Window.module.css';
-import closeIcon from '../../assets/icons/x.png';
 import PropTypes from 'prop-types';
+import X from '../../assets/svgIcons/X';
 
-function Window({ windowName, className, children, onClose }) {
-    return (
+function Window({ windowName, className, children, onClose, visible }) {
+    return visible ? (
         <div className={className}>
             <div className={styles.container}>
                 <div className={styles.head}>
                     <span className={styles.title}>{windowName}</span>
-                    <img
+                    <X
                         className={styles.close}
-                        src={closeIcon}
+                        preserveAspectRatio="none"
+                        viewBox="5 4 24 24"
                         onClick={onClose}
                     />
                 </div>
                 <div className={styles.body}>{children}</div>
             </div>
-            <div className={styles.opacity} />
+            <div onClick={onClose} className={styles.opacity} />
         </div>
-    );
+    ) : null;
 }
 
 Window.propTypes = {

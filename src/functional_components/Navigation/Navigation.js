@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styles from './Navigation.module.css';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
-import { connect } from 'react-redux';
-import { setCurrentPath, setCurrentContact } from '../../actions/UserActions';
+import { setCurrentPath } from '../../actions/appActions';
+import { searchContact, setCurrentContact } from '../../actions/contactActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
-import DropdownMenu from '../DropdownMenu';
-import ActionButton from '../ActionButton/ActionButton';
+import { getUsernameFromWebId } from '../../utils/url';
+import NavbarMenu from '../NavbarMenu/NavbarMenu';
 
 const Navigation = ({
     picture,
@@ -19,57 +19,77 @@ const Navigation = ({
     setCurrentPath,
     username,
     history,
-    items,
+    currentItem,
     contacts,
     currentPath,
     setCurrentContact,
+    contactSearchResult,
+    searchingContacts,
+    searchContact,
 }) => {
-    const DROPDOWN_OPTIONS = [
-        { onClick: () => history.push('/profile'), label: 'Profile' },
-        { onClick: () => console.log('test2'), label: 'Settings*' },
-        { onClick: () => console.log('test2'), label: 'Notifications*' },
-        { onClick: () => history.push('/contacts'), label: 'Contacts' },
-        { onClick: () => onLogout(), label: 'Logout' },
-    ];
-    const [isDropdownExpanded, setDropdownExpanded] = useState(false);
+    const [typingTimer, setTypingTimer] = useState(null);
+
     const handleChange = (selected) => {
         if (selected.type === 'folder') {
             setCurrentPath(`${currentPath}/${selected.name}/`);
             history.push('/home');
         } else if (selected.type === 'file') {
-            console.log('implement redux on file click');
+            history.push(`/file?f=${currentPath + selected.value}`);
         } else if (selected.type === 'contact') {
-            setCurrentContact(selected.value);
+            setCurrentContact(selected.contact);
             history.push('/contact');
         }
     };
 
+    const handleInputChange = (searchText) => {
+        clearTimeout(typingTimer);
+        if (searchText !== '') {
+            setTypingTimer(setTimeout(() => searchContact(searchText), 500));
+        }
+    };
+
     const getSearchDropdownOptions = () => {
-        const filesAndFolders = fileUtils
-            .convertFilesAndFoldersToArray(items.files, items.folders)
-            .map((item) => ({
-                ...item,
-                value: item.name,
-            }));
-        const contactOptions = contacts.map((contact) => ({
-            value: { ...contact },
-            type: 'contact',
-        }));
+        const contactOptions = [...contactSearchResult, ...contacts].map(
+            (contact) => ({
+                value: getUsernameFromWebId(contact.webId),
+                type: 'contact',
+                contact,
+            })
+        );
+
         const separator = {
             label: 'People',
             type: 'separator',
             isDisabled: true,
         };
-        return contactOptions.length > 0
-            ? [...filesAndFolders, separator, ...contactOptions]
-            : filesAndFolders;
+
+        if (currentItem && currentItem.files && currentItem.folders) {
+            const filesAndFolders = fileUtils
+                .convertFilesAndFoldersToArray(
+                    currentItem.files,
+                    currentItem.folders
+                )
+                .map((resource) => ({
+                    ...resource,
+                    value: resource.name,
+                }));
+            return contactOptions.length > 0
+                ? [...filesAndFolders, separator, ...contactOptions]
+                : filesAndFolders;
+        } else {
+            return contactOptions;
+        }
     };
     return (
         <div className={styles.container}>
             <div className={styles.brandWrapper}>
                 <img
+                    alt="logo"
                     onClick={() => {
                         if (webId) {
+                            setCurrentPath(
+                                webId.replace('/profile/card#me', '')
+                            );
                             history.push('/home');
                         } else {
                             history.push('/');
@@ -80,60 +100,53 @@ const Navigation = ({
                 />
             </div>
             <div className={styles.search}>
-                {items ? (
+                {currentItem ? (
                     <SearchDropdown
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
                         onChange={handleChange}
+                        onInputChange={handleInputChange}
                         placeholder="Search..."
-                        items={
-                            items && contacts
-                                ? getSearchDropdownOptions()
-                                : null
-                        }
+                        items={getSearchDropdownOptions()}
+                        loading={searchingContacts}
+                        filterOption={customFilter}
                     />
                 ) : null}
             </div>
-            <div className={styles.menuWrapper}>
-                {webId ? (
-                    <div className={styles.dropdownWrapper}>
-                        <div className={styles.profileSection}>
-                            <div
-                                onClick={() => history.push('/profile')}
-                                className={styles.profileIcon}
-                                style={{
-                                    backgroundImage: `url('${
-                                        picture ? picture : defaultIcon
-                                    }')`,
-                                }}
-                            />
-
-                            <div className={styles.username}>{username}</div>
-                        </div>
-                        <DropdownMenu
-                            options={DROPDOWN_OPTIONS}
-                            isExpanded={isDropdownExpanded}
-                            setExpanded={setDropdownExpanded}
-                        />
-                        <div
-                            className={classNames(styles.mask, {
-                                [styles.active]: isDropdownExpanded,
-                            })}
-                        />
-                    </div>
-                ) : (
-                    <ActionButton
-                        size="sm"
-                        label="Login"
-                        onClick={() => history.push('/login')}
-                    />
-                )}
-            </div>
+            <NavbarMenu
+                className={styles.menuWrapper}
+                onLogout={onLogout}
+                webId={webId}
+                picture={picture}
+                username={username}
+            />
         </div>
     );
 };
 
-const formatOptionLabel = ({ value, label, name, type }) => {
+const customFilter = (option, searchText) => {
+    if (!option.value) {
+        return true;
+    }
+    if (option.data.type === 'contact') {
+        if (
+            option.value.toLowerCase().includes(searchText.toLowerCase()) ||
+            (option.data.contact.name &&
+                option.data.contact.name
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase()))
+        ) {
+            return true;
+        }
+        return false;
+    }
+    if (option.value.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+    }
+    return false;
+};
+
+const formatOptionLabel = ({ value, label, name, type, contact }) => {
     if (type === 'contact') {
         return (
             <div className={styles.optionContainer}>
@@ -141,11 +154,13 @@ const formatOptionLabel = ({ value, label, name, type }) => {
                     <div
                         className={styles.contactIcon}
                         style={{
-                            backgroundImage: `url('${value.picture}')`,
+                            backgroundImage: `url('${
+                                contact.picture ? contact.picture : defaultIcon
+                            }')`,
                         }}
                     />
                 </div>
-                <span>{`${value.name} (${value.webId.replace(
+                <span>{`${contact.name} (${contact.webId.replace(
                     '/profile/card#me',
                     ''
                 )})`}</span>
@@ -164,6 +179,7 @@ const formatOptionLabel = ({ value, label, name, type }) => {
             <div className={styles.optionContainer}>
                 <div className={styles.iconContainer}>
                     <img
+                        alt="icon"
                         className={
                             type === 'file'
                                 ? styles.fileIcon
@@ -180,10 +196,13 @@ const formatOptionLabel = ({ value, label, name, type }) => {
 
 const mapStateToProps = (state) => ({
     currentPath: state.app.currentPath,
-    items: state.app.currentItems,
-    contacts: state.app.contacts,
+    currentItem: state.app.currentItem,
+    contacts: state.contact.contacts,
+    searchingContacts: state.contact.searchingContacts,
+    contactSearchResult: state.contact.contactSearchResult,
 });
-export default connect(
-    mapStateToProps,
-    { setCurrentPath, setCurrentContact }
-)(withRouter(Navigation));
+export default connect(mapStateToProps, {
+    setCurrentPath,
+    setCurrentContact,
+    searchContact,
+})(withRouter(Navigation));

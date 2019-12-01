@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './File.module.css';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { Menu, MenuProvider, Item } from 'react-contexify';
 export default function File({
     currPath,
@@ -21,17 +22,18 @@ export default function File({
                 <div className={styles.innerContainer}>
                     <div className={styles.iconContainer}>
                         <img
+                            alt="file"
                             className={styles.thumbnail}
                             src={currPath + label}
                         />
-                        <img className={styles.icon} src={image} />
+                        <img alt="file" className={styles.icon} src={image} />
                     </div>
                 </div>
             );
         } else {
             return (
                 <div className={styles.innerContainer}>
-                    <img className={styles.icon} src={image} />
+                    <img alt="file" className={styles.icon} src={image} />
                 </div>
             );
         }
@@ -76,3 +78,17 @@ export default function File({
         </MenuProvider>
     );
 }
+File.propTypes = {
+    currPath: PropTypes.string,
+    onClick: PropTypes.func,
+    image: PropTypes.string,
+    label: PropTypes.string,
+    selectedItem: PropTypes.bool,
+    contextMenuOptions: PropTypes.arrayOf(
+        PropTypes.shape({
+            disabled: PropTypes.bool,
+            label: PropTypes.string,
+            onClick: PropTypes.func,
+        })
+    ),
+};

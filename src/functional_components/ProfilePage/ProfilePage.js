@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { ClassicSpinner } from 'react-spinners-kit';
 
-import { updateProfile, changeProfilePhoto } from '../../actions/UserActions';
+import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
 import Settings from '../../assets/svgIcons/Settings';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
@@ -12,6 +12,7 @@ import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
+import { Layout } from '../Layout';
 
 export const ProfilePage = ({
     webId,
@@ -22,7 +23,6 @@ export const ProfilePage = ({
 }) => {
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
-    console.log('userdata: ', userData);
     const updateUserData = (key, value) => {
         setUserData({ ...userData, [key]: value });
     };
@@ -41,15 +41,19 @@ export const ProfilePage = ({
         changeProfilePhoto(e, webId);
     };
 
+    const toolbarRight = (
+        <div className={styles.iconWrapper}>
+            <Settings className={styles.settings} />
+        </div>
+    );
+
     if (user || updateProfilePic) {
         return (
-            <div className={styles.grid}>
-                <div className={styles.toolbarArea}>
-                    <div className={styles.toolbarHeader}>Profile</div>
-                    <div className={styles.iconWrapper}>
-                        <Settings className={styles.settings} />
-                    </div>
-                </div>
+            <Layout
+                className={styles.grid}
+                toolbarChildrenRight={toolbarRight}
+                label="Profile"
+            >
                 <div className={styles.profileContainer}>
                     <div className={styles.headContainer}>
                         {isEditable ? (
@@ -154,7 +158,7 @@ export const ProfilePage = ({
                         }
                     />
                 </div>
-            </div>
+            </Layout>
         );
     } else {
         return (
@@ -166,12 +170,11 @@ export const ProfilePage = ({
 };
 
 const mapStateToProps = (state) => ({
-    user: state.app.user,
-    webId: state.app.webId,
-    updateProfilePic: state.app.updateProfilePic,
+    user: state.user.user,
+    webId: state.user.webId,
+    updateProfilePic: state.user.updateProfilePic,
 });
 
-export default connect(
-    mapStateToProps,
-    { updateProfile, changeProfilePhoto }
-)(ProfilePage);
+export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
+    ProfilePage
+);

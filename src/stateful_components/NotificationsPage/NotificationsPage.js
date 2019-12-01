@@ -2,9 +2,8 @@ import React from 'react';
 import rdf from 'rdflib';
 import styles from './NotificationsPage.module.css';
 import { Notification } from '../../functional_components/Notification';
-import Container from 'react-bootstrap/Container';
 import { connect } from 'react-redux';
-import { fetchNotifications } from '../../actions/UserActions';
+import { fetchNotifications } from '../../actions/appActions';
 import fileUtils from '../../utils/fileUtils';
 const ns = require('solid-namespace')(rdf);
 
@@ -120,21 +119,21 @@ class NotificationsPage extends React.Component {
         });
     }
 
-    componentDidMount() {
-        const { fetchNotifications, webId } = this.props;
-        if (webId && fetchNotifications) {
-            console.log(webId, fetchNotifications);
-            fetchNotifications(webId).then((results) => {
-                results.map((notification) => {
-                    this.getNotificationContent(notification).then(
-                        (content) => {
-                            console.log(content);
-                        }
-                    );
-                });
-            });
-        }
-    }
+    // componentDidMount() {
+    //     const { fetchNotifications, webId } = this.props;
+    //     if (webId && fetchNotifications) {
+    //         console.log(webId, fetchNotifications);
+    //         fetchNotifications(webId).then((results) => {
+    //             results.map((notification) => {
+    //                 this.getNotificationContent(notification).then(
+    //                     (content) => {
+    //                         console.log(content);
+    //                     }
+    //                 );
+    //             });
+    //         });
+    //     }
+    // }
 
     render() {
         const { notifications } = this.props;
@@ -142,27 +141,26 @@ class NotificationsPage extends React.Component {
             console.log(notifications);
         }
         return (
-            <Container className={styles.container}>
+            <div className={styles.container}>
                 <h3>Notifications</h3>
                 <Notification
                     picture="https://ludwigschubert.solid.community/profile/aa.jpeg"
                     actor="ludwigschubert"
                     description="Wants to send you a picture"
                 />
-            </Container>
+            </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        webId: state.app.webId,
+        webId: state.user.webId,
         loadNotifications: state.app.loadNotifications,
         notifications: state.app.notifications,
     };
 };
 
-export default connect(
-    mapStateToProps,
-    { fetchNotifications }
-)(NotificationsPage);
+export default connect(mapStateToProps, { fetchNotifications })(
+    NotificationsPage
+);

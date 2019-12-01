@@ -6,20 +6,12 @@ import fetchMock from 'fetch-mock';
 import User from 'ownuser';
 import {
     SET_WEBID,
-    SET_CURRENT_CONTACT,
-    SET_SELECTION,
     FETCH_USER,
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
 } from './types';
-import {
-    setWebId,
-    setCurrentContact,
-    setSelection,
-    fetchUser,
-} from './UserActions';
+import { fetchUser, setWebId } from './userActions';
 
-import { user } from '../test/fixtures/user';
 import { card } from '../test/fixtures/card';
 
 const middlewares = [thunk];
@@ -52,32 +44,7 @@ describe('redux actions', () => {
                     type: SET_WEBID,
                     payload: webId,
                 };
-                expect(
-                    setWebId('https://bejow.owntech.de/profile/card#me')
-                ).toEqual(expectedAction);
-            });
-        });
-        describe('setCurrentContact', () => {
-            it('should create action to set currentContact', () => {
-                const expectedAction = {
-                    type: SET_CURRENT_CONTACT,
-                    payload: user,
-                };
-                expect(setCurrentContact(user)).toEqual(expectedAction);
-            });
-        });
-        describe('setSelection', () => {
-            it('should create action to set currentContact', () => {
-                const selection = [
-                    'https://bejow.owntech.de/favicon.ico',
-                    'https://bejow.owntech.de/profile/',
-                    'https://bejow.owntech.de/Buttons.svg',
-                ];
-                const expectedAction = {
-                    type: SET_SELECTION,
-                    payload: selection,
-                };
-                expect(setSelection(selection)).toEqual(expectedAction);
+                expect(setWebId(webId)).toEqual(expectedAction);
             });
         });
     });

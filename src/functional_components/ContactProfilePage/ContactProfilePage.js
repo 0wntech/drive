@@ -2,30 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './ContactProfilePage.module.css';
-
-import { addContact, removeContact } from '../../actions/UserActions';
+import { addContact, removeContact } from '../../actions/contactActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
 import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
-import { isContact } from '../../reducers/AppReducer';
+import { Layout } from '../Layout';
+import { isContact } from '../../reducers/contactReducer';
+
+const toolbarRight = <Settings className={styles.settings} />;
 
 const ContactProfilePage = ({
     currentContact,
     addContact,
     removeContact,
     webId,
+    isContact,
 }) => {
     return (
-        <div className={styles.grid}>
-            <div className={styles.toolbarArea}>
-                <div className={styles.header}>{currentContact.name}</div>
-                <div className={styles.iconWrapper}>
-                    <Settings className={styles.settings} />
-                </div>
-            </div>
+        <Layout
+            className={styles.grid}
+            label={currentContact.name}
+            toolbarChildrenRight={toolbarRight}
+        >
             <div className={styles.profileContainer}>
                 <div className={styles.headContainer}>
                     <div
@@ -100,7 +101,7 @@ const ContactProfilePage = ({
                     value={currentContact.telephones}
                 />
             </div>
-        </div>
+        </Layout>
     );
 };
 
@@ -109,12 +110,11 @@ ContactProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    currentContact: state.app.currentContact,
-    webId: state.app.webId,
-    isContact: isContact(state.app, state.app.currentContact.webId),
+    currentContact: state.contact.currentContact,
+    webId: state.user.webId,
+    isContact: isContact(state.contact, state.contact.currentContact.webId),
 });
 
-export default connect(
-    mapStateToProps,
-    { addContact, removeContact }
-)(ContactProfilePage);
+export default connect(mapStateToProps, { addContact, removeContact })(
+    ContactProfilePage
+);

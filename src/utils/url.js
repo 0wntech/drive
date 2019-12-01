@@ -1,13 +1,13 @@
+import urlUtils from 'url';
+
 export const getBreadcrumbsFromUrl = (url) => {
     // check if url is a valid url
-    if (
-        typeof url !== 'string' ||
-        !url.match(
-            /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
-        )
-    ) {
-        throw new Error('getBreadcrumbsFromUrl received an invalid url');
+    if (!isValidUrl(url)) {
+        throw new Error(
+            `getBreadcrumbsFromUrl received an invalid url: ${url}`
+        );
     }
+    url = decodeURIComponent(url);
     const breadcrumbs = url.replace('https://', '').split('/');
     breadcrumbs.shift();
     const newBreadcrumbs = ['/'];
@@ -17,6 +17,44 @@ export const getBreadcrumbsFromUrl = (url) => {
         }
     });
     return newBreadcrumbs;
+};
+
+export const getFileParamsFromUrl = (url) => {
+    const params = urlUtils
+        .parse(url)
+        .search.replace('?', '')
+        .split('&');
+    const paramObj = {};
+    params.forEach((param) => {
+        const paramName = param.split('=')[0];
+        const paramVal = param.split('=')[1];
+        paramObj[paramName] = paramVal;
+    });
+    return paramObj;
+};
+
+export const convertFolderUrlToName = (folderUrl) => {
+    return folderUrl.split('/').splice(-2)[0];
+};
+
+export const convertFileUrlToName = (fileUrl) => {
+    return fileUrl.split('/').splice(-1)[0];
+};
+
+export const isValidUrl = (url) => {
+    return url.match(
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&%'\(\)\*\+,;=.]+$/
+    )
+        ? true
+        : false;
+};
+
+export const getSafeLogin = (url) => {
+    if (url.lastIndexOf('https://') === -1) {
+        url = 'https://' + url;
+    }
+    url = url.endsWith('/') ? url + 'login' : url + '/login';
+    return url;
 };
 
 // sorts files and folder
@@ -37,9 +75,31 @@ export const sortContainments = (urls) => {
     return [files, folders];
 };
 
+// converts https://ludwigschubert.solid.community/profile/card#me
+// into ludwigschubert
+export const getUsernameFromWebId = (webId) => {
+    if (isValidUrl(webId)) {
+        return webId.substring(webId.indexOf('://') + 3, webId.indexOf('.'));
+    }
+};
+
 // converts webId into url to fetch folders
 export const getRootFromWebId = (webId) => {
     return 'https://' + webId.split('/')[2] + '/';
+};
+
+// converts https://ludwigschubert.solid.community/
+// into https://ludwigschubert.solid.community/profile/card#me
+export const getWebIdFromRoot = (rootUrl) => {
+    if (!isValidUrl(rootUrl)) {
+        throw new Error(`getWebIdFromRoot received an invalid url: ${rootUrl}`);
+    }
+
+    if (rootUrl[rootUrl.length - 1] !== '/') {
+        return rootUrl + '/profile/card#me';
+    } else {
+        return rootUrl + 'profile/card#me';
+    }
 };
 
 // removes the last element of an url

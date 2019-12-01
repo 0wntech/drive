@@ -1,3 +1,60 @@
 language: node_js
 node_js:
- - "12"
+    - 10
+warnings_are_errors: false
+
+branches:
+    only:
+        - master
+        - staging
+        - production
+
+notifications:
+    slack: codeuniversity:bJz9OM3Vf7qJgNsdKsFtDC5K
+    email:
+        - ben.wetzel@code.berlin
+        - ludwig.schubert@code.berlin
+
+install: npm ci
+
+stages:
+    - name: test
+    - name: deploy_production
+      if: type != pull_request AND branch = production
+    - name: deploy_staging
+      if: type != pull_request AND branch = staging
+
+jobs:
+    include:
+        - stage: test
+          script:
+              - npm run lint
+              - npm run test:coverage -- --runInBand && codecov
+
+        - stage: deploy_production
+          script: CI=false NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v
+          deploy:
+              on:
+                  branch: production
+              provider: s3
+              region: eu-central-1
+              access_key_id: $AWS_KEY
+              secret_access_key: $AWS_SECRET
+              bucket: 'drive.owntech.io'
+              skip_cleanup: true
+              acl: public_read
+              local_dir: build
+
+        - stage: deploy_staging
+          script: CI=false  NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v
+          deploy:
+              on:
+                  branch: staging
+              provider: s3
+              region: eu-central-1
+              access_key_id: $AWS_KEY
+              secret_access_key: $AWS_SECRET
+              bucket: 'staging.drive.owntech.io'
+              skip_cleanup: true
+              acl: public_read
+              local_dir: build
