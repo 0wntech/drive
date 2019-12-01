@@ -32,7 +32,7 @@ jobs:
               - npm run test:coverage -- --runInBand && codecov
 
         - stage: deploy_production
-          script: CI=false npm run build
+          script: CI=false NODE_OPTIONS=--max_old_space_size=8192 npm run build
           deploy:
               on:
                   branch: production
