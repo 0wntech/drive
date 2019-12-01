@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './ContactListItem.module.css';
-import defaultIcon from '../../assets/icons/defaultUserPic2.png';
+import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import Delete from '../../assets/svgIcons/Delete';
 
 const ContactListItem = ({

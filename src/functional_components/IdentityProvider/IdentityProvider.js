@@ -19,7 +19,7 @@ export default function IdentityProvider({
         <button
             className={styles.container}
             onClick={() => {
-                if (custom && customIdp != '') {
+                if (custom && customIdp !== '') {
                     onLogin(getSafeLogin(customIdp));
                 } else if (!custom) {
                     onLogin(url + 'login');
