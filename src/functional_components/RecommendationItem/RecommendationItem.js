@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './RecommendationItem.module.css';
-import defaultIcon from '../../assets/icons/defaultUserPic2.png';
+import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import Add from '../../assets/svgIcons/Add';
 import Check from '../../assets/svgIcons/Check';
 
