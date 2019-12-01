@@ -34,7 +34,6 @@
     grid-area: main;
     height: 100%;
     padding: 0 6.3%;
-    overflow: auto;
 }
 
 .grid {

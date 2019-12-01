@@ -10,12 +10,6 @@ const LandingPage = ({ webId, history }) => {
         history.push('/login');
     };
 
-    const register = function() {
-        window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
-    };
-
-    console.log(webId);
-
     return (
         <Layout className={styles.grid} hideToolbar>
             <div className={styles.mainArea}>
@@ -23,13 +17,6 @@ const LandingPage = ({ webId, history }) => {
                     <Slogan width="100%" viewBox="0 0 971 219" />
                     {webId ? null : (
                         <div className={styles.buttons}>
-                            <ActionButton
-                                label="Register"
-                                color="green"
-                                size="md"
-                                onClick={register}
-                            />
-                            <p>or</p>
                             <ActionButton
                                 size="md"
                                 label="Login"
@@ -45,7 +32,7 @@ const LandingPage = ({ webId, history }) => {
 };
 
 const mapStateToProps = (state) => ({
-    webId: state.app.webId,
+    webId: state.user.webId,
 });
 
 export default connect(
