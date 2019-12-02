@@ -237,7 +237,7 @@ class Drive extends React.Component {
             {
                 label: 'Paste*',
                 onClick: () => pasteItems(clipboard, currentPath),
-                disabled: clipboard.length === 0,
+                disabled: clipboard && clipboard.length === 0,
             },
             {
                 label: 'Rename',
@@ -290,7 +290,7 @@ class Drive extends React.Component {
             {
                 label: 'Paste',
                 onClick: () => pasteItems(clipboard, currentPath),
-                disabled: clipboard.length === 0,
+                disabled: clipboard && clipboard.length === 0,
             },
             {
                 label: 'Manage Access',

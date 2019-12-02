@@ -1,7 +1,6 @@
 import React from 'react';
 import Drive from './Drive.js';
-import TestRenderer from 'react-test-renderer';
-import { withRouter } from 'react-router-dom';
+import ShallowRenderer from 'react-test-renderer/shallow';
 import appReducer from '../../reducers/appReducer.js';
 import { FETCH_CURRENT_ITEM_SUCCESS } from '../../actions/types';
 
@@ -25,12 +24,14 @@ describe('Drive', () => {
                 currentItem: currentItem,
             });
         });
+    });
 
-        describe('Drive Snapshot', () => {
-            it('matches the snapshot', () => {
-                const tree = TestRenderer.create(withRouter(<Drive />));
-                expect(tree.toJSON()).toMatchSnapshot();
-            });
+    describe('Drive Snapshot', () => {
+        it('matches the snapshot', () => {
+            const result = new ShallowRenderer().render(
+                <Drive.WrappedComponent />
+            );
+            expect(result).toMatchSnapshot();
         });
     });
 });
