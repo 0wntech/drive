@@ -26,7 +26,7 @@ const ContactsPage = ({
 }) => {
     useEffect(() => {
         fetchContactRecommendations(webId);
-    }, []);
+    });
 
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay = contactRecommendations.slice(
@@ -103,12 +103,9 @@ const mapStateToProps = (state) => ({
     contactRecommendations: state.contact.contactRecommendations,
 });
 
-export default connect(
-    mapStateToProps,
-    {
-        setCurrentContact,
-        addContact,
-        removeContact,
-        fetchContactRecommendations,
-    }
-)(withRouter(ContactsPage));
+export default connect(mapStateToProps, {
+    setCurrentContact,
+    addContact,
+    removeContact,
+    fetchContactRecommendations,
+})(withRouter(ContactsPage));

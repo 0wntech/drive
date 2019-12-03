@@ -2,7 +2,6 @@ import React from 'react';
 import rdf from 'rdflib';
 import styles from './NotificationsPage.module.css';
 import { Notification } from '../../functional_components/Notification';
-import Container from 'react-bootstrap/Container';
 import { connect } from 'react-redux';
 import { fetchNotifications } from '../../actions/appActions';
 import fileUtils from '../../utils/fileUtils';
@@ -142,14 +141,14 @@ class NotificationsPage extends React.Component {
             console.log(notifications);
         }
         return (
-            <Container className={styles.container}>
+            <div className={styles.container}>
                 <h3>Notifications</h3>
                 <Notification
                     picture="https://ludwigschubert.solid.community/profile/aa.jpeg"
                     actor="ludwigschubert"
                     description="Wants to send you a picture"
                 />
-            </Container>
+            </div>
         );
     }
 }
@@ -162,7 +161,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    { fetchNotifications }
-)(NotificationsPage);
+export default connect(mapStateToProps, { fetchNotifications })(
+    NotificationsPage
+);
