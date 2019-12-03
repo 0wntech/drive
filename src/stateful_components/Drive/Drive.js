@@ -54,23 +54,6 @@ class Drive extends React.Component {
         this.clearSelection = this.clearSelection.bind(this);
     }
 
-    sortContainments(urls) {
-        const folders = [];
-        const files = [];
-        urls.forEach((url) => {
-            if (url.value[url.value.length - 1] === '/') {
-                const urlFragments = url.value.split('/');
-                const folderUrl = urlFragments[urlFragments.length - 2];
-                folders.push(decodeURIComponent(folderUrl));
-            } else {
-                const urlFragments = url.value.split('/');
-                const fileUrl = urlFragments[urlFragments.length - 1];
-                files.push(decodeURIComponent(fileUrl));
-            }
-        });
-        return [files, folders];
-    }
-
     loadFile(url, event = {}) {
         const { selectedItems, setSelection, history } = this.props;
         if (url.endsWith('/')) {
