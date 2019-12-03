@@ -29,7 +29,7 @@ describe('Drive', () => {
     describe('Drive Snapshot', () => {
         it('matches the snapshot', () => {
             const result = new ShallowRenderer().render(
-                <Drive.WrappedComponent />
+                <Drive.WrappedComponent currentItem={currentItem} />
             );
             expect(result).toMatchSnapshot();
         });

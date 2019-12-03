@@ -3,31 +3,24 @@ import url from 'url';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.css';
-import Breadcrumbs from '../../functional_components/Breadcrumbs/Breadcrumbs';
-import { ItemList } from '../../functional_components/ItemList';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import { ItemList } from '../ItemList';
 import fileUtils from '../../utils/fileUtils';
-import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
+import { getBreadcrumbsFromUrl } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
-import { Layout } from '../../functional_components/Layout';
+import { Layout } from '../Layout';
 import {
     setCurrentPath,
     setSelection,
     sendNotification,
     fetchCurrentItem,
-    copyItems,
-    pasteItems,
-    openConsentWindow,
-    openCreateFileWindow,
-    openCreateFolderWindow,
-    openRenameWindow,
 } from '../../actions/appActions';
 import { ClassicSpinner } from 'react-spinners-kit';
-import ToolbarButtons from '../../functional_components/ToolbarButtons';
+import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
-import { MenuProvider, Menu, Item } from 'react-contexify';
-import classNames from 'classnames';
-import Windows from '../../functional_components/Windows';
+import Windows from '../Windows/Windows';
+import { CursorMenu } from '../DriveContextMenu/DriveContextMenu';
 
 const Drive = ({
     selectedItems,
@@ -41,14 +34,8 @@ const Drive = ({
     history,
     loadDeletion,
     loadPaste,
-    copyItems,
-    pasteItems,
-    clipboard,
-    openConsentWindow,
-    openCreateFileWindow,
-    openCreateFolderWindow,
-    openRenameWindow,
 }) => {
+    // Event Handlers
     const loadFile = (url, event = {}) => {
         if (url.endsWith('/')) {
             url = url.substr(0, url.lastIndexOf('/'));
@@ -102,17 +89,6 @@ const Drive = ({
         }
     };
 
-    useEffect(() => {
-        if (!currentPath && !loadCurrentItem && webId) {
-            currentPath = webId.replace('profile/card#me', '');
-            setCurrentPath(currentPath, true);
-        } else if (currentPath && currentItem && currentItem.body) {
-            currentPath =
-                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
-            setCurrentPath(currentPath);
-        }
-    });
-
     const downloadItems = () => {
         selectedItems.forEach((item) => {
             const download =
@@ -142,123 +118,6 @@ const Drive = ({
         }
     };
 
-    const addForDelete = (item) => {
-        const newSelection = [...selectedItems];
-        if (
-            item &&
-            url.parse(item).path !== '/' &&
-            !selectedItems.includes(item)
-        ) {
-            newSelection.push(item);
-            setSelection(newSelection);
-        }
-        if (selectedItems.length !== 0 || newSelection.length !== 0) {
-            return true;
-        }
-    };
-
-    const CONTEXTMENU_OPTIONS = [
-        {
-            label: 'Info',
-            onClick: (item) => fileUtils.getInfo(item),
-            disabled: false,
-        },
-        {
-            label: 'Copy*',
-            onClick: (item) => {
-                if (
-                    !selectedItems.includes(item) &&
-                    item !== getRootFromWebId(webId)
-                ) {
-                    selectedItems.push(item);
-                }
-                copyItems(selectedItems);
-            },
-            disabled: false,
-        },
-        {
-            label: 'Paste*',
-            onClick: () => pasteItems(clipboard, currentPath),
-            disabled: clipboard && clipboard.length === 0,
-        },
-        {
-            label: 'Rename',
-            onClick: (item) => openRenameWindow(item),
-            disabled: false,
-        },
-        {
-            label: 'Manage Access',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: false,
-        },
-        {
-            label: 'Share*',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: true,
-        },
-        {
-            label: 'Create Folder',
-            onClick: openCreateFolderWindow,
-        },
-        {
-            label: 'Delete',
-            onClick: (item) => {
-                const deletable = addForDelete(item);
-                if (deletable) openConsentWindow(item);
-            },
-            disabled: false,
-        },
-    ];
-
-    const CONTEXTMENU_OPTIONS_DRIVE = [
-        {
-            label: 'Info',
-            onClick: (item) => fileUtils.getInfo(item),
-            disabled: false,
-        },
-        {
-            label: 'Copy',
-            onClick: (item) => {
-                if (
-                    !selectedItems.includes(item) &&
-                    item !== webId.replace('profile/card#me', '')
-                ) {
-                    selectedItems.push(item);
-                }
-                copyItems(selectedItems);
-            },
-            disabled: false,
-        },
-        {
-            label: 'Paste',
-            onClick: () => pasteItems(clipboard, currentPath),
-            disabled: clipboard && clipboard.length === 0,
-        },
-        {
-            label: 'Manage Access',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: false,
-        },
-        {
-            label: 'Share*',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: true,
-        },
-        {
-            label: 'Create Folder',
-            onClick: openCreateFolderWindow,
-        },
-        {
-            label: 'Create File',
-            onClick: openCreateFileWindow,
-        },
-        {
-            label: 'Delete',
-            onClick: (item) => openConsentWindow(item),
-            disabled: false,
-        },
-    ];
-
     const toolbarRight = (
         <ToolbarButtons
             onFolderUpload={uploadCurrentItem}
@@ -286,6 +145,17 @@ const Drive = ({
         </div>
     ) : null;
 
+    useEffect(() => {
+        if (!currentPath && !loadCurrentItem && webId) {
+            currentPath = webId.replace('profile/card#me', '');
+            setCurrentPath(currentPath, true);
+        } else if (currentPath && currentItem && currentItem.body) {
+            currentPath =
+                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
+            setCurrentPath(currentPath);
+        }
+    });
+
     if ((loadCurrentItem, loadDeletion, loadPaste)) {
         return (
             <div className={styles.spinner}>
@@ -305,8 +175,9 @@ const Drive = ({
                 label="Drive"
                 onClick={clearSelection}
             >
-                <MenuProvider
+                <CursorMenu
                     className={styles.mainArea}
+                    drive
                     id="drive contextmenu"
                 >
                     <div className={styles.container}>
@@ -321,7 +192,6 @@ const Drive = ({
                                         currPath={currentPath}
                                         image={folder}
                                         onItemClick={followPath}
-                                        contextMenuOptions={CONTEXTMENU_OPTIONS}
                                     />
                                 ) : null}
                                 <ItemList
@@ -331,35 +201,13 @@ const Drive = ({
                                     currPath={currentPath}
                                     image={fileIcon}
                                     onItemClick={loadFile}
-                                    contextMenuOptions={CONTEXTMENU_OPTIONS}
                                 />
                             </div>
                         ) : (
                             undefined
                         )}
                     </div>
-                </MenuProvider>
-                <Menu className={styles.contextMenu} id={'drive contextmenu'}>
-                    {CONTEXTMENU_OPTIONS_DRIVE &&
-                        CONTEXTMENU_OPTIONS_DRIVE.map((option, index) => (
-                            <Item
-                                disabled={option.disabled}
-                                key={index + option.label}
-                                onClick={
-                                    !option.disabled
-                                        ? () => {
-                                              option.onClick(currentPath);
-                                          }
-                                        : undefined
-                                }
-                                className={classNames(styles.contextItem, {
-                                    [styles.disabled]: option.disabled,
-                                })}
-                            >
-                                <div>{option.label}</div>
-                            </Item>
-                        ))}
-                </Menu>
+                </CursorMenu>
             </Layout>
         );
     }
@@ -387,12 +235,6 @@ export default withRouter(
             sendNotification,
             fetchCurrentItem,
             setSelection,
-            copyItems,
-            pasteItems,
-            openConsentWindow,
-            openCreateFileWindow,
-            openCreateFolderWindow,
-            openRenameWindow,
         }
     )(Drive)
 );
