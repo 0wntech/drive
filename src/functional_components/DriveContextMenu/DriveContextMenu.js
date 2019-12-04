@@ -119,15 +119,12 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    {
-        setSelection,
-        copyItems,
-        pasteItems,
-        openRenameWindow,
-        openConsentWindow,
-        openCreateFileWindow,
-        openCreateFolderWindow,
-    }
-)(CursorMenu);
+export default connect(mapStateToProps, {
+    setSelection,
+    copyItems,
+    pasteItems,
+    openRenameWindow,
+    openConsentWindow,
+    openCreateFileWindow,
+    openCreateFolderWindow,
+})(CursorMenu);

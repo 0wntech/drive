@@ -86,16 +86,13 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    {
-        deleteItems,
-        renameItem,
-        closeConsentWindow,
-        closeCreateFileWindow,
-        closeCreateFolderWindow,
-        closeRenameWindow,
-        createFile,
-        createFolder,
-    }
-)(Windows);
+export default connect(mapStateToProps, {
+    deleteItems,
+    renameItem,
+    closeConsentWindow,
+    closeCreateFileWindow,
+    closeCreateFolderWindow,
+    closeRenameWindow,
+    createFile,
+    createFolder,
+})(Windows);

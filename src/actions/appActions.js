@@ -48,11 +48,18 @@ import mime from 'mime';
 import url from 'url';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
-export const setCurrentPath = (newPath) => {
+export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
-        dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+        if (options.noFetch) {
+            dispatch({
+                type: FETCH_CURRENT_ITEM_SUCCESS,
+                payload: { body: '', url: newPath },
+            });
+        } else {
+            dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+        }
     };
 };
 
