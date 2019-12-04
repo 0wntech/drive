@@ -1,8 +1,9 @@
 import React from 'react';
-import { ProfilePage } from './ProfilePage.js';
+import ProfilePage from './ProfilePage.js';
 import { FETCH_USER_SUCCESS } from '../../actions/types';
 import userReducer from '../../reducers/userReducer';
-import TestRenderer from 'react-test-renderer';
+import ShallowRenderer from 'react-test-renderer/shallow';
+
 describe('ProfilePage', () => {
     const user = {
         webId: 'https://bejow.owntech.de/profile/card#me',
@@ -31,8 +32,10 @@ describe('ProfilePage', () => {
     });
     describe('ProfilePage Snapshot', () => {
         it('matches the snapshot', () => {
-            const tree = TestRenderer.create(<ProfilePage user={user} />);
-            expect(tree.toJSON()).toMatchSnapshot();
+            const result = new ShallowRenderer().render(
+                <ProfilePage.WrappedComponent user={user} />
+            );
+            expect(result).toMatchSnapshot();
         });
     });
 

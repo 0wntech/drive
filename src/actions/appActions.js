@@ -35,6 +35,9 @@ import {
     UPDATE_FILE,
     UPDATE_FILE_SUCCESS,
     UPDATE_FILE_FAILURE,
+    DOWNLOAD_FILE,
+    DOWNLOAD_FILE_SUCCESS,
+    DOWNLOAD_FILE_FAILURE,
     OPEN_CREATE_FOLDER_WINDOW,
     CLOSE_CREATE_FOLDER_WINDOW,
     CREATE_FOLDER,
@@ -46,6 +49,7 @@ import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
 import mime from 'mime';
 import url from 'url';
+import FileSaver from 'file-saver';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
 export const setCurrentPath = (newPath, options = {}) => {
@@ -104,6 +108,32 @@ export const fetchCurrentItem = (item, folder = false) => {
                     payload: error,
                 })
             );
+    };
+};
+
+export const downloadFile = (file) => {
+    return (dispatch) => {
+        dispatch({ type: DOWNLOAD_FILE });
+        const fileClient = new PodClient({});
+        fileClient
+            .read(file)
+            .then((result) => {
+                const fileType = mime.getType(file);
+                if (fileType.includes('image')) {
+                    console.log('saving as image');
+                    FileSaver.saveAs(file, convertFileUrlToName(file));
+                    dispatch({ type: DOWNLOAD_FILE_SUCCESS });
+                } else {
+                    const blob = new Blob([result], {
+                        type: mime.getType(file),
+                    });
+                    FileSaver.saveAs(blob, convertFileUrlToName(file));
+                    dispatch({ type: DOWNLOAD_FILE_SUCCESS });
+                }
+            })
+            .catch((err) => {
+                dispatch({ type: DOWNLOAD_FILE_FAILURE, payload: err });
+            });
     };
 };
 

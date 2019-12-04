@@ -33,6 +33,9 @@ import {
     UPDATE_FILE,
     UPDATE_FILE_SUCCESS,
     UPDATE_FILE_FAILURE,
+    DOWNLOAD_FILE,
+    DOWNLOAD_FILE_SUCCESS,
+    DOWNLOAD_FILE_FAILURE,
     OPEN_CREATE_FOLDER_WINDOW,
     CLOSE_CREATE_FOLDER_WINDOW,
     CREATE_FOLDER,
@@ -145,6 +148,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, creatingFile: false };
         case CREATE_FILE_FAILURE:
             return { ...state, creatingFile: false, error: payload };
+        case DOWNLOAD_FILE:
+            return { ...state, downloadingFile: true };
+        case DOWNLOAD_FILE_SUCCESS:
+            return { ...state, downloadingFile: false };
+        case DOWNLOAD_FILE_FAILURE:
+            return { ...state, downloadingFile: false, error: payload };
         case OPEN_CREATE_FOLDER_WINDOW:
             return { ...state, isCreateFolderVisible: true };
         case CLOSE_CREATE_FOLDER_WINDOW:

@@ -106,3 +106,7 @@ export const FETCH_CONTACT_RECOMMENDATIONS_SUCCESS =
     'fetch_contact_recommendations_success';
 export const FETCH_CONTACT_RECOMMENDATIONS_FAILURE =
     'fetch_contact_recommendations_failure';
+
+export const DOWNLOAD_FILE = 'download_file';
+export const DOWNLOAD_FILE_SUCCESS = 'download_file_success';
+export const DOWNLOAD_FILE_FAILURE = 'download_file_failure';

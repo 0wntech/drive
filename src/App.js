@@ -3,7 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
-import Drive from './stateful_components/Drive';
+import Drive from './functional_components/Drive';
 import LoginScreen from './stateful_components/LoginScreen';
 import auth from 'solid-auth-client';
 import User from 'your-user';
@@ -185,12 +185,9 @@ const mapStateToProps = (state) => {
 };
 
 export default withRouter(
-    connect(
-        mapStateToProps,
-        {
-            login,
-            fetchUser,
-            setWebId,
-        }
-    )(App)
+    connect(mapStateToProps, {
+        login,
+        fetchUser,
+        setWebId,
+    })(App)
 );

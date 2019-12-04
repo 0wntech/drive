@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Drive Drive Snapshot matches the snapshot 1`] = `
-<Layout
+<UNDEFINED
   className="grid"
   label="Drive"
   onClick={[Function]}
@@ -15,7 +15,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
     />
   }
 >
-  <CursorMenu
+  <UNDEFINED
     className="mainArea"
     drive={true}
     id="drive contextmenu"
@@ -47,6 +47,6 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
         />
       </div>
     </div>
-  </CursorMenu>
-</Layout>
+  </UNDEFINED>
+</UNDEFINED>
 `;

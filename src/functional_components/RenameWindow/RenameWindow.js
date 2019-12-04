@@ -13,7 +13,7 @@ export default function RenameWindow({
     windowName,
     placeholder,
     visible,
-    currentFolder,
+    currentItem,
 }) {
     const [newName, setNewName] = useState('');
 
@@ -27,9 +27,9 @@ export default function RenameWindow({
     let warning;
     if (newName !== cleanPlaceholder) {
         const re = new RegExp('^[a-zA-Z0-9]*$');
-        if (currentFolder && (currentFolder.folders || currentFolder.files)) {
+        if (currentItem && (currentItem.folders || currentItem.files)) {
             allow = re.exec(newName) && newName !== '' ? true : false;
-            warning = utils.namingConflict(newFileName, currentFolder);
+            warning = utils.namingConflict(newFileName, currentItem);
         } else {
             allow = false;
         }
