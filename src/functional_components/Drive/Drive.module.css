@@ -9,14 +9,6 @@
     list-style: none;
 }
 
-.hidden {
-    display: none;
-}
-
-.visible {
-    display: initial;
-}
-
 .toolbar {
     grid-template-rows: 5fr;
 }
