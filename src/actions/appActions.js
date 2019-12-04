@@ -41,13 +41,13 @@ export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
-        if (!options.noFetch) {
-            dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
-        } else {
+        if (options.noFetch) {
             dispatch({
                 type: FETCH_CURRENT_ITEM_SUCCESS,
                 payload: { body: '', url: newPath },
             });
+        } else {
+            dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
         }
     };
 };
@@ -65,7 +65,6 @@ export const fetchCurrentItem = (url, folder = false) => {
             fileClient
                 .read(url, options)
                 .then((item) => {
-                    console.log(item);
                     if (item && item.folders) {
                         const fileNames = item.files.map((file) => {
                             return convertFileUrlToName(file);
