@@ -41,7 +41,7 @@ export const setCurrentPath = (newPath) => {
     return (dispatch) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
-        dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+        return dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
     };
 };
 
@@ -56,7 +56,7 @@ export const fetchCurrentItem = (item, folder = false) => {
             options.auth = auth;
             options.headers = { Accept: 'text/turtle' };
         }
-        fileClient
+        return fileClient
             .read(item, options)
             .then((item) => {
                 if (item && item.folders) {

@@ -44,7 +44,7 @@ describe('App Actions', () => {
         });
     });
     describe('setCurrentPath', () => {
-        xit('should create actions to set current path, empty selection, fetch items', () => {
+        it('should create actions to set current path, empty selection, fetch items', () => {
             const path = 'https://bejow.inrupt.net/.well-known/';
             const store = mockStore({ currentPath: null });
             const expectedActions = [
@@ -71,7 +71,7 @@ describe('App Actions', () => {
         });
     });
     describe('fetchCurrentItem', () => {
-        xit('should set folders and files if fetch succeed', () => {
+        it('should set folders and files if fetch succeed', () => {
             const url = 'https://bejow.inrupt.net/.well-known/';
             const store = mockStore({ currentPath: null });
 
