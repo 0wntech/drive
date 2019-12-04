@@ -35,6 +35,17 @@ const Drive = ({
     loadDeletion,
     loadPaste,
 }) => {
+    useEffect(() => {
+        if (!currentPath && !loadCurrentItem && webId) {
+            currentPath = webId.replace('profile/card#me', '');
+            setCurrentPath(currentPath, true);
+        } else if (currentPath && currentItem && currentItem.body) {
+            currentPath =
+                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
+            setCurrentPath(currentPath);
+        }
+    });
+
     // Event Handlers
     const loadFile = (url, event = {}) => {
         if (url.endsWith('/')) {
@@ -52,7 +63,7 @@ const Drive = ({
         }
     };
 
-    const followPath = (path, event = {}) => {
+    const loadFolder = (path, event = {}) => {
         if (loadCurrentItem) return;
         if (isCmdPressed(event) && selectedItems.includes(path)) {
             const newSelection = selectedItems.filter((item) => item !== path);
@@ -146,17 +157,6 @@ const Drive = ({
         </div>
     ) : null;
 
-    useEffect(() => {
-        if (!currentPath && !loadCurrentItem && webId) {
-            currentPath = webId.replace('profile/card#me', '');
-            setCurrentPath(currentPath, true);
-        } else if (currentPath && currentItem && currentItem.body) {
-            currentPath =
-                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
-            setCurrentPath(currentPath);
-        }
-    });
-
     if ((loadCurrentItem, loadDeletion, loadPaste)) {
         return (
             <div className={styles.spinner}>
@@ -192,7 +192,7 @@ const Drive = ({
                                         items={currentItem.folders}
                                         currPath={currentPath}
                                         image={folder}
-                                        onItemClick={followPath}
+                                        onItemClick={loadFolder}
                                     />
                                 ) : null}
                                 <ItemList
