@@ -229,13 +229,10 @@ const mapStateToProps = (state) => {
 };
 
 export default withRouter(
-    connect(
-        mapStateToProps,
-        {
-            setCurrentPath,
-            sendNotification,
-            fetchCurrentItem,
-            setSelection,
-        }
-    )(Drive)
+    connect(mapStateToProps, {
+        setCurrentPath,
+        sendNotification,
+        fetchCurrentItem,
+        setSelection,
+    })(Drive)
 );

@@ -23,9 +23,9 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
     <div
       className="container"
     >
-      <Memo(Connect(Windows)) />
+      <UNDEFINED />
       <div>
-        <Memo(Connect(ItemList))
+        <UNDEFINED
           image="Folder.png"
           items={
             Array [
@@ -35,7 +35,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
           }
           onItemClick={[Function]}
         />
-        <Memo(Connect(ItemList))
+        <UNDEFINED
           image="File.png"
           isFile={true}
           items={
