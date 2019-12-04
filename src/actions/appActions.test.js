@@ -69,6 +69,27 @@ describe('App Actions', () => {
                 expect(store.getActions()).toEqual(expectedActions);
             });
         });
+        it('should set the path and currentItem without fetching when receiving an image path', () => {
+            const path = 'https://bejow.owntech.de/favicon.ico';
+            const expectedActions = [
+                {
+                    payload: 'https://bejow.owntech.de/favicon.ico',
+                    type: SET_CURRENT_PATH,
+                },
+                { payload: [], type: SET_SELECTION },
+                {
+                    payload: {
+                        body: '',
+                        url: 'https://bejow.owntech.de/favicon.ico',
+                    },
+                    type: FETCH_CURRENT_ITEM_SUCCESS,
+                },
+            ];
+
+            const store = mockStore({ currentItem: null, currentPath: null });
+            store.dispatch(setCurrentPath(path, { noFetch: true }));
+            expect(store.getActions()).toEqual(expectedActions);
+        });
     });
     describe('fetchCurrentItem', () => {
         it('should set folders and files if fetch succeed', () => {
