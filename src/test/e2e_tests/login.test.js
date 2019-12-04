@@ -6,10 +6,10 @@ import puppeteer from 'puppeteer';
 
 jest.setTimeout(30000);
 describe('login', () => {
-    xit('should go through login process', async () => {
+    it('should go through login process', async () => {
         const browser = await puppeteer.launch({
             headless: false,
-            slowMo: 250,
+            slowMo: 100,
         });
         const page = await browser.newPage();
         page.emulate({
@@ -23,15 +23,20 @@ describe('login', () => {
         await page.goto('http://localhost:3000');
         await page.waitForSelector('[data-test-id=login_btn]');
         await page.click('[data-test-id=login_btn]');
-        await page.waitForSelector('[data-test-id="owntech.de"]');
-        await page.click('[data-test-id="owntech.de"]');
+        await page.waitForSelector('[data-test-id="solid.community"]');
+        await page.click('[data-test-id="solid.community"]');
         await page.waitForSelector('form');
         await page.click('#username');
-        await page.type('#username', 'test');
+        await page.type('#username', process.env.USERNAME);
         await page.click('#password');
-        await page.type('#password', 'testpassword');
-        await page.waitForSelector('.alert');
-        const html = await page.$eval('.provider', (e) => e.innerHTML);
-        expect(html).toBe('?!?!?');
+        await page.type('#password', process.env.PASSWORD);
+        await page.click('#login');
+        await page.waitForSelector('[data-test-id=header]');
+        const header = await page.$eval(
+            '[data-test-id=header]',
+            (e) => e.innerHTML
+        );
+        expect(header).toBe('Drive');
+        await browser.close();
     });
 });
