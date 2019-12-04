@@ -13,6 +13,8 @@ import {
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
     FETCH_IDPS_FAILED,
+    OPEN_CONSENT_WINDOW,
+    CLOSE_CONSENT_WINDOW,
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
@@ -20,15 +22,24 @@ import {
     PASTE_ITEMS,
     PASTE_ITEMS_SUCCESS,
     PASTE_ITEMS_FAILURE,
+    OPEN_RENAME_WINDOW,
+    CLOSE_RENAME_WINDOW,
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    OPEN_CREATE_FILE_WINDOW,
+    CLOSE_CREATE_FILE_WINDOW,
+    CREATE_FILE,
+    CREATE_FILE_FAILURE,
+    CREATE_FILE_SUCCESS,
     UPDATE_FILE,
     UPDATE_FILE_SUCCESS,
     UPDATE_FILE_FAILURE,
-    CREATE_FILE,
-    CREATE_FILE_SUCCESS,
-    CREATE_FILE_FAILURE,
+    OPEN_CREATE_FOLDER_WINDOW,
+    CLOSE_CREATE_FOLDER_WINDOW,
+    CREATE_FOLDER,
+    CREATE_FOLDER_SUCCESS,
+    CREATE_FOLDER_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -321,5 +332,71 @@ export const renameItem = function(renamedItem, value) {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
                 });
         });
+    };
+};
+
+export const openCreateFileWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CREATE_FILE_WINDOW });
+    };
+};
+
+export const closeCreateFileWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CREATE_FILE_WINDOW });
+    };
+};
+
+export const openCreateFolderWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CREATE_FOLDER_WINDOW });
+    };
+};
+
+export const closeCreateFolderWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CREATE_FOLDER_WINDOW });
+    };
+};
+
+export const openConsentWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CONSENT_WINDOW });
+    };
+};
+
+export const closeConsentWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CONSENT_WINDOW });
+    };
+};
+
+export const openRenameWindow = function(item) {
+    return (dispatch) => {
+        dispatch({ type: OPEN_RENAME_WINDOW, payload: item });
+    };
+};
+
+export const closeRenameWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_RENAME_WINDOW });
+    };
+};
+
+export const createFolder = function(name, path) {
+    return (dispatch) => {
+        dispatch({ type: CREATE_FOLDER });
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(path).host + '/',
+        });
+        return fileClient
+            .create(path + name + '/')
+            .then(() => {
+                dispatch({ type: CREATE_FOLDER_SUCCESS });
+                dispatch(setCurrentPath(path));
+            })
+            .catch((err) => {
+                dispatch({ type: CREATE_FOLDER_FAILURE, payload: err });
+            });
     };
 };
