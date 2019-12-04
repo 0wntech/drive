@@ -26,7 +26,7 @@ const ContactsPage = ({
 }) => {
     useEffect(() => {
         fetchContactRecommendations(webId);
-    }, []);
+    });
 
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay = contactRecommendations.slice(

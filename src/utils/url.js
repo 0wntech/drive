@@ -1,3 +1,5 @@
+import urlUtils from 'url';
+
 export const getBreadcrumbsFromUrl = (url) => {
     // check if url is a valid url
     if (!isValidUrl(url)) {
@@ -5,6 +7,7 @@ export const getBreadcrumbsFromUrl = (url) => {
             `getBreadcrumbsFromUrl received an invalid url: ${url}`
         );
     }
+    url = decodeURIComponent(url);
     const breadcrumbs = url.replace('https://', '').split('/');
     breadcrumbs.shift();
     const newBreadcrumbs = ['/'];
@@ -14,6 +17,20 @@ export const getBreadcrumbsFromUrl = (url) => {
         }
     });
     return newBreadcrumbs;
+};
+
+export const getFileParamsFromUrl = (url) => {
+    const params = urlUtils
+        .parse(url)
+        .search.replace('?', '')
+        .split('&');
+    const paramObj = {};
+    params.forEach((param) => {
+        const paramName = param.split('=')[0];
+        const paramVal = param.split('=')[1];
+        paramObj[paramName] = paramVal;
+    });
+    return paramObj;
 };
 
 export const convertFolderUrlToName = (folderUrl) => {
@@ -26,7 +43,7 @@ export const convertFileUrlToName = (fileUrl) => {
 
 export const isValidUrl = (url) => {
     return url.match(
-        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&%'\(\)\*\+,;=.]+$/
     )
         ? true
         : false;

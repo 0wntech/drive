@@ -1,7 +1,7 @@
 import {
-    FETCH_CURRENT_ITEMS,
-    FETCH_CURRENT_ITEMS_SUCCESS,
-    FETCH_CURRENT_ITEMS_FAIL,
+    FETCH_CURRENT_ITEM,
+    FETCH_CURRENT_ITEM_SUCCESS,
+    FETCH_CURRENT_ITEM_FAIL,
     SET_CURRENT_PATH,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
@@ -23,39 +23,68 @@ import {
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    UPDATE_FILE,
+    UPDATE_FILE_SUCCESS,
+    UPDATE_FILE_FAILURE,
+    CREATE_FILE,
+    CREATE_FILE_SUCCESS,
+    CREATE_FILE_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
+import mime from 'mime';
+import url from 'url';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
 export const setCurrentPath = (newPath) => {
     return (dispatch) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
-        return dispatch(fetchCurrentItems(newPath));
+        dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
     };
 };
 
-export const fetchCurrentItems = (url) => {
+export const fetchCurrentItem = (item, folder = false) => {
     return (dispatch) => {
-        dispatch({ type: FETCH_CURRENT_ITEMS });
-        return fileUtils
-            .getFolderFiles(url)
-            .then((items) => {
-                const fileNames = items.files.map((file) => {
-                    return convertFileUrlToName(file);
-                });
-                const folderNames = items.folders.map((folder) => {
-                    return convertFolderUrlToName(folder);
-                });
-                dispatch({
-                    type: FETCH_CURRENT_ITEMS_SUCCESS,
-                    payload: { files: fileNames, folders: folderNames },
-                });
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(item).host + '/',
+        });
+        dispatch({ type: FETCH_CURRENT_ITEM });
+        const options = {};
+        if (folder) {
+            options.auth = auth;
+            options.headers = { Accept: 'text/turtle' };
+        }
+        fileClient
+            .read(item, options)
+            .then((item) => {
+                if (item && item.folders) {
+                    const fileNames = item.files.map((file) => {
+                        return convertFileUrlToName(file);
+                    });
+                    const folderNames = item.folders.map((folder) => {
+                        return convertFolderUrlToName(folder);
+                    });
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_SUCCESS,
+                        payload: {
+                            files: fileNames,
+                            folders: folderNames,
+                        },
+                    });
+                } else if (item || item === '') {
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_SUCCESS,
+                        payload: { body: item, url: item },
+                    });
+                }
             })
             .catch((error) =>
-                dispatch({ type: FETCH_CURRENT_ITEMS_FAIL, payload: error })
+                dispatch({
+                    type: FETCH_CURRENT_ITEM_FAIL,
+                    payload: error,
+                })
             );
     };
 };
@@ -76,6 +105,50 @@ export const fetchNotifications = (webId) => {
                     type: FETCH_NOTIFICATIONS_FAILURE,
                 });
             });
+    };
+};
+
+export const updateFile = (file, body) => {
+    return (dispatch) => {
+        dispatch({ type: UPDATE_FILE });
+        const contentType = mime.getType(file);
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(file).host + '/',
+        });
+        if (body !== '') {
+            fileClient
+                .delete(file)
+                .then(() => {
+                    fileClient
+                        .create(file, {
+                            contents: body,
+                            contentType: contentType,
+                        })
+                        .then(() => {
+                            dispatch({
+                                type: UPDATE_FILE_SUCCESS,
+                                payload: { body: body, url: file },
+                            });
+                        })
+                        .catch((err) => {
+                            dispatch({
+                                type: UPDATE_FILE_FAILURE,
+                                payload: err,
+                            });
+                        });
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: UPDATE_FILE_FAILURE,
+                        payload: err,
+                    });
+                });
+        } else {
+            dispatch({
+                type: UPDATE_FILE_FAILURE,
+                payload: 'File can\'t be set to empty',
+            });
+        }
     };
 };
 
@@ -147,15 +220,15 @@ export const pasteItems = (items, location) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()
             .then((session) => {
-                const pod = new PodClient({ podUrl: session.webId });
+                const fileClient = new PodClient({ podUrl: session.webId });
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
                         if (index === items.length - 1) {
-                            return pod.copy(item, location).then(() => {
+                            return fileClient.copy(item, location).then(() => {
                                 resolve();
                             });
                         } else {
-                            return pod.copy(item, location);
+                            return fileClient.copy(item, location);
                         }
                     });
                     Promise.all(items).catch((err) => {
@@ -173,6 +246,25 @@ export const pasteItems = (items, location) => {
             })
             .catch((err) => {
                 dispatch({ type: PASTE_ITEMS_FAILURE, payload: err });
+            });
+    };
+};
+
+export const createFile = function(name, path) {
+    return (dispatch) => {
+        dispatch({ type: CREATE_FILE });
+        const contentType = mime.getType(name);
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(name).host + '/',
+        });
+        return fileClient
+            .create(path + name, { contentType: contentType })
+            .then(() => {
+                dispatch({ type: CREATE_FILE_SUCCESS });
+                dispatch(setCurrentPath(path));
+            })
+            .catch((err) => {
+                dispatch({ type: CREATE_FILE_FAILURE, payload: err });
             });
     };
 };
@@ -216,6 +308,7 @@ export const renameItem = function(renamedItem, value) {
                     location = location.join('/');
                     dispatch({ type: RENAME_ITEM_SUCCESS });
                     dispatch(setCurrentPath(location + '/'));
+                    dispatch(fetchCurrentItem(location + '/'));
                 })
                 .catch((err) => {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
