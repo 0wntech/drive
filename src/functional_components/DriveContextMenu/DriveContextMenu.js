@@ -100,14 +100,18 @@ export const CursorMenu = ({
 
     return (
         <>
-            <MenuProvider className={classNames(styles.menu, className)}>
+            <MenuProvider
+                className={classNames(styles.menu, className)}
+                id={'drive contextmenu'}
+            >
                 {children}
             </MenuProvider>
             <Menu className={styles.contextMenu} id={'drive contextmenu'}>
-                {CONTEXTMENU_OPTIONS_DRIVE &&
-                    CONTEXTMENU_OPTIONS_DRIVE.map((option, index) =>
-                        renderMenuItem(option, index)
-                    )}
+                {CONTEXTMENU_OPTIONS_DRIVE
+                    ? CONTEXTMENU_OPTIONS_DRIVE.map((option, index) =>
+                          renderMenuItem(option, index)
+                      )
+                    : null}
             </Menu>
         </>
     );
