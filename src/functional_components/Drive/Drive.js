@@ -21,7 +21,7 @@ import {
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
 import Windows from '../Windows/Windows';
-import { CursorMenu } from '../DriveContextMenu/DriveContextMenu';
+import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 
 const Drive = ({
     selectedItems,
@@ -142,7 +142,9 @@ const Drive = ({
             onDownload={downloadItems}
             uploadFile={uploadFile}
             onDelete={() => {
-                openConsentWindow(selectedItems);
+                if (selectedItems.length !== 0) {
+                    openConsentWindow(selectedItems);
+                }
             }}
         />
     );
@@ -170,7 +172,7 @@ const Drive = ({
             label="Drive"
             onClick={clearSelection}
         >
-            <CursorMenu
+            <DriveContextMenu
                 className={styles.mainArea}
                 drive
                 id="drive contextmenu"
@@ -202,7 +204,7 @@ const Drive = ({
                         undefined
                     )}
                 </div>
-            </CursorMenu>
+            </DriveContextMenu>
         </Layout>
     );
 };

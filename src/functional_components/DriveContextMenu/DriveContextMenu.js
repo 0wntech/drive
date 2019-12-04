@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { Menu, MenuProvider } from 'react-contexify';
+import { Menu, MenuProvider, Item } from 'react-contexify';
 import styles from './DriveContextMenu.module.css';
 import fileUtils from '../../utils/fileUtils';
-import { Item } from '../Item';
 import {
     setSelection,
     copyItems,
@@ -15,7 +14,7 @@ import {
     openRenameWindow,
 } from '../../actions/appActions';
 
-export const CursorMenu = ({
+export const DriveContextMenu = ({
     className,
     currentPath,
     selectedItems,
@@ -93,7 +92,9 @@ export const CursorMenu = ({
         },
         {
             label: 'Delete',
-            onClick: (item) => openConsentWindow(item),
+            onClick: (item) => {
+                if (selectedItems.length !== 0) openConsentWindow(item);
+            },
             disabled: false,
         },
     ];
@@ -134,4 +135,4 @@ export default connect(mapStateToProps, {
     openConsentWindow,
     openCreateFileWindow,
     openCreateFolderWindow,
-})(CursorMenu);
+})(DriveContextMenu);

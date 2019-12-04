@@ -74,7 +74,7 @@ const ItemList = ({
             label: 'Delete',
             onClick: (item) => {
                 const deletable = fileUtils.addForDelete(item, selectedItems);
-                if (deletable) {
+                if (deletable && deletable.length !== 0) {
                     setSelection(deletable);
                     openConsentWindow(deletable);
                 }

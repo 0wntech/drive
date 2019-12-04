@@ -22,6 +22,7 @@ export const Windows = ({
     isRenameWindowVisible,
     renamedItem,
     selectedItems,
+    currentItem,
     currentPath,
     deleteItems,
     renameItem,
@@ -64,6 +65,7 @@ export const Windows = ({
                 windowName="Rename File"
                 info="Enter a new name:"
                 placeholder={renamedItem ? renamedItem : 'Untitled'}
+                currentItem={currentItem}
                 onSubmit={(value) =>
                     renameItem(renamedItem, encodeURIComponent(value))
                 }
@@ -82,6 +84,7 @@ const mapStateToProps = (state) => {
         isConsentWindowVisible: state.app.isConsentWindowVisible,
         selectedItems: state.app.selectedItems,
         currentPath: state.app.currentPath,
+        currentItem: state.app.currentItem,
         renamedItem: state.app.renamedItem,
     };
 };

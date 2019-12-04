@@ -15,7 +15,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
     />
   }
 >
-  <CursorMenu
+  <UNDEFINED
     className="mainArea"
     drive={true}
     id="drive contextmenu"
@@ -47,6 +47,6 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
         />
       </div>
     </div>
-  </CursorMenu>
+  </UNDEFINED>
 </UNDEFINED>
 `;
