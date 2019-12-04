@@ -53,57 +53,57 @@ export const setCurrentPath = (newPath, options = {}) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
         if (options.noFetch) {
-            dispatch({
+            return dispatch({
                 type: FETCH_CURRENT_ITEM_SUCCESS,
                 payload: { body: '', url: newPath },
             });
         } else {
-            dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+            return dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
         }
     };
 };
 
-export const fetchCurrentItem = (url, folder = false) => {
+export const fetchCurrentItem = (item, folder = false) => {
     return (dispatch) => {
-        auth.currentSession().then((session) => {
-            const fileClient = new PodClient({ podUrl: session.webId });
-            dispatch({ type: FETCH_CURRENT_ITEM });
-            const options = {};
-            if (folder) {
-                options.auth = auth;
-                options.headers = { Accept: 'text/turtle' };
-            }
-            fileClient
-                .read(url, options)
-                .then((item) => {
-                    if (item && item.folders) {
-                        const fileNames = item.files.map((file) => {
-                            return convertFileUrlToName(file);
-                        });
-                        const folderNames = item.folders.map((folder) => {
-                            return convertFolderUrlToName(folder);
-                        });
-                        dispatch({
-                            type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: {
-                                files: fileNames,
-                                folders: folderNames,
-                            },
-                        });
-                    } else if (item || item === '') {
-                        dispatch({
-                            type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: { body: item, url: url },
-                        });
-                    }
-                })
-                .catch((error) =>
-                    dispatch({
-                        type: FETCH_CURRENT_ITEM_FAIL,
-                        payload: error,
-                    })
-                );
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(item).host + '/',
         });
+        dispatch({ type: FETCH_CURRENT_ITEM });
+        const options = {};
+        if (folder) {
+            options.auth = auth;
+            options.headers = { Accept: 'text/turtle' };
+        }
+        return fileClient
+            .read(item, options)
+            .then((item) => {
+                if (item && item.folders) {
+                    const fileNames = item.files.map((file) => {
+                        return convertFileUrlToName(file);
+                    });
+                    const folderNames = item.folders.map((folder) => {
+                        return convertFolderUrlToName(folder);
+                    });
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_SUCCESS,
+                        payload: {
+                            files: fileNames,
+                            folders: folderNames,
+                        },
+                    });
+                } else if (item || item === '') {
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_SUCCESS,
+                        payload: { body: item, url: item },
+                    });
+                }
+            })
+            .catch((error) =>
+                dispatch({
+                    type: FETCH_CURRENT_ITEM_FAIL,
+                    payload: error,
+                })
+            );
     };
 };
 
