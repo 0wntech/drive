@@ -17,6 +17,7 @@ export default function IdentityProvider({
 
     return (
         <button
+            data-test-id={title}
             className={styles.container}
             onClick={() => {
                 if (custom && customIdp !== '') {
