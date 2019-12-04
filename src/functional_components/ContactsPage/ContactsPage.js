@@ -103,9 +103,12 @@ const mapStateToProps = (state) => ({
     contactRecommendations: state.contact.contactRecommendations,
 });
 
-export default connect(mapStateToProps, {
-    setCurrentContact,
-    addContact,
-    removeContact,
-    fetchContactRecommendations,
-})(withRouter(ContactsPage));
+export default connect(
+    mapStateToProps,
+    {
+        setCurrentContact,
+        addContact,
+        removeContact,
+        fetchContactRecommendations,
+    }
+)(withRouter(ContactsPage));
