@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { MenuProvider } from 'react-contexify';
+import { Menu, MenuProvider } from 'react-contexify';
+import styles from './DriveContextMenu.module.css';
 import fileUtils from '../../utils/fileUtils';
 import { Item } from '../Item';
 import {
@@ -14,31 +15,12 @@ import {
     openRenameWindow,
 } from '../../actions/appActions';
 
-const renderMenuItem = (option, index) => {
-    return (
-        <Item
-            disabled={option.disabled}
-            key={index + option.label}
-            onClick={
-                !option.disabled
-                    ? () => {
-                          option.onClick(currentPath);
-                      }
-                    : undefined
-            }
-            className={classNames(styles.contextItem, {
-                [styles.disabled]: option.disabled,
-            })}
-        >
-            <div>{option.label}</div>
-        </Item>
-    );
-};
-
 export const CursorMenu = ({
     className,
+    currentPath,
+    selectedItems,
+    webId,
     clipboard,
-    drive,
     copyItems,
     pasteItems,
     openConsentWindow,
@@ -46,6 +28,27 @@ export const CursorMenu = ({
     openCreateFolderWindow,
     children,
 }) => {
+    const renderMenuItem = (option, index) => {
+        return (
+            <Item
+                disabled={option.disabled}
+                key={index + option.label}
+                onClick={
+                    !option.disabled
+                        ? () => {
+                              option.onClick(currentPath);
+                          }
+                        : undefined
+                }
+                className={classNames(styles.contextItem, {
+                    [styles.disabled]: option.disabled,
+                })}
+            >
+                <div>{option.label}</div>
+            </Item>
+        );
+    };
+
     const CONTEXTMENU_OPTIONS_DRIVE = [
         {
             label: 'Info',

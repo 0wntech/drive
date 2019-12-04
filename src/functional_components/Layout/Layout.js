@@ -1,9 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './Layout.module.css';
+import { ClassicSpinner } from 'react-spinners-kit';
 
-const Layout = ({
+export const Layout = ({
     className,
     hideToolbar,
     children,
@@ -12,6 +14,11 @@ const Layout = ({
     toolbarClassName,
     label,
     onClick,
+    updatingFile,
+    loadCurrentItem,
+    loadDeletion,
+    loadPaste,
+    updatingProfile,
 }) => {
     return (
         <div className={classNames(styles.grid)}>
@@ -32,7 +39,27 @@ const Layout = ({
                 onClick={onClick}
                 className={classNames(styles.content, className)}
             >
-                {children}
+                {loadCurrentItem ||
+                loadDeletion ||
+                loadPaste ||
+                updatingFile ||
+                updatingProfile ? (
+                    <div className={styles.spinner}>
+                        <ClassicSpinner
+                            size={30}
+                            color="#686769"
+                            loading={
+                                loadCurrentItem ||
+                                loadDeletion ||
+                                loadPaste ||
+                                updatingFile ||
+                                updatingProfile
+                            }
+                        />
+                    </div>
+                ) : (
+                    children
+                )}
             </div>
         </div>
     );
@@ -47,4 +74,14 @@ Layout.propTypes = {
     label: PropTypes.string,
 };
 
-export default Layout;
+const mapStateToProps = (state) => {
+    return {
+        loadCurrentItem: state.app.loadCurrentItem,
+        loadDeletion: state.app.loadDeletion,
+        loadPaste: state.app.loadPaste,
+        updatingFile: state.app.updatingFile,
+        updatingProfile: state.user.updatingProfile,
+    };
+};
+
+export default connect(mapStateToProps, {})(Layout);

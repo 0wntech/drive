@@ -1,5 +1,6 @@
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
+import url from 'url';
 const ns = require('solid-namespace')(rdf);
 
 function getContentType(file) {
@@ -25,6 +26,18 @@ function getContentType(file) {
         return 'folder';
     }
 }
+
+const addForDelete = (item, selectedItems) => {
+    const newSelection = [...selectedItems];
+    if (item && url.parse(item).path !== '/' && !selectedItems.includes(item)) {
+        newSelection.push(item);
+        return newSelection;
+    }
+    if (selectedItems.length !== 0 || newSelection.length !== 0) {
+        return newSelection;
+    }
+    return false;
+};
 
 function namingConflict(name, currentFolder) {
     if (currentFolder) {
@@ -401,4 +414,5 @@ export default {
     convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
     namingConflict: namingConflict,
     getSuffixAndPlaceholder: getSuffixAndPlaceholder,
+    addForDelete: addForDelete,
 };

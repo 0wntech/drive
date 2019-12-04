@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import url from 'url';
 import fileUtils from '../../utils/fileUtils';
 import { getRootFromWebId } from '../../utils/url';
 import { Item } from '../Item';
@@ -32,21 +31,6 @@ const ItemList = ({
     openConsentWindow,
     openRenameWindow,
 }) => {
-    const addForDelete = (item) => {
-        const newSelection = [...selectedItems];
-        if (
-            item &&
-            url.parse(item).path !== '/' &&
-            !selectedItems.includes(item)
-        ) {
-            newSelection.push(item);
-            setSelection(newSelection);
-        }
-        if (selectedItems.length !== 0 || newSelection.length !== 0) {
-            return true;
-        }
-    };
-
     const CONTEXTMENU_OPTIONS = [
         {
             label: 'Info',
@@ -89,8 +73,11 @@ const ItemList = ({
         {
             label: 'Delete',
             onClick: (item) => {
-                const deletable = addForDelete(item);
-                if (deletable) openConsentWindow(item);
+                const deletable = fileUtils.addForDelete(item, selectedItems);
+                if (deletable) {
+                    setSelection(deletable);
+                    openConsentWindow(deletable);
+                }
             },
             disabled: false,
         },
