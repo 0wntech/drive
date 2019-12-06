@@ -88,7 +88,7 @@ const Navigation = ({
                     onClick={() => {
                         if (webId) {
                             setCurrentPath(
-                                webId.replace('/profile/card#me', '')
+                                webId.replace('profile/card#me', '')
                             );
                             history.push('/home');
                         } else {
@@ -201,7 +201,8 @@ const mapStateToProps = (state) => ({
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
 });
-export default connect(
-    mapStateToProps,
-    { setCurrentPath, setCurrentContact, searchContact }
-)(withRouter(Navigation));
+export default connect(mapStateToProps, {
+    setCurrentPath,
+    setCurrentContact,
+    searchContact,
+})(withRouter(Navigation));

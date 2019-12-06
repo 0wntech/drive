@@ -13,7 +13,6 @@ export default function IdentityProvider({
     custom,
 }) {
     const [customIdp, setIdp] = useState('');
-    console.log(customIdp.lastIndexOf('https://') === -1);
 
     return (
         <button

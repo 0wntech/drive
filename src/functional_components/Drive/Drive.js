@@ -39,10 +39,17 @@ const Drive = ({
     useEffect(() => {
         if (!currentPath && !loadCurrentItem && webId) {
             currentPath = webId.replace('profile/card#me', '');
-            setCurrentPath(currentPath, true);
-        } else if (currentPath && currentItem && currentItem.body) {
-            currentPath =
-                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
+            setCurrentPath(currentPath);
+        } else if (
+            !loadCurrentItem &&
+            currentPath &&
+            currentItem &&
+            currentItem.body
+        ) {
+            currentPath = currentPath.substr(
+                0,
+                currentPath.lastIndexOf('/') + 1
+            );
             setCurrentPath(currentPath);
         }
     });
@@ -216,6 +223,7 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
+        loadCurrentItem: state.app.loadCurrentItem,
     };
 };
 

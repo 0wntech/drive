@@ -1,5 +1,5 @@
 import { isContact } from './contactReducer';
-import { contacts } from '../test/fixtures/contacts';
+import { contacts } from '../../test/fixtures/contacts';
 describe('AppReducer', () => {
     describe('isContact() Selector', () => {
         test('Return true if webId is contact', () => {

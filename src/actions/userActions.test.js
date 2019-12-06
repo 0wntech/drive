@@ -12,7 +12,7 @@ import {
 } from './types';
 import { fetchUser, setWebId } from './userActions';
 
-import { card } from '../test/fixtures/card';
+import { card } from '../../test/fixtures/card';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

@@ -45,6 +45,7 @@ export default function File({
                 [styles.selected]: selectedItem,
             })}
             id={label + 'contextmenu'}
+            data-test-id={label}
         >
             <div
                 className={styles.container}

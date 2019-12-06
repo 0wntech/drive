@@ -67,19 +67,19 @@ export const setCurrentPath = (newPath, options = {}) => {
     };
 };
 
-export const fetchCurrentItem = (item, folder = false) => {
+export const fetchCurrentItem = (itemUrl, folder = false) => {
     return (dispatch) => {
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(item).host + '/',
-        });
         dispatch({ type: FETCH_CURRENT_ITEM });
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(itemUrl).host + '/',
+        });
         const options = {};
         if (folder) {
             options.auth = auth;
             options.headers = { Accept: 'text/turtle' };
         }
         return fileClient
-            .read(item, options)
+            .read(itemUrl, options)
             .then((item) => {
                 if (item && item.folders) {
                     const fileNames = item.files.map((file) => {
@@ -95,10 +95,10 @@ export const fetchCurrentItem = (item, folder = false) => {
                             folders: folderNames,
                         },
                     });
-                } else if (item || item === '') {
+                } else if (item && typeof item === 'string') {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
-                        payload: { body: item, url: item },
+                        payload: { body: item, url: itemUrl },
                     });
                 }
             })
