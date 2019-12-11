@@ -32,7 +32,7 @@ export default function File({
             );
         } else {
             return (
-                <div className={styles.innerContainer}>
+                <div className={styles.innerContainer} data-test-id={label}>
                     <img alt="file" className={styles.icon} src={image} />
                 </div>
             );
@@ -45,7 +45,6 @@ export default function File({
                 [styles.selected]: selectedItem,
             })}
             id={label + 'contextmenu'}
-            data-test-id={label}
         >
             <div
                 className={styles.container}

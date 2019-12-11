@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-/user_data
+/user-data
 
 # production
 /build
