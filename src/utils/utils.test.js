@@ -4,6 +4,7 @@ import {
     isValidUrl,
     getUsernameFromWebId,
     sortContainments,
+    getLastFolderUrl,
 } from './url';
 import fileUtils from './fileUtils';
 
@@ -67,6 +68,27 @@ describe('Testing util functions', () => {
                 ['favicon.ico'],
                 ['example.com'],
             ]);
+        });
+
+        describe('getLastFolderUrl()', () => {
+            test('should return the profile folder url for a webId', () => {
+                const webId = 'https://ludwig.owntech.de/profile/card#me';
+                expect(getLastFolderUrl(webId)).toBe(
+                    'https://ludwig.owntech.de/profile/'
+                );
+            });
+            test('should return a url with a trailing slash', () => {
+                const url = 'https://ludwig.owntech.de';
+                expect(getLastFolderUrl(url)).toBe(
+                    'https://ludwig.owntech.de/'
+                );
+            });
+            test('should only work for valid urls', () => {
+                const url = 'ht://ludwig#asdf/';
+                expect(() => getLastFolderUrl(url)).toThrow(
+                    new Error('Received invalid url: ' + url)
+                );
+            });
         });
 
         describe('getWebIdFromRoot()', () => {

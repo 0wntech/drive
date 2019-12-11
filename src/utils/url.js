@@ -88,6 +88,19 @@ export const getRootFromWebId = (webId) => {
     return 'https://' + webId.split('/')[2] + '/';
 };
 
+// converts a url into the url of the last folder or root folder
+export const getLastFolderUrl = (url) => {
+    if (isValidUrl(url)) {
+        const slashCount = url.split('/').length;
+        if (slashCount >= 4) {
+            return url.substring(0, url.lastIndexOf('/') + 1);
+        } else if (slashCount === 3) {
+            return url + '/';
+        }
+    }
+    throw new Error('Received invalid url: ' + url);
+};
+
 // converts https://ludwigschubert.solid.community/
 // into https://ludwigschubert.solid.community/profile/card#me
 export const getWebIdFromRoot = (rootUrl) => {

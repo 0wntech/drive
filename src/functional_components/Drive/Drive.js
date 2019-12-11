@@ -22,6 +22,7 @@ import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
+import { getLastFolderUrl } from '../../utils/url';
 
 const Drive = ({
     selectedItems,
@@ -37,19 +38,12 @@ const Drive = ({
     downloadFile,
 }) => {
     useEffect(() => {
-        if (!currentPath && !loadCurrentItem && webId) {
-            currentPath = webId.replace('profile/card#me', '');
-            setCurrentPath(currentPath);
-        } else if (
-            !loadCurrentItem &&
-            currentPath &&
-            currentItem &&
-            currentItem.body
-        ) {
-            currentPath = currentPath.substr(
-                0,
-                currentPath.lastIndexOf('/') + 1
-            );
+        if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
+            if (!currentPath) {
+                currentPath = webId.replace('profile/card#me', '');
+                setCurrentPath(currentPath);
+            }
+            currentPath = getLastFolderUrl(currentPath);
             setCurrentPath(currentPath);
         }
     });
