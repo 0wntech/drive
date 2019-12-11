@@ -1,6 +1,7 @@
 module.exports = {
     launch: {
-        headless: process.env.NODE_ENV === 'test',
+        headless: process.env.NODE_ENV === '',
+        slowMo: 100,
         userDataDir: './user_data',
         defaultViewport: {
             width: 1920,
