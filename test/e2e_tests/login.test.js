@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-jest.setTimeout(15000);
+jest.setTimeout(16000);
 describe('login', () => {
     test('should go through login process', async () => {
         await page.goto('http://localhost:3000');
