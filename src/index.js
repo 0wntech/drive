@@ -8,6 +8,7 @@ import ReduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
 import { BrowserRouter } from 'react-router-dom';
+import './utils/polyfills';
 
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
