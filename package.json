@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-plugin-remove-test-ids": "^1.1.0",
     "classnames": "^2.2.6",
     "cross-env": "^6.0.0",
     "enzyme": "^3.10.0",

@@ -3,6 +3,6 @@
             "@babel/env",
 
         "@babel/react",
-    ]
-
+    ],
+    "plugins": ["remove-test-ids"]
 }
