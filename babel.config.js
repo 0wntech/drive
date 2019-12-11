@@ -6,5 +6,8 @@ module.exports = (api) => {
                   ['@babel/preset-env', { targets: { node: 'current' } }],
               ],
           }
-        : { presets: ['@babel/env', '@babel/react'] };
+        : {
+              presets: ['@babel/env', '@babel/react'],
+              plugins: ['remove-test-ids'],
+          };
 };
