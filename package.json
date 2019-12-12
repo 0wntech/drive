@@ -41,7 +41,7 @@
     "test:local": "react-scripts test",
     "test:coverage": "cross-env CI=true react-scripts test --env=jsdom --coverage",
     "test": "cross-env CI=true react-scripts test --env=jsdom && npm run test:e2e",
-    "test:e2e": "jest -c test/e2e_tests/login.jest.config.js && jest -c test/e2e_tests/jest.config.js && rimraf ./user_data",
+    "test:e2e": "rimraf ./user_data && jest -c test/e2e_tests/login.jest.config.js && jest -c test/e2e_tests/jest.config.js",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
     "lint": "eslint src",

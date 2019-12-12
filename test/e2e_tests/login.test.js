@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 jest.setTimeout(30000);
-describe('login', () => {
+describe('e2e login', () => {
     test('should go through login process', async () => {
         await page.goto('http://localhost:3000');
         await page.waitForSelector('[data-test-id=login_btn]');

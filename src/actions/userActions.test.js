@@ -2,7 +2,6 @@ jest.mock('ownuser', () => jest.fn());
 
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
 import User from 'ownuser';
 import {
     SET_WEBID,
@@ -49,10 +48,6 @@ describe('redux actions', () => {
         });
     });
     describe('async actions', () => {
-        afterEach(() => {
-            fetchMock.restore();
-        });
-
         describe('fetchUser', () => {
             it('should create actions when fetching success', () => {
                 User.mockImplementation(() => getProfileSuccess);
