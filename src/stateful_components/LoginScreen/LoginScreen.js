@@ -74,7 +74,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    { fetchIdps, login }
-)(withRouter(LoginScreen));
+export default connect(mapStateToProps, { fetchIdps, login })(
+    withRouter(LoginScreen)
+);

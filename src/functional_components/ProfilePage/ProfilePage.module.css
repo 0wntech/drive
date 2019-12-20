@@ -3,7 +3,6 @@
     display: grid;
     grid-template-columns: 3fr 6fr 3fr;
     grid-template-areas: '. profile .';
-    background-color: #ffffff;
 }
 
 svg:hover {

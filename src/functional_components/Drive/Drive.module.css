@@ -26,8 +26,6 @@
     grid-template-rows: 40px 23fr;
     grid-template-columns: 1fr 10fr 1fr;
     grid-template-areas: 'toolbar toolbar toolbar' 'main main main';
-    background-color: #ffffff;
-    border-radius: 20px;
 }
 
 .breadcrumbsContainer {
