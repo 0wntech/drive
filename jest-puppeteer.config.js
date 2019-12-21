@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     launch: {
-        headless: true,
+        headless: false,
         slowMo: 20,
         defaultViewport: {
             width: 1920,
@@ -13,8 +13,8 @@ module.exports = {
     },
     server: {
         command: 'BROWSER=none npm start',
-        host: 'localhost',
-        port: 3000,
+        port: 3001,
+        launchTimeout: 15000,
         usedPortAction: 'ignore',
     },
 };
