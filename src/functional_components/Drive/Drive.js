@@ -22,7 +22,7 @@ import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed } from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
-import { getLastFolderUrl } from '../../utils/url';
+import { getParentFolderUrl } from '../../utils/url';
 
 const Drive = ({
     selectedItems,
@@ -43,7 +43,7 @@ const Drive = ({
                 currentPath = webId.replace('profile/card#me', '');
                 setCurrentPath(currentPath);
             }
-            currentPath = getLastFolderUrl(currentPath);
+            currentPath = getParentFolderUrl(currentPath);
             setCurrentPath(currentPath);
         }
     });

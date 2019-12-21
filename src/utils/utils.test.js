@@ -4,7 +4,7 @@ import {
     isValidUrl,
     getUsernameFromWebId,
     sortContainments,
-    getLastFolderUrl,
+    getParentFolderUrl,
 } from './url';
 import fileUtils from './fileUtils';
 
@@ -70,22 +70,22 @@ describe('Testing util functions', () => {
             ]);
         });
 
-        describe('getLastFolderUrl()', () => {
+        describe('getParentFolderUrl()', () => {
             test('should return the profile folder url for a webId', () => {
                 const webId = 'https://ludwig.owntech.de/profile/card#me';
-                expect(getLastFolderUrl(webId)).toBe(
+                expect(getParentFolderUrl(webId)).toBe(
                     'https://ludwig.owntech.de/profile/'
                 );
             });
             test('should return a url with a trailing slash', () => {
                 const url = 'https://ludwig.owntech.de';
-                expect(getLastFolderUrl(url)).toBe(
+                expect(getParentFolderUrl(url)).toBe(
                     'https://ludwig.owntech.de/'
                 );
             });
             test('should only work for valid urls', () => {
                 const url = 'ht://ludwig#asdf/';
-                expect(() => getLastFolderUrl(url)).toThrow(
+                expect(() => getParentFolderUrl(url)).toThrow(
                     new Error('Received invalid url: ' + url)
                 );
             });

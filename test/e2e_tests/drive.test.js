@@ -1,7 +1,7 @@
 jest.setTimeout(15000);
 describe('drive', () => {
     it('should click folders and files', async () => {
-        await page.goto('http://localhost:3000/home');
+        await page.goto('http://localhost:3001/home');
         await page.waitForSelector('[data-test-id="profile"]');
         await page.click('[data-test-id="profile"]');
         await page.waitForSelector('[data-test-id="card"]');

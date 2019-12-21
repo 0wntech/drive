@@ -3,7 +3,7 @@ require('dotenv').config();
 jest.setTimeout(16000);
 describe('login', () => {
     test('should go through login process', async () => {
-        await page.goto('http://localhost:3000');
+        await page.goto('http://localhost:3001');
         await page.waitForSelector('[data-test-id=login_btn]');
         await page.click('[data-test-id=login_btn]');
         await page.waitForSelector('[data-test-id="solid.community"');

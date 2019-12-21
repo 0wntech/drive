@@ -89,7 +89,7 @@ export const getRootFromWebId = (webId) => {
 };
 
 // converts a url into the url of the last folder or root folder
-export const getLastFolderUrl = (url) => {
+export const getParentFolderUrl = (url) => {
     if (isValidUrl(url)) {
         const slashCount = url.split('/').length;
         if (slashCount >= 4) {
