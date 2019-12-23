@@ -18,9 +18,12 @@ const MyItem = ({
                 [styles.selected]: selectedItem,
             })}
             id={label + 'contextmenu'}
-            data-test-id={label}
         >
-            <div className={classNames(styles.container)} onClick={onClick}>
+            <div
+                className={classNames(styles.container)}
+                data-test-id={label}
+                onClick={onClick}
+            >
                 <div className={styles.innerContainer}>
                     <img alt="item" className={styles.icon} src={image} />
                 </div>

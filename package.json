@@ -6,6 +6,7 @@
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "babel-jest": "^24.9.0",
+    "babel-plugin-remove-test-ids": "^1.1.0",
     "classnames": "^2.2.6",
     "cross-env": "^6.0.0",
     "enzyme": "^3.10.0",
@@ -39,9 +40,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test:local": "react-scripts test",
-    "test:coverage": "cross-env CI=true react-scripts test --env=jsdom --coverage",
-    "test": "cross-env CI=true react-scripts test --env=jsdom && npm run test:e2e",
-    "test:e2e": "rimraf ./user_data && jest -c test/e2e_tests/login.jest.config.js && jest -c test/e2e_tests/jest.config.js",
+    "test:coverage": "npm run test:unit --coverage",
+    "test:unit": "cross-env CI=true react-scripts test --env=jsdom",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:e2e": "rimraf ./user-data && jest -c ./test/e2e_tests/login.jest.config.js && jest -c ./test/e2e_tests/jest.config.js",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
     "lint": "eslint src",
@@ -49,8 +51,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run test",
-      "pre-push": "lint-staged && npm run test"
+      "pre-commit": "lint-staged && npm run test:unit",
+      "pre-push": "lint-staged && npm run test:unit"
     }
   },
   "lint-staged": {
@@ -101,7 +103,6 @@
     "faker": "^4.1.0",
     "fetch-mock": "^7.5.1",
     "husky": "^2.7.0",
-    "jest": "^24.9.0",
     "jest-puppeteer": "^4.3.0",
     "lint-staged": "^8.2.1",
     "prettier": "^1.18.2",
