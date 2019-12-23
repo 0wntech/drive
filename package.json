@@ -46,7 +46,7 @@
     "test:e2e": "rimraf ./user-data && jest -c ./test/e2e_tests/login.jest.config.js && jest -c ./test/e2e_tests/jest.config.js",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "svgr": "svgr -d src/assets/svgIcons src/assets/icons"
   },
   "husky": {
