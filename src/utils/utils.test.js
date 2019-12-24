@@ -3,6 +3,7 @@ import {
     getWebIdFromRoot,
     isValidUrl,
     getUsernameFromWebId,
+    sortContainments,
 } from './url';
 import fileUtils from './fileUtils';
 
@@ -55,6 +56,19 @@ describe('Testing util functions', () => {
         test('test getBreadcrumbsfromURL(url=invalidUrl) should throw', () => {
             expect(() => getBreadcrumbsFromUrl(invalidUrl)).toThrow();
         });
+
+        test('test sortContainments(urls) should return sorted array', () => {
+            const testArray = [
+                { value: 'https://example.com/' },
+                { value: 'https://example.com/favicon.ico' },
+            ];
+
+            expect(sortContainments(testArray)).toStrictEqual([
+                ['favicon.ico'],
+                ['example.com'],
+            ]);
+        });
+
         describe('getWebIdFromRoot()', () => {
             test('Should return webId', () => {
                 const rootUrl = 'https://ludwigschubert.solid.community/';

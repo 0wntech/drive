@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
-import { ClassicSpinner } from 'react-spinners-kit';
-
-import { updateProfile, changeProfilePhoto } from '../../actions/UserActions';
+import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
 import Settings from '../../assets/svgIcons/Settings';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
@@ -17,9 +15,9 @@ import { Layout } from '../Layout';
 export const ProfilePage = ({
     webId,
     user,
-    updateProfilePic,
     changeProfilePhoto,
     updateProfile,
+    updatingProfile,
 }) => {
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
@@ -47,7 +45,7 @@ export const ProfilePage = ({
         </div>
     );
 
-    if (user || updateProfilePic) {
+    if (user) {
         return (
             <Layout
                 className={styles.grid}
@@ -160,22 +158,15 @@ export const ProfilePage = ({
                 </div>
             </Layout>
         );
-    } else {
-        return (
-            <div className={styles.spinner}>
-                <ClassicSpinner size={30} color="#686769" loading={!user} />
-            </div>
-        );
     }
 };
 
 const mapStateToProps = (state) => ({
-    user: state.app.user,
-    webId: state.app.webId,
-    updateProfilePic: state.app.updateProfilePic,
+    user: state.user.user,
+    webId: state.user.webId,
+    updatingProfile: state.user.updatingProfile,
 });
 
-export default connect(
-    mapStateToProps,
-    { updateProfile, changeProfilePhoto }
-)(ProfilePage);
+export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
+    ProfilePage
+);

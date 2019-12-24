@@ -1,24 +1,24 @@
 import React from 'react';
 import { Window } from '../Window';
 import styles from './DeleteWindow.module.css';
-import classNames from 'classnames';
 import SelectedFile from '../SelectedFile/SelectedFile';
+import ActionButton from '../ActionButton/ActionButton';
 
 export default function DeleteWindow({
-    className,
     selectedItems,
-    onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
+    onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
     windowName,
+    visible,
 }) {
-    const multiple = selectedItems.length > 1;
+    const multiple = selectedItems ? selectedItems.length > 1 : null;
 
     return (
         <Window
             windowName={windowName}
             onClose={onCancel ? onCancel : onClose}
-            className={className}
+            visible={visible}
         >
             <p className={styles.prompt}>
                 {multiple
@@ -30,31 +30,35 @@ export default function DeleteWindow({
                 before, deleting it will make it unavailable for pasting.
             </p>
             <div className={styles.selectedFiles}>
-                {selectedItems.map((item, index) => {
-                    return (
-                        <SelectedFile
-                            fileName={decodeURIComponent(item)}
-                            key={index}
-                        />
-                    );
-                })}
+                {selectedItems
+                    ? selectedItems.map((item, index) => {
+                          return (
+                              <SelectedFile
+                                  fileName={decodeURIComponent(item)}
+                                  key={index}
+                              />
+                          );
+                      })
+                    : null}
             </div>
             <div className={styles.buttonBar}>
-                <div
+                <ActionButton
                     onClick={onCancel ? onCancel : onClose}
+                    label="Cancel"
+                    color="white"
+                    size="lg"
                     className={styles.button}
-                >
-                    Cancel
-                </div>
-                <div
+                />
+                <ActionButton
                     onClick={() => {
                         onSubmit(selectedItems);
                         onClose();
                     }}
-                    className={classNames(styles.button, styles.confirm)}
-                >
-                    Delete
-                </div>
+                    className={styles.button}
+                    label="Delete"
+                    color="red"
+                    sizte="lg"
+                />
             </div>
         </Window>
     );
