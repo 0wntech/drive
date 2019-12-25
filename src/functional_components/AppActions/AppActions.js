@@ -35,7 +35,7 @@ const AppActions = ({
 
 AppActions.propTypes = {
     alert: PropTypes.bool,
-    onArrowClick: PropTypes.string,
+    onArrowClick: PropTypes.func,
     onFolderClick: PropTypes.func,
     onSettingsClick: PropTypes.func,
 };
