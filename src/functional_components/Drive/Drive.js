@@ -7,7 +7,7 @@ import styles from './Drive.module.css';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import { ItemList } from '../ItemList';
 import fileUtils from '../../utils/fileUtils';
-import { getBreadcrumbsFromUrl } from '../../utils/url';
+import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { Layout } from '../Layout';
@@ -38,7 +38,7 @@ const Drive = ({
 }) => {
     useEffect(() => {
         if (!currentPath && !loadCurrentItem && webId) {
-            currentPath = webId.replace('profile/card#me', '');
+            currentPath = getRootFromWebId(webId);
             setCurrentPath(currentPath, true);
         } else if (currentPath && currentItem && currentItem.body) {
             currentPath =

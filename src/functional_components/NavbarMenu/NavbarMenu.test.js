@@ -1,42 +1,31 @@
+/* eslint-disable quotes */
 import React from 'react';
-
 import { NavbarMenu } from './NavbarMenu';
 import TestRenderer from 'react-test-renderer';
 
 describe('NavbarMenu', () => {
     test('Should render correctly', () => {
         const className = 'test';
-        const webId = 'https://bejow.solid.community/profile/card#me';
-        const picture =
-            'https://bejow.solid.community/profile/meme_ben_gang.jpg';
-        const username = 'Ben';
-        const onLogout = jest.fn();
+
+        const user = {
+            webId: 'https://bejow.solid.community/profile/card#me',
+            name: 'Ben',
+            picture: 'https://bejow.solid.community/profile/illuminati.jpg',
+            emails: [],
+            job: 'Software Engineer',
+            bio: "Let's build something great!",
+            telephones: [],
+        };
         const wrapper = TestRenderer.create(
-            <NavbarMenu
-                className={className}
-                webId={webId}
-                picture={picture}
-                username={username}
-                onLogout={onLogout}
-            />
+            <NavbarMenu className={className} user={user} />
         );
         expect(wrapper.toJSON()).toMatchSnapshot();
     });
     test('Should render login if no webId', () => {
         const className = 'test';
-        const webId = null;
-        const picture =
-            'https://bejow.solid.community/profile/meme_ben_gang.jpg';
-        const username = 'Ben';
-        const onLogout = jest.fn();
+
         const wrapper = TestRenderer.create(
-            <NavbarMenu
-                className={className}
-                webId={webId}
-                picture={picture}
-                username={username}
-                onLogout={onLogout}
-            />
+            <NavbarMenu className={className} user={null} />
         );
         expect(wrapper.toJSON()).toMatchSnapshot();
     });

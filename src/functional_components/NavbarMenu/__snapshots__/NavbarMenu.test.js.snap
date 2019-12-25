@@ -21,7 +21,7 @@ exports[`NavbarMenu Should render correctly 1`] = `
             onClick={[Function]}
             style={
               Object {
-                "backgroundImage": "url('https://bejow.solid.community/profile/meme_ben_gang.jpg')",
+                "backgroundImage": "url('https://bejow.solid.community/profile/illuminati.jpg')",
               }
             }
           />
@@ -51,6 +51,12 @@ exports[`NavbarMenu Should render correctly 1`] = `
       <div
         className="dropdownContent hide"
       >
+        <div
+          className="option"
+          onClick={[Function]}
+        >
+          Home
+        </div>
         <div
           className="option"
           onClick={[Function]}
