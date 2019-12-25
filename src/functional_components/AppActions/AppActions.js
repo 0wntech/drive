@@ -15,10 +15,20 @@ const AppActions = ({
 }) => {
     return (
         <div className={styles.container}>
-            {!alert ? <Alert className={styles.icon_danger} /> : null}
-            <Arrow onClick={onArrowClick} className={styles.icon} />
-            <Folder onClick={onFolderClick} className={styles.icon} />
-            <Settings onClick={onSettingsClick} className={styles.icon} />
+            {!alert ? (
+                <div className={styles.alertIcon}>
+                    <Alert viewBox="0 0 25 25" width={17} height={17} />
+                </div>
+            ) : null}
+            <div className={styles.icon} onClick={onArrowClick}>
+                <Arrow viewBox="0 0 21 21" width={17} height={17} />
+            </div>
+            <div className={styles.icon} onClick={onFolderClick}>
+                <Folder viewBox="0 0 21 21" width={17} height={17} />
+            </div>
+            <div className={styles.icon} onClick={onSettingsClick}>
+                <Settings viewBox="0 0 25 25" width={17} height={17} />
+            </div>
         </div>
     );
 };

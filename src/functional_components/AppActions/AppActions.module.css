@@ -1,9 +1,36 @@
 .container {
     display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 17px;
 }
 
 .icon {
-    margin-right: 20px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.icon svg path {
+    fill: black;
+}
+
+.alertIcon svg {
+    cursor: default;
+}
+
+.alertIcon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .icon:last-child {
@@ -14,6 +41,6 @@
     margin-right: 20px;
 }
 
-.icon:hover path {
-    fill: #c2c2c2;
+.icon:hover {
+    background-color: #dddddd;
 }

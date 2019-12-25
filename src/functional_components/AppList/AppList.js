@@ -10,9 +10,10 @@ const AppList = ({ apps, className }) => {
             {apps
                 ? apps.map((app, index) => (
                       <AppListItem
-                          key={app.name + index}
+                          key={app.title + index}
                           iconSrc={app.icon}
-                          name={app.title}
+                          title={app.title}
+                          url={app.url}
                           onClick={() => console.log('Implement on Click')}
                       />
                   ))
@@ -24,6 +25,7 @@ const AppList = ({ apps, className }) => {
 AppList.propTypes = {
     apps: PropTypes.arrayOf(
         PropTypes.shape({
+            icon: PropTypes.string,
             url: PropTypes.string,
             title: PropTypes.string,
             description: PropTypes.string,

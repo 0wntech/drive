@@ -6,7 +6,11 @@ import useHover from '../../hooks/useHover';
 import X from '../../assets/svgIcons/X';
 import AppActions from '../AppActions/AppActions';
 
-const AppListItem = ({ iconSrc, name, onClick }) => {
+const mockFunction = () => {
+    console.log('needs implementation');
+};
+
+const AppListItem = ({ iconSrc, url, title, onClick }) => {
     const [hoverRef, isHovered] = useHover();
     return (
         <div ref={hoverRef} onClick={onClick} className={styles.container}>
@@ -19,8 +23,12 @@ const AppListItem = ({ iconSrc, name, onClick }) => {
                 className={styles.appIcon}
                 style={{ backgroundImage: `url('${iconSrc}')` }}
             />
-            <div className={styles.name}>{name}</div>
-            <AppActions />
+            <div className={styles.name}>{title}</div>
+            <AppActions
+                onArrowClick={() => window.open(url, '_blank')}
+                onFolderClick={mockFunction}
+                onSettingsClick={mockFunction}
+            />
         </div>
     );
 };
