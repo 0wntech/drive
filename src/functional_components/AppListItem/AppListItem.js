@@ -35,7 +35,7 @@ const AppListItem = ({ iconSrc, url, title, onClick }) => {
 
 AppListItem.propTypes = {
     iconSrc: PropTypes.string,
-    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     permissions: PropTypes.object,
     onClick: PropTypes.func,
