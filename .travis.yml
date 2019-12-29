@@ -1,7 +1,13 @@
 language: node_js
 node_js:
     - 10
+dist: trusty
 warnings_are_errors: false
+addons:
+    apt:
+        packages:
+            # This is required to run new chrome on old trusty
+            - libnss3
 
 branches:
     only:
@@ -27,6 +33,11 @@ stages:
 jobs:
     include:
         - stage: test
+          before_script:
+              - sysctl kernel.unprivileged_userns_clone=1
+              - npm run start
+          after_script:
+              - kill $(lsof -t -i:3000)
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov

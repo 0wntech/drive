@@ -10,4 +10,4 @@ export const launchConfig = {
     userDataDir: './user-data',
 };
 
-export const testServerUrl = 'http://localhost:3000';
+export const testServerUrl = 'http://localhost:3001';
