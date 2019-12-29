@@ -26,7 +26,7 @@ const fakeApps = (apps) => {
 const AppOverviewPage = ({ apps, fetchApps, webId }) => {
     useEffect(() => {
         fetchApps(webId);
-    }, []);
+    });
 
     return (
         <Layout label="App Overview" className={styles.grid}>
