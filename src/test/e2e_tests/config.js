@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 export const launchConfig = {
-    headless: false,
+    headless: !!process.env.TRAVIS_PULL_REQUEST,
     slowMo: 0,
     defaultViewport: {
         width: 1920,
@@ -10,4 +10,4 @@ export const launchConfig = {
     userDataDir: './user-data',
 };
 
-export const testServerUrl = 'http://localhost:3001';
+export const testServerUrl = 'http://localhost:3000';
