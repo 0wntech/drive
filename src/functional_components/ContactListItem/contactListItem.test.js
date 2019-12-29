@@ -1,7 +1,7 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import ContactListItem from './ContactListItem';
-import { contacts } from '../../../test/fixtures/contacts';
+import { contacts } from '../../test/fixtures/contacts';
 import { shallow } from 'enzyme';
 import Delete from '../../assets/svgIcons/Delete';
 

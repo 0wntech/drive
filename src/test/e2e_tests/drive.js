@@ -1,7 +1,12 @@
-jest.setTimeout(15000);
+const puppeteer = require('puppeteer');
+import { launchConfig, testServerUrl } from './config';
+
+jest.setTimeout(30000);
 describe('drive', () => {
     it('should click folders and files', async () => {
-        await page.goto('http://localhost:3001/home');
+        const browser = await puppeteer.launch(launchConfig);
+        const page = await browser.newPage();
+        await page.goto(testServerUrl + '/home');
         await page.waitForSelector('[data-test-id="profile"]');
         await page.click('[data-test-id="profile"]');
         await page.waitForSelector('[data-test-id="card"]');
@@ -12,5 +17,6 @@ describe('drive', () => {
             (e) => e.innerHTML
         );
         expect(header).toBe('card');
+        browser.close();
     });
 });

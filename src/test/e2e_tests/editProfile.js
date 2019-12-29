@@ -1,7 +1,12 @@
+const puppeteer = require('puppeteer');
+import { launchConfig, testServerUrl } from './config';
+
 jest.setTimeout(30000);
 describe('e2e edit profile', () => {
     it('should change profile data', async () => {
-        await page.goto('http://localhost:3000/home');
+        const browser = await puppeteer.launch(launchConfig);
+        const page = await browser.newPage();
+        await page.goto(testServerUrl);
         await page.waitForSelector(
             '[data-test-id="navigation-profile-picture"]'
         );
@@ -18,5 +23,6 @@ describe('e2e edit profile', () => {
             (e) => e.value
         );
         expect(name).toBe('Tester');
+        browser.close();
     });
 });
