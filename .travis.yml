@@ -1,13 +1,13 @@
 language: node_js
 node_js:
     - 10
-warnings_are_errors: false
 dist: trusty
+warnings_are_errors: false
 addons:
-  apt:
-    packages:
-      # This is required to run new chrome on old trusty
-      - libnss3
+    apt:
+        packages:
+            # This is required to run new chrome on old trusty
+            - libnss3
 
 branches:
     only:
