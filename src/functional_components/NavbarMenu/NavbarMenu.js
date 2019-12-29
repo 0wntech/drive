@@ -14,7 +14,14 @@ const onRegister = () => {
     window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
 };
 
-export const NavbarMenu = ({ className, history, webId, logout, user }) => {
+export const NavbarMenu = ({
+    className,
+    history,
+    webId,
+    logout,
+    user,
+    setCurrentPath,
+}) => {
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
 
     const DROPDOWN_OPTIONS = [
@@ -80,4 +87,6 @@ NavbarMenu.propTypes = {
     logout: PropTypes.func,
 };
 
-export default withRouter(connect(mapStateToProps, { logout })(NavbarMenu));
+export default withRouter(
+    connect(mapStateToProps, { logout, setCurrentPath })(NavbarMenu)
+);

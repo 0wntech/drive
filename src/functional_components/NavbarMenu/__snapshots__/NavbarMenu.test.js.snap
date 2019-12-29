@@ -21,14 +21,14 @@ exports[`NavbarMenu Should render correctly 1`] = `
             onClick={[Function]}
             style={
               Object {
-                "backgroundImage": "url('https://bejow.solid.community/profile/illuminati.jpg')",
+                "backgroundImage": "url('https://bejow.owntech.de/profile/meme_ben_gang.jpg')",
               }
             }
           />
           <div
             className="username"
           >
-            Ben
+            Ben Wetzel
           </div>
         </div>
         <div
