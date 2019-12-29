@@ -10,12 +10,15 @@ const mockFunction = () => {
     console.log('needs implementation');
 };
 
-const AppListItem = ({ iconSrc, url, title, onClick }) => {
+const AppListItem = ({ iconSrc, url, title, onClick, removeApp }) => {
     const [hoverRef, isHovered] = useHover();
     return (
         <div ref={hoverRef} onClick={onClick} className={styles.container}>
             {isHovered ? (
-                <div className={styles.deleteButton}>
+                <div
+                    onClick={() => removeApp(url)}
+                    className={styles.deleteButton}
+                >
                     <X viewBox="0 0 32 32" className={styles.xIcon} />
                 </div>
             ) : null}
@@ -34,6 +37,7 @@ const AppListItem = ({ iconSrc, url, title, onClick }) => {
 };
 
 AppListItem.propTypes = {
+    removeApp: PropTypes.func,
     iconSrc: PropTypes.string,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,

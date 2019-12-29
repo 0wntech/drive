@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './AppOverviewPage.module.css';
 import AppList from '../AppList';
-import { fetchApps } from '../../actions/userAppActions';
+import { fetchApps, removeApp } from '../../actions/userAppActions';
 import { Layout } from '../Layout';
 import icon from '../../assets/icons/owntech.png';
 
@@ -23,14 +23,22 @@ const fakeApps = (apps) => {
     });
 };
 
-const AppOverviewPage = ({ apps, fetchApps, webId }) => {
+const AppOverviewPage = ({ apps, fetchApps, webId, removeApp, loadApps }) => {
     useEffect(() => {
         fetchApps(webId);
-    });
+    }, []);
 
     return (
-        <Layout label="App Overview" className={styles.grid}>
-            <AppList className={styles.appList} apps={fakeApps(apps)} />
+        <Layout
+            label="App Overview"
+            className={styles.grid}
+            isLoading={loadApps}
+        >
+            <AppList
+                className={styles.appList}
+                apps={fakeApps(apps)}
+                removeApp={removeApp}
+            />
         </Layout>
     );
 };
@@ -51,7 +59,10 @@ AppOverviewPage.propTypes = {
 
 const mapStateToProps = (state) => ({
     apps: state.userApps.apps,
+    loadApps: state.userApps.loadApps,
     webId: state.user.webId,
 });
 
-export default connect(mapStateToProps, { fetchApps })(AppOverviewPage);
+export default connect(mapStateToProps, { fetchApps, removeApp })(
+    AppOverviewPage
+);

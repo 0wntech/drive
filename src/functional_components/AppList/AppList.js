@@ -4,7 +4,7 @@ import AppListItem from '../AppListItem';
 import styles from './AppList.module.css';
 import classNames from 'classnames';
 
-const AppList = ({ apps, className }) => {
+const AppList = ({ apps, className, removeApp }) => {
     return (
         <div className={classNames(styles.container, className)}>
             {apps
@@ -15,6 +15,7 @@ const AppList = ({ apps, className }) => {
                           title={app.title}
                           url={app.url}
                           onClick={() => console.log('Implement on Click')}
+                          removeApp={removeApp}
                       />
                   ))
                 : null}
@@ -23,6 +24,8 @@ const AppList = ({ apps, className }) => {
 };
 
 AppList.propTypes = {
+    removeApp: PropTypes.func,
+    className: PropTypes.string,
     apps: PropTypes.arrayOf(
         PropTypes.shape({
             icon: PropTypes.string,

@@ -1,4 +1,11 @@
-import { FETCH_APPS, FETCH_APPS_SUCCESS, FETCH_APPS_FAILURE } from './types';
+import {
+    FETCH_APPS,
+    FETCH_APPS_SUCCESS,
+    FETCH_APPS_FAILURE,
+    REMOVE_APP,
+    REMOVE_APP_SUCCESS,
+    REMOVE_APP_FAILURE,
+} from './types';
 import User from 'ownuser';
 
 export const fetchApps = (webId) => {
@@ -11,6 +18,23 @@ export const fetchApps = (webId) => {
             })
             .catch((error) =>
                 dispatch({ type: FETCH_APPS_FAILURE, payload: error })
+            );
+    };
+};
+
+export const removeApp = (apptoDelete) => {
+    return (dispatch, getState) => {
+        dispatch({ type: REMOVE_APP });
+        const { webId } = getState().user;
+        const { apps } = getState().userApps;
+        const newApps = apps.filter((app) => app !== apptoDelete);
+        const user = new User(webId);
+        user.setApps(newApps)
+            .then(() =>
+                dispatch({ type: REMOVE_APP_SUCCESS, payload: newApps })
+            )
+            .catch((error) =>
+                dispatch({ type: REMOVE_APP_FAILURE, payload: error })
             );
     };
 };
