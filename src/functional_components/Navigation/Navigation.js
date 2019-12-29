@@ -85,7 +85,7 @@ const Navigation = ({
                     onClick={() => {
                         if (webId) {
                             setCurrentPath(
-                                webId.replace('/profile/card#me', '')
+                                webId.replace('profile/card#me', '')
                             );
                             history.push('/home');
                         } else {
@@ -186,6 +186,7 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 };
 
 const mapStateToProps = (state) => ({
+    webId: state.user.webId,
     currentPath: state.app.currentPath,
     currentItem: state.app.currentItem,
     contacts: state.contact.contacts,
