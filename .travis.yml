@@ -35,7 +35,7 @@ jobs:
         - stage: test
           before_script:
               - sysctl kernel.unprivileged_userns_clone=1
-              - npm run start
+              - npm run start 2>&1 &
           after_script:
               - kill $(lsof -t -i:3000)
           script:
