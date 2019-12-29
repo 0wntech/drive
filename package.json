@@ -44,7 +44,7 @@
     "test:unit": "npm test --env=jsdom -- --testPathIgnorePatterns=e2e",
     "test": "cross-env CI=true react-scripts test",
     "test:all": "npm run test:unit --coverage && npm run test:e2e",
-    "test:e2e": "rimraf ./user-data && npm test -- --testPathPattern=e2e --runInBand",
+    "test:e2e": "rimraf ./user-data && npm test -- --testPathPattern=e2e --runInBand --detectOpenHandles",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
     "lint": "eslint src --fix",
