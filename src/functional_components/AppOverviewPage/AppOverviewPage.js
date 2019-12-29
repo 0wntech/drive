@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './AppOverviewPage.module.css';
-import { AppList } from '../AppList';
+import AppList from '../AppList';
 import { fetchApps } from '../../actions/userAppActions';
 import { Layout } from '../Layout';
 import icon from '../../assets/icons/owntech.png';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AppListItem } from '../AppListItem';
+import AppListItem from '../AppListItem';
 import styles from './AppList.module.css';
 import classNames from 'classnames';
 
