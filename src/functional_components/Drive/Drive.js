@@ -35,6 +35,8 @@ const Drive = ({
     fetchCurrentItem,
     history,
     downloadFile,
+    loadDeletion,
+    loadPaste,
 }) => {
     useEffect(() => {
         if (!currentPath && !loadCurrentItem && webId) {
@@ -216,6 +218,8 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
+        loadDeletion: state.app.loadDeletion,
+        loadPaste: state.app.loadPaste,
     };
 };
 

@@ -13,7 +13,6 @@ import SingleValue from '../KeyValuePair/SingleValue';
 import { Layout } from '../Layout';
 
 export const ProfilePage = ({
-    webId,
     user,
     changeProfilePhoto,
     updateProfile,
@@ -32,11 +31,11 @@ export const ProfilePage = ({
 
     const onSubmit = () => {
         setEditable(false);
-        updateProfile(userData, webId);
+        updateProfile(userData, user.webId);
     };
 
     const onPhotoChange = (e) => {
-        changeProfilePhoto(e, webId);
+        changeProfilePhoto(e, user.webId);
     };
 
     const toolbarRight = (
@@ -48,6 +47,7 @@ export const ProfilePage = ({
     if (user) {
         return (
             <Layout
+                isLoading={updatingProfile || !user}
                 className={styles.grid}
                 toolbarChildrenRight={toolbarRight}
                 label="Profile"
@@ -163,7 +163,6 @@ export const ProfilePage = ({
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
-    webId: state.user.webId,
     updatingProfile: state.user.updatingProfile,
 });
 
