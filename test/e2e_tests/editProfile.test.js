@@ -1,12 +1,9 @@
-const puppeteer = require('puppeteer');
-import { launchConfig, testServerUrl } from './config';
+const config = require('./testConfig.json');
 
 jest.setTimeout(30000);
 describe('e2e edit profile', () => {
     it('should change profile data', async () => {
-        const browser = await puppeteer.launch(launchConfig);
-        const page = await browser.newPage();
-        await page.goto(testServerUrl);
+        await page.goto(config.baseUrl + 'home');
         await page.waitForSelector(
             '[data-test-id="navigation-profile-picture"]'
         );
@@ -23,6 +20,5 @@ describe('e2e edit profile', () => {
             (e) => e.value
         );
         expect(name).toBe('Tester');
-        browser.close();
     });
 });
