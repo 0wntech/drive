@@ -41,6 +41,7 @@ jobs:
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov
+              - npm run test:e2e
 
         - stage: deploy_production
           script: CI=false NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v
