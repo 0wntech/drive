@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     launch: {
-        headless: false,
+        headless: !!process.env.TRAVIS_PULL_REQUEST,
         slowMo: 20,
         defaultViewport: {
             width: 1920,
