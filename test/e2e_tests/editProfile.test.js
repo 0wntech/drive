@@ -1,7 +1,9 @@
+const config = require('./testConfig.json');
+
 jest.setTimeout(30000);
 describe('e2e edit profile', () => {
     it('should change profile data', async () => {
-        await page.goto('http://localhost:3000/home');
+        await page.goto(config.baseUrl + 'home');
         await page.waitForSelector(
             '[data-test-id="navigation-profile-picture"]'
         );

@@ -1,7 +1,9 @@
-jest.setTimeout(15000);
+const config = require('./testConfig.json');
+
+jest.setTimeout(30000);
 describe('drive', () => {
     it('should click folders and files', async () => {
-        await page.goto('http://localhost:3001/home');
+        await page.goto(config.baseUrl + 'home');
         await page.waitForSelector('[data-test-id="profile"]');
         await page.click('[data-test-id="profile"]');
         await page.waitForSelector('[data-test-id="card"]');
