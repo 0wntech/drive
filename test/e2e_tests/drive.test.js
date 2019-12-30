@@ -1,8 +1,11 @@
 const config = require('./testConfig.json');
 require('dotenv').config();
 
+// config
 const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
 jest.setTimeout(timeout);
+Promise.resolve(page.setDefaultNavigationTimeout(timeout));
+
 describe('drive', () => {
     it('should click folders and files', async () => {
         await page.goto(config.baseUrl + 'home');
