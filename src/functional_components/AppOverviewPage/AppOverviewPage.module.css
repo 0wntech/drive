@@ -7,3 +7,18 @@
     grid-template-columns: 2fr 8fr 2fr;
     grid-template-areas: '. applist .';
 }
+
+.windowButtonContainer {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.button {
+    margin-left: 5px;
+}
+
+.dangerText {
+    font-size: 14px;
+    color: red;
+}

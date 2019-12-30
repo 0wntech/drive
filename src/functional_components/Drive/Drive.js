@@ -47,7 +47,7 @@ const Drive = ({
                 currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
             setCurrentPath(currentPath);
         }
-    });
+    }, []);
 
     // Event Handlers
     const loadFile = (url, event = {}) => {

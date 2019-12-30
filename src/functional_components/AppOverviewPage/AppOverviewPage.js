@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './AppOverviewPage.module.css';
@@ -6,6 +6,9 @@ import AppList from '../AppList';
 import { fetchApps, removeApp } from '../../actions/userAppActions';
 import { Layout } from '../Layout';
 import icon from '../../assets/icons/owntech.png';
+import { Window } from '../Window';
+import { getUrlObject } from '../../utils/url';
+import ActionButton from '../ActionButton/ActionButton';
 
 const fakeApps = (apps) => {
     if (!apps) return [];
@@ -23,10 +26,22 @@ const fakeApps = (apps) => {
     });
 };
 
+const isDriveApp = (apptoDelete) => {
+    return window.location.host === getUrlObject(apptoDelete).host;
+};
+
 const AppOverviewPage = ({ apps, fetchApps, webId, removeApp, loadApps }) => {
     useEffect(() => {
         fetchApps(webId);
     }, []);
+
+    const [dangerWindow, setDangerWindow] = useState(false);
+    const [apptoDelete, setAppToDelete] = useState('');
+
+    const openConsentWindow = (url) => {
+        setAppToDelete(url);
+        setDangerWindow(true);
+    };
 
     return (
         <Layout
@@ -34,10 +49,41 @@ const AppOverviewPage = ({ apps, fetchApps, webId, removeApp, loadApps }) => {
             className={styles.grid}
             isLoading={loadApps}
         >
+            <Window
+                visible={dangerWindow}
+                onClose={() => setDangerWindow(false)}
+                windowName={apptoDelete}
+            >
+                <p>Are you sure that you want revoke access for this app?</p>
+                {isDriveApp(apptoDelete) ? (
+                    <p className={styles.dangerText}>
+                        Warning: If you delete this app you can't use Owtech
+                        Drive anymore
+                    </p>
+                ) : null}
+
+                <div className={styles.windowButtonContainer}>
+                    <ActionButton
+                        color="white"
+                        label="Cancel"
+                        onClick={() => setDangerWindow(false)}
+                    />
+                    <ActionButton
+                        className={styles.button}
+                        color="blue"
+                        label="Revoke Access"
+                        onClick={() => {
+                            removeApp(apptoDelete);
+                            setDangerWindow(false);
+                        }}
+                    />
+                </div>
+            </Window>
+
             <AppList
                 className={styles.appList}
                 apps={fakeApps(apps)}
-                removeApp={removeApp}
+                removeApp={openConsentWindow}
             />
         </Layout>
     );

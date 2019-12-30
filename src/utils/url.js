@@ -19,6 +19,13 @@ export const getBreadcrumbsFromUrl = (url) => {
     return newBreadcrumbs;
 };
 
+export const getUrlObject = (url) => {
+    // returns an object to access certain url properties (protocol, hostname, port, search, path ...)
+    const parser = document.createElement('a');
+    parser.href = url;
+    return parser;
+};
+
 export const getFileParamsFromUrl = (url) => {
     const params = urlUtils
         .parse(url)

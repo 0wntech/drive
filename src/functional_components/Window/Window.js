@@ -28,6 +28,7 @@ Window.propTypes = {
     className: PropTypes.string,
     children: PropTypes.array,
     onClose: PropTypes.func,
+    visible: PropTypes.bool,
 };
 
 export default Window;
