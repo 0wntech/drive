@@ -1,7 +1,8 @@
 const config = require('./testConfig.json');
 require('dotenv').config();
 
-jest.setTimeout(30000);
+const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
+jest.setTimeout(timeout);
 describe('login', () => {
     test('should go through login process', async () => {
         await page.goto(config.baseUrl);
