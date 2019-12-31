@@ -1,14 +1,14 @@
+const config = require('./testConfig.json');
 require('dotenv').config();
-const puppeteer = require('puppeteer');
-import { launchConfig, testServerUrl } from './config';
 
-jest.setTimeout(16000);
-console.log(launchConfig);
+// config
+const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
+jest.setTimeout(timeout);
+Promise.resolve(page.setDefaultNavigationTimeout(timeout));
+
 describe('login', () => {
     test('should go through login process', async () => {
-        const browser = await puppeteer.launch(launchConfig);
-        const page = await browser.newPage();
-        await page.goto(testServerUrl);
+        await page.goto(config.baseUrl);
         await page.waitForSelector('[data-test-id=login_btn]');
         await page.click('[data-test-id=login_btn]');
         await page.waitForSelector('[data-test-id="solid.community"');
@@ -25,6 +25,5 @@ describe('login', () => {
             (e) => e.innerHTML
         );
         expect(header).toBe('Drive');
-        browser.close();
     });
 });
