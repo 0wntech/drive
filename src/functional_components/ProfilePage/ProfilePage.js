@@ -84,6 +84,7 @@ export const ProfilePage = ({
                             <SingleValue
                                 editable={isEditable}
                                 value={userData.name}
+                                dataKey="name"
                                 setValue={(value) =>
                                     updateUserData('name', value)
                                 }
@@ -111,16 +112,19 @@ export const ProfilePage = ({
                                     <X
                                         onClick={onCancel}
                                         className={styles.icon}
+                                        data-test-id="edit-cancel"
                                     />{' '}
                                     <Check
                                         className={styles.icon}
                                         onClick={onSubmit}
+                                        data-test-id="edit-submit"
                                     />
                                 </div>
                             ) : (
                                 <EditIcon
                                     onClick={() => setEditable(!isEditable)}
                                     className={styles.icon}
+                                    data-test-id="edit"
                                 />
                             )}
                         </div>

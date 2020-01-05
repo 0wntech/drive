@@ -47,6 +47,7 @@ exports[`File should render correctly (no image) 1`] = `
   >
     <div
       className="innerContainer"
+      data-test-id="file-Test"
     >
       <img
         alt="file"
