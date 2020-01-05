@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "babel-jest": "^24.9.0",
+    "babel-plugin-remove-test-ids": "^1.1.0",
     "classnames": "^2.2.6",
     "cross-env": "^6.0.0",
     "enzyme": "^3.10.0",
@@ -35,18 +39,20 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test:local": "react-scripts test",
-    "test:coverage": "cross-env CI=true react-scripts test --env=jsdom --coverage",
-    "test": "cross-env CI=true react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --watchAll",
+    "test:coverage": "npm run test:unit -- --coverage",
+    "test:unit": "cross-env CI=true npm test --env=jsdom",
+    "test": "react-scripts test",
+    "test:e2e": "rimraf ./user-data && jest -c ./test/e2e_tests/login.jest.config.json && jest -c ./test/e2e_tests/jest.config.json",
+    "test:watch": "npm test --watchAll",
+    "test:all": "npm run test:unit --coverage && npm run test:e2e",
     "eject": "react-scripts eject",
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "svgr": "svgr -d src/assets/svgIcons src/assets/icons"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run test",
-      "pre-push": "lint-staged && npm run test"
+      "pre-commit": "lint-staged && npm run test:unit",
+      "pre-push": "lint-staged && npm run test:unit"
     }
   },
   "lint-staged": {
@@ -84,6 +90,7 @@
   "devDependencies": {
     "@svgr/cli": "^4.3.3",
     "codecov": "^3.6.1",
+    "dotenv": "^8.2.0",
     "enzyme-to-json": "^3.4.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -93,12 +100,16 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.3",
+    "faker": "^4.1.0",
     "fetch-mock": "^7.5.1",
     "husky": "^2.7.0",
+    "jest-puppeteer": "^4.3.0",
     "lint-staged": "^8.2.1",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.0",
+    "puppeteer": "^2.0.0",
     "redux-mock-store": "^1.5.3",
+    "rimraf": "^3.0.0",
     "source-map-explorer": "^2.1.1"
   }
 }

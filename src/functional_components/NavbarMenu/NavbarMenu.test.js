@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavbarMenu } from './NavbarMenu';
 import TestRenderer from 'react-test-renderer';
-import { user } from '../../test/fixtures/user';
+import { user } from '../../../test/fixtures/user';
 
 describe('NavbarMenu', () => {
     test('Should render correctly', () => {

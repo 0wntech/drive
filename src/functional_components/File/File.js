@@ -32,7 +32,10 @@ export default function File({
             );
         } else {
             return (
-                <div className={styles.innerContainer}>
+                <div
+                    className={styles.innerContainer}
+                    data-test-id={`file-${label}`}
+                >
                     <img alt="file" className={styles.icon} src={image} />
                 </div>
             );

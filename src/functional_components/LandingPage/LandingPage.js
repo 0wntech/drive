@@ -18,6 +18,7 @@ const LandingPage = ({ webId, history }) => {
                     {webId ? null : (
                         <div className={styles.buttons}>
                             <ActionButton
+                                dataId="login_btn"
                                 size="md"
                                 label="Login"
                                 color="blue"
@@ -35,7 +36,4 @@ const mapStateToProps = (state) => ({
     webId: state.user.webId,
 });
 
-export default connect(
-    mapStateToProps,
-    {}
-)(LandingPage);
+export default connect(mapStateToProps, {})(LandingPage);

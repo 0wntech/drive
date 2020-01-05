@@ -17,7 +17,6 @@ const onRegister = () => {
 export const NavbarMenu = ({
     className,
     history,
-    webId,
     logout,
     user,
     setCurrentPath,
@@ -42,6 +41,7 @@ export const NavbarMenu = ({
     const getMenuHead = () => (
         <div className={styles.profileSection}>
             <div
+                data-test-id="navigation-profile-picture"
                 onClick={() => history.push('/profile')}
                 className={styles.profileIcon}
                 style={{
@@ -51,7 +51,9 @@ export const NavbarMenu = ({
                 }}
             />
 
-            <div className={styles.username}>{user.name}</div>
+            <div data-test-id="navbar-username" className={styles.username}>
+                {user.name}
+            </div>
         </div>
     );
 
