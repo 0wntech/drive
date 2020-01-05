@@ -13,11 +13,8 @@ import { getUsernameFromWebId } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 
 const Navigation = ({
-    picture,
     webId,
-    onLogout,
     setCurrentPath,
-    username,
     history,
     currentItem,
     contacts,
@@ -113,13 +110,7 @@ const Navigation = ({
                     />
                 ) : null}
             </div>
-            <NavbarMenu
-                className={styles.menuWrapper}
-                onLogout={onLogout}
-                webId={webId}
-                picture={picture}
-                username={username}
-            />
+            <NavbarMenu className={styles.menuWrapper} />
         </div>
     );
 };
@@ -195,6 +186,7 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 };
 
 const mapStateToProps = (state) => ({
+    webId: state.user.webId,
     currentPath: state.app.currentPath,
     currentItem: state.app.currentItem,
     contacts: state.contact.contacts,

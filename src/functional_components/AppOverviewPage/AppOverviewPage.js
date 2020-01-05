@@ -9,6 +9,7 @@ import icon from '../../assets/icons/owntech.png';
 import { Window } from '../Window';
 import { getUrlObject } from '../../utils/url';
 import ActionButton from '../ActionButton/ActionButton';
+import { logout } from '../../actions/userActions';
 
 const fakeApps = (apps) => {
     if (!apps) return [];
@@ -30,7 +31,14 @@ const isDriveApp = (apptoDelete) => {
     return window.location.host === getUrlObject(apptoDelete).host;
 };
 
-const AppOverviewPage = ({ apps, fetchApps, webId, removeApp, loadApps }) => {
+const AppOverviewPage = ({
+    apps,
+    fetchApps,
+    webId,
+    removeApp,
+    loadApps,
+    logout,
+}) => {
     useEffect(() => {
         fetchApps(webId);
     }, []);
@@ -57,7 +65,7 @@ const AppOverviewPage = ({ apps, fetchApps, webId, removeApp, loadApps }) => {
                 <p>Are you sure that you want revoke access for this app?</p>
                 {isDriveApp(apptoDelete) ? (
                     <p className={styles.dangerText}>
-                        Warning: If you delete this app you can't use Owtech
+                        Warning: If you delete this app you can't use Owntech
                         Drive anymore
                     </p>
                 ) : null}
@@ -75,6 +83,9 @@ const AppOverviewPage = ({ apps, fetchApps, webId, removeApp, loadApps }) => {
                         onClick={() => {
                             removeApp(apptoDelete);
                             setDangerWindow(false);
+                            if (isDriveApp(apptoDelete)) {
+                                logout();
+                            }
                         }}
                     />
                 </div>
@@ -109,6 +120,6 @@ const mapStateToProps = (state) => ({
     webId: state.user.webId,
 });
 
-export default connect(mapStateToProps, { fetchApps, removeApp })(
+export default connect(mapStateToProps, { fetchApps, removeApp, logout })(
     AppOverviewPage
 );

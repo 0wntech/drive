@@ -5,8 +5,6 @@ import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
 import Drive from './functional_components/Drive';
 import LoginScreen from './stateful_components/LoginScreen';
-import auth from 'solid-auth-client';
-import User from 'your-user';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
 import { login, fetchUser, setWebId } from './actions/userActions';
 import PrivateRoute from './functional_components/PrivateRoute';
@@ -22,70 +20,11 @@ import FileView from './functional_components/FileView/FileView';
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            webId: undefined,
-            user: undefined,
-            isProfileExpanded: false,
-        };
-        this.login = this.login.bind(this);
-        this.logout = this.logout.bind(this);
-        this.toggleSidebar = this.toggleSidebar.bind(this);
-        this.onProfileUpdate = this.onProfileUpdate.bind(this);
-    }
-
-    async login() {
-        const session = await auth.currentSession();
-        if (!session) {
-            const idp = window.prompt(
-                'Please enter the domain of your identity provider',
-                'solid.community'
-            );
-            await auth.login(`https://${idp}`);
-        } else {
-            this.setState({
-                webId: session.webId,
-            });
-        }
-    }
-
-    logout() {
-        const { setWebId } = this.props;
-        auth.logout().then(() => {
-            setWebId(undefined);
-            this.props.history.push('/');
-        });
-    }
-
-    toggleSidebar() {
-        this.setState({
-            isProfileExpanded: !this.state.isProfileExpanded,
-        });
-    }
-
-    onProfileUpdate(key, value, prevValues, webId) {
-        const user = new User(this.state.webId);
-        return user.editProfile(key, value, prevValues, webId).then(() => {
-            user.getProfile().then((profile) => {
-                console.log('Loading updated Profile');
-                this.setState({
-                    user: profile,
-                });
-            });
-        });
     }
 
     componentDidMount() {
         const { login } = this.props;
         login();
-        // auth.trackSession((session) => {
-        //     if (!session) {
-        //         this.props.login();
-        //     } else {
-        //         console.log('You are logged in, fetching data now');
-        //         setWebId(session.webId);
-        //         fetchUser(session.webId);
-        //     }
-        // });
     }
 
     render() {
@@ -113,9 +52,6 @@ class App extends React.Component {
                                 toggleSidebar={this.toggleSidebar}
                                 onLogout={this.logout}
                                 onLogin={this.login}
-                                webId={webId}
-                                picture={user ? user.picture : undefined}
-                                username={user ? user.name : undefined}
                             />
                         </div>
 
