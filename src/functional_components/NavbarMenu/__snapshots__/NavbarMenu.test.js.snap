@@ -18,6 +18,7 @@ exports[`NavbarMenu Should render correctly 1`] = `
         >
           <div
             className="profileIcon"
+            data-test-id="navigation-profile-picture"
             onClick={[Function]}
             style={
               Object {
@@ -27,6 +28,7 @@ exports[`NavbarMenu Should render correctly 1`] = `
           />
           <div
             className="username"
+            data-test-id="navbar-username"
           >
             Ben
           </div>

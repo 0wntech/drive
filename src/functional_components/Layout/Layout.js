@@ -24,7 +24,11 @@ export const Layout = ({
                     <div className={styles.toolbarLeft}>
                         {toolbarChildrenLeft}
                     </div>
-                    <div className={styles.header}>{label}</div>
+                    {label && (
+                        <div className={styles.header} data-test-id="header">
+                            {label}
+                        </div>
+                    )}
                     <div className={styles.toolbarRight}>
                         {toolbarChildrenRight}
                     </div>

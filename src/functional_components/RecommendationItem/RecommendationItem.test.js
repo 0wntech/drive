@@ -1,7 +1,7 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import RecommendationItem from './RecommendationItem';
-import { contacts } from '../../test/fixtures/contacts';
+import { contacts } from '../../../test/fixtures/contacts';
 import { shallow } from 'enzyme';
 import Add from '../../assets/svgIcons/Add';
 

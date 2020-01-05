@@ -59,7 +59,7 @@ export const REMOVE_CONTACT = 'remove_contact';
 export const REMOVE_CONTACT_SUCCESS = 'remove_contact_success';
 export const REMOVE_CONTACT_FAILURE = 'remove_contact_failure';
 
-export const UPDATE_PROFILE = 'delete_items';
+export const UPDATE_PROFILE = 'update_profile';
 export const UPDATE_PROFILE_SUCCESS = 'update_profile_success';
 export const UPDATE_PROFILE_FAILURE = 'update_profile_failure';
 

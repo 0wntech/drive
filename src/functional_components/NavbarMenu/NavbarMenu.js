@@ -33,6 +33,7 @@ export const NavbarMenu = ({
     const menuHead = (
         <div className={styles.profileSection}>
             <div
+                data-test-id="navigation-profile-picture"
                 onClick={() => history.push('/profile')}
                 className={styles.profileIcon}
                 style={{
@@ -42,7 +43,9 @@ export const NavbarMenu = ({
                 }}
             />
 
-            <div className={styles.username}>{username}</div>
+            <div data-test-id="navbar-username" className={styles.username}>
+                {username}
+            </div>
         </div>
     );
 

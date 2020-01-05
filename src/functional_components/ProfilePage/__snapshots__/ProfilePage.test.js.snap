@@ -34,6 +34,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       >
         <SingleValue
           className="nameLabel"
+          dataKey="name"
           editable={false}
           placholder="Enter Name.."
           setValue={[Function]}
@@ -61,6 +62,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       >
         <SvgEdit
           className="icon"
+          data-test-id="edit"
           onClick={[Function]}
         />
       </div>

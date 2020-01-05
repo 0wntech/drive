@@ -88,7 +88,7 @@ const Navigation = ({
                     onClick={() => {
                         if (webId) {
                             setCurrentPath(
-                                webId.replace('/profile/card#me', '')
+                                webId.replace('profile/card#me', '')
                             );
                             history.push('/home');
                         } else {
