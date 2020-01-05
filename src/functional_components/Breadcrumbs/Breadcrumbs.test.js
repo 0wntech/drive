@@ -26,9 +26,4 @@ describe('Breadcrumbs', () => {
         );
         expect(wrapper.find(BreadcrumbItem)).toHaveLength(3);
     });
-
-    it('renders without breadcrumbs', () => {
-        const wrapper = shallow(<Breadcrumbs webId={webId} />);
-        expect(wrapper.find(BreadcrumbItem)).toHaveLength(0);
-    });
 });

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
-import { ClassicSpinner } from 'react-spinners-kit';
-
 import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
 import Settings from '../../assets/svgIcons/Settings';
 import Camera from '../../assets/svgIcons/Camera';
@@ -17,9 +15,9 @@ import { Layout } from '../Layout';
 export const ProfilePage = ({
     webId,
     user,
-    updateProfilePic,
     changeProfilePhoto,
     updateProfile,
+    updatingProfile,
 }) => {
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
@@ -47,7 +45,7 @@ export const ProfilePage = ({
         </div>
     );
 
-    if (user || updateProfilePic) {
+    if (user) {
         return (
             <Layout
                 className={styles.grid}
@@ -86,6 +84,7 @@ export const ProfilePage = ({
                             <SingleValue
                                 editable={isEditable}
                                 value={userData.name}
+                                dataKey="name"
                                 setValue={(value) =>
                                     updateUserData('name', value)
                                 }
@@ -113,16 +112,19 @@ export const ProfilePage = ({
                                     <X
                                         onClick={onCancel}
                                         className={styles.icon}
+                                        data-test-id="edit-cancel"
                                     />{' '}
                                     <Check
                                         className={styles.icon}
                                         onClick={onSubmit}
+                                        data-test-id="edit-submit"
                                     />
                                 </div>
                             ) : (
                                 <EditIcon
                                     onClick={() => setEditable(!isEditable)}
                                     className={styles.icon}
+                                    data-test-id="edit"
                                 />
                             )}
                         </div>
@@ -160,22 +162,15 @@ export const ProfilePage = ({
                 </div>
             </Layout>
         );
-    } else {
-        return (
-            <div className={styles.spinner}>
-                <ClassicSpinner size={30} color="#686769" loading={!user} />
-            </div>
-        );
     }
 };
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
     webId: state.user.webId,
-    updateProfilePic: state.user.updateProfilePic,
+    updatingProfile: state.user.updatingProfile,
 });
 
-export default connect(
-    mapStateToProps,
-    { updateProfile, changeProfilePhoto }
-)(ProfilePage);
+export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
+    ProfilePage
+);

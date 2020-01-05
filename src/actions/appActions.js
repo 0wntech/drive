@@ -13,6 +13,8 @@ import {
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
     FETCH_IDPS_FAILED,
+    OPEN_CONSENT_WINDOW,
+    CLOSE_CONSENT_WINDOW,
     DELETE_ITEMS,
     DELETE_ITEMS_SUCCESS,
     DELETE_ITEMS_FAILURE,
@@ -20,72 +22,118 @@ import {
     PASTE_ITEMS,
     PASTE_ITEMS_SUCCESS,
     PASTE_ITEMS_FAILURE,
+    OPEN_RENAME_WINDOW,
+    CLOSE_RENAME_WINDOW,
     RENAME_ITEM,
     RENAME_ITEM_SUCCESS,
     RENAME_ITEM_FAILURE,
+    OPEN_CREATE_FILE_WINDOW,
+    CLOSE_CREATE_FILE_WINDOW,
+    CREATE_FILE,
+    CREATE_FILE_FAILURE,
+    CREATE_FILE_SUCCESS,
     UPDATE_FILE,
     UPDATE_FILE_SUCCESS,
     UPDATE_FILE_FAILURE,
-    CREATE_FILE,
-    CREATE_FILE_SUCCESS,
-    CREATE_FILE_FAILURE,
+    DOWNLOAD_FILE,
+    DOWNLOAD_FILE_SUCCESS,
+    DOWNLOAD_FILE_FAILURE,
+    OPEN_CREATE_FOLDER_WINDOW,
+    CLOSE_CREATE_FOLDER_WINDOW,
+    CREATE_FOLDER,
+    CREATE_FOLDER_SUCCESS,
+    CREATE_FOLDER_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
 import mime from 'mime';
 import url from 'url';
+import FileSaver from 'file-saver';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
-export const setCurrentPath = (newPath) => {
+export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
-        dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+        if (options.noFetch) {
+            return dispatch({
+                type: FETCH_CURRENT_ITEM_SUCCESS,
+                payload: { body: '', url: newPath },
+            });
+        } else {
+            return dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+        }
     };
 };
 
-export const fetchCurrentItem = (url, folder = false) => {
+export const fetchCurrentItem = (itemUrl, folder = false) => {
     return (dispatch) => {
-        auth.currentSession().then((session) => {
-            const fileClient = new PodClient({ podUrl: session.webId });
-            dispatch({ type: FETCH_CURRENT_ITEM });
-            const options = {};
-            if (folder) {
-                options.auth = auth;
-                options.headers = { Accept: 'text/turtle' };
-            }
-            fileClient
-                .read(url, options)
-                .then((item) => {
-                    if (item && item.folders) {
-                        const fileNames = item.files.map((file) => {
-                            return convertFileUrlToName(file);
-                        });
-                        const folderNames = item.folders.map((folder) => {
-                            return convertFolderUrlToName(folder);
-                        });
-                        dispatch({
-                            type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: {
-                                files: fileNames,
-                                folders: folderNames,
-                            },
-                        });
-                    } else if (item || item === '') {
-                        dispatch({
-                            type: FETCH_CURRENT_ITEM_SUCCESS,
-                            payload: { body: item, url: url },
-                        });
-                    }
-                })
-                .catch((error) =>
-                    dispatch({
-                        type: FETCH_CURRENT_ITEM_FAIL,
-                        payload: error,
-                    })
-                );
+        dispatch({ type: FETCH_CURRENT_ITEM });
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(itemUrl).host + '/',
         });
+        const options = {};
+        if (folder) {
+            options.auth = auth;
+            options.headers = { Accept: 'text/turtle' };
+        }
+        return fileClient
+            .read(itemUrl, options)
+            .then((item) => {
+                if (item && item.folders) {
+                    const fileNames = item.files.map((file) => {
+                        return convertFileUrlToName(file);
+                    });
+                    const folderNames = item.folders.map((folder) => {
+                        return convertFolderUrlToName(folder);
+                    });
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_SUCCESS,
+                        payload: {
+                            files: fileNames,
+                            folders: folderNames,
+                        },
+                    });
+                } else if (item && typeof item === 'string') {
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_SUCCESS,
+                        payload: { body: item, url: itemUrl },
+                    });
+                }
+            })
+            .catch((error) =>
+                dispatch({
+                    type: FETCH_CURRENT_ITEM_FAIL,
+                    payload: error,
+                })
+            );
+    };
+};
+
+export const downloadFile = (file) => {
+    return (dispatch) => {
+        dispatch({ type: DOWNLOAD_FILE });
+        const fileClient = new PodClient({});
+        fileClient
+            .read(file)
+            .then((result) => {
+                const fileType = mime.getType(file);
+                if (fileType.includes('image')) {
+                    console.log('saving as image');
+                    FileSaver.saveAs(file, convertFileUrlToName(file));
+                    dispatch({ type: DOWNLOAD_FILE_SUCCESS });
+                } else {
+                    const blob = new Blob([result], {
+                        type: mime.getType(file),
+                    });
+                    FileSaver.saveAs(blob, convertFileUrlToName(file));
+                    dispatch({ type: DOWNLOAD_FILE_SUCCESS });
+                }
+            })
+            .catch((err) => {
+                dispatch({ type: DOWNLOAD_FILE_FAILURE, payload: err });
+            });
     };
 };
 
@@ -314,5 +362,71 @@ export const renameItem = function(renamedItem, value) {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
                 });
         });
+    };
+};
+
+export const openCreateFileWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CREATE_FILE_WINDOW });
+    };
+};
+
+export const closeCreateFileWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CREATE_FILE_WINDOW });
+    };
+};
+
+export const openCreateFolderWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CREATE_FOLDER_WINDOW });
+    };
+};
+
+export const closeCreateFolderWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CREATE_FOLDER_WINDOW });
+    };
+};
+
+export const openConsentWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: OPEN_CONSENT_WINDOW });
+    };
+};
+
+export const closeConsentWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_CONSENT_WINDOW });
+    };
+};
+
+export const openRenameWindow = function(item) {
+    return (dispatch) => {
+        dispatch({ type: OPEN_RENAME_WINDOW, payload: item });
+    };
+};
+
+export const closeRenameWindow = function() {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_RENAME_WINDOW });
+    };
+};
+
+export const createFolder = function(name, path) {
+    return (dispatch) => {
+        dispatch({ type: CREATE_FOLDER });
+        const fileClient = new PodClient({
+            podUrl: 'https://' + url.parse(path).host + '/',
+        });
+        return fileClient
+            .create(path + name + '/')
+            .then(() => {
+                dispatch({ type: CREATE_FOLDER_SUCCESS });
+                dispatch(setCurrentPath(path));
+            })
+            .catch((err) => {
+                dispatch({ type: CREATE_FOLDER_FAILURE, payload: err });
+            });
     };
 };

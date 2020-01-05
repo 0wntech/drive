@@ -7,7 +7,11 @@ import { ClassicSpinner } from 'react-spinners-kit';
 import { Layout } from '../Layout';
 import styles from './FileView.module.css';
 import { setCurrentPath, updateFile } from '../../actions/appActions';
-import { getBreadcrumbsFromUrl, getFileParamsFromUrl } from '../../utils/url';
+import {
+    getBreadcrumbsFromUrl,
+    getFileParamsFromUrl,
+    convertFileUrlToName,
+} from '../../utils/url';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
@@ -29,7 +33,14 @@ export const FileView = ({
         const fileParam = getFileParamsFromUrl(window.location.href).f;
         if (fileParam) {
             if (!currentItem.body || !currentPath) {
-                setCurrentPath(fileParam);
+                let options = {};
+                if (
+                    mime.getType(currentItem.url) &&
+                    mime.getType(currentItem.url).includes('image')
+                ) {
+                    options = { noFetch: true };
+                }
+                setCurrentPath(fileParam, options);
             } else if (currentItem.files || currentItem.folders) {
                 history.push('/home');
             }
@@ -37,7 +48,7 @@ export const FileView = ({
     });
 
     const fileType = mime.getType(currentItem.url);
-    const isImage = fileType && fileType.split('/')[0] === 'image';
+    const isImage = fileType ? fileType.includes('image') : null;
 
     const [isEditable, setEditable] = useState(false);
     const [newBody, setNewBody] = useState('');
@@ -100,6 +111,7 @@ export const FileView = ({
             className={styles.container}
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
+            label={currentItem.url && convertFileUrlToName(currentItem.url)}
         >
             {(updatingFile, loadCurrentItem) ? (
                 <div className={styles.spinner}>

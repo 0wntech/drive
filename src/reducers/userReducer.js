@@ -20,9 +20,9 @@ const INITIAL_STATE = {
     loadLogin: false,
     loadUser: false,
     session: null,
-    updateProfile: false,
+    updatingProfile: false,
     updateProfileError: false,
-    updateProfilePic: false,
+    updatingProfilePic: false,
     error: null,
 };
 
@@ -50,21 +50,29 @@ export default (state = INITIAL_STATE, action) => {
         case SET_WEBID:
             return { ...state, webId: payload };
         case UPDATE_PROFILE:
-            return { ...state, updateProfile: true, updateProfileError: false };
+            return {
+                ...state,
+                updatingProfile: true,
+                updateProfileError: false,
+            };
         case UPDATE_PROFILE_SUCCESS:
             return {
                 ...state,
-                updateProfile: false,
+                updatingProfile: false,
                 updateProfileError: false,
             };
         case UPDATE_PROFILE_FAILURE:
-            return { ...state, updateProfile: false, updateProfileError: true };
+            return {
+                ...state,
+                updatingProfile: false,
+                updateProfileError: true,
+            };
         case CHANGE_PROFILE_PHOTO:
-            return { ...state, updateProfilePic: true };
+            return { ...state, updatingProfilePic: true };
         case CHANGE_PROFILE_PHOTO_SUCCESS:
-            return { ...state, updateProfilePic: false };
+            return { ...state, updatingProfilePic: false };
         case CHANGE_PROFILE_PHOTO_FAILURE:
-            return { ...state, updateProfilePic: false, error: payload };
+            return { ...state, updatingProfilePic: false, error: payload };
         default:
             return state;
     }

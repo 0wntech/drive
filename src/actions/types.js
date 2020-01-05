@@ -59,7 +59,7 @@ export const REMOVE_CONTACT = 'remove_contact';
 export const REMOVE_CONTACT_SUCCESS = 'remove_contact_success';
 export const REMOVE_CONTACT_FAILURE = 'remove_contact_failure';
 
-export const UPDATE_PROFILE = 'delete_items';
+export const UPDATE_PROFILE = 'update_profile';
 export const UPDATE_PROFILE_SUCCESS = 'update_profile_success';
 export const UPDATE_PROFILE_FAILURE = 'update_profile_failure';
 
@@ -77,6 +77,22 @@ export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
 export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
 
+export const OPEN_CONSENT_WINDOW = 'open_consent_window';
+export const CLOSE_CONSENT_WINDOW = 'close_consent_window';
+
+export const OPEN_CREATE_FILE_WINDOW = 'open_create_file_window';
+export const CLOSE_CREATE_FILE_WINDOW = 'close_create_file_window';
+
+export const OPEN_CREATE_FOLDER_WINDOW = 'open_create_folder_window';
+export const CLOSE_CREATE_FOLDER_WINDOW = 'close_create_folder_window';
+
+export const OPEN_RENAME_WINDOW = 'open_rename_window';
+export const CLOSE_RENAME_WINDOW = 'close_rename_window';
+
+export const CREATE_FOLDER = 'create_folder';
+export const CREATE_FOLDER_SUCCESS = 'create_folder_success';
+export const CREATE_FOLDER_FAILURE = 'create_folder_failure';
+
 export const CREATE_FILE = 'create_file';
 export const CREATE_FILE_SUCCESS = 'create_file_success';
 export const CREATE_FILE_FAILURE = 'create_file_failure';
@@ -90,3 +106,7 @@ export const FETCH_CONTACT_RECOMMENDATIONS_SUCCESS =
     'fetch_contact_recommendations_success';
 export const FETCH_CONTACT_RECOMMENDATIONS_FAILURE =
     'fetch_contact_recommendations_failure';
+
+export const DOWNLOAD_FILE = 'download_file';
+export const DOWNLOAD_FILE_SUCCESS = 'download_file_success';
+export const DOWNLOAD_FILE_FAILURE = 'download_file_failure';

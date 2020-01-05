@@ -18,17 +18,19 @@ exports[`NavbarMenu Should render correctly 1`] = `
         >
           <div
             className="profileIcon"
+            data-test-id="navigation-profile-picture"
             onClick={[Function]}
             style={
               Object {
-                "backgroundImage": "url('https://bejow.solid.community/profile/meme_ben_gang.jpg')",
+                "backgroundImage": "url('https://bejow.owntech.de/profile/meme_ben_gang.jpg')",
               }
             }
           />
           <div
             className="username"
+            data-test-id="navbar-username"
           >
-            Ben
+            Ben Wetzel
           </div>
         </div>
         <div
@@ -51,6 +53,12 @@ exports[`NavbarMenu Should render correctly 1`] = `
       <div
         className="dropdownContent hide"
       >
+        <div
+          className="option"
+          onClick={[Function]}
+        >
+          Home
+        </div>
         <div
           className="option"
           onClick={[Function]}
