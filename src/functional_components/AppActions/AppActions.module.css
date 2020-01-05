@@ -45,3 +45,16 @@
 .icon:hover {
     background-color: #dddddd;
 }
+
+.disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.disabled svg {
+    cursor: default;
+}
+
+.disabled:hover {
+    background-color: unset;
+}
