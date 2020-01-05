@@ -10,7 +10,7 @@ describe('drive', () => {
     it('should click folders and files', async () => {
         const page = await browser.newPage();
         await page.goto(config.baseUrl + 'home');
-        await page.waitForSelector('[data-test-id="profile"]');
+        await page.waitForSelector('[data-test-id="item-profile"]');
         await page.click('[data-test-id="item-profile"]');
         await page.waitForSelector('[data-test-id="card"]');
         await page.click('[data-test-id="card"]');
