@@ -21,7 +21,7 @@ const MyItem = ({
         >
             <div
                 className={classNames(styles.container)}
-                data-test-id={label}
+                data-test-id={`item-${label}`}
                 onClick={onClick}
             >
                 <div className={styles.innerContainer}>
