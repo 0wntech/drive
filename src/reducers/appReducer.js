@@ -48,7 +48,15 @@ const INITIAL_STATE = {
     loadcurrentItem: false,
     loadDeletion: false,
     updatingFile: false,
-    error: null,
+    error: {
+        DOWNLOAD_FILE: false,
+        CREATE_FILE: false,
+        UPDATE_FILE: false,
+        PASTE_ITEMS: false,
+        DELETE_ITEMS: false,
+        FETCH_IDPS: false,
+        FETCH_CURRENT_ITEM: false,
+    },
     currentPath: null,
     currentItem: null,
     notifications: null,
@@ -74,11 +82,24 @@ export default (state = INITIAL_STATE, action) => {
         case SET_SELECTION:
             return { ...state, selectedItems: [...payload] };
         case FETCH_CURRENT_ITEM:
-            return { ...state, loadCurrentItem: true };
+            return {
+                ...state,
+                loadCurrentItem: true,
+                error: { ...state.error, FETCH_CURRENT_ITEM: false },
+            };
         case FETCH_CURRENT_ITEM_SUCCESS:
-            return { ...state, loadCurrentItem: false, currentItem: payload };
+            return {
+                ...state,
+                loadCurrentItem: false,
+                currentItem: payload,
+                error: { ...state.error, FETCH_CURRENT_ITEM: false },
+            };
         case FETCH_CURRENT_ITEM_FAIL:
-            return { ...state, loadCurrentItem: false, error: payload };
+            return {
+                ...state,
+                loadCurrentItem: false,
+                error: { ...state.error, FETCH_CURRENT_ITEM: payload },
+            };
         case FETCH_NOTIFICATIONS:
             return {
                 ...state,
@@ -91,29 +112,66 @@ export default (state = INITIAL_STATE, action) => {
                 notifications: payload,
             };
         case FETCH_IDPS:
-            return { ...state, loadIdps: true };
+            return {
+                ...state,
+                loadIdps: true,
+                error: { ...state.error, FETCH_IDPS: false },
+            };
         case FETCH_IDPS_SUCCESS:
-            return { ...state, idps: payload, loadIdps: false };
+            return {
+                ...state,
+                idps: payload,
+                loadIdps: false,
+                error: { ...state.error, FETCH_IDPS: false },
+            };
         case FETCH_IDPS_FAILED:
-            return { ...state, error: payload, loadIdps: false };
+            return {
+                ...state,
+                loadIdps: false,
+                error: { ...state.error, FETCH_IDPS: payload },
+            };
         case OPEN_CONSENT_WINDOW:
             return { ...state, isConsentWindowVisible: true };
         case CLOSE_CONSENT_WINDOW:
             return { ...state, isConsentWindowVisible: false };
         case DELETE_ITEMS:
-            return { ...state, loadDeletion: true };
+            return {
+                ...state,
+                loadDeletion: true,
+                error: { ...state.error, DELETE_ITEMS: false },
+            };
         case DELETE_ITEMS_SUCCESS:
-            return { ...state, loadDeletion: false };
+            return {
+                ...state,
+                loadDeletion: false,
+                error: { ...state.error, DELETE_ITEMS: false },
+            };
         case DELETE_ITEMS_FAILURE:
-            return { ...state, error: payload, loadDeletion: false };
+            return {
+                ...state,
+                loadDeletion: false,
+                error: { ...state.error, DELETE_ITEMS: payload },
+            };
         case COPY_ITEMS:
             return { ...state, clipboard: payload };
         case PASTE_ITEMS:
-            return { ...state, loadPaste: true };
+            return {
+                ...state,
+                loadPaste: true,
+                error: { ...state.error, PASTE_ITEMS: false },
+            };
         case PASTE_ITEMS_SUCCESS:
-            return { ...state, loadPaste: false };
+            return {
+                ...state,
+                loadPaste: false,
+                error: { ...state.error, PASTE_ITEMS: false },
+            };
         case PASTE_ITEMS_FAILURE:
-            return { ...state, error: payload, loadPaste: false };
+            return {
+                ...state,
+                loadPaste: false,
+                error: { ...state.error, PASTE_ITEMS: payload },
+            };
         case OPEN_RENAME_WINDOW:
             return {
                 ...state,
@@ -127,33 +185,83 @@ export default (state = INITIAL_STATE, action) => {
                 renamedItem: null,
             };
         case RENAME_ITEM:
-            return { ...state, renamingItem: true };
+            return {
+                ...state,
+                renamingItem: true,
+                error: { ...state.error, RENAME_ITEM: false },
+            };
         case RENAME_ITEM_SUCCESS:
-            return { ...state, renamingItem: false };
+            return {
+                ...state,
+                renamingItem: false,
+                error: { ...state.error, RENAME_ITEM: false },
+            };
         case RENAME_ITEM_FAILURE:
-            return { ...state, renamingItem: false, error: payload };
+            return {
+                ...state,
+                renamingItem: false,
+                error: { ...state.error, RENAME_ITEM: payload },
+            };
         case UPDATE_FILE:
-            return { ...state, updatingFile: true };
+            return {
+                ...state,
+                updatingFile: true,
+                error: { ...state.error, UPDATE_FILE: false },
+            };
         case UPDATE_FILE_SUCCESS:
-            return { ...state, updatingFile: false, currentItem: payload };
+            return {
+                ...state,
+                updatingFile: false,
+                currentItem: payload,
+                error: { ...state.error, UPDATE_FILE: false },
+            };
         case UPDATE_FILE_FAILURE:
-            return { ...state, updatingFile: false, error: payload };
+            return {
+                ...state,
+                updatingFile: false,
+                error: payload,
+                error: { ...state.error, UPDATE_FILE: payload },
+            };
         case OPEN_CREATE_FILE_WINDOW:
             return { ...state, isCreateFileVisible: true };
         case CLOSE_CREATE_FILE_WINDOW:
             return { ...state, isCreateFileVisible: false };
         case CREATE_FILE:
-            return { ...state, creatingFile: true };
+            return {
+                ...state,
+                creatingFile: true,
+                error: { ...state.error, CREATE_FILE: false },
+            };
         case CREATE_FILE_SUCCESS:
-            return { ...state, creatingFile: false };
+            return {
+                ...state,
+                creatingFile: false,
+                error: { ...state.error, CREATE_FILE: false },
+            };
         case CREATE_FILE_FAILURE:
-            return { ...state, creatingFile: false, error: payload };
+            return {
+                ...state,
+                creatingFile: false,
+                error: { ...state.error, CREATE_FILE: payload },
+            };
         case DOWNLOAD_FILE:
-            return { ...state, downloadingFile: true };
+            return {
+                ...state,
+                downloadingFile: true,
+                error: { ...state.error, DOWNLOAD_FILE: false },
+            };
         case DOWNLOAD_FILE_SUCCESS:
-            return { ...state, downloadingFile: false };
+            return {
+                ...state,
+                downloadingFile: false,
+                error: { ...state.error, DOWNLOAD_FILE: false },
+            };
         case DOWNLOAD_FILE_FAILURE:
-            return { ...state, downloadingFile: false, error: payload };
+            return {
+                ...state,
+                downloadingFile: false,
+                error: { ...state.error, DOWNLOAD_FILE: payload },
+            };
         case OPEN_CREATE_FOLDER_WINDOW:
             return { ...state, isCreateFolderVisible: true };
         case CLOSE_CREATE_FOLDER_WINDOW:
