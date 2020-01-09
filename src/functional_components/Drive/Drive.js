@@ -174,6 +174,7 @@ const Drive = ({
             className={styles.grid}
             label="Drive"
             onClick={clearSelection}
+            isLoading={loadDeletion || loadPaste || loadCurrentItem}
         >
             <DriveContextMenu
                 className={styles.mainArea}
