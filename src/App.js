@@ -106,19 +106,19 @@ class App extends React.Component {
                     className={styles.grid}
                     style={{ height: '100%', overflowY: 'hidden' }}
                 >
-                    <ErrorBoundary>
-                        <div className={styles.navArea}>
-                            <Navigation
-                                toggleSidebar={this.toggleSidebar}
-                                onLogout={this.logout}
-                                onLogin={this.login}
-                                webId={webId}
-                                picture={user ? user.picture : undefined}
-                                username={user ? user.name : undefined}
-                            />
-                        </div>
+                    <div className={styles.navArea}>
+                        <Navigation
+                            toggleSidebar={this.toggleSidebar}
+                            onLogout={this.logout}
+                            onLogin={this.login}
+                            webId={webId}
+                            picture={user ? user.picture : undefined}
+                            username={user ? user.name : undefined}
+                        />
+                    </div>
 
-                        <div className={styles.mainArea}>
+                    <div className={styles.mainArea}>
+                        <ErrorBoundary>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />
                                 <PrivateRoute
@@ -164,8 +164,8 @@ class App extends React.Component {
                                     )}
                                 />
                             </Switch>
-                        </div>
-                    </ErrorBoundary>
+                        </ErrorBoundary>
+                    </div>
                 </div>
             );
         }
