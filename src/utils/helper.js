@@ -16,8 +16,6 @@ const getErrorsFromErrorState = (errors) => {
         return errorArray;
     }
     const keys = Object.keys(errors);
-    console.log('keys', keys);
-    console.log('errors', errors);
     for (let i = 0; i < keys.length; i++) {
         if (errors[keys[i]] !== false) {
             errorArray.push(errors[keys[i]]);
@@ -27,10 +25,12 @@ const getErrorsFromErrorState = (errors) => {
 };
 
 const convertArrayToString = (array) => {
+    if (!Array.isArray(array)) {
+        return undefined;
+    }
     let arrayString = '';
     for (let i = 0; i < array.length; i++) {
         arrayString += array[i] + '\n';
-        console.log('arrayString', arrayString);
     }
     return arrayString;
 };
