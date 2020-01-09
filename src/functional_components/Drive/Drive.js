@@ -19,7 +19,11 @@ import {
     openConsentWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
-import { isCmdPressed } from '../../utils/helper';
+import {
+    isCmdPressed,
+    getErrorsFromErrorState,
+    convertArrayToString,
+} from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 
@@ -35,6 +39,7 @@ const Drive = ({
     fetchCurrentItem,
     history,
     downloadFile,
+    error,
 }) => {
     useEffect(() => {
         if (!currentPath && !loadCurrentItem && webId) {
@@ -45,7 +50,11 @@ const Drive = ({
                 currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
             setCurrentPath(currentPath);
         }
-    });
+    }, []);
+    const errors = getErrorsFromErrorState(error);
+    if (errors.length > 0) {
+        throw new Error(convertArrayToString(errors));
+    }
 
     // Event Handlers
     const loadFile = (url, event = {}) => {
@@ -216,6 +225,7 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
+        error: state.app.error,
     };
 };
 

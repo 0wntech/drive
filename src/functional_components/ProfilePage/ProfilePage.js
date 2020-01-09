@@ -11,6 +11,10 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 import { Layout } from '../Layout';
+import {
+    getErrorsFromErrorState,
+    convertArrayToString,
+} from '../../utils/helper';
 
 export const ProfilePage = ({
     webId,
@@ -18,7 +22,12 @@ export const ProfilePage = ({
     changeProfilePhoto,
     updateProfile,
     updatingProfile,
+    error,
 }) => {
+    const errors = getErrorsFromErrorState(error);
+    if (errors.length > 0) {
+        throw new Error(convertArrayToString(errors));
+    }
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
     const updateUserData = (key, value) => {
@@ -165,6 +174,7 @@ const mapStateToProps = (state) => ({
     user: state.user.user,
     webId: state.user.webId,
     updatingProfile: state.user.updatingProfile,
+    error: state.user.error,
 });
 
 export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(

@@ -92,7 +92,10 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 loadCurrentItem: false,
                 currentItem: payload,
-                error: { ...state.error, FETCH_CURRENT_ITEM: false },
+                error: {
+                    ...state.error,
+                    FETCH_CURRENT_ITEM: false,
+                },
             };
         case FETCH_CURRENT_ITEM_FAIL:
             return {
