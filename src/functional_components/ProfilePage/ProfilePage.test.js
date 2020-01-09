@@ -33,7 +33,10 @@ describe('ProfilePage', () => {
     describe('ProfilePage Snapshot', () => {
         it('matches the snapshot', () => {
             const result = new ShallowRenderer().render(
-                <ProfilePage.WrappedComponent user={user} />
+                <ProfilePage.WrappedComponent
+                    user={user}
+                    updatingProfile={false}
+                />
             );
             expect(result).toMatchSnapshot();
         });

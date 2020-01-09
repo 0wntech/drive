@@ -1,5 +1,5 @@
 import { setCurrentContact } from './contactActions';
-import { user } from '../test/fixtures/user';
+import { user } from '../../test/fixtures/user';
 import { SET_CURRENT_CONTACT } from './types';
 
 describe('Contact Actions', () => {

@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
-<UNDEFINED
+<Layout
   className="grid"
+  isLoading={false}
   label="Profile"
   toolbarChildrenRight={
     <div
@@ -33,6 +34,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       >
         <SingleValue
           className="nameLabel"
+          dataKey="name"
           editable={false}
           placholder="Enter Name.."
           setValue={[Function]}
@@ -60,6 +62,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       >
         <SvgEdit
           className="icon"
+          data-test-id="edit"
           onClick={[Function]}
         />
       </div>
@@ -97,5 +100,5 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       }
     />
   </div>
-</UNDEFINED>
+</Layout>
 `;

@@ -14,10 +14,6 @@ svg:hover {
     flex-direction: column;
 }
 
-svg:hover {
-    cursor: pointer;
-}
-
 .editButtons {
     display: flex;
     flex-direction: column;

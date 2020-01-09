@@ -37,6 +37,16 @@ export const login = (username, password) => {
     };
 };
 
+export const logout = () => {
+    return (dispatch) => {
+        auth.logout().then(() => {
+            dispatch(setWebId(null));
+            window.localStorage.removeItem('solid-auth-client');
+            window.location = '/';
+        });
+    };
+};
+
 const setSessionInfo = (session) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_SUCCESS, payload: session });

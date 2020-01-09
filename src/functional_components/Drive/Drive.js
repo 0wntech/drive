@@ -7,7 +7,7 @@ import styles from './Drive.module.css';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import { ItemList } from '../ItemList';
 import fileUtils from '../../utils/fileUtils';
-import { getBreadcrumbsFromUrl } from '../../utils/url';
+import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { Layout } from '../Layout';
@@ -26,6 +26,7 @@ import {
 } from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
+import { getParentFolderUrl } from '../../utils/url';
 
 const Drive = ({
     selectedItems,
@@ -40,14 +41,16 @@ const Drive = ({
     history,
     downloadFile,
     error,
+    loadDeletion,
+    loadPaste,
 }) => {
     useEffect(() => {
-        if (!currentPath && !loadCurrentItem && webId) {
-            currentPath = webId.replace('profile/card#me', '');
-            setCurrentPath(currentPath, true);
-        } else if (currentPath && currentItem && currentItem.body) {
-            currentPath =
-                currentPath.substr(0, currentPath.lastIndexOf('/')) + '/';
+        if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
+            if (!currentPath) {
+                currentPath = getRootFromWebId(webId);
+                setCurrentPath(currentPath);
+            }
+            currentPath = getParentFolderUrl(currentPath);
             setCurrentPath(currentPath);
         }
     }, []);
@@ -226,6 +229,9 @@ const mapStateToProps = (state) => {
         webId: state.user.webId,
         clipboard: state.app.clipboard,
         error: state.app.error,
+        loadDeletion: state.app.loadDeletion,
+        loadPaste: state.app.loadPaste,
+        loadCurrentItem: state.app.loadCurrentItem,
     };
 };
 

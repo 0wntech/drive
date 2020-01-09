@@ -19,6 +19,13 @@ export const getBreadcrumbsFromUrl = (url) => {
     return newBreadcrumbs;
 };
 
+export const getUrlObject = (url) => {
+    // returns an object to access certain url properties (protocol, hostname, port, search, path ...)
+    const parser = document.createElement('a');
+    parser.href = url;
+    return parser;
+};
+
 export const getFileParamsFromUrl = (url) => {
     const params = urlUtils
         .parse(url)
@@ -86,6 +93,19 @@ export const getUsernameFromWebId = (webId) => {
 // converts webId into url to fetch folders
 export const getRootFromWebId = (webId) => {
     return 'https://' + webId.split('/')[2] + '/';
+};
+
+// converts a url into the url of the last folder or root folder
+export const getParentFolderUrl = (url) => {
+    if (isValidUrl(url)) {
+        const slashCount = url.split('/').length;
+        if (slashCount >= 4) {
+            return url.substring(0, url.lastIndexOf('/') + 1);
+        } else if (slashCount === 3) {
+            return url + '/';
+        }
+    }
+    throw new Error('Received invalid url: ' + url);
 };
 
 // converts https://ludwigschubert.solid.community/

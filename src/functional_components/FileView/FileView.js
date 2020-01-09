@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
 import mime from 'mime';
-import { ClassicSpinner } from 'react-spinners-kit';
 import { Layout } from '../Layout';
 import styles from './FileView.module.css';
 import { setCurrentPath, updateFile } from '../../actions/appActions';
-import { getBreadcrumbsFromUrl, getFileParamsFromUrl } from '../../utils/url';
+import {
+    getBreadcrumbsFromUrl,
+    getFileParamsFromUrl,
+    convertFileUrlToName,
+} from '../../utils/url';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
@@ -30,7 +33,10 @@ export const FileView = ({
         if (fileParam) {
             if (!currentItem.body || !currentPath) {
                 let options = {};
-                if (mime.getType(currentItem.url).includes('image')) {
+                if (
+                    mime.getType(currentItem.url) &&
+                    mime.getType(currentItem.url).includes('image')
+                ) {
                     options = { noFetch: true };
                 }
                 setCurrentPath(fileParam, options);
@@ -104,16 +110,10 @@ export const FileView = ({
             className={styles.container}
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
+            isLoading={updatingFile || loadCurrentItem}
+            label={currentItem.url && convertFileUrlToName(currentItem.url)}
         >
-            {(updatingFile, loadCurrentItem) ? (
-                <div className={styles.spinner}>
-                    <ClassicSpinner
-                        size={30}
-                        color="#686769"
-                        loading={(updatingFile, loadCurrentItem)}
-                    />
-                </div>
-            ) : error ? (
+            {error ? (
                 <>
                     <div>Sorry, we cannot load this file.</div>
                     <p className={styles.error}>{error.message}</p>

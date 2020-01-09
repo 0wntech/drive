@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './KeyValuePair.module.css';
 
-const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
+const SingleValue = ({
+    dataKey,
+    value,
+    editable,
+    placeholder,
+    setValue,
+    className,
+}) => {
     const [fallbackValue, setFallbackValue] = useState(value);
 
     const onFocusIn = (e) => {
@@ -27,6 +34,7 @@ const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
     return (
         <input
             readOnly={!editable}
+            data-test-id={`${dataKey}-input`}
             className={classNames(styles.value, className, {
                 [styles.active]: editable,
             })}
@@ -40,11 +48,12 @@ const SingleValue = ({ value, editable, placeholder, setValue, className }) => {
 };
 
 SingleValue.propTypes = {
-    label: PropTypes.string,
     value: PropTypes.string.isRequired,
+    setValue: PropTypes.func,
     editable: PropTypes.bool,
-    dataKey: PropTypes.string,
     className: PropTypes.string,
+    placeholder: PropTypes.string,
+    dataKey: PropTypes.string,
 };
 
 export default SingleValue;

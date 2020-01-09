@@ -59,7 +59,7 @@ export const REMOVE_CONTACT = 'remove_contact';
 export const REMOVE_CONTACT_SUCCESS = 'remove_contact_success';
 export const REMOVE_CONTACT_FAILURE = 'remove_contact_failure';
 
-export const UPDATE_PROFILE = 'delete_items';
+export const UPDATE_PROFILE = 'update_profile';
 export const UPDATE_PROFILE_SUCCESS = 'update_profile_success';
 export const UPDATE_PROFILE_FAILURE = 'update_profile_failure';
 
@@ -72,6 +72,10 @@ export const SET_CURRENT_CONTACT = 'set_current_contact';
 export const RENAME_ITEM = 'rename_item';
 export const RENAME_ITEM_SUCCESS = 'rename_item_success';
 export const RENAME_ITEM_FAILURE = 'rename_item_failure';
+
+export const FETCH_APPS = 'fetch_apps';
+export const FETCH_APPS_SUCCESS = 'fetch_apps_success';
+export const FETCH_APPS_FAILURE = 'fetch_apps_failure';
 
 export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
@@ -110,3 +114,7 @@ export const FETCH_CONTACT_RECOMMENDATIONS_FAILURE =
 export const DOWNLOAD_FILE = 'download_file';
 export const DOWNLOAD_FILE_SUCCESS = 'download_file_success';
 export const DOWNLOAD_FILE_FAILURE = 'download_file_failure';
+
+export const REMOVE_APP = 'remove_app';
+export const REMOVE_APP_SUCCESS = 'remove_app_success';
+export const REMOVE_APP_FAILURE = 'remove_app_failure';

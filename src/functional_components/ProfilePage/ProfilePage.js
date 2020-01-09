@@ -17,7 +17,6 @@ import {
 } from '../../utils/helper';
 
 export const ProfilePage = ({
-    webId,
     user,
     changeProfilePhoto,
     updateProfile,
@@ -41,11 +40,11 @@ export const ProfilePage = ({
 
     const onSubmit = () => {
         setEditable(false);
-        updateProfile(userData, webId);
+        updateProfile(userData, user.webId);
     };
 
     const onPhotoChange = (e) => {
-        changeProfilePhoto(e, webId);
+        changeProfilePhoto(e, user.webId);
     };
 
     const toolbarRight = (
@@ -57,6 +56,7 @@ export const ProfilePage = ({
     if (user) {
         return (
             <Layout
+                isLoading={updatingProfile || !user}
                 className={styles.grid}
                 toolbarChildrenRight={toolbarRight}
                 label="Profile"
@@ -93,6 +93,7 @@ export const ProfilePage = ({
                             <SingleValue
                                 editable={isEditable}
                                 value={userData.name}
+                                dataKey="name"
                                 setValue={(value) =>
                                     updateUserData('name', value)
                                 }
@@ -120,16 +121,19 @@ export const ProfilePage = ({
                                     <X
                                         onClick={onCancel}
                                         className={styles.icon}
+                                        data-test-id="edit-cancel"
                                     />{' '}
                                     <Check
                                         className={styles.icon}
                                         onClick={onSubmit}
+                                        data-test-id="edit-submit"
                                     />
                                 </div>
                             ) : (
                                 <EditIcon
                                     onClick={() => setEditable(!isEditable)}
                                     className={styles.icon}
+                                    data-test-id="edit"
                                 />
                             )}
                         </div>
@@ -172,7 +176,6 @@ export const ProfilePage = ({
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
-    webId: state.user.webId,
     updatingProfile: state.user.updatingProfile,
     error: state.user.error,
 });

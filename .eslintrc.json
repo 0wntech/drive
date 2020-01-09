@@ -4,10 +4,14 @@
         "es6": true,
         "jest": true
     },
-    "extends": "google",
+    "extends": ["google", "prettier"],
     "globals": {
         "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "SharedArrayBuffer": "readonly",
+        "page": true,
+        "browser": true,
+        "context": true,
+        "jestPuppeteer": true
     },
     "parserOptions": {
         "ecmaFeatures": {

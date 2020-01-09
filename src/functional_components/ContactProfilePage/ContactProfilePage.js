@@ -35,6 +35,7 @@ const ContactProfilePage = ({
             className={styles.grid}
             label={currentContact.name}
             toolbarChildrenRight={toolbarRight}
+            isLoading={currentContact === null}
         >
             <div className={styles.profileContainer}>
                 <div className={styles.headContainer}>
