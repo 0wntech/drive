@@ -15,6 +15,7 @@ import { ProfilePage } from './functional_components/ProfilePage';
 import { ContactsPage } from './functional_components/ContactsPage';
 import { ContactProfilePage } from './functional_components/ContactProfilePage';
 import FileView from './functional_components/FileView/FileView';
+import SettingsPage from './functional_components/SettingsPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -61,6 +62,11 @@ class App extends React.Component {
                                     session={session}
                                     path="/home"
                                     component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/settings"
+                                    component={<SettingsPage />}
                                 />
                                 <PrivateRoute
                                     session={session}

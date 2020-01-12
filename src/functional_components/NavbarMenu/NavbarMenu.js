@@ -32,7 +32,7 @@ export const NavbarMenu = ({
             label: 'Home',
         },
         { onClick: () => history.push('/profile'), label: 'Profile' },
-        { onClick: () => console.log('test2'), label: 'Settings*' },
+        { onClick: () => history.push('/settings'), label: 'Settings' },
         { onClick: () => console.log('test2'), label: 'Notifications*' },
         { onClick: () => history.push('/contacts'), label: 'Contacts' },
         { onClick: () => logout(), label: 'Logout' },
