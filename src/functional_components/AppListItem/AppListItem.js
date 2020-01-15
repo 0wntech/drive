@@ -4,7 +4,7 @@ import styles from './AppListItem.module.css';
 import useHover from '../../hooks/useHover';
 
 import X from '../../assets/svgIcons/X';
-import AppActions from '../AppActions/AppActions';
+import { AppButtons } from '../AppButtons';
 
 const mockFunction = () => {
     console.log('needs implementation');
@@ -27,7 +27,7 @@ const AppListItem = ({ iconSrc, url, title, onClick, removeApp }) => {
                 style={{ backgroundImage: `url('${iconSrc}')` }}
             />
             <div className={styles.name}>{title}</div>
-            <AppActions
+            <AppButtons
                 onArrowClick={() => window.open(url, '_blank')}
                 onFolderClick={mockFunction}
                 onSettingsClick={mockFunction}

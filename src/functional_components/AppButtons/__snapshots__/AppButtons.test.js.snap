@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppActions should render correct 1`] = `
+exports[`AppButtons should render correct 1`] = `
 <div
   className="container"
 >
