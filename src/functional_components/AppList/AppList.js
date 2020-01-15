@@ -11,7 +11,7 @@ const AppList = ({ apps, className, removeApp }) => {
                 ? apps.map((app, index) => (
                       <AppCard
                           key={app.title + index}
-                          iconSrc={app.icon}
+                          iconSrc={app.icon || `${app.url}/favicon.ico`}
                           title={app.title}
                           url={app.url}
                           y

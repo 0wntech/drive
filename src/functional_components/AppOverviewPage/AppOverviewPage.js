@@ -5,12 +5,12 @@ import styles from './AppOverviewPage.module.css';
 import AppList from '../AppList';
 import { fetchApps, removeApp } from '../../actions/userAppActions';
 import { Layout } from '../Layout';
-import icon from '../../assets/icons/owntech.png';
 import { Window } from '../Window';
 import url from 'url';
 import ActionButton from '../ActionButton/ActionButton';
 import { logout } from '../../actions/userActions';
 
+// remove me if user library functions return all the parameter
 const fakeApps = (apps) => {
     if (!apps) return [];
     return apps.map((url) => {
@@ -19,7 +19,7 @@ const fakeApps = (apps) => {
             title: url,
             description: url,
             settings: url,
-            icon: icon,
+            icon: undefined,
             description: url,
             contents: [],
             permissions: {},
