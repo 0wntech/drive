@@ -35,6 +35,7 @@ export const NavbarMenu = ({
         { onClick: () => console.log('test2'), label: 'Settings*' },
         { onClick: () => console.log('test2'), label: 'Notifications*' },
         { onClick: () => history.push('/contacts'), label: 'Contacts' },
+        { onClick: () => history.push('/apps'), label: 'Apps' },
         { onClick: () => logout(), label: 'Logout' },
     ];
 

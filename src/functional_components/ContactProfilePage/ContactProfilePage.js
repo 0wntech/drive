@@ -26,6 +26,7 @@ const ContactProfilePage = ({
             className={styles.grid}
             label={currentContact.name}
             toolbarChildrenRight={toolbarRight}
+            isLoading={currentContact === null}
         >
             <div className={styles.profileContainer}>
                 <div className={styles.headContainer}>
@@ -115,7 +116,6 @@ const mapStateToProps = (state) => ({
     isContact: isContact(state.contact, state.contact.currentContact.webId),
 });
 
-export default connect(
-    mapStateToProps,
-    { addContact, removeContact }
-)(ContactProfilePage);
+export default connect(mapStateToProps, { addContact, removeContact })(
+    ContactProfilePage
+);
