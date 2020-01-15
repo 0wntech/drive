@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
@@ -16,97 +16,84 @@ import { ContactsPage } from './functional_components/ContactsPage';
 import { ContactProfilePage } from './functional_components/ContactProfilePage';
 import FileView from './functional_components/FileView/FileView';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-        const { login } = this.props;
+export const App = (props) => {
+    useEffect(() => {
+        const { login } = props;
         login();
-    }
+    }, []);
 
-    render() {
-        const { webId, user, session, loadLogin, loadUser } = this.props;
-        if (loadLogin || loadUser) {
-            return (
-                <div className={styles.spinner}>
-                    <ClassicSpinner
-                        size={30}
-                        color="#686769"
-                        loading={loadLogin || loadUser}
-                    />
-                </div>
-            );
-        } else {
-            console.log(user);
-            return (
-                <div
-                    className={styles.grid}
-                    style={{ height: '100%', overflowY: 'hidden' }}
-                >
-                    <ErrorBoundary>
-                        <div className={styles.navArea}>
-                            <Navigation
-                                toggleSidebar={this.toggleSidebar}
-                                onLogout={this.logout}
-                                onLogin={this.login}
+    const { webId, user, session, loadLogin, loadUser } = props;
+    if (loadLogin || loadUser) {
+        return (
+            <div className={styles.spinner}>
+                <ClassicSpinner
+                    size={30}
+                    color="#686769"
+                    loading={loadLogin || loadUser}
+                />
+            </div>
+        );
+    } else {
+        console.log(user);
+        return (
+            <div
+                className={styles.grid}
+                style={{ height: '100%', overflowY: 'hidden' }}
+            >
+                <ErrorBoundary>
+                    <div className={styles.navArea}>
+                        <Navigation />
+                    </div>
+                    <div className={styles.mainArea}>
+                        <Switch>
+                            <Route path="/" exact component={LandingPage} />
+                            <PrivateRoute
+                                session={session}
+                                path="/home"
+                                component={<Drive />}
                             />
-                        </div>
-
-                        <div className={styles.mainArea}>
-                            <Switch>
-                                <Route path="/" exact component={LandingPage} />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/home"
-                                    component={<Drive />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/profile"
-                                    component={<ProfilePage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/contacts"
-                                    component={<ContactsPage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/contact"
-                                    component={<ContactProfilePage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/notifications"
-                                    component={<NotificationsPage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/drive"
-                                    component={<Drive webId={webId} />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/file"
-                                    component={<FileView />}
-                                />
-                                <Route
-                                    session={session}
-                                    path="/login"
-                                    component={() => (
-                                        <LoginScreen webId={webId} />
-                                    )}
-                                />
-                            </Switch>
-                        </div>
-                    </ErrorBoundary>
-                </div>
-            );
-        }
+                            <PrivateRoute
+                                session={session}
+                                path="/profile"
+                                component={<ProfilePage />}
+                            />
+                            <PrivateRoute
+                                session={session}
+                                path="/contacts"
+                                component={<ContactsPage />}
+                            />
+                            <PrivateRoute
+                                session={session}
+                                path="/contact"
+                                component={<ContactProfilePage />}
+                            />
+                            <PrivateRoute
+                                session={session}
+                                path="/notifications"
+                                component={<NotificationsPage />}
+                            />
+                            <PrivateRoute
+                                session={session}
+                                path="/drive"
+                                component={<Drive webId={webId} />}
+                            />
+                            <PrivateRoute
+                                session={session}
+                                path="/file"
+                                component={<FileView />}
+                            />
+                            <Route
+                                session={session}
+                                path="/login"
+                                component={() => <LoginScreen webId={webId} />}
+                            />
+                        </Switch>
+                    </div>
+                </ErrorBoundary>
+            </div>
+        );
     }
-}
+};
 
 const mapStateToProps = (state) => {
     return {

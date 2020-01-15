@@ -44,11 +44,22 @@ class LoginScreen extends React.Component {
     }
 
     componentDidMount() {
-        const { webId, loadIdps, idps, fetchIdps } = this.props;
+        const {
+            webId,
+            loadIdps,
+            idps,
+            fetchIdps,
+            history,
+            location,
+        } = this.props;
         if (!webId && !loadIdps && !idps) {
             fetchIdps();
         } else if (webId) {
-            this.props.history.push('/home');
+            if (location.state.from.pathname) {
+                history.push(location.state.from.pathname);
+            } else {
+                history.push('/home');
+            }
         }
     }
 
