@@ -7,7 +7,7 @@ import { fetchApps, removeApp } from '../../actions/userAppActions';
 import { Layout } from '../Layout';
 import icon from '../../assets/icons/owntech.png';
 import { Window } from '../Window';
-import { getUrlObject } from '../../utils/url';
+import url from 'url';
 import ActionButton from '../ActionButton/ActionButton';
 import { logout } from '../../actions/userActions';
 
@@ -28,7 +28,7 @@ const fakeApps = (apps) => {
 };
 
 const isDriveApp = (apptoDelete) => {
-    return window.location.host === getUrlObject(apptoDelete).host;
+    return window.location.host === url.parse(apptoDelete).host;
 };
 
 const AppOverviewPage = ({
