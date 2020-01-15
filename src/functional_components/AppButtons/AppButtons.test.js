@@ -1,11 +1,11 @@
 import TestRenderer from 'react-test-renderer';
-import AppActions from './AppActions';
+import AppButtons from './AppButtons';
 import React from 'react';
 
-describe('AppActions', () => {
+describe('AppButtons', () => {
     it('should render correct', () => {
         const wrapper = TestRenderer.create(
-            <AppActions
+            <AppButtons
                 onArrowClick={jest.fn()}
                 onSettingsClick={jest.fn()}
                 onFolderClick={jest.fn()}

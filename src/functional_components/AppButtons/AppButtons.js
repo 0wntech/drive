@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './AppActions.module.css';
+import styles from './AppButtons.module.css';
 import classNames from 'classnames';
 // import Alert from '../../assets/svgIcons/Alert';
 import Arrow from '../../assets/svgIcons/ArrowRight';
 import Folder from '../../assets/svgIcons/Folder';
 import Settings from '../../assets/svgIcons/Settings';
 
-const AppActions = ({
+const AppButtons = ({
     alert,
     onArrowClick,
     onFolderClick,
@@ -39,11 +39,11 @@ const AppActions = ({
     );
 };
 
-AppActions.propTypes = {
+AppButtons.propTypes = {
     alert: PropTypes.bool,
     onArrowClick: PropTypes.func,
     onFolderClick: PropTypes.func,
     onSettingsClick: PropTypes.func,
 };
 
-export default AppActions;
+export default AppButtons;
