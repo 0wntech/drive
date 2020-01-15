@@ -28,6 +28,7 @@
 
 .white:hover {
     color: #333;
+    background-color: #ddd;
 }
 
 .blue:hover {

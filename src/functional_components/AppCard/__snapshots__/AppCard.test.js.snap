@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppListItem should render correct 1`] = `
+exports[`AppCard should render correct 1`] = `
 <div
   className="container"
   onClick={[MockFunction]}

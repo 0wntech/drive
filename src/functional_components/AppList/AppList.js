@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppListItem from '../AppListItem';
+import AppCard from '../AppCard';
 import styles from './AppList.module.css';
 import classNames from 'classnames';
 
@@ -9,7 +9,7 @@ const AppList = ({ apps, className, removeApp }) => {
         <div className={classNames(styles.container, className)}>
             {apps
                 ? apps.map((app, index) => (
-                      <AppListItem
+                      <AppCard
                           key={app.title + index}
                           iconSrc={app.icon}
                           title={app.title}

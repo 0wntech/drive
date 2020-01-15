@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './AppListItem.module.css';
+import styles from './AppCard.module.css';
 import useHover from '../../hooks/useHover';
 
 import X from '../../assets/svgIcons/X';
@@ -10,7 +10,7 @@ const mockFunction = () => {
     console.log('needs implementation');
 };
 
-const AppListItem = ({ iconSrc, url, title, onClick, removeApp }) => {
+const AppCard = ({ iconSrc, url, title, onClick, removeApp }) => {
     const [hoverRef, isHovered] = useHover();
     return (
         <div ref={hoverRef} onClick={onClick} className={styles.container}>
@@ -36,7 +36,7 @@ const AppListItem = ({ iconSrc, url, title, onClick, removeApp }) => {
     );
 };
 
-AppListItem.propTypes = {
+AppCard.propTypes = {
     removeApp: PropTypes.func,
     iconSrc: PropTypes.string,
     title: PropTypes.string.isRequired,
@@ -45,4 +45,4 @@ AppListItem.propTypes = {
     onClick: PropTypes.func,
 };
 
-export default AppListItem;
+export default AppCard;
