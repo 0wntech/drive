@@ -16,7 +16,6 @@ import {
 import User from 'ownuser';
 import auth from 'solid-auth-client';
 import rdf from 'rdflib';
-import { fetchContacts } from './contactActions';
 import { setCurrentPath } from './appActions';
 
 export const login = (username, password) => {
@@ -28,7 +27,6 @@ export const login = (username, password) => {
                     dispatch({ type: LOGIN_FAIL, payload: 'No Session' });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
-                    dispatch(fetchContacts(session.webId));
                 }
             })
             .catch((error) => {

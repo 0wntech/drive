@@ -8,6 +8,7 @@ import {
     addContact,
     removeContact,
     fetchContactRecommendations,
+    fetchContacts,
 } from '../../actions/contactActions';
 
 import ContactList from '../ContactList/ContactsList';
@@ -17,6 +18,7 @@ const ContactsPage = ({
     contacts,
     addContact,
     loadContacts,
+    fetchContacts,
     webId,
     setCurrentContact,
     contactRecommendations,
@@ -25,14 +27,14 @@ const ContactsPage = ({
     fetchContactRecommendations,
 }) => {
     useEffect(() => {
-        fetchContactRecommendations(webId);
-    });
+        if (!contacts) fetchContacts(webId);
+        if (!contactRecommendations) fetchContactRecommendations(webId);
+    }, []);
 
     const [displayedRows, setDisplayedRows] = useState(2);
-    const contactRecommendationsToDisplay = contactRecommendations.slice(
-        0,
-        displayedRows * 3
-    );
+    const contactRecommendationsToDisplay =
+        contactRecommendations &&
+        contactRecommendations.slice(0, displayedRows * 3);
 
     return (
         <Layout label="Contacts" className={styles.grid}>
@@ -103,12 +105,10 @@ const mapStateToProps = (state) => ({
     contactRecommendations: state.contact.contactRecommendations,
 });
 
-export default connect(
-    mapStateToProps,
-    {
-        setCurrentContact,
-        addContact,
-        removeContact,
-        fetchContactRecommendations,
-    }
-)(withRouter(ContactsPage));
+export default connect(mapStateToProps, {
+    setCurrentContact,
+    addContact,
+    removeContact,
+    fetchContacts,
+    fetchContactRecommendations,
+})(withRouter(ContactsPage));

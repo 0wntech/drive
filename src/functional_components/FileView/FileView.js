@@ -32,11 +32,11 @@ export const FileView = ({
     useEffect(() => {
         const fileParam = getFileParamsFromUrl(window.location.href).f;
         if (fileParam) {
-            if (!currentItem.body || !currentPath) {
+            if (!currentItem || !currentItem.body || !currentPath) {
                 let options = {};
                 if (
-                    mime.getType(currentItem.url) &&
-                    mime.getType(currentItem.url).includes('image')
+                    mime.getType(fileParam) &&
+                    mime.getType(fileParam).includes('image')
                 ) {
                     options = { noFetch: true };
                 }
@@ -45,9 +45,9 @@ export const FileView = ({
                 history.push('/home');
             }
         }
-    });
+    }, []);
 
-    const fileType = mime.getType(currentItem.url);
+    const fileType = currentItem ? mime.getType(currentItem.url) : null;
     const isImage = fileType ? fileType.includes('image') : null;
 
     const [isEditable, setEditable] = useState(false);
@@ -111,7 +111,11 @@ export const FileView = ({
             className={styles.container}
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
-            label={currentItem.url && convertFileUrlToName(currentItem.url)}
+            label={
+                currentItem &&
+                currentItem.url &&
+                convertFileUrlToName(currentItem.url)
+            }
         >
             {(updatingFile, loadCurrentItem) ? (
                 <div className={styles.spinner}>
@@ -126,15 +130,13 @@ export const FileView = ({
                     <div>Sorry, we cannot load this file.</div>
                     <p className={styles.error}>{error.message}</p>
                 </>
-            ) : currentItem.body || currentItem.body === '' ? (
+            ) : currentItem && currentItem.body ? (
                 !isImage ? (
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
                             value={
-                                newBody === '' &&
-                                currentItem.body &&
-                                currentItem.body !== ''
+                                newBody === '' && currentItem.body !== ''
                                     ? currentItem.body
                                     : newBody
                             }
@@ -142,7 +144,7 @@ export const FileView = ({
                                 setNewBody(e.target.value);
                             }}
                             placeholder={
-                                currentItem.body && currentItem.body !== ''
+                                currentItem.body !== ''
                                     ? currentItem.body
                                     : 'Empty'
                             }

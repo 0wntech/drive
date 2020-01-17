@@ -56,7 +56,9 @@ class LoginScreen extends React.Component {
             fetchIdps();
         } else if (webId) {
             if (location.state.from.pathname) {
-                history.push(location.state.from.pathname);
+                history.push(
+                    location.state.from.pathname + location.state.from.search
+                );
             } else {
                 history.push('/home');
             }
