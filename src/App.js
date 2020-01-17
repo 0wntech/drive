@@ -14,6 +14,7 @@ import LandingPage from './functional_components/LandingPage';
 import { ProfilePage } from './functional_components/ProfilePage';
 import { ContactsPage } from './functional_components/ContactsPage';
 import { ContactProfilePage } from './functional_components/ContactProfilePage';
+import AppOverviewPage from './functional_components/AppOverviewPage';
 import FileView from './functional_components/FileView/FileView';
 
 export const App = (props) => {
@@ -52,46 +53,64 @@ export const App = (props) => {
                                 path="/home"
                                 component={<Drive />}
                             />
-                            <PrivateRoute
-                                session={session}
-                                path="/profile"
-                                component={<ProfilePage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/contacts"
-                                component={<ContactsPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/contact"
-                                component={<ContactProfilePage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/notifications"
-                                component={<NotificationsPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/drive"
-                                component={<Drive webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/file"
-                                component={<FileView />}
-                            />
-                            <Route
-                                session={session}
-                                path="/login"
-                                component={() => <LoginScreen webId={webId} />}
-                            />
-                        </Switch>
-                    </div>
-                </ErrorBoundary>
-            </div>
-        );
+                        </div>
+
+                        <div className={styles.mainArea}>
+                            <Switch>
+                                <Route path="/" exact component={LandingPage} />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/home"
+                                    component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/apps"
+                                    component={<AppOverviewPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/profile"
+                                    component={<ProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/contacts"
+                                    component={<ContactsPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/contact"
+                                    component={<ContactProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/notifications"
+                                    component={<NotificationsPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/drive"
+                                    component={<Drive webId={webId} />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/file"
+                                    component={<FileView />}
+                                />
+                                <Route
+                                    session={session}
+                                    path="/login"
+                                    component={() => (
+                                        <LoginScreen webId={webId} />
+                                    )}
+                                />
+                            </Switch>
+                        </div>
+                    </ErrorBoundary>
+                </div>
+            );
+        }
     }
 };
 
