@@ -16,7 +16,6 @@ import {
 import User from 'ownuser';
 import auth from 'solid-auth-client';
 import rdf from 'rdflib';
-import { setCurrentPath } from './appActions';
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -48,7 +47,6 @@ const setSessionInfo = (session) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_SUCCESS, payload: session });
         dispatch({ type: SET_WEBID, payload: session.webId });
-        dispatch(setCurrentPath(session.webId.replace('profile/card#me', '')));
         dispatch(fetchUser(session.webId));
     };
 };

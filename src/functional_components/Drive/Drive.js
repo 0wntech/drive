@@ -37,15 +37,32 @@ const Drive = ({
     history,
     downloadFile,
 }) => {
+    const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
         if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
             if (!currentPath) {
-                currentPath = getRootFromWebId(webId);
+                console.log('Initial use of currentPath');
+                currentPath =
+                    appState && appState.currentPath
+                        ? appState.currentPath
+                        : getRootFromWebId(webId);
+                setCurrentPath(currentPath);
+            } else {
+                console.log('Resetting currentPath');
+                currentPath = getParentFolderUrl(currentPath);
                 setCurrentPath(currentPath);
             }
-            currentPath = getParentFolderUrl(currentPath);
-            setCurrentPath(currentPath);
         }
+        return () => {
+            console.log(currentPath);
+            localStorage.setItem(
+                'appState',
+                JSON.stringify({
+                    ...appState,
+                    currentPath: currentPath,
+                })
+            );
+        };
     });
 
     // Event Handlers
@@ -154,7 +171,6 @@ const Drive = ({
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    console.log(path);
                     setCurrentPath(path);
                 }}
                 breadcrumbs={
