@@ -36,6 +36,8 @@ const Drive = ({
     fetchCurrentItem,
     history,
     downloadFile,
+    loadDeletion,
+    loadPaste,
 }) => {
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
@@ -63,7 +65,7 @@ const Drive = ({
                 })
             );
         };
-    });
+    }, []);
 
     // Event Handlers
     const loadFile = (url, event = {}) => {
@@ -188,6 +190,7 @@ const Drive = ({
             className={styles.grid}
             label="Drive"
             onClick={clearSelection}
+            isLoading={loadDeletion || loadPaste || loadCurrentItem}
         >
             <DriveContextMenu
                 className={styles.mainArea}
@@ -233,6 +236,8 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
+        loadDeletion: state.app.loadDeletion,
+        loadPaste: state.app.loadPaste,
         loadCurrentItem: state.app.loadCurrentItem,
     };
 };

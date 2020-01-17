@@ -161,7 +161,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    { fetchNotifications }
-)(NotificationsPage);
+export default connect(mapStateToProps, { fetchNotifications })(
+    NotificationsPage
+);

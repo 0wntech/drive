@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
 import mime from 'mime';
-import { ClassicSpinner } from 'react-spinners-kit';
 import { Layout } from '../Layout';
 import styles from './FileView.module.css';
 import { setCurrentPath, updateFile } from '../../actions/appActions';
@@ -116,16 +115,10 @@ export const FileView = ({
                 currentItem.url &&
                 convertFileUrlToName(currentItem.url)
             }
+            isLoading={updatingFile || loadCurrentItem}
+            label={currentItem.url && convertFileUrlToName(currentItem.url)}
         >
-            {(updatingFile, loadCurrentItem) ? (
-                <div className={styles.spinner}>
-                    <ClassicSpinner
-                        size={30}
-                        color="#686769"
-                        loading={(updatingFile, loadCurrentItem)}
-                    />
-                </div>
-            ) : error ? (
+            {error ? (
                 <>
                     <div>Sorry, we cannot load this file.</div>
                     <p className={styles.error}>{error.message}</p>

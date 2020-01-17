@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
-<UNDEFINED
+<Layout
   className="grid"
   label="Profile"
   toolbarChildrenRight={
@@ -99,5 +99,5 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       }
     />
   </div>
-</UNDEFINED>
+</Layout>
 `;

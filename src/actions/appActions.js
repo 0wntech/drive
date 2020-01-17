@@ -194,7 +194,7 @@ export const updateFile = (file, body) => {
         } else {
             dispatch({
                 type: UPDATE_FILE_FAILURE,
-                payload: 'File can\'t be set to empty',
+                payload: "File can't be set to empty",
             });
         }
     };
