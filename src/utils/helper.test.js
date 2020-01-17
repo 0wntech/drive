@@ -35,7 +35,7 @@ describe('Helper Tests', () => {
     describe('convertArrayToString', () => {
         it('converts an array to a string', () => {
             const array = ['Put', 'Me', 'Together'];
-            const expected = 'Put\nMe\nTogether\n';
+            const expected = 'Put\nMe\nTogether';
             expect(convertArrayToString(array)).toBe(expected);
         });
         it('converts an empty array to an empty string', () => {

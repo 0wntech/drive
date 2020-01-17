@@ -28,11 +28,22 @@ const convertArrayToString = (array) => {
     if (!Array.isArray(array)) {
         return undefined;
     }
-    let arrayString = '';
-    for (let i = 0; i < array.length; i++) {
-        arrayString += array[i] + '\n';
-    }
+    const arrayString = array.join('\n');
     return arrayString;
 };
 
-export { isCmdPressed, getErrorsFromErrorState, convertArrayToString };
+const handleError = (error) => {
+    // accepts an object containing errors
+    // { errorName: error}
+    const errors = getErrorsFromErrorState(error);
+    if (errors.length > 0) {
+        throw new Error(convertArrayToString(errors));
+    }
+};
+
+export {
+    isCmdPressed,
+    getErrorsFromErrorState,
+    convertArrayToString,
+    handleError,
+};
