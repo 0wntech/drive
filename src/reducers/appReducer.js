@@ -41,6 +41,7 @@ import {
     CREATE_FOLDER,
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
+    CLEAR_ERROR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -76,7 +77,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
     console.log('App Reducer got action: ', type, '\nValue: ', payload);
+    console.log(state);
+
     switch (type) {
+        case CLEAR_ERROR:
+            return { ...state, error: INITIAL_STATE.error };
         case SET_CURRENT_PATH:
             return { ...state, currentPath: payload, selectedItem: [] };
         case SET_SELECTION:

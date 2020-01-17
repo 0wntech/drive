@@ -12,6 +12,7 @@ import {
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
+    CLEAR_ERROR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -34,6 +35,8 @@ export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
     console.log('User Reducer got action: ', type, '\nValue: ', payload);
     switch (type) {
+        case CLEAR_ERROR:
+            return { ...state, error: INITIAL_STATE.error };
         case LOGIN:
             return {
                 ...state,

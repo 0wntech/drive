@@ -20,6 +20,16 @@ import FileView from './functional_components/FileView/FileView';
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            errorKey: 0,
+        };
+        this.resetError = this.resetError.bind(this);
+    }
+
+    resetError() {
+        this.setState((prevState) => ({
+            errorKey: prevState.errorKey + 1,
+        }));
     }
 
     componentDidMount() {
@@ -29,6 +39,7 @@ class App extends React.Component {
 
     render() {
         const { webId, user, session, loadLogin, loadUser } = this.props;
+        const { errorKey } = this.state;
         if (loadLogin || loadUser) {
             return (
                 <div className={styles.spinner}>
@@ -48,6 +59,7 @@ class App extends React.Component {
                 >
                     <div className={styles.navArea}>
                         <Navigation
+                            resetError={this.resetError}
                             toggleSidebar={this.toggleSidebar}
                             onLogout={this.logout}
                             onLogin={this.login}
@@ -58,7 +70,7 @@ class App extends React.Component {
                     </div>
 
                     <div className={styles.mainArea}>
-                        <ErrorBoundary>
+                        <ErrorBoundary key={errorKey}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />
                                 <PrivateRoute

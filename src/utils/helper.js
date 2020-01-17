@@ -1,3 +1,5 @@
+import { CLEAR_ERROR } from '../actions/types';
+
 const isCmdPressed = (event) => {
     // return if strg(windows/linux) or cmd(mac) is pressed as
     return (
@@ -41,9 +43,16 @@ const handleError = (error) => {
     }
 };
 
+const navigate = (to, history, dispatch, onNavigate) => {
+    dispatch({ type: CLEAR_ERROR });
+    if (onNavigate) onNavigate();
+    history.push(to);
+};
+
 export {
     isCmdPressed,
     getErrorsFromErrorState,
     convertArrayToString,
     handleError,
+    navigate,
 };

@@ -9,6 +9,7 @@ import {
     FETCH_CONTACT_RECOMMENDATIONS,
     FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
     FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
+    CLEAR_ERROR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -30,6 +31,8 @@ export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
     console.log('Contact Reducer got action: ', type, '\nValue: ', payload);
     switch (type) {
+        case CLEAR_ERROR:
+            return { ...state, error: INITIAL_STATE.error };
         case FETCH_CONTACTS:
             return {
                 ...state,

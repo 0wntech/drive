@@ -5,6 +5,7 @@ import {
     REMOVE_APP,
     REMOVE_APP_SUCCESS,
     REMOVE_APP_FAILURE,
+    CLEAR_ERROR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -15,6 +16,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, { type, payload }) => {
     switch (type) {
+        case CLEAR_ERROR:
+            return { ...state, error: INITIAL_STATE.error };
         case FETCH_APPS:
             return { ...state, loadApps: true };
         case FETCH_APPS_SUCCESS:
