@@ -48,7 +48,7 @@ export const Windows = ({
                 windowName="Create Folder"
                 info=""
                 visible={isCreateFolderVisible}
-                onSubmit={(value) => createFolder(value)}
+                onSubmit={(value) => createFolder(value, currentPath)}
                 onClose={closeCreateFolderWindow}
                 placeholder={'Untitled'}
             />
