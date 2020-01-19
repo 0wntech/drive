@@ -21,10 +21,8 @@ describe('login', () => {
         await page.click('#login');
         await page.waitForSelector('[data-test-id="header"]');
         await page.waitForSelector('[data-test-id="header"]');
-        const header = await page.$eval(
-            '[data-test-id="header"]',
-            (e) => e.innerHTML
-        );
-        expect(header).toBe('Drive');
+        expect(
+            await page.$eval('[data-test-id="header"]', (e) => e.innerHTML)
+        ).toBe('Drive');
     });
 });
