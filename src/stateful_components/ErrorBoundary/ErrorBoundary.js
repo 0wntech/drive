@@ -1,5 +1,8 @@
 import React from 'react';
-
+import styles from './ErrorBoundary.module.css';
+import { Layout } from '../../functional_components/Layout/Layout';
+import mediumEmoji from '../../assets/icons/medium_emoji.png';
+import ActionButton from '../../functional_components/ActionButton/ActionButton';
 class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
@@ -14,7 +17,7 @@ class ErrorBoundary extends React.Component {
     componentDidCatch(error, info) {
         // You can also log the error to an error reporting service
         console.log(error, info);
-        this.setState(error);
+        this.setState({ error: error.message });
     }
 
     render() {
@@ -22,10 +25,19 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             // You can render any custom fallback UI
             return (
-                <div>
-                    {this.state.error}
-                    <h1>Something went wrong.</h1>;
-                </div>
+                <Layout className={styles.container} label="Error">
+                    <img className={styles.image} src={mediumEmoji} />
+                    <p className={styles.infoText}>There was an error.</p>
+                    <p className={styles.errorText}>
+                        {this.state.error.toString()}
+                    </p>
+                    <ActionButton
+                        onClick={() => window.location.reload()}
+                        label="Reload Page"
+                        color="blue"
+                        size="sm"
+                    />
+                </Layout>
             );
         }
 

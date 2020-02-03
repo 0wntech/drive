@@ -118,3 +118,5 @@ export const DOWNLOAD_FILE_FAILURE = 'download_file_failure';
 export const REMOVE_APP = 'remove_app';
 export const REMOVE_APP_SUCCESS = 'remove_app_success';
 export const REMOVE_APP_FAILURE = 'remove_app_failure';
+
+export const CLEAR_ERROR = 'clear_error';

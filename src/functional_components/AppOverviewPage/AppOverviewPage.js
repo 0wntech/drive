@@ -9,6 +9,7 @@ import { Window } from '../Window';
 import url from 'url';
 import ActionButton from '../ActionButton/ActionButton';
 import { logout } from '../../actions/userActions';
+import { handleError } from '../../utils/helper';
 
 // remove me if user library functions return all the parameter
 const fakeApps = (apps) => {
@@ -38,10 +39,12 @@ const AppOverviewPage = ({
     removeApp,
     loadApps,
     logout,
+    error,
 }) => {
     useEffect(() => {
         fetchApps(webId);
     }, []);
+    handleError(error);
 
     const [dangerWindow, setDangerWindow] = useState(false);
     const [apptoDelete, setAppToDelete] = useState('');
@@ -116,6 +119,7 @@ AppOverviewPage.propTypes = {
 
 const mapStateToProps = (state) => ({
     apps: state.userApps.apps,
+    error: state.userApps.error,
     loadApps: state.userApps.loadApps,
     webId: state.user.webId,
 });
