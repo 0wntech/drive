@@ -73,6 +73,10 @@ export const RENAME_ITEM = 'rename_item';
 export const RENAME_ITEM_SUCCESS = 'rename_item_success';
 export const RENAME_ITEM_FAILURE = 'rename_item_failure';
 
+export const FETCH_APPS = 'fetch_apps';
+export const FETCH_APPS_SUCCESS = 'fetch_apps_success';
+export const FETCH_APPS_FAILURE = 'fetch_apps_failure';
+
 export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
 export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
@@ -110,3 +114,9 @@ export const FETCH_CONTACT_RECOMMENDATIONS_FAILURE =
 export const DOWNLOAD_FILE = 'download_file';
 export const DOWNLOAD_FILE_SUCCESS = 'download_file_success';
 export const DOWNLOAD_FILE_FAILURE = 'download_file_failure';
+
+export const REMOVE_APP = 'remove_app';
+export const REMOVE_APP_SUCCESS = 'remove_app_success';
+export const REMOVE_APP_FAILURE = 'remove_app_failure';
+
+export const CLEAR_ERROR = 'clear_error';

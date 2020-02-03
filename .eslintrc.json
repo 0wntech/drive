@@ -4,7 +4,7 @@
         "es6": true,
         "jest": true
     },
-    "extends": "google",
+    "extends": ["google", "prettier"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",

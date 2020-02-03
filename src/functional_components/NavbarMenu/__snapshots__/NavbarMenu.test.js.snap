@@ -75,13 +75,13 @@ exports[`NavbarMenu Should render correctly 1`] = `
           className="option"
           onClick={[Function]}
         >
-          Notifications*
+          Contacts
         </div>
         <div
           className="option"
           onClick={[Function]}
         >
-          Contacts
+          Apps
         </div>
         <div
           className="option"

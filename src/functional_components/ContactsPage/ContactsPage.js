@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ContactsPage.module.css';
 import { connect } from 'react-redux';
-import { ClassicSpinner } from 'react-spinners-kit';
 import { withRouter } from 'react-router-dom';
 import {
     setCurrentContact,
@@ -12,6 +11,7 @@ import {
 
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';
+import { handleError } from '../../utils/helper';
 
 const ContactsPage = ({
     contacts,
@@ -23,10 +23,13 @@ const ContactsPage = ({
     removeContact,
     history,
     fetchContactRecommendations,
+    error,
 }) => {
     useEffect(() => {
         fetchContactRecommendations(webId);
-    });
+    }, []);
+
+    handleError(error);
 
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay = contactRecommendations.slice(
@@ -35,61 +38,52 @@ const ContactsPage = ({
     );
 
     return (
-        <Layout label="Contacts" className={styles.grid}>
-            {loadContacts ? (
-                <div className={styles.spinner}>
-                    <ClassicSpinner
-                        size={30}
-                        color="#686769"
-                        loading={loadContacts}
-                    />
-                </div>
-            ) : (
-                <div className={styles.contactsContainer}>
-                    <ContactList
-                        onItemClick={(contact) => {
-                            setCurrentContact(contact);
-                            history.push('/contact');
-                        }}
-                        contacts={contacts}
-                        webId={webId}
-                        removeContact={removeContact}
-                    />
-                    {contactRecommendations ? (
-                        <>
-                            <div className={styles.recommendLabel}>
-                                People you might know:
-                            </div>
-                            <ContactList
-                                onItemClick={(contact) => {
-                                    setCurrentContact(contact);
-                                    history.push('/contact');
-                                }}
-                                contacts={contactRecommendationsToDisplay}
-                                webId={webId}
-                                addContact={addContact}
-                                recommended
-                            />
-                            {displayedRows * 3 <
-                            contactRecommendations.length ? (
-                                <div
-                                    onClick={() =>
-                                        setDisplayedRows(displayedRows + 2)
-                                    }
-                                    className={styles.showMoreWrapper}
-                                >
-                                    <div className={styles.showMoreLabel}>
-                                        Show more
-                                    </div>
-                                    <div className={styles.showMoreIcon}>
-                                        ...
-                                    </div>
+        <Layout
+            label="Contacts"
+            className={styles.grid}
+            isLoading={loadContacts}
+        >
+            <div className={styles.contactsContainer}>
+                <ContactList
+                    onItemClick={(contact) => {
+                        setCurrentContact(contact);
+                        history.push('/contact');
+                    }}
+                    contacts={contacts}
+                    webId={webId}
+                    removeContact={removeContact}
+                />
+                {contactRecommendations ? (
+                    <>
+                        <div className={styles.recommendLabel}>
+                            People you might know:
+                        </div>
+                        <ContactList
+                            onItemClick={(contact) => {
+                                setCurrentContact(contact);
+                                history.push('/contact');
+                            }}
+                            contacts={contactRecommendationsToDisplay}
+                            webId={webId}
+                            addContact={addContact}
+                            recommended
+                        />
+                        {displayedRows * 3 < contactRecommendations.length ? (
+                            <div
+                                onClick={() =>
+                                    setDisplayedRows(displayedRows + 2)
+                                }
+                                className={styles.showMoreWrapper}
+                            >
+                                <div className={styles.showMoreLabel}>
+                                    Show more
                                 </div>
-                            ) : null}
-                        </>
-                    ) : null}
-                </div>
-            )}
+                                <div className={styles.showMoreIcon}>...</div>
+                            </div>
+                        ) : null}
+                    </>
+                ) : null}
+            </div>
         </Layout>
     );
 };
@@ -101,14 +95,12 @@ const mapStateToProps = (state) => ({
     webId: state.user.webId,
     loadContacts: state.contact.loadContacts,
     contactRecommendations: state.contact.contactRecommendations,
+    error: state.contact.error,
 });
 
-export default connect(
-    mapStateToProps,
-    {
-        setCurrentContact,
-        addContact,
-        removeContact,
-        fetchContactRecommendations,
-    }
-)(withRouter(ContactsPage));
+export default connect(mapStateToProps, {
+    setCurrentContact,
+    addContact,
+    removeContact,
+    fetchContactRecommendations,
+})(withRouter(ContactsPage));

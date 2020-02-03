@@ -11,14 +11,16 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 import { Layout } from '../Layout';
+import { handleError } from '../../utils/helper';
 
 export const ProfilePage = ({
-    webId,
     user,
     changeProfilePhoto,
     updateProfile,
     updatingProfile,
+    error,
 }) => {
+    handleError(error);
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
     const updateUserData = (key, value) => {
@@ -32,11 +34,11 @@ export const ProfilePage = ({
 
     const onSubmit = () => {
         setEditable(false);
-        updateProfile(userData, webId);
+        updateProfile(userData, user.webId);
     };
 
     const onPhotoChange = (e) => {
-        changeProfilePhoto(e, webId);
+        changeProfilePhoto(e, user.webId);
     };
 
     const toolbarRight = (
@@ -48,6 +50,7 @@ export const ProfilePage = ({
     if (user) {
         return (
             <Layout
+                isLoading={updatingProfile || !user}
                 className={styles.grid}
                 toolbarChildrenRight={toolbarRight}
                 label="Profile"
@@ -167,8 +170,8 @@ export const ProfilePage = ({
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
-    webId: state.user.webId,
     updatingProfile: state.user.updatingProfile,
+    error: state.user.error,
 });
 
 export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
