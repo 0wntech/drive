@@ -20,6 +20,16 @@ import FileView from './functional_components/FileView/FileView';
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            errorKey: 0,
+        };
+        this.resetError = this.resetError.bind(this);
+    }
+
+    resetError() {
+        this.setState((prevState) => ({
+            errorKey: prevState.errorKey + 1,
+        }));
     }
 
     componentDidMount() {
@@ -29,6 +39,7 @@ class App extends React.Component {
 
     render() {
         const { webId, user, session, loadLogin, loadUser } = this.props;
+        const { errorKey } = this.state;
         if (loadLogin || loadUser) {
             return (
                 <div className={styles.spinner}>
@@ -46,16 +57,20 @@ class App extends React.Component {
                     className={styles.grid}
                     style={{ height: '100%', overflowY: 'hidden' }}
                 >
-                    <ErrorBoundary>
-                        <div className={styles.navArea}>
-                            <Navigation
-                                toggleSidebar={this.toggleSidebar}
-                                onLogout={this.logout}
-                                onLogin={this.login}
-                            />
-                        </div>
+                    <div className={styles.navArea}>
+                        <Navigation
+                            resetError={this.resetError}
+                            toggleSidebar={this.toggleSidebar}
+                            onLogout={this.logout}
+                            onLogin={this.login}
+                            webId={webId}
+                            picture={user ? user.picture : undefined}
+                            username={user ? user.name : undefined}
+                        />
+                    </div>
 
-                        <div className={styles.mainArea}>
+                    <div className={styles.mainArea}>
+                        <ErrorBoundary key={errorKey}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />
                                 <PrivateRoute
@@ -106,8 +121,8 @@ class App extends React.Component {
                                     )}
                                 />
                             </Switch>
-                        </div>
-                    </ErrorBoundary>
+                        </ErrorBoundary>
+                    </div>
                 </div>
             );
         }

@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import styles from './Navigation.module.css';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath } from '../../actions/appActions';
+import { navigate } from '../../utils/helper';
 import { searchContact, setCurrentContact } from '../../actions/contactActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import { getUsernameFromWebId } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 
 const Navigation = ({
+    resetError,
     webId,
     setCurrentPath,
     history,
@@ -23,18 +26,24 @@ const Navigation = ({
     contactSearchResult,
     searchingContacts,
     searchContact,
+    dispatch,
 }) => {
     const [typingTimer, setTypingTimer] = useState(null);
 
     const handleChange = (selected) => {
+        resetError();
         if (selected.type === 'folder') {
             setCurrentPath(`${currentPath}/${selected.name}/`);
-            history.push('/home');
+            navigate('/home', history, dispatch);
         } else if (selected.type === 'file') {
-            history.push(`/file?f=${currentPath + selected.value}`);
+            navigate(
+                `/file?f=${currentPath + selected.value}`,
+                history,
+                dispatch
+            );
         } else if (selected.type === 'contact') {
             setCurrentContact(selected.contact);
-            history.push('/contact');
+            navigate('/contact', history, dispatch);
         }
     };
 
@@ -83,11 +92,12 @@ const Navigation = ({
                 <img
                     alt="logo"
                     onClick={() => {
+                        resetError();
                         if (webId) {
                             setCurrentPath(
                                 webId.replace('profile/card#me', '')
                             );
-                            history.push('/home');
+                            navigate('/home', history, dispatch);
                         } else {
                             history.push('/');
                         }
@@ -110,7 +120,10 @@ const Navigation = ({
                     />
                 ) : null}
             </div>
-            <NavbarMenu className={styles.menuWrapper} />
+            <NavbarMenu
+                resetError={resetError}
+                className={styles.menuWrapper}
+            />
         </div>
     );
 };
@@ -193,8 +206,10 @@ const mapStateToProps = (state) => ({
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
 });
-export default connect(mapStateToProps, {
-    setCurrentPath,
-    setCurrentContact,
-    searchContact,
-})(withRouter(Navigation));
+export default connect(mapStateToProps, (dispatch) => ({
+    ...bindActionCreators(
+        { setCurrentPath, setCurrentContact, searchContact },
+        dispatch
+    ),
+    dispatch,
+}))(withRouter(Navigation));
