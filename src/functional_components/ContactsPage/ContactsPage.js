@@ -11,10 +11,7 @@ import {
 
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';
-import {
-    getErrorsFromErrorState,
-    convertArrayToString,
-} from '../../utils/helper';
+import { handleError } from '../../utils/helper';
 
 const ContactsPage = ({
     contacts,
@@ -32,10 +29,7 @@ const ContactsPage = ({
         fetchContactRecommendations(webId);
     }, []);
 
-    const errors = getErrorsFromErrorState(error);
-    if (errors.length > 0) {
-        throw new Error(convertArrayToString(errors));
-    }
+    handleError(error);
 
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay = contactRecommendations.slice(

@@ -19,11 +19,7 @@ import {
     openConsentWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
-import {
-    isCmdPressed,
-    getErrorsFromErrorState,
-    convertArrayToString,
-} from '../../utils/helper';
+import { isCmdPressed, handleError } from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 import { getParentFolderUrl } from '../../utils/url';
@@ -54,11 +50,7 @@ const Drive = ({
             setCurrentPath(currentPath);
         }
     }, []);
-    const errors = getErrorsFromErrorState(error);
-    if (errors.length > 0) {
-        throw new Error(convertArrayToString(errors));
-    }
-
+    handleError(error);
     // Event Handlers
     const loadFile = (url, event = {}) => {
         if (url.endsWith('/')) {
