@@ -11,6 +11,7 @@ import {
 
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';
+import { handleError } from '../../utils/helper';
 
 const ContactsPage = ({
     contacts,
@@ -22,10 +23,13 @@ const ContactsPage = ({
     removeContact,
     history,
     fetchContactRecommendations,
+    error,
 }) => {
     useEffect(() => {
         fetchContactRecommendations(webId);
-    });
+    }, []);
+
+    handleError(error);
 
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay = contactRecommendations.slice(
@@ -91,6 +95,7 @@ const mapStateToProps = (state) => ({
     webId: state.user.webId,
     loadContacts: state.contact.loadContacts,
     contactRecommendations: state.contact.contactRecommendations,
+    error: state.contact.error,
 });
 
 export default connect(mapStateToProps, {

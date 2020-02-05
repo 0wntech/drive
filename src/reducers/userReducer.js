@@ -12,6 +12,7 @@ import {
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
+    CLEAR_ERROR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -21,32 +22,60 @@ const INITIAL_STATE = {
     loadUser: false,
     session: null,
     updatingProfile: false,
-    updateProfileError: false,
     updatingProfilePic: false,
-    error: null,
+    error: {
+        LOGIN: false,
+        FETCH_USER: false,
+        UPDATE_PROFILE: false,
+        CHANGE_PROFILE_PHOTO: false,
+    },
 };
 
 export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
     console.log('User Reducer got action: ', type, '\nValue: ', payload);
     switch (type) {
+        case CLEAR_ERROR:
+            return { ...state, error: INITIAL_STATE.error };
         case LOGIN:
-            return { ...state, loadLogin: true };
+            return {
+                ...state,
+                loadLogin: true,
+                error: { ...state.error, LOGIN: false },
+            };
         case LOGIN_SUCCESS:
             return {
                 ...state,
                 loadLogin: false,
                 webId: payload.webId,
                 session: payload,
+                error: { ...state.error, LOGIN: false },
             };
         case LOGIN_FAIL:
-            return { ...state, loadLogin: false, error: payload };
+            return {
+                ...state,
+                loadLogin: false,
+                error: { ...state.error, LOGIN: payload },
+            };
         case FETCH_USER:
-            return { ...state, loadUser: true };
+            return {
+                ...state,
+                loadUser: true,
+                error: { ...state.error, FETCH_USER: false },
+            };
         case FETCH_USER_SUCCESS:
-            return { ...state, loadUser: false, user: payload };
+            return {
+                ...state,
+                loadUser: false,
+                user: payload,
+                error: { ...state.error, FETCH_USER: false },
+            };
         case FETCH_USER_FAIL:
-            return { ...state, loadUser: false, error: payload };
+            return {
+                ...state,
+                loadUser: false,
+                error: { ...state.error, FETCH_USER: payload },
+            };
         case SET_WEBID:
             return { ...state, webId: payload };
         case UPDATE_PROFILE:
@@ -54,18 +83,20 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 updatingProfile: true,
                 updateProfileError: false,
+                error: { ...state.error, UPDATE_PROFILE: false },
             };
         case UPDATE_PROFILE_SUCCESS:
             return {
                 ...state,
                 updatingProfile: false,
                 updateProfileError: false,
+                error: { ...state.error, UPDATE_PROFILE: false },
             };
         case UPDATE_PROFILE_FAILURE:
             return {
                 ...state,
                 updatingProfile: false,
-                updateProfileError: true,
+                error: { ...state.error, UPDATE_PROFILE: payload },
             };
         case CHANGE_PROFILE_PHOTO:
             return { ...state, updatingProfilePic: true };

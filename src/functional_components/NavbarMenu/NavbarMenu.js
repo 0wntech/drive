@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import styles from './NavbarMenu.module.css';
 import ActionButton from '../ActionButton/ActionButton';
@@ -9,6 +10,7 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { setCurrentPath } from '../../actions/appActions';
 import { logout } from '../../actions/userActions';
 import { getRootFromWebId } from '../../utils/url';
+import { navigate } from '../../utils/helper';
 
 const onRegister = () => {
     window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
@@ -20,22 +22,33 @@ export const NavbarMenu = ({
     logout,
     user,
     setCurrentPath,
+    resetError,
+    dispatch,
 }) => {
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
 
     const DROPDOWN_OPTIONS = [
         {
             onClick: () => {
-                history.push('/home');
+                navigate('/home', history, dispatch);
                 setCurrentPath(getRootFromWebId(user.webId));
             },
             label: 'Home',
         },
-        { onClick: () => history.push('/profile'), label: 'Profile' },
-        { onClick: () => console.log('test2'), label: 'Settings*' },
-        { onClick: () => console.log('test2'), label: 'Notifications*' },
-        { onClick: () => history.push('/contacts'), label: 'Contacts' },
-        { onClick: () => history.push('/apps'), label: 'Apps' },
+        {
+            onClick: () => navigate('/profile', history, dispatch, resetError),
+            label: 'Profile',
+        },
+        // { onClick: () => console.log('test2'), label: 'Settings*' },
+        // { onClick: () => console.log('test2'), label: 'Notifications*' },
+        {
+            onClick: () => navigate('/contacts', history, dispatch, resetError),
+            label: 'Contacts',
+        },
+        {
+            onClick: () => navigate('/apps', history, dispatch, resetError),
+            label: 'Apps',
+        },
         { onClick: () => logout(), label: 'Logout' },
     ];
 
@@ -43,7 +56,9 @@ export const NavbarMenu = ({
         <div className={styles.profileSection}>
             <div
                 data-test-id="navigation-profile-picture"
-                onClick={() => history.push('/profile')}
+                onClick={() =>
+                    navigate('/profile', history, dispatch, resetError)
+                }
                 className={styles.profileIcon}
                 style={{
                     backgroundImage: `url('${
@@ -91,5 +106,8 @@ NavbarMenu.propTypes = {
 };
 
 export default withRouter(
-    connect(mapStateToProps, { logout, setCurrentPath })(NavbarMenu)
+    connect(mapStateToProps, (dispatch) => ({
+        ...bindActionCreators({ logout, setCurrentPath }, dispatch),
+        dispatch,
+    }))(NavbarMenu)
 );
