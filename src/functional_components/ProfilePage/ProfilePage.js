@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
-import Settings from '../../assets/svgIcons/Settings';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
 import X from '../../assets/svgIcons/X';
@@ -41,18 +40,11 @@ export const ProfilePage = ({
         changeProfilePhoto(e, user.webId);
     };
 
-    const toolbarRight = (
-        <div className={styles.iconWrapper}>
-            <Settings className={styles.settings} />
-        </div>
-    );
-
     if (user) {
         return (
             <Layout
                 isLoading={updatingProfile || !user}
                 className={styles.grid}
-                toolbarChildrenRight={toolbarRight}
                 label="Profile"
             >
                 <div className={styles.profileContainer}>
