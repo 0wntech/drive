@@ -33,12 +33,10 @@ svg:hover {
 
 .profileContainer {
     grid-area: profile;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    margin-top: 65px;
+    margin: 65px 0;
 }
 
 .profileImage {
@@ -203,4 +201,8 @@ svg:hover {
 
 .icon {
     cursor: pointer;
+}
+
+.icon:hover path {
+    fill: #c2c2c2;
 }

@@ -5,15 +5,6 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
   className="grid"
   isLoading={false}
   label="Profile"
-  toolbarChildrenRight={
-    <div
-      className="iconWrapper"
-    >
-      <SvgSettings
-        className="settings"
-      />
-    </div>
-  }
 >
   <div
     className="profileContainer"
