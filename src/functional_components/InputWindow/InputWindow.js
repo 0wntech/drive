@@ -37,6 +37,7 @@ export default function CreateWindow({
                         onSubmit(value);
                         onClose();
                     }}
+                    disabled={value === ''}
                     size="lg"
                     color="green"
                     label="Confirm"
