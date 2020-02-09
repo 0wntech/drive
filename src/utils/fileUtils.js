@@ -3,6 +3,19 @@ import auth from 'solid-auth-client';
 import url from 'url';
 const ns = require('solid-namespace')(rdf);
 
+function allowFileName(fileName, currentFolder, fileSuffix) {
+    if (fileName == '') {
+        return false;
+    }
+
+    const re = new RegExp('^[a-zA-Z0-9]*$');
+
+    if (currentFolder && fileSuffix) {
+        return !namingConflict(`${fileName}.${fileSuffix}`, currentFolder);
+    }
+    return !!re.exec(fileName);
+}
+
 function getContentType(file) {
     const mimeTypes = {
         py: 'application/x-python-code',
@@ -374,7 +387,7 @@ function sendNotification(notifParams) {
         method: 'PUT',
         headers: {
             'content-type': 'text/turtle',
-            'slug': notificationAddress.replace(inboxAddress + '/', ''),
+            "slug": notificationAddress.replace(inboxAddress + '/', ''),
         },
         body: notification,
     };
@@ -415,4 +428,5 @@ export default {
     namingConflict: namingConflict,
     getSuffixAndPlaceholder: getSuffixAndPlaceholder,
     addForDelete: addForDelete,
+    allowFileName: allowFileName,
 };

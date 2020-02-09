@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Window } from '../Window';
 import styles from './RenameWindow.module.css';
 import utils from '../../utils/fileUtils';
-import Warning from '../Warning';
 import ActionButton from '../ActionButton/ActionButton';
 
 export default function RenameWindow({
@@ -21,22 +20,8 @@ export default function RenameWindow({
         fileSuffix,
         placeholder: cleanPlaceholder,
     } = utils.getSuffixAndPlaceholder(placeholder);
-    const newFileName = fileSuffix ? `${newName}.${fileSuffix}` : newName;
 
-    let allow;
-    let warning;
-    if (newName !== cleanPlaceholder) {
-        const re = new RegExp('^[a-zA-Z0-9]*$');
-        if (currentItem && (currentItem.folders || currentItem.files)) {
-            allow = re.exec(newName) && newName !== '' ? true : false;
-            warning = utils.namingConflict(newFileName, currentItem);
-        } else {
-            allow = false;
-        }
-    } else {
-        allow = false;
-        warning = false;
-    }
+    const allow = utils.allowFileName(newName, currentItem, fileSuffix);
 
     return (
         <Window
@@ -52,15 +37,6 @@ export default function RenameWindow({
             <p className={styles.description}>
                 Please only use valid characters (A-z, 0-9)
             </p>
-            {warning ? (
-                <Warning
-                    message={
-                        'A file or folder named ' +
-                        newFileName +
-                        ' already exists. Renaming will replace the already existing resource.'
-                    }
-                />
-            ) : null}
             <input
                 autoFocus
                 className={styles.input}
