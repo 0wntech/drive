@@ -121,7 +121,7 @@ const Navigation = ({
                 />
             </div>
             <div className={styles.search}>
-                {currentItem ? (
+                {currentItem || contacts ? (
                     <SearchDropdown
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}

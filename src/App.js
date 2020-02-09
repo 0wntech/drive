@@ -25,6 +25,7 @@ export const App = ({
     loadLogin,
     loadUser,
     logout,
+    history,
 }) => {
     const [errorKey, setError] = useState(0);
     useEffect(() => {

@@ -4,23 +4,11 @@ import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
 import { Layout } from '../../functional_components/Layout';
-import { login } from '../../actions/userActions';
 import { fetchIdps } from '../../actions/appActions';
 
 class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
-
-        this.onLogin = this.onLogin.bind(this);
-    }
-
-    onLogin(loginUrl) {
-        const { login, history } = this.props;
-        console.log(history.state);
-        auth.login(loginUrl).then(() => {
-            login();
-            history.push('/home');
-        });
     }
 
     getIdpStyles(title) {
@@ -54,10 +42,26 @@ class LoginScreen extends React.Component {
             history,
             location,
         } = this.props;
+
         if (!webId && !loadIdps && !idps) {
+            const attemptedPath = history.location.state
+                ? history.location.state.from.pathname
+                : undefined;
+            if (attemptedPath)
+                localStorage.setItem(
+                    'returnToUrl',
+                    JSON.stringify(attemptedPath)
+                );
+            if (!attemptedPath) localStorage.removeItem('returnToUrl');
             fetchIdps();
         } else if (webId) {
-            if (location.state && location.state.from.pathname) {
+            const cachedPath = localStorage.getItem('returnToUrl')
+                ? JSON.parse(localStorage.getItem('returnToUrl'))
+                : undefined;
+
+            if (!!cachedPath) {
+                history.push(cachedPath.pathname + cachedPath.search);
+            } else if (location.state && location.state.from.pathname) {
                 history.push(
                     location.state.from.pathname + location.state.from.search
                 );
@@ -73,7 +77,7 @@ class LoginScreen extends React.Component {
             <Layout label="Login">
                 <LoginForm
                     idps={idps}
-                    onLogin={this.onLogin}
+                    onLogin={auth.login}
                     getIdpStyles={this.getIdpStyles}
                 />
             </Layout>
@@ -89,6 +93,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { fetchIdps, login })(
-    withRouter(LoginScreen)
-);
+export default connect(mapStateToProps, { fetchIdps })(withRouter(LoginScreen));

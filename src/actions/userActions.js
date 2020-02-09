@@ -17,7 +17,7 @@ import User from 'ownuser';
 import auth from 'solid-auth-client';
 import rdf from 'rdflib';
 
-export const login = (username, password) => {
+export const login = () => {
     return (dispatch) => {
         dispatch({ type: LOGIN });
         auth.currentSession()
