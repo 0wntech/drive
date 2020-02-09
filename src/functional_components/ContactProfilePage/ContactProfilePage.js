@@ -11,6 +11,7 @@ import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
 import { isContact } from '../../reducers/contactReducer';
+import { handleError } from '../../utils/helper';
 
 const toolbarRight = <Settings className={styles.settings} />;
 
@@ -20,7 +21,9 @@ const ContactProfilePage = ({
     removeContact,
     webId,
     isContact,
+    error,
 }) => {
+    handleError(error);
     return (
         <Layout
             className={styles.grid}
@@ -111,6 +114,7 @@ ContactProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+    error: state.contact.error,
     currentContact: state.contact.currentContact,
     webId: state.user.webId,
     isContact: isContact(state.contact, state.contact.currentContact.webId),

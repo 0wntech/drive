@@ -19,7 +19,7 @@ import {
     openConsentWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
-import { isCmdPressed } from '../../utils/helper';
+import { isCmdPressed, handleError } from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 import { getParentFolderUrl } from '../../utils/url';
@@ -36,6 +36,7 @@ const Drive = ({
     fetchCurrentItem,
     history,
     downloadFile,
+    error,
     loadDeletion,
     loadPaste,
 }) => {
@@ -63,7 +64,7 @@ const Drive = ({
             );
         };
     }, []);
-
+    handleError(error);
     // Event Handlers
     const loadFile = (url, event = {}) => {
         if (url.endsWith('/')) {
@@ -233,6 +234,7 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
+        error: state.app.error,
         loadDeletion: state.app.loadDeletion,
         loadPaste: state.app.loadPaste,
         loadCurrentItem: state.app.loadCurrentItem,
