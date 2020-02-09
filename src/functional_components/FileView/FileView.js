@@ -17,6 +17,18 @@ import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
 
+const getPlaceholder = (body) => {
+    if (body && body !== '') return body;
+
+    return 'Empty';
+};
+
+const getValue = (newBody, body) => {
+    if (newBody === '' && body && body !== '') return body;
+
+    return newBody;
+};
+
 export const FileView = ({
     loadCurrentItem,
     currentItem,
@@ -46,7 +58,7 @@ export const FileView = ({
         }
     }, []);
 
-    const fileType = currentItem ? mime.getType(currentItem.url) : null;
+    const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
     const isImage = fileType ? fileType.includes('image') : null;
 
     const [isEditable, setEditable] = useState(false);
@@ -128,19 +140,11 @@ export const FileView = ({
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
-                            value={
-                                newBody === '' && currentItem.body !== ''
-                                    ? currentItem.body
-                                    : newBody
-                            }
+                            value={getValue(newBody, currentItem.body)}
                             onChange={(e) => {
                                 setNewBody(e.target.value);
                             }}
-                            placeholder={
-                                currentItem.body !== ''
-                                    ? currentItem.body
-                                    : 'Empty'
-                            }
+                            placeholder={getPlaceholder(currentItem.body)}
                         />
                     ) : (
                         <pre

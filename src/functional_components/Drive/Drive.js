@@ -43,20 +43,17 @@ const Drive = ({
     useEffect(() => {
         if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
             if (!currentPath) {
-                console.log('Initial use of currentPath');
                 currentPath =
                     appState && appState.currentPath
                         ? appState.currentPath
                         : getRootFromWebId(webId);
                 setCurrentPath(currentPath);
             } else {
-                console.log('Resetting currentPath');
                 currentPath = getParentFolderUrl(currentPath);
                 setCurrentPath(currentPath);
             }
         }
         return () => {
-            console.log(currentPath);
             localStorage.setItem(
                 'appState',
                 JSON.stringify({
