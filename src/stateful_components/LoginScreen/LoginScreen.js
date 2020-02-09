@@ -16,6 +16,7 @@ class LoginScreen extends React.Component {
 
     onLogin(loginUrl) {
         const { login, history } = this.props;
+        console.log(history.state);
         auth.login(loginUrl).then(() => {
             login();
             history.push('/home');

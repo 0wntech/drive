@@ -46,7 +46,6 @@ export const App = ({
             </div>
         );
     } else {
-        console.log(user);
         return (
             <div
                 className={styles.grid}
