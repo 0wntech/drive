@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
-import styles from './NavbarMenu.module.css';
+import styles from './NavbarMenu.module.scss';
 import ActionButton from '../ActionButton/ActionButton';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { setCurrentPath } from '../../actions/appActions';

@@ -18,6 +18,8 @@
 }
 
 .iconWrapper {
+    display: flex;
+    justify-content: center;
     width: 30px;
 }
 
@@ -38,7 +40,6 @@
 
 .icon {
     cursor: pointer;
-    margin-right: 24px;
 }
 
 .dropdownContent {
