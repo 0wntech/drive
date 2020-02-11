@@ -13,6 +13,7 @@
     "enzyme-adapter-react-16": "^1.15.1",
     "file-saver": "^2.0.2",
     "mime": "^2.4.4",
+    "node-sass": "^4.13.1",
     "ownfiles": "^1.2.4",
     "ownuser": "^1.3.2",
     "rdflib": "^0.20.1",
