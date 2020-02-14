@@ -56,9 +56,10 @@ export const NavbarMenu = ({
         <div className={styles.profileSection}>
             <div
                 data-test-id="navigation-profile-picture"
-                onClick={() =>
-                    navigate('/profile', history, dispatch, resetError)
-                }
+                onClick={() => {
+                    setDropdownExpanded(false);
+                    navigate('/profile', history, dispatch, resetError);
+                }}
                 className={styles.profileIcon}
                 style={{
                     backgroundImage: `url('${
