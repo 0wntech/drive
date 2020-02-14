@@ -56,7 +56,8 @@ export const NavbarMenu = ({
         <div className={styles.profileSection}>
             <div
                 data-test-id="navigation-profile-picture"
-                onClick={() => {
+                onClick={(e) => {
+                    e.stopPropagation();
                     setDropdownExpanded(false);
                     navigate('/profile', history, dispatch, resetError);
                 }}
