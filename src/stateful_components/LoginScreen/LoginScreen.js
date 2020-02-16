@@ -43,24 +43,27 @@ class LoginScreen extends React.Component {
             location,
         } = this.props;
 
-        if (!webId && !loadIdps && !idps) {
-            const attemptedPath = history.location.state
-                ? history.location.state.from.pathname
-                : undefined;
+        if (!loadIdps && !idps) fetchIdps();
+
+        const cachedPath = localStorage.getItem('returnToUrl')
+            ? JSON.parse(localStorage.getItem('returnToUrl'))
+            : undefined;
+
+        if (
+            !webId &&
+            history.location.state &&
+            history.location.state.from.pathname
+        ) {
+            const attemptedPath = history.location.state.from;
             if (attemptedPath)
                 localStorage.setItem(
                     'returnToUrl',
                     JSON.stringify(attemptedPath)
                 );
-            if (!attemptedPath) localStorage.removeItem('returnToUrl');
-            fetchIdps();
         } else if (webId) {
-            const cachedPath = localStorage.getItem('returnToUrl')
-                ? JSON.parse(localStorage.getItem('returnToUrl'))
-                : undefined;
-
             if (!!cachedPath) {
                 history.push(cachedPath.pathname + cachedPath.search);
+                localStorage.removeItem('returnToUrl');
             } else if (location.state && location.state.from.pathname) {
                 history.push(
                     location.state.from.pathname + location.state.from.search
