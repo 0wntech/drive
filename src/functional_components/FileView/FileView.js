@@ -44,7 +44,7 @@ export const FileView = ({
                 history.push('/home');
             }
         }
-    });
+    }, []);
 
     const fileType = mime.getType(currentItem.url);
     const isImage = fileType ? fileType.includes('image') : null;
@@ -113,7 +113,7 @@ export const FileView = ({
             isLoading={updatingFile || loadCurrentItem}
             label={currentItem.url && convertFileUrlToName(currentItem.url)}
         >
-            {error ? (
+            {error.FETCH_CURRENT_ITEM ? (
                 <>
                     <div>Sorry, we cannot load this file.</div>
                     <p className={styles.error}>{error.message}</p>

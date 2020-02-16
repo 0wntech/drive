@@ -159,31 +159,17 @@ export const fetchNotifications = (webId) => {
 export const updateFile = (file, body) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_FILE });
-        const contentType = mime.getType(file);
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(file).host + '/',
         });
         if (body !== '') {
             fileClient
-                .delete(file)
+                .update(file, body)
                 .then(() => {
-                    fileClient
-                        .create(file, {
-                            contents: body,
-                            contentType: contentType,
-                        })
-                        .then(() => {
-                            dispatch({
-                                type: UPDATE_FILE_SUCCESS,
-                                payload: { body: body, url: file },
-                            });
-                        })
-                        .catch((err) => {
-                            dispatch({
-                                type: UPDATE_FILE_FAILURE,
-                                payload: err,
-                            });
-                        });
+                    dispatch({
+                        type: UPDATE_FILE_SUCCESS,
+                        payload: { url: file, body: body },
+                    });
                 })
                 .catch((err) => {
                     dispatch({
