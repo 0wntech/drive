@@ -416,9 +416,7 @@ export const closeRenameWindow = function() {
 export const createFolder = function(name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FOLDER });
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(path).host + '/',
-        });
+        const fileClient = new PodClient();
         return fileClient
             .create(path + name + '/')
             .then(() => {
