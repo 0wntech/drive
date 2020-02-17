@@ -14,10 +14,10 @@ import {
 
 const INITIAL_STATE = {
     loadContacts: false,
-    contacts: [],
-    contactRecommendations: [],
+    contacts: null,
+    contactRecommendations: null,
     currentContact: null,
-    contactSearchResult: [],
+    contactSearchResult: null,
     searchingContacts: false,
     error: {
         FETCH_CONTACTS: false,

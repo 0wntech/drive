@@ -43,11 +43,6 @@ exports[`Breadcrumbs should render correctly 1`] = `
     >
       path
     </div>
-    <div
-      className="seperator"
-    >
-      /
-    </div>
   </div>
 </div>
 `;
