@@ -130,10 +130,13 @@ export const FileView = ({
             isLoading={updatingFile || loadCurrentItem}
             label={currentItem.url && convertFileUrlToName(currentItem.url)}
         >
-            {error ? (
+            {error.FETCH_CURRENT_ITEM ? (
                 <>
+                    {console.log('error:', error)}
                     <div>Sorry, we cannot load this file.</div>
-                    <p className={styles.error}>{error.message}</p>
+                    <p className={styles.error}>
+                        Error: {error.FETCH_CURRENT_ITEM.message}
+                    </p>
                 </>
             ) : currentItem && currentItem.body ? (
                 !isImage ? (
