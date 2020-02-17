@@ -161,6 +161,8 @@ export const ProfilePage = ({
                 </div>
             </Layout>
         );
+    } else {
+        return null;
     }
 };
 

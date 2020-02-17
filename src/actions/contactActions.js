@@ -48,12 +48,19 @@ export const fetchContacts = (webId) => {
         const user = new User(webId);
         user.getContacts()
             .then((contacts) => {
-                fetchDetailContacts(contacts).then((detailContacts) => {
-                    dispatch({
-                        type: FETCH_CONTACTS_SUCCESS,
-                        payload: detailContacts,
+                fetchDetailContacts(contacts)
+                    .then((detailContacts) => {
+                        dispatch({
+                            type: FETCH_CONTACTS_SUCCESS,
+                            payload: detailContacts,
+                        });
+                    })
+                    .catch((error) => {
+                        dispatch({
+                            type: FETCH_CONTACTS_FAILURE,
+                            payload: error,
+                        });
                     });
-                });
             })
             .catch((error) =>
                 dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })

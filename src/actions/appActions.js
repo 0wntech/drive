@@ -100,6 +100,11 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: { body: item, url: itemUrl },
                     });
+                } else {
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_FAIL,
+                        payload: { message: 'File not supported' },
+                    });
                 }
             })
             .catch((error) =>
@@ -159,31 +164,17 @@ export const fetchNotifications = (webId) => {
 export const updateFile = (file, body) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_FILE });
-        const contentType = mime.getType(file);
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(file).host + '/',
         });
         if (body !== '') {
             fileClient
-                .delete(file)
+                .update(file, body)
                 .then(() => {
-                    fileClient
-                        .create(file, {
-                            contents: body,
-                            contentType: contentType,
-                        })
-                        .then(() => {
-                            dispatch({
-                                type: UPDATE_FILE_SUCCESS,
-                                payload: { body: body, url: file },
-                            });
-                        })
-                        .catch((err) => {
-                            dispatch({
-                                type: UPDATE_FILE_FAILURE,
-                                payload: err,
-                            });
-                        });
+                    dispatch({
+                        type: UPDATE_FILE_SUCCESS,
+                        payload: { url: file, body: body },
+                    });
                 })
                 .catch((err) => {
                     dispatch({
@@ -416,9 +407,7 @@ export const closeRenameWindow = function() {
 export const createFolder = function(name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FOLDER });
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(path).host + '/',
-        });
+        const fileClient = new PodClient();
         return fileClient
             .create(path + name + '/')
             .then(() => {

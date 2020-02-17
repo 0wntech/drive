@@ -40,15 +40,29 @@ const Drive = ({
     loadDeletion,
     loadPaste,
 }) => {
+    const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
         if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
             if (!currentPath) {
-                currentPath = getRootFromWebId(webId);
+                currentPath =
+                    appState && appState.currentPath
+                        ? appState.currentPath
+                        : getRootFromWebId(webId);
+                setCurrentPath(currentPath);
+            } else {
+                currentPath = getParentFolderUrl(currentPath);
                 setCurrentPath(currentPath);
             }
-            currentPath = getParentFolderUrl(currentPath);
-            setCurrentPath(currentPath);
         }
+        return () => {
+            localStorage.setItem(
+                'appState',
+                JSON.stringify({
+                    ...appState,
+                    currentPath: currentPath,
+                })
+            );
+        };
     }, []);
     handleError(error);
     // Event Handlers
@@ -157,7 +171,6 @@ const Drive = ({
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    console.log(path);
                     setCurrentPath(path);
                 }}
                 breadcrumbs={
