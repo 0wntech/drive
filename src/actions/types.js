@@ -18,7 +18,7 @@ export const FETCH_FRIENDS_FAIL = 'fetch_friends_fail';
 
 export const FETCH_CURRENT_ITEM = 'fetch_current_item';
 export const FETCH_CURRENT_ITEM_SUCCESS = 'fetch_current_item_success';
-export const FETCH_CURRENT_ITEM_FAIL = 'fetch_current_item__fail';
+export const FETCH_CURRENT_ITEM_FAIL = 'fetch_current_item_fail';
 
 export const GET_SESSION = 'get_session';
 export const GET_SESSION_SUCCESS = 'get_session_success';
