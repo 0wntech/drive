@@ -3,7 +3,6 @@
 exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
 <Layout
   className="grid"
-  isLoading={false}
   label="Profile"
   toolbarChildrenRight={
     <div

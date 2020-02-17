@@ -17,6 +17,18 @@ import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
 
+const getPlaceholder = (body) => {
+    if (body && body !== '') return body;
+
+    return 'Empty';
+};
+
+const getValue = (newBody, body) => {
+    if (newBody === '' && body && body !== '') return body;
+
+    return newBody;
+};
+
 export const FileView = ({
     loadCurrentItem,
     currentItem,
@@ -31,11 +43,11 @@ export const FileView = ({
     useEffect(() => {
         const fileParam = getFileParamsFromUrl(window.location.href).f;
         if (fileParam) {
-            if (!currentItem.body || !currentPath) {
+            if (!currentItem || !currentItem.body || !currentPath) {
                 let options = {};
                 if (
-                    mime.getType(currentItem.url) &&
-                    mime.getType(currentItem.url).includes('image')
+                    mime.getType(fileParam) &&
+                    mime.getType(fileParam).includes('image')
                 ) {
                     options = { noFetch: true };
                 }
@@ -46,7 +58,7 @@ export const FileView = ({
         }
     }, []);
 
-    const fileType = mime.getType(currentItem.url);
+    const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
     const isImage = fileType ? fileType.includes('image') : null;
 
     const [isEditable, setEditable] = useState(false);
@@ -110,6 +122,11 @@ export const FileView = ({
             className={styles.container}
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
+            label={
+                currentItem &&
+                currentItem.url &&
+                convertFileUrlToName(currentItem.url)
+            }
             isLoading={updatingFile || loadCurrentItem}
             label={currentItem.url && convertFileUrlToName(currentItem.url)}
         >
@@ -121,26 +138,16 @@ export const FileView = ({
                         Error: {error.FETCH_CURRENT_ITEM.message}
                     </p>
                 </>
-            ) : currentItem.body || currentItem.body === '' ? (
+            ) : currentItem && currentItem.body ? (
                 !isImage ? (
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
-                            value={
-                                newBody === '' &&
-                                currentItem.body &&
-                                currentItem.body !== ''
-                                    ? currentItem.body
-                                    : newBody
-                            }
+                            value={getValue(newBody, currentItem.body)}
                             onChange={(e) => {
                                 setNewBody(e.target.value);
                             }}
-                            placeholder={
-                                currentItem.body && currentItem.body !== ''
-                                    ? currentItem.body
-                                    : 'Empty'
-                            }
+                            placeholder={getPlaceholder(currentItem.body)}
                         />
                     ) : (
                         <pre
