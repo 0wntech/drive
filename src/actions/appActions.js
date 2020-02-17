@@ -100,6 +100,11 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: { body: item, url: itemUrl },
                     });
+                } else {
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_FAIL,
+                        payload: { message: 'File not supported' },
+                    });
                 }
             })
             .catch((error) =>
