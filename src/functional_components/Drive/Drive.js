@@ -181,6 +181,10 @@ const Drive = ({
         </div>
     ) : null;
 
+    const noFilesAndFolders = () => {
+        return currentItem.folders.length < 1 && currentItem.files.length < 1;
+    };
+
     return (
         <Layout
             toolbarChildrenLeft={toolbarLeft}
@@ -198,17 +202,17 @@ const Drive = ({
                 <div className={styles.container}>
                     <Windows />
                     {currentItem &&
-                    (currentItem.folders || currentItem.files) ? (
+                    currentItem.folders &&
+                    currentItem.files &&
+                    !noFilesAndFolders() ? (
                         <div>
-                            {currentItem.folders.length > 0 ? (
-                                <ItemList
-                                    selectedItems={selectedItems}
-                                    items={currentItem.folders}
-                                    currPath={currentPath}
-                                    image={folder}
-                                    onItemClick={loadFolder}
-                                />
-                            ) : null}
+                            <ItemList
+                                selectedItems={selectedItems}
+                                items={currentItem.folders}
+                                currPath={currentPath}
+                                image={folder}
+                                onItemClick={loadFolder}
+                            />
                             <ItemList
                                 selectedItems={selectedItems}
                                 isFile
@@ -219,7 +223,9 @@ const Drive = ({
                             />
                         </div>
                     ) : (
-                        undefined
+                        <p className={styles.emptyMessage}>
+                            This folder is empty
+                        </p>
                     )}
                 </div>
             </DriveContextMenu>

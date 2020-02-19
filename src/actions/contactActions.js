@@ -135,26 +135,19 @@ export const searchContact = (query) => {
                         result.push(user.getProfile());
                     }
                 });
-                if (result.length > 0) {
-                    Promise.all(result)
-                        .then((results) => {
-                            dispatch({
-                                type: SEARCH_CONTACT_SUCCESS,
-                                payload: results,
-                            });
-                        })
-                        .catch((err) => {
-                            dispatch({
-                                type: SEARCH_CONTACT_FAILURE,
-                                payload: err,
-                            });
+                Promise.all(result)
+                    .then((results) => {
+                        dispatch({
+                            type: SEARCH_CONTACT_SUCCESS,
+                            payload: results,
                         });
-                } else {
-                    dispatch({
-                        type: SEARCH_CONTACT_FAILURE,
-                        payload: 'No Result',
+                    })
+                    .catch((err) => {
+                        dispatch({
+                            type: SEARCH_CONTACT_FAILURE,
+                            payload: err,
+                        });
                     });
-                }
             })
             .catch((err) => {
                 dispatch({ type: SEARCH_CONTACT_FAILURE, payload: err });

@@ -12,6 +12,7 @@ exports[`NavbarMenu Should render correctly 1`] = `
     >
       <div
         className="head"
+        onClick={[Function]}
       >
         <div
           className="profileSection"

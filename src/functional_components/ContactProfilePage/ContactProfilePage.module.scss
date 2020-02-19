@@ -1,20 +1,14 @@
+@import '../../../styles/constants.scss';
+
 .grid {
     height: 100%;
     display: grid;
-    grid-template-columns: 3fr 6fr 3fr;
+    grid-template-columns: 2fr 6fr 2fr;
     grid-template-areas: '. profile .';
 }
 
 svg:hover {
     cursor: pointer;
-}
-
-.settings:hover path {
-    fill: #c2c2c2;
-}
-
-.icon svg {
-    fill: #36a510;
 }
 
 .iconWrapper {
@@ -95,7 +89,7 @@ svg:hover {
 
 .addButton {
     background-color: #ffffff;
-    color: #36a510;
+    color: $dark_green;
 }
 
 .addButton:hover svg path {
@@ -103,7 +97,11 @@ svg:hover {
 }
 
 .addButton:hover {
-    background: linear-gradient(0deg, #36a510 0%, rgba(54, 165, 16, 0.5) 100%);
+    background: linear-gradient(
+        0deg,
+        $dark_green 0%,
+        rgba(54, 165, 16, 0.5) 100%
+    );
     color: white;
 }
 
@@ -175,4 +173,14 @@ svg:hover {
 .icon {
     cursor: pointer;
     margin-right: 15px;
+}
+
+.icon path {
+    fill: $dark_green;
+}
+
+.icon:hover {
+    .icon path {
+        fill: white;
+    }
 }
