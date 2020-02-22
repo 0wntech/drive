@@ -65,6 +65,7 @@ export default function File({
                 className={styles.container}
                 style={selectedItem ? { opacity: 0.5 } : undefined}
                 onClick={onClick}
+                data-test-id={file.name}
             >
                 {renderFile()}
             </div>
