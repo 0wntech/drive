@@ -137,11 +137,11 @@ function uploadFile(filePath, currPath, callback) {
 // input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
 // returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
 function convertFilesAndFoldersToArray(files, folders) {
-    const fileObjects = files.map((fileName) => {
+    const fileObjects = files.map((file) => {
         return {
-            name: fileName,
+            name: file.name ? file.name : file,
             type: 'file',
-            fileType: getFileType(fileName),
+            fileType: getFileType(file),
         };
     });
 
@@ -157,7 +157,7 @@ function convertFilesAndFoldersToArray(files, folders) {
 
 // input "fav.ico" returns "ico"
 function getFileType(file) {
-    const splittedFile = file.split('.');
+    const splittedFile = file.name ? file.name.split('.') : file.split('.');
     // no dot || nothing after dot
     if (
         splittedFile.length === 1 ||

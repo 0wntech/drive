@@ -77,13 +77,18 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
         if (folder) {
             options.auth = auth;
             options.headers = { Accept: 'text/turtle' };
+            options.verbose = true;
         }
         return fileClient
             .read(itemUrl, options)
             .then((item) => {
                 if (item && item.folders) {
-                    const fileNames = item.files.map((file) => {
-                        return convertFileUrlToName(file);
+                    const files = item.files.map((file) => {
+                        console.log(file);
+                        return {
+                            name: convertFileUrlToName(file.name),
+                            type: file.type,
+                        };
                     });
                     const folderNames = item.folders.map((folder) => {
                         return convertFolderUrlToName(folder);
@@ -91,7 +96,7 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: {
-                            files: fileNames,
+                            files: files,
                             folders: folderNames,
                         },
                     });
