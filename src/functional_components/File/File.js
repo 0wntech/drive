@@ -68,7 +68,7 @@ export default function File({
             >
                 {renderFile()}
             </div>
-            <div className={styles.file}>{file.name}</div>
+            <div className={styles.label}>{file.name}</div>
             <Menu className={styles.contextMenu} id={file + 'contextmenu'}>
                 {contextMenuOptions &&
                     contextMenuOptions.map((option, index) => (

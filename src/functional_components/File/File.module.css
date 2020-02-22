@@ -89,6 +89,7 @@
 
 .itemLabel {
     z-index: 3;
+    color: #000;
 }
 
 .gridCell:hover .label {
