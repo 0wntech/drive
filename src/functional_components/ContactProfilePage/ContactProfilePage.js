@@ -11,10 +11,7 @@ import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
 import { isContact } from '../../reducers/contactReducer';
-import {
-    getErrorsFromErrorState,
-    convertArrayToString,
-} from '../../utils/helper';
+import { handleError } from '../../utils/helper';
 
 const toolbarRight = <Settings className={styles.settings} />;
 
@@ -26,10 +23,7 @@ const ContactProfilePage = ({
     isContact,
     error,
 }) => {
-    const errors = getErrorsFromErrorState(error);
-    if (errors.length > 0) {
-        throw new Error(convertArrayToString(errors));
-    }
+    handleError(error);
     return (
         <Layout
             className={styles.grid}

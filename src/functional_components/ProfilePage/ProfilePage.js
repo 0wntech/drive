@@ -11,10 +11,7 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 import { Layout } from '../Layout';
-import {
-    getErrorsFromErrorState,
-    convertArrayToString,
-} from '../../utils/helper';
+import { handleError } from '../../utils/helper';
 
 export const ProfilePage = ({
     user,
@@ -23,10 +20,7 @@ export const ProfilePage = ({
     updatingProfile,
     error,
 }) => {
-    const errors = getErrorsFromErrorState(error);
-    if (errors.length > 0) {
-        throw new Error(convertArrayToString(errors));
-    }
+    handleError(error);
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
     const updateUserData = (key, value) => {
