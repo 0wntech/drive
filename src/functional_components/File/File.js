@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Menu, MenuProvider, Item } from 'react-contexify';
 import mime from 'mime';
-import linkedFileImage from '../../assets/icons/Shared File.png';
+import { isImageType } from '../../utils/fileUtils';
+import linkedFileImage from '../../assets/icons/shared_file.png';
 
 export default function File({
     currPath,
@@ -14,7 +15,7 @@ export default function File({
     selectedItem,
     contextMenuOptions,
 }) {
-    const isImage = file.type ? file.type.indexOf('image') !== -1 : null;
+    const isImage = isImageType(file.type);
 
     const renderFile = () => {
         if (isImage) {
@@ -34,7 +35,7 @@ export default function File({
             return (
                 <div
                     className={styles.innerContainer}
-                    data-test-id={`file-${file}`}
+                    data-test-id={`file-${file.name}`}
                 >
                     {file.type ? (
                         file.type === 'rdf' ? (
@@ -59,7 +60,7 @@ export default function File({
             className={classNames(styles.gridCell, {
                 [styles.selected]: selectedItem,
             })}
-            id={file + 'contextmenu'}
+            id={file.name + 'contextmenu'}
         >
             <div
                 className={styles.container}
@@ -70,7 +71,7 @@ export default function File({
                 {renderFile()}
             </div>
             <div className={styles.label}>{file.name}</div>
-            <Menu className={styles.contextMenu} id={file + 'contextmenu'}>
+            <Menu className={styles.contextMenu} id={file.name + 'contextmenu'}>
                 {contextMenuOptions &&
                     contextMenuOptions.map((option, index) => (
                         <Item
@@ -79,7 +80,7 @@ export default function File({
                             onClick={
                                 !option.disabled
                                     ? () => {
-                                          option.onClick(currPath + file);
+                                          option.onClick(currPath + file.name);
                                       }
                                     : undefined
                             }

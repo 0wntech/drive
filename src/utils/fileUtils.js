@@ -16,6 +16,10 @@ function allowFileName(fileName, currentFolder, fileSuffix) {
     return !!re.exec(fileName);
 }
 
+export const isImageType = (fileType) => {
+    return fileType ? fileType.indexOf('image') !== -1 : false;
+};
+
 function getContentType(file) {
     const mimeTypes = {
         py: 'application/x-python-code',
@@ -429,4 +433,5 @@ export default {
     getSuffixAndPlaceholder: getSuffixAndPlaceholder,
     addForDelete: addForDelete,
     allowFileName: allowFileName,
+    isImageType: isImageType,
 };
