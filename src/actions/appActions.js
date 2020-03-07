@@ -292,7 +292,7 @@ export const pasteItems = (items, location) => {
 export const createFile = function(name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FILE });
-        const contentType = mime.getType(name);
+        const contentType = mime.getType(name) || 'text/plain';
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(name).host + '/',
         });
