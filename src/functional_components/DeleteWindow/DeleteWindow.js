@@ -34,7 +34,7 @@ export default function DeleteWindow({
                     ? selectedItems.map((item, index) => {
                           return (
                               <SelectedFile
-                                  fileName={decodeURIComponent(item)}
+                                  item={decodeURIComponent(item)}
                                   key={index}
                               />
                           );

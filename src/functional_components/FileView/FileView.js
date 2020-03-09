@@ -16,6 +16,7 @@ import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
+import { isImageType } from '../../utils/fileUtils';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -47,7 +48,7 @@ export const FileView = ({
                 let options = {};
                 if (
                     mime.getType(fileParam) &&
-                    mime.getType(fileParam).includes('image')
+                    isImageType(mime.getType(fileParam))
                 ) {
                     options = { noFetch: true };
                 }
@@ -59,7 +60,7 @@ export const FileView = ({
     }, []);
 
     const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
-    const isImage = fileType ? fileType.includes('image') : null;
+    const isImage = isImageType(fileType);
 
     const [isEditable, setEditable] = useState(false);
     const [newBody, setNewBody] = useState('');
@@ -128,7 +129,11 @@ export const FileView = ({
                 convertFileUrlToName(currentItem.url)
             }
             isLoading={updatingFile || loadCurrentItem}
-            label={currentItem.url && convertFileUrlToName(currentItem.url)}
+            label={
+                currentItem &&
+                currentItem.url &&
+                convertFileUrlToName(currentItem.url)
+            }
         >
             {error.FETCH_CURRENT_ITEM ? (
                 <>
@@ -138,8 +143,8 @@ export const FileView = ({
                         Error: {error.FETCH_CURRENT_ITEM.message}
                     </p>
                 </>
-            ) : currentItem && currentItem.body ? (
-                !isImage ? (
+            ) : currentItem ? (
+                !isImage && currentItem.url ? (
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
