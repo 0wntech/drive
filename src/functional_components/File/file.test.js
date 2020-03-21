@@ -8,7 +8,7 @@ describe('File', () => {
         const currPath = 'https://bejow.solid.community/1234/';
         const onClick = jest.fn();
         const image = 'https://owntech.de/favicon.ico';
-        const label = 'Test';
+        const file = { name: 'Test.png', type: 'image/png' };
         const selectedItem = false;
         const contextMenuOptions = [
             {
@@ -27,7 +27,7 @@ describe('File', () => {
                 currPath={currPath}
                 onClick={onClick}
                 image={image}
-                label={label}
+                file={file}
                 selectedItem={selectedItem}
                 contextMenuOptions={contextMenuOptions}
             />
@@ -38,7 +38,7 @@ describe('File', () => {
         const currPath = 'https://bejow.solid.community/1234/';
         const onClick = jest.fn();
         const image = 'https://owntech.de/favicon.ico';
-        const label = 'Test.png';
+        const file = { name: 'Test.png', type: 'image/png' };
         const selectedItem = false;
         const contextMenuOptions = [
             {
@@ -57,7 +57,7 @@ describe('File', () => {
                 currPath={currPath}
                 onClick={onClick}
                 image={image}
-                label={label}
+                file={file}
                 selectedItem={selectedItem}
                 contextMenuOptions={contextMenuOptions}
             />
@@ -68,7 +68,7 @@ describe('File', () => {
         const currPath = 'https://bejow.solid.community/1234/';
         const onClick = jest.fn();
         const image = 'https://owntech.de/favicon.ico';
-        const label = 'Test.png';
+        const file = { name: 'Test.png', type: 'image/png' };
         const selectedItem = true;
         const contextMenuOptions = [
             {
@@ -87,7 +87,7 @@ describe('File', () => {
                 currPath={currPath}
                 onClick={onClick}
                 image={image}
-                label={label}
+                file={file}
                 selectedItem={selectedItem}
                 contextMenuOptions={contextMenuOptions}
             />

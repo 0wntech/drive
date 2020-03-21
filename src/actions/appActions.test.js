@@ -9,7 +9,11 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 const folderFiles = {
-    files: ['favicon.ico', 'robots.txt', 'test.txt'],
+    files: [
+        { name: 'favicon.ico', type: 'image/vnd.microsoft.icon' },
+        { name: 'robots.txt', type: 'text/plain' },
+        { name: 'test.txt', type: 'text/plain' },
+    ],
     folders: ['.well-known', 'public', 'settings'],
 };
 
