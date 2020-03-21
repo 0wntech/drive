@@ -82,6 +82,7 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
         return fileClient
             .read(itemUrl, options)
             .then((item) => {
+                console.log(item);
                 if (item && item.folders) {
                     const files = item.files.map((file) => {
                         console.log(file);
@@ -352,7 +353,7 @@ export const renameItem = function(renamedItem, value) {
                     location = location.join('/');
                     dispatch({ type: RENAME_ITEM_SUCCESS });
                     dispatch(setCurrentPath(location + '/'));
-                    dispatch(fetchCurrentItem(location + '/'));
+                    dispatch(fetchCurrentItem(location + '/', true));
                 })
                 .catch((err) => {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
