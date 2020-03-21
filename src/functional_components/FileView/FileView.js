@@ -128,7 +128,11 @@ export const FileView = ({
                 convertFileUrlToName(currentItem.url)
             }
             isLoading={updatingFile || loadCurrentItem}
-            label={currentItem.url && convertFileUrlToName(currentItem.url)}
+            label={
+                currentItem &&
+                currentItem.url &&
+                convertFileUrlToName(currentItem.url)
+            }
         >
             {error.FETCH_CURRENT_ITEM ? (
                 <>

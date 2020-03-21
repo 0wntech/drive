@@ -95,7 +95,7 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                             folders: folderNames,
                         },
                     });
-                } else if (item && typeof item === 'string') {
+                } else if (typeof item === 'string') {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: { body: item, url: itemUrl },
