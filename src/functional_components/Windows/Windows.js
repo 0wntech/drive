@@ -48,9 +48,10 @@ export const Windows = ({
                 windowName="Create Folder"
                 info=""
                 visible={isCreateFolderVisible}
-                onSubmit={(value) => createFolder(value)}
+                onSubmit={(value) => createFolder(value, currentPath)}
                 onClose={closeCreateFolderWindow}
                 placeholder={'Untitled'}
+                currentItem={currentItem}
             />
             <InputWindow
                 windowName="Create File"
@@ -60,6 +61,7 @@ export const Windows = ({
                 visible={isCreateFileVisible}
                 onClose={closeCreateFileWindow}
                 placeholder={'Untitled'}
+                currentItem={currentItem}
             />
             <RenameWindow
                 windowName="Rename File"

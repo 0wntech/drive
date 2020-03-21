@@ -45,7 +45,11 @@ function DropdownMenu({
                     [styles.active]: isExpanded,
                 })}
             >
-                <div className={styles.head} ref={headArea}>
+                <div
+                    onClick={() => setExpanded(!isExpanded)}
+                    className={styles.head}
+                    ref={headArea}
+                >
                     {menuHead}
                     <div className={styles.iconWrapper}>
                         <SvgDropdown

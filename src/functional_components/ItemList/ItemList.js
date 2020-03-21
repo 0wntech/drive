@@ -88,17 +88,17 @@ const ItemList = ({
               return isFile ? (
                   <File
                       selectedItem={
-                          selectedItems.includes(currPath + item)
+                          selectedItems.includes(currPath + item.name)
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
                       onClick={(event) => {
-                          onItemClick(currPath + item, event);
+                          onItemClick(currPath + item.name, event);
                       }}
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
-                      label={item}
+                      file={item}
                       currPath={currPath}
                   />
               ) : (

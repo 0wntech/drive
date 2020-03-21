@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
-import styles from './NavbarMenu.module.css';
+import styles from './NavbarMenu.module.scss';
 import ActionButton from '../ActionButton/ActionButton';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { setCurrentPath } from '../../actions/appActions';
@@ -55,9 +55,11 @@ export const NavbarMenu = ({
         <div className={styles.profileSection}>
             <div
                 data-test-id="navigation-profile-picture"
-                onClick={() =>
-                    navigate('/profile', history, dispatch, resetError)
-                }
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setDropdownExpanded(false);
+                    navigate('/profile', history, dispatch, resetError);
+                }}
                 className={styles.profileIcon}
                 style={{
                     backgroundImage: `url('${

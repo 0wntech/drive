@@ -1,3 +1,5 @@
+@import '../../../styles/mixins.scss';
+
 .dropdown a {
     padding: inherit 0;
     width: 100%;
@@ -10,7 +12,6 @@
     background-position: center;
     border-radius: 50%;
     cursor: pointer;
-    margin-left: 18px;
 }
 
 .profileSection {
@@ -21,17 +22,17 @@
 }
 
 .username {
-    display: table-cell;
-    vertical-align: middle;
     letter-spacing: 0.2em;
     max-height: 63px;
     width: 100%;
-    line-height: 21px;
     font-size: 16px;
     font-family: 'Helvetica Neue Light';
     margin: 0 10px;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    @include multiLineEllipsis(
+        $lineHeight: 21px,
+        $lineCount: 2,
+        $bgColor: white
+    );
 }
 
 .mask {

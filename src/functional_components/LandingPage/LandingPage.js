@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './LandingPage.module.css';
-import Slogan from '../../assets/svgIcons/Slogan';
 import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 
@@ -14,17 +13,38 @@ const LandingPage = ({ webId, history }) => {
         <Layout className={styles.grid} hideToolbar>
             <div className={styles.mainArea}>
                 <div className={styles.container}>
-                    <Slogan width="100%" viewBox="0 0 971 219" />
-                    {webId ? null : (
-                        <div className={styles.buttons}>
-                            <ActionButton
-                                dataId="login_btn"
-                                size="md"
-                                label="Login"
-                                color="blue"
-                                onClick={login}
-                            />
-                        </div>
+                    {webId ? (
+                        <>
+                            <div className={styles.slogan}>
+                                You are on your own now. You are welcome.
+                            </div>
+                            <div className={styles.buttons}>
+                                <ActionButton
+                                    dataId="login_btn"
+                                    size="md"
+                                    label="Go Home"
+                                    color="blue"
+                                    onClick={() => {
+                                        history.push('/home');
+                                    }}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className={styles.slogan}>
+                                Own your digital experience.
+                            </div>
+                            <div className={styles.buttons}>
+                                <ActionButton
+                                    dataId="login_btn"
+                                    size="md"
+                                    label="Login"
+                                    color="blue"
+                                    onClick={login}
+                                />
+                            </div>
+                        </>
                     )}
                 </div>
             </div>
