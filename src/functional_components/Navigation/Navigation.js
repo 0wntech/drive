@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import styles from './Navigation.module.css';
+import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';

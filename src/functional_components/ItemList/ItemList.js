@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import fileUtils from '../../utils/fileUtils';
 import { getRootFromWebId } from '../../utils/url';
 import { Item } from '../Item';
-import styles from './ItemList.module.css';
+import styles from './ItemList.module.scss';
 import { File } from '../File';
 import {
     setSelection,

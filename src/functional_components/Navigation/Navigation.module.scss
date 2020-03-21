@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .navbar  {
     position: fixed;
 }
@@ -94,8 +96,29 @@
     cursor: pointer;
 }
 
-@media (max-width: 380px) {
+@media (max-width: $screen_s) {
+    .container {
+        border-radius: initial;
+        grid-template-columns: 16px 2fr 9fr 1fr 16px;
+        grid-template-areas: '. logo search dropdown .';
+    }
+
+    .menuWrapper {
+        justify-content: flex-end;
+        padding-right: initial;
+    }
+
     .brand {
+        height: 50px;
+        width: 50px;
         font-size: 1em;
+    }
+
+    .brandWrapper {
+        justify-content: flex-start;
+    }
+
+    .search {
+        padding: initial;
     }
 }

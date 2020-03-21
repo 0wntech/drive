@@ -8,7 +8,7 @@ import LoginScreen from './stateful_components/LoginScreen';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
 import { login, fetchUser, setWebId, logout } from './actions/userActions';
 import PrivateRoute from './functional_components/PrivateRoute';
-import styles from './App.module.css';
+import styles from './App.module.scss';
 import NotificationsPage from './stateful_components/NotificationsPage';
 import LandingPage from './functional_components/LandingPage';
 import { ProfilePage } from './functional_components/ProfilePage';

@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .listContainer {
     color: #000;
     display: grid;
@@ -7,4 +9,11 @@
 
 .listContainer:last-child {
     margin: 40px 0 20px 0;
+}
+
+@media (max-width: $screen_s) {
+  .listContainer {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 20px 20px;
+  }
 }

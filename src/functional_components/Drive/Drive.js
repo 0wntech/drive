@@ -3,7 +3,7 @@ import url from 'url';
 import mime from 'mime';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import styles from './Drive.module.css';
+import styles from './Drive.module.scss';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import { ItemList } from '../ItemList';
 import fileUtils from '../../utils/fileUtils';

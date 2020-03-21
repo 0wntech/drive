@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './File.module.css';
+import styles from './File.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Menu, MenuProvider, Item } from 'react-contexify';
@@ -69,8 +69,8 @@ export default function File({
                 data-test-id={`file-${file.name}`}
             >
                 {renderFile()}
+                <div className={styles.label}>{file.name}</div>
             </div>
-            <div className={styles.label}>{file.name}</div>
             <Menu className={styles.contextMenu} id={file.name + 'contextmenu'}>
                 {contextMenuOptions &&
                     contextMenuOptions.map((option, index) => (
