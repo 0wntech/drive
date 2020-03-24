@@ -19,14 +19,7 @@ import { FileEditor } from '../FileEditor/FileEditor';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
-
     return 'Empty';
-};
-
-const getValue = (newBody, body) => {
-    if (newBody === '' && body && body !== '') return body;
-
-    return newBody;
 };
 
 export const FileView = ({
@@ -42,6 +35,10 @@ export const FileView = ({
 }) => {
     useEffect(() => {
         const fileParam = getFileParamsFromUrl(window.location.href).f;
+        console.log('CURRENT ITEM', currentItem);
+        if (currentItem && currentItem.body) {
+            setNewBody(currentItem.body);
+        }
         if (fileParam) {
             if (!currentItem || !currentItem.body || !currentPath) {
                 let options = {};
@@ -56,7 +53,7 @@ export const FileView = ({
                 history.push('/home');
             }
         }
-    }, []);
+    }, [currentItem]);
 
     const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
     const isImage = fileType ? fileType.includes('image') : null;
@@ -70,8 +67,10 @@ export const FileView = ({
     };
 
     const onSubmit = () => {
+        console.log('BOOODY', newBody);
         if (currentItem.body !== newBody) updateFile(currentItem.url, newBody);
         setEditable(false);
+        setCurrentPath(getFileParamsFromUrl(window.location.href).f);
     };
 
     const toolbarLeft = (
@@ -138,12 +137,12 @@ export const FileView = ({
                         Error: {error.FETCH_CURRENT_ITEM.message}
                     </p>
                 </>
-            ) : currentItem && currentItem.body ? (
+            ) : currentItem && currentItem.body !== undefined ? (
                 !isImage ? (
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
-                            value={getValue(newBody, currentItem.body)}
+                            value={newBody}
                             onChange={(e) => {
                                 setNewBody(e.target.value);
                             }}
@@ -158,7 +157,7 @@ export const FileView = ({
                                 setEditable(true);
                             }}
                         >
-                            {newBody === '' ? currentItem.body : newBody}
+                            {newBody}
                         </pre>
                     )
                 ) : (
@@ -168,7 +167,9 @@ export const FileView = ({
                         className={styles.image}
                     />
                 )
-            ) : null}
+            ) : (
+                <p>TEST</p>
+            )}
         </Layout>
     );
 };
