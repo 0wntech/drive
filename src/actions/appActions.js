@@ -82,7 +82,6 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
         return fileClient
             .read(itemUrl, options)
             .then((item) => {
-                console.log(item);
                 if (item && item.folders) {
                     const files = item.files.map((file) => {
                         console.log(file);
