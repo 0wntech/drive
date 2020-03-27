@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, MenuProvider, Item } from 'react-contexify';
 import classNames from 'classnames';
-import styles from './Item.module.css';
+import styles from './Item.module.scss';
 import 'react-contexify/dist/ReactContexify.min.css';
 
 const MyItem = ({

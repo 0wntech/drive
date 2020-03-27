@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SearchDropdown.module.css';
+import styles from './SearchDropdown.module.scss';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { ClassicSpinner } from 'react-spinners-kit';

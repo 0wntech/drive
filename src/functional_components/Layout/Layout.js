@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import styles from './Layout.module.css';
+import styles from './Layout.module.scss';
 import { ClassicSpinner } from 'react-spinners-kit';
 
 export const Layout = ({

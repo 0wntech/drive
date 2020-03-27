@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .fileMarkup li {
     list-style: none;
 }
@@ -43,4 +45,17 @@
 .itemList {
     height: 100%;
     overflow-y: auto;
+}
+
+@media (max-width: $screen_s) {
+    .mainArea {
+        padding: 0 16px;
+    }
+
+    .grid {
+        display: initial;
+        grid-template-rows: initial;
+        grid-template-columns: initial;
+        grid-template-areas: initial;
+    }
 }

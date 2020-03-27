@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .container {
     z-index: 1;
     cursor: pointer;
@@ -165,4 +167,34 @@
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+}
+
+@media (max-width: $screen_s) {
+    .icon {
+        height: 80px;
+        max-width: 60px;
+    }
+
+    .innerContainer {
+        position: initial;
+        width: initial;
+    }
+
+    .container {
+        width: initial;
+        height: initial;
+    }
+
+    .label {
+        line-height: initial;
+        position: initial;
+        transform: initial;
+    }
+
+    .gridCell {
+        justify-content: initial;
+        height: initial;
+        justify-content: space-between;
+        height: 112px;
+    }
 }

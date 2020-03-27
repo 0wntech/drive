@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import SvgDropdown from '../../assets/svgIcons/Dropdown';
-import styles from './DropdownMenu.module.css';
+import styles from './DropdownMenu.module.scss';
 import classNames from 'classnames';
 import useClickOutside from '../../hooks/useClickOutside';
 

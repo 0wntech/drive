@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './File.module.css';
+import styles from './File.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Menu, MenuProvider, Item } from 'react-contexify';
