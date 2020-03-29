@@ -8,11 +8,6 @@ import {
 } from './types';
 import { logout } from './userActions';
 import User from 'ownuser';
-import url from 'url';
-
-const isDriveApp = (apptoDelete) => {
-    return window.location.host === url.parse(apptoDelete).host;
-};
 
 export const fetchApps = (webId) => {
     return (dispatch) => {
@@ -28,7 +23,7 @@ export const fetchApps = (webId) => {
     };
 };
 
-export const removeApp = (apptoDelete) => {
+export const removeApp = (apptoDelete, isDriveApp) => {
     return (dispatch, getState) => {
         dispatch({ type: REMOVE_APP });
         const { webId } = getState().user;
@@ -38,7 +33,7 @@ export const removeApp = (apptoDelete) => {
         user.setApps(newApps)
             .then(() => {
                 dispatch({ type: REMOVE_APP_SUCCESS, payload: newApps });
-                if (isDriveApp(apptoDelete)) {
+                if (isDriveApp) {
                     dispatch(logout());
                 }
             })
