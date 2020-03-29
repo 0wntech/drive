@@ -6,7 +6,13 @@ import {
     REMOVE_APP_SUCCESS,
     REMOVE_APP_FAILURE,
 } from './types';
+import { logout } from './userActions';
 import User from 'ownuser';
+import url from 'url';
+
+const isDriveApp = (apptoDelete) => {
+    return window.location.host === url.parse(apptoDelete).host;
+};
 
 export const fetchApps = (webId) => {
     return (dispatch) => {
@@ -30,9 +36,12 @@ export const removeApp = (apptoDelete) => {
         const newApps = apps.filter((app) => app !== apptoDelete);
         const user = new User(webId);
         user.setApps(newApps)
-            .then(() =>
-                dispatch({ type: REMOVE_APP_SUCCESS, payload: newApps })
-            )
+            .then(() => {
+                dispatch({ type: REMOVE_APP_SUCCESS, payload: newApps });
+                if (isDriveApp(apptoDelete)) {
+                    dispatch(logout());
+                }
+            })
             .catch((error) =>
                 dispatch({ type: REMOVE_APP_FAILURE, payload: error })
             );

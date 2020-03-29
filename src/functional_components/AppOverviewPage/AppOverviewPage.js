@@ -6,7 +6,6 @@ import AppList from '../AppList';
 import { fetchApps, removeApp } from '../../actions/userAppActions';
 import { Layout } from '../Layout';
 import { Window } from '../Window';
-import url from 'url';
 import ActionButton from '../ActionButton/ActionButton';
 import { logout } from '../../actions/userActions';
 import { handleError } from '../../utils/helper';
@@ -26,10 +25,6 @@ const fakeApps = (apps) => {
             permissions: {},
         };
     });
-};
-
-const isDriveApp = (apptoDelete) => {
-    return window.location.host === url.parse(apptoDelete).host;
 };
 
 const AppOverviewPage = ({
@@ -66,12 +61,12 @@ const AppOverviewPage = ({
                 windowName={apptoDelete}
             >
                 <p>Are you sure that you want revoke access for this app?</p>
-                {isDriveApp(apptoDelete) ? (
+                {/* {isDriveApp(apptoDelete) ? (
                     <p className={styles.dangerText}>
                         Warning: If you delete this app you can't use Owntech
                         Drive anymore
                     </p>
-                ) : null}
+                ) : null} */}
 
                 <div className={styles.windowButtonContainer}>
                     <ActionButton
@@ -86,9 +81,9 @@ const AppOverviewPage = ({
                         onClick={() => {
                             removeApp(apptoDelete);
                             setDangerWindow(false);
-                            if (isDriveApp(apptoDelete)) {
-                                logout();
-                            }
+                            // if (isDriveApp(apptoDelete)) {
+                            //     logout();
+                            // }
                         }}
                     />
                 </div>
