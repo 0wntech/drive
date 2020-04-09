@@ -69,7 +69,7 @@ const AppOverviewPage = ({
                 {isDriveApp(apptoDelete) ? (
                     <p className={styles.dangerText}>
                         Warning: If you delete this app you can't use Owntech
-                        Drive anymore
+                        Drive anymore. You will be automatically logged out.
                     </p>
                 ) : null}
 
