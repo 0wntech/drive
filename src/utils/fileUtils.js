@@ -1,6 +1,7 @@
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
 import url from 'url';
+import mime from 'mime';
 const ns = require('solid-namespace')(rdf);
 
 function allowFileName(fileName, currentFolder, fileSuffix) {
@@ -11,9 +12,10 @@ function allowFileName(fileName, currentFolder, fileSuffix) {
     const re = new RegExp('^[a-zA-Z0-9]*$');
 
     if (currentFolder && fileSuffix) {
-        return !namingConflict(`${fileName}.${fileSuffix}`, currentFolder);
+        if (namingConflict(`${fileName}.${fileSuffix}`, currentFolder))
+            return false;
     }
-    return !!re.exec(fileName);
+    return !!re.exec(fileName) || mime.getType(fileName);
 }
 
 export const isImageType = (fileType) => {
