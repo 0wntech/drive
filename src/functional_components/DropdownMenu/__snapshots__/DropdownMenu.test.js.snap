@@ -9,6 +9,7 @@ exports[`DropdownMenu should render correctly expanded 1`] = `
   >
     <div
       className="head"
+      onClick={[Function]}
     >
       <p>
         Test
@@ -77,6 +78,7 @@ exports[`DropdownMenu should render correctly not expanded 1`] = `
   >
     <div
       className="head"
+      onClick={[Function]}
     >
       <div
         className="iconWrapper"

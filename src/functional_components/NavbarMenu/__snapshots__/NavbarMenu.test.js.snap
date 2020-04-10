@@ -12,6 +12,7 @@ exports[`NavbarMenu Should render correctly 1`] = `
     >
       <div
         className="head"
+        onClick={[Function]}
       >
         <div
           className="profileSection"
@@ -63,13 +64,13 @@ exports[`NavbarMenu Should render correctly 1`] = `
           className="option"
           onClick={[Function]}
         >
-          Profile
+          Settings
         </div>
         <div
           className="option"
           onClick={[Function]}
         >
-          Settings
+          Profile
         </div>
         <div
           className="option"

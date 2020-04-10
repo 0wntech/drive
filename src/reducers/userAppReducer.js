@@ -11,7 +11,10 @@ import {
 const INITIAL_STATE = {
     apps: null,
     loadApps: false,
-    error: null,
+    error: {
+        FETCH_APPS_FAILURE: false,
+        REMOVE_APP_FAILURE: false,
+    },
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -19,17 +22,37 @@ export default (state = INITIAL_STATE, { type, payload }) => {
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
         case FETCH_APPS:
-            return { ...state, loadApps: true };
+            return {
+                ...state,
+                loadApps: true,
+                error: { ...state.error, FETCH_APPS_FAILURE: false },
+            };
         case FETCH_APPS_SUCCESS:
-            return { ...state, apps: payload, loadApps: false };
+            return {
+                ...state,
+                apps: payload,
+                loadApps: false,
+            };
         case FETCH_APPS_FAILURE:
-            return { ...state, loadApps: false, error: payload };
+            return {
+                ...state,
+                loadApps: false,
+                error: { ...state.error, FETCH_APPS_FAILURE: payload },
+            };
         case REMOVE_APP:
-            return { ...state, loadApps: true };
+            return {
+                ...state,
+                loadApps: true,
+                error: { ...state.error, REMOVE_APP: false },
+            };
         case REMOVE_APP_SUCCESS:
             return { ...state, loadApps: false, apps: payload };
         case REMOVE_APP_FAILURE:
-            return { ...state, loadApps: false, error: payload };
+            return {
+                ...state,
+                loadApps: false,
+                error: { ...state.error, REMOVE_APP: payload },
+            };
         default:
             return state;
     }

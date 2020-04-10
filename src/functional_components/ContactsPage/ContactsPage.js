@@ -7,6 +7,7 @@ import {
     addContact,
     removeContact,
     fetchContactRecommendations,
+    fetchContacts,
 } from '../../actions/contactActions';
 
 import ContactList from '../ContactList/ContactsList';
@@ -17,6 +18,7 @@ const ContactsPage = ({
     contacts,
     addContact,
     loadContacts,
+    fetchContacts,
     webId,
     setCurrentContact,
     contactRecommendations,
@@ -26,16 +28,16 @@ const ContactsPage = ({
     error,
 }) => {
     useEffect(() => {
-        fetchContactRecommendations(webId);
+        if (!contacts) fetchContacts(webId);
+        if (!contactRecommendations) fetchContactRecommendations(webId);
     }, []);
 
     handleError(error);
 
     const [displayedRows, setDisplayedRows] = useState(2);
-    const contactRecommendationsToDisplay = contactRecommendations.slice(
-        0,
-        displayedRows * 3
-    );
+    const contactRecommendationsToDisplay =
+        contactRecommendations &&
+        contactRecommendations.slice(0, displayedRows * 3);
 
     return (
         <Layout
@@ -102,5 +104,6 @@ export default connect(mapStateToProps, {
     setCurrentContact,
     addContact,
     removeContact,
+    fetchContacts,
     fetchContactRecommendations,
 })(withRouter(ContactsPage));

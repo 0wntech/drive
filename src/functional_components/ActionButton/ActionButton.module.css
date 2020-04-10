@@ -54,12 +54,14 @@
 
 .md {
     font-size: 0.75em;
-    padding: 0.1em 1.5em;
+    letter-spacing: 0.02em;
+    padding: 0.1em 1.5em 0.15em 1.5em;
     font-weight: 500;
 }
 
 .lg {
     font-size: 1em;
+    letter-spacing: 0.1em;
     padding: 0.2em 1.5em;
     font-weight: 400;
 }

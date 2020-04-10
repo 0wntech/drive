@@ -6,6 +6,7 @@ import {
     REMOVE_APP_SUCCESS,
     REMOVE_APP_FAILURE,
 } from './types';
+import { logout } from './userActions';
 import User from 'ownuser';
 
 export const fetchApps = (webId) => {
@@ -22,7 +23,7 @@ export const fetchApps = (webId) => {
     };
 };
 
-export const removeApp = (apptoDelete) => {
+export const removeApp = (apptoDelete, isDriveApp) => {
     return (dispatch, getState) => {
         dispatch({ type: REMOVE_APP });
         const { webId } = getState().user;
@@ -30,9 +31,12 @@ export const removeApp = (apptoDelete) => {
         const newApps = apps.filter((app) => app !== apptoDelete);
         const user = new User(webId);
         user.setApps(newApps)
-            .then(() =>
-                dispatch({ type: REMOVE_APP_SUCCESS, payload: newApps })
-            )
+            .then(() => {
+                dispatch({ type: REMOVE_APP_SUCCESS, payload: newApps });
+                if (isDriveApp) {
+                    dispatch(logout());
+                }
+            })
             .catch((error) =>
                 dispatch({ type: REMOVE_APP_FAILURE, payload: error })
             );

@@ -77,13 +77,18 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
         if (folder) {
             options.auth = auth;
             options.headers = { Accept: 'text/turtle' };
+            options.verbose = true;
         }
         return fileClient
             .read(itemUrl, options)
             .then((item) => {
                 if (item && item.folders) {
-                    const fileNames = item.files.map((file) => {
-                        return convertFileUrlToName(file);
+                    const files = item.files.map((file) => {
+                        console.log(file);
+                        return {
+                            name: convertFileUrlToName(file.name),
+                            type: file.type,
+                        };
                     });
                     const folderNames = item.folders.map((folder) => {
                         return convertFolderUrlToName(folder);
@@ -91,14 +96,19 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: {
-                            files: fileNames,
+                            files: files,
                             folders: folderNames,
                         },
                     });
-                } else if (item && typeof item === 'string') {
+                } else if (item !== undefined && typeof item === 'string') {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: { body: item, url: itemUrl },
+                    });
+                } else {
+                    dispatch({
+                        type: FETCH_CURRENT_ITEM_FAIL,
+                        payload: { message: 'File not supported' },
                     });
                 }
             })
@@ -159,31 +169,17 @@ export const fetchNotifications = (webId) => {
 export const updateFile = (file, body) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_FILE });
-        const contentType = mime.getType(file);
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(file).host + '/',
         });
         if (body !== '') {
             fileClient
-                .delete(file)
+                .update(file, body)
                 .then(() => {
-                    fileClient
-                        .create(file, {
-                            contents: body,
-                            contentType: contentType,
-                        })
-                        .then(() => {
-                            dispatch({
-                                type: UPDATE_FILE_SUCCESS,
-                                payload: { body: body, url: file },
-                            });
-                        })
-                        .catch((err) => {
-                            dispatch({
-                                type: UPDATE_FILE_FAILURE,
-                                payload: err,
-                            });
-                        });
+                    dispatch({
+                        type: UPDATE_FILE_SUCCESS,
+                        payload: { url: file, body: body },
+                    });
                 })
                 .catch((err) => {
                     dispatch({
@@ -301,7 +297,7 @@ export const pasteItems = (items, location) => {
 export const createFile = function(name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FILE });
-        const contentType = mime.getType(name);
+        const contentType = mime.getType(name) || 'text/plain';
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(name).host + '/',
         });
@@ -356,7 +352,7 @@ export const renameItem = function(renamedItem, value) {
                     location = location.join('/');
                     dispatch({ type: RENAME_ITEM_SUCCESS });
                     dispatch(setCurrentPath(location + '/'));
-                    dispatch(fetchCurrentItem(location + '/'));
+                    dispatch(fetchCurrentItem(location + '/', true));
                 })
                 .catch((err) => {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
@@ -416,9 +412,7 @@ export const closeRenameWindow = function() {
 export const createFolder = function(name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FOLDER });
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(path).host + '/',
-        });
+        const fileClient = new PodClient();
         return fileClient
             .create(path + name + '/')
             .then(() => {

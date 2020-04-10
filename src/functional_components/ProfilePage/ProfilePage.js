@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import styles from './ProfilePage.module.css';
+import classNames from 'classnames';
+import styles from './ProfilePage.module.scss';
 import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
-import Settings from '../../assets/svgIcons/Settings';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
 import X from '../../assets/svgIcons/X';
@@ -41,18 +41,11 @@ export const ProfilePage = ({
         changeProfilePhoto(e, user.webId);
     };
 
-    const toolbarRight = (
-        <div className={styles.iconWrapper}>
-            <Settings className={styles.settings} />
-        </div>
-    );
-
     if (user) {
         return (
             <Layout
                 isLoading={updatingProfile || !user}
                 className={styles.grid}
-                toolbarChildrenRight={toolbarRight}
                 label="Profile"
             >
                 <div className={styles.profileContainer}>
@@ -83,22 +76,22 @@ export const ProfilePage = ({
                                       }
                             }
                         />
-                        <div className={styles.nameContainer}>
-                            <SingleValue
-                                editable={isEditable}
-                                value={userData.name}
-                                dataKey="name"
-                                setValue={(value) =>
-                                    updateUserData('name', value)
-                                }
-                                className={styles.nameLabel}
-                                placholder="Enter Name.."
-                            />
-                            <div className={styles.webIdLabel}>
-                                {user.webId.replace('/profile/card#me', '')}
+                        <div className={styles.headDataContainer}>
+                            <div>
+                                <SingleValue
+                                    editable={isEditable}
+                                    value={userData.name}
+                                    dataKey="name"
+                                    setValue={(value) =>
+                                        updateUserData('name', value)
+                                    }
+                                    className={styles.nameLabel}
+                                    placholder="Enter Name.."
+                                />
+                                <div className={styles.webIdLabel}>
+                                    {user.webId.replace('/profile/card#me', '')}
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.bio}>
                             <SingleValue
                                 editable={isEditable}
                                 value={userData.bio}
@@ -106,7 +99,10 @@ export const ProfilePage = ({
                                     updateUserData('bio', value)
                                 }
                                 placeholder="Add bio.."
-                                className={styles.bioLabel}
+                                className={classNames(
+                                    styles.bioLabel,
+                                    styles.multiline
+                                )}
                             />
                         </div>
                         <div className={styles.editWrapper}>
@@ -165,6 +161,8 @@ export const ProfilePage = ({
                 </div>
             </Layout>
         );
+    } else {
+        return null;
     }
 };
 
