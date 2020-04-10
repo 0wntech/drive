@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import styles from './SettingsSection.module.css';
 import ActionButton from '../ActionButton/ActionButton';
 
-export const SettingsSection = ({ label, buttons }) => {
+export const SettingsSection = ({ label, options }) => {
     return (
         <>
             <div className={styles.container}>
                 <div className={styles.label}>{label}</div>
             </div>
-            {buttons.map((button, index) => {
+            {options.map((button, index) => {
                 return (
                     <div className={styles.buttonContainer} key={index}>
                         <div className={styles.buttonDescription}>
@@ -29,7 +29,7 @@ export const SettingsSection = ({ label, buttons }) => {
 
 SettingsSection.propTypes = {
     label: PropTypes.string,
-    button: PropTypes.arrayOf(
+    options: PropTypes.arrayOf(
         PropTypes.shape({
             description: PropTypes.string,
             label: PropTypes.string,

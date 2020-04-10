@@ -6,7 +6,7 @@ import { SettingsSection } from '../SettingsSection/SettingsSection';
 import { idp } from '../../selectors/userSelectors';
 
 export const SettingsPage = ({ idp }) => {
-    const buttons = [
+    const settings = [
         {
             description: 'Delete my account',
             label: 'Delete',
@@ -18,7 +18,7 @@ export const SettingsPage = ({ idp }) => {
     return (
         <Layout label="Settings" className={styles.layout}>
             <div className={styles.container}>
-                <SettingsSection label="Account" buttons={buttons} />
+                <SettingsSection label="Account" options={settings} />
             </div>
         </Layout>
     );
