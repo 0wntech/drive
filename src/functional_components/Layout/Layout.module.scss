@@ -61,7 +61,7 @@
     border-bottom-right-radius: 20px;
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_m) {
     .grid {
         grid-template-rows: 56px 1fr;
         border-radius: initial;

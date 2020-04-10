@@ -96,7 +96,7 @@
     cursor: pointer;
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_m) {
     .container {
         border-radius: initial;
         grid-template-columns: 16px 2fr 9fr 1fr 16px;

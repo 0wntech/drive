@@ -38,7 +38,7 @@
     overflow: hidden;
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_m) {
     .grid {
         margin: initial;
         grid-template-rows: 70px 1fr;
