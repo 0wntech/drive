@@ -53,7 +53,7 @@
     line-height: 21px;
     letter-spacing: 0.05em;
     z-index: 1;
-    width: 90%;
+    width: 100%;
     text-align: center;
     position: absolute;
     background-color: white;
@@ -64,7 +64,6 @@
     left: 50%;
     transform: translateX(-50%);
     transition: all 0.2s;
-    padding: 0 0.5em;
 }
 
 .contextMenu {
@@ -169,32 +168,40 @@
     transform: translateX(-50%);
 }
 
-@media (max-width: $screen_s) {
-    .icon {
-        height: 80px;
-        max-width: 60px;
-    }
-
-    .innerContainer {
-        position: initial;
-        width: initial;
-    }
-
-    .container {
-        width: initial;
-        height: initial;
+@media (max-width: $screen_m) {
+    .gridCell {
+        height: 128px;
+        width: 100px;
+        justify-self: center;
     }
 
     .label {
-        line-height: initial;
         position: initial;
+        width: 100%;
+        transform: initial;
+        padding: initial;
+    }
+
+    .container {
+        width: 100px;
+        justify-content: space-between;
+    }
+
+    .innerContainer {
+        display: flex;
+        justify-content: center;
+        position: initial;
+    }
+
+    .icon {
+        width: 60px;
+        height: 80px;
+        position: initial;
+        left: initial;
         transform: initial;
     }
 
-    .gridCell {
-        justify-content: initial;
-        height: initial;
-        justify-content: space-between;
-        height: 112px;
+    .linkedFile {
+        top: 40%;
     }
 }

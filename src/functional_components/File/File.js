@@ -69,8 +69,8 @@ export default function File({
                 data-test-id={`file-${file.name}`}
             >
                 {renderFile()}
+                <div className={styles.label}>{file.name}</div>
             </div>
-            <div className={styles.label}>{file.name}</div>
             <Menu className={styles.contextMenu} id={file.name + 'contextmenu'}>
                 {contextMenuOptions &&
                     contextMenuOptions.map((option, index) => (

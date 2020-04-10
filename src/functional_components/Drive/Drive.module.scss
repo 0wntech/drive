@@ -47,15 +47,14 @@
     overflow-y: auto;
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_m) {
     .mainArea {
         padding: 0 16px;
     }
 
     .grid {
-        display: initial;
-        grid-template-rows: initial;
-        grid-template-columns: initial;
-        grid-template-areas: initial;
+      grid-template-rows: 1fr;
+      grid-template-columns: 12fr;
+      grid-template-areas: 'main';
     }
 }

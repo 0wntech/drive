@@ -88,28 +88,33 @@
     z-index: 3;
 }
 
-@media (max-width: $screen_s) {
-    .icon {
-        width: 80px;
-        height: 60px;
-    }
-
-    .innerContainer {
-        position: initial;
-        width: initial;
+@media (max-width: $screen_m) {
+    .gridCell {
+        height: 128px;
+        width: 100px;
+        justify-self: center;
     }
 
     .label {
-        line-height: initial;
         position: initial;
-        width: initial;
+        width: 100%;
         transform: initial;
         padding: initial;
-        width: 100%;
     }
 
     .container {
-        height: 96px;
+        width: 100px;
         justify-content: space-between;
+    }
+
+    .innerContainer {
+        display: flex;
+        justify-content: center;
+        position: initial;
+    }
+
+    .icon {
+        width: 80px;
+        height: 60px;
     }
 }

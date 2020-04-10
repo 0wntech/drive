@@ -96,8 +96,21 @@
     cursor: pointer;
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_m) {
+    .container {
+        border-radius: initial;
+        grid-template-columns: 16px 2fr 9fr 1fr 16px;
+        grid-template-areas: '. logo search dropdown .';
+    }
+
+    .menuWrapper {
+        justify-content: flex-end;
+        padding-right: initial;
+    }
+
     .brand {
+        height: 50px;
+        width: 50px;
         font-size: 1em;
         width: 50px;
         height: 50px;
@@ -127,5 +140,13 @@
     .brandWrapper {
         justify-content: flex-start;
         padding-left: 16px;
+    }
+
+    .brandWrapper {
+        justify-content: flex-start;
+    }
+
+    .search {
+        padding: initial;
     }
 }

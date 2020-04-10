@@ -73,18 +73,26 @@
     background-color: #f2f2f2;
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_m) {
     .container {
+        top: 0px;
         position: initial;
     }
 
-    .head {
-        margin-top: initial;
-        padding: initial;
-        height: initial;
+    .iconWrapper {
+        display: none;
     }
 
-    .iconWrapper{
-        display: none;
+    .head {
+        display: initial;
+        margin-top: initial;
+        padding: initial;
+        justify-content: center;
+        height: initial !important;
+    }
+
+    .dropdownWrapper {
+        width: initial;
+        position: initial;
     }
 }

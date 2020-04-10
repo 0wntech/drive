@@ -38,10 +38,10 @@
     overflow: hidden;
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_m) {
     .grid {
         margin: initial;
-        grid-template-areas: 'nav' 'main';
         grid-template-rows: 70px 1fr;
+        grid-template-areas: 'nav' 'main';
     }
 }
