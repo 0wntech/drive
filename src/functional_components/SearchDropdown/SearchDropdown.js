@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './SearchDropdown.module.scss';
 import './SearchDropdown.scss';
 import classNames from 'classnames';
