@@ -120,3 +120,5 @@ export const REMOVE_APP_SUCCESS = 'remove_app_success';
 export const REMOVE_APP_FAILURE = 'remove_app_failure';
 
 export const CLEAR_ERROR = 'clear_error';
+
+export const SET_SEARCHBAR_STATUS = 'set_searchbar_status';

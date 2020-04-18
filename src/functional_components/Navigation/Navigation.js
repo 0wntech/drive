@@ -7,7 +7,7 @@ import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
-import { setCurrentPath } from '../../actions/appActions';
+import { setCurrentPath, setSearchbarStatus } from '../../actions/appActions';
 import {
     searchContact,
     setCurrentContact,
@@ -17,6 +17,7 @@ import { navigate } from '../../utils/helper';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import { getUsernameFromWebId } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
+import classNames from 'classnames';
 
 const Navigation = ({
     resetError,
@@ -32,6 +33,8 @@ const Navigation = ({
     searchContact,
     fetchContacts,
     dispatch,
+    setSearchbarStatus,
+    isSearchBarExpanded,
 }) => {
     const [typingTimer, setTypingTimer] = useState(null);
 
@@ -101,7 +104,11 @@ const Navigation = ({
         }
     };
     return (
-        <div className={styles.container}>
+        <div
+            className={classNames(styles.container, {
+                [styles.active]: isSearchBarExpanded,
+            })}
+        >
             <div className={styles.brandWrapper}>
                 <img
                     alt="logo"
@@ -131,6 +138,8 @@ const Navigation = ({
                         items={getSearchDropdownOptions()}
                         loading={searchingContacts}
                         filterOption={customFilter}
+                        setSearchbarStatus={setSearchbarStatus}
+                        isSearchBarExpanded={isSearchBarExpanded}
                     />
                 ) : null}
             </div>
@@ -219,11 +228,18 @@ const mapStateToProps = (state) => ({
     contacts: state.contact.contacts,
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
+    isSearchBarExpanded: state.app.isSearchBarExpanded,
 });
 
 export default connect(mapStateToProps, (dispatch) => ({
     ...bindActionCreators(
-        { setCurrentPath, setCurrentContact, searchContact, fetchContacts },
+        {
+            setCurrentPath,
+            setCurrentContact,
+            searchContact,
+            fetchContacts,
+            setSearchbarStatus,
+        },
         dispatch
     ),
     dispatch,

@@ -103,6 +103,27 @@
 }
 
 @media (max-width: $screen_m) {
+    .active {
+        grid-template-areas: 'search search search';
+        padding-left: 16px;
+        padding: 8px 0 0 16px;
+
+        .searchDropdown {
+        }
+
+        .brand {
+            display: none;
+        }
+
+        .menuWrapper {
+            display: none;
+        }
+    }
+
+    .iconContainer {
+        min-width: 48px;
+    }
+
     .menuWrapper {
         justify-content: flex-end;
         padding-right: initial;

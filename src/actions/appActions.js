@@ -43,6 +43,7 @@ import {
     CREATE_FOLDER,
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
+    SET_SEARCHBAR_STATUS,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -422,5 +423,12 @@ export const createFolder = function(name, path) {
             .catch((err) => {
                 dispatch({ type: CREATE_FOLDER_FAILURE, payload: err });
             });
+    };
+};
+
+export const setSearchbarStatus = (status) => {
+    console.log('set searchbar');
+    return (dispatch) => {
+        dispatch({ type: SET_SEARCHBAR_STATUS, payload: status });
     };
 };

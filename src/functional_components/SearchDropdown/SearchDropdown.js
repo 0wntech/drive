@@ -1,10 +1,10 @@
-import React from 'react';
 import styles from './SearchDropdown.module.scss';
 import './SearchDropdown.scss';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Search from '../../assets/svgIcons/Search';
+
 export default function SearchDropdown({
     items,
     formatOptionLabel,
@@ -14,6 +14,8 @@ export default function SearchDropdown({
     onInputChange,
     filterOption,
     loading,
+    setSearchbarStatus,
+    isSearchBarExpanded,
 }) {
     const DropdownIndicator = (props) => {
         return (
@@ -33,22 +35,41 @@ export default function SearchDropdown({
         );
     };
 
+    const handleMenuClose = () => {
+        if (isSearchBarExpanded) {
+            setSearchbarStatus(false);
+        }
+    };
+
+    const handleMenuOpen = () => {
+        // conditional because menu triggers this event at every key input
+        // --> prevent unneccessary state updates
+        if (!isSearchBarExpanded) {
+            setSearchbarStatus(true);
+        }
+    };
+
+    const select = (
+        <Select
+            components={{ DropdownIndicator }}
+            placeholder={placeholder}
+            styles={customStyles}
+            formatOptionLabel={formatOptionLabel}
+            options={items}
+            onChange={onChange}
+            className={className}
+            classNamePrefix="search"
+            value={null}
+            menuIsOpen={isSearchBarExpanded}
+            onInputChange={onInputChange}
+            filterOption={filterOption}
+            onMenuOpen={handleMenuOpen}
+            onMenuClose={handleMenuClose}
+        />
+    );
+
     return (
-        <div className={classNames(styles.container, className)}>
-            <Select
-                components={{ DropdownIndicator }}
-                placeholder={placeholder}
-                styles={customStyles}
-                formatOptionLabel={formatOptionLabel}
-                options={items}
-                onChange={onChange}
-                className={className}
-                classNamePrefix="search"
-                value={null}
-                onInputChange={onInputChange}
-                filterOption={filterOption}
-            />
-        </div>
+        <div className={classNames(styles.container, className)}>{select}</div>
     );
 }
 

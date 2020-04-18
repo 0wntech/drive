@@ -42,6 +42,7 @@ import {
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
     CLEAR_ERROR,
+    SET_SEARCHBAR_STATUS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -72,6 +73,7 @@ const INITIAL_STATE = {
     isConsentWindowVisible: false,
     creatingFile: false,
     creatingFolder: false,
+    isSearchBarExpanded: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -280,6 +282,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, creatingFolder: false };
         case CREATE_FOLDER_FAILURE:
             return { ...state, creatingFolder: false };
+        case SET_SEARCHBAR_STATUS:
+            return { ...state, isSearchBarExpanded: payload };
         default:
             return state;
     }

@@ -17,6 +17,7 @@ import {
     sendNotification,
     fetchCurrentItem,
     openConsentWindow,
+    setSearchbarStatus,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed, handleError } from '../../utils/helper';
@@ -39,6 +40,8 @@ const Drive = ({
     error,
     loadDeletion,
     loadPaste,
+    setSearchbarStatus,
+    isSearchBarExpanded,
 }) => {
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
@@ -118,6 +121,15 @@ const Drive = ({
         }
     };
 
+    const handleClick = (e) => {
+        if (isSearchBarExpanded) {
+            setSearchbarStatus(false);
+            e.stopPropagation();
+        } else {
+            clearSelection(e);
+        }
+    };
+
     const downloadItems = () => {
         selectedItems.forEach((item) => {
             const download =
@@ -191,7 +203,7 @@ const Drive = ({
             toolbarChildrenRight={toolbarRight}
             className={styles.grid}
             label="Drive"
-            onClick={clearSelection}
+            onClick={handleClick}
             isLoading={loadDeletion || loadPaste || loadCurrentItem}
         >
             <DriveContextMenu
@@ -211,7 +223,11 @@ const Drive = ({
                                 items={currentItem.folders}
                                 currPath={currentPath}
                                 image={folder}
-                                onItemClick={loadFolder}
+                                onItemClick={
+                                    isSearchBarExpanded
+                                        ? () => setSearchbarStatus(false)
+                                        : loadFolder
+                                }
                             />
                             <ItemList
                                 selectedItems={selectedItems}
@@ -219,7 +235,11 @@ const Drive = ({
                                 items={currentItem.files}
                                 currPath={currentPath}
                                 image={fileIcon}
-                                onItemClick={loadFile}
+                                onItemClick={
+                                    isSearchBarExpanded
+                                        ? () => setSearchbarStatus(false)
+                                        : loadFile
+                                }
                             />
                         </div>
                     ) : (
@@ -244,6 +264,7 @@ const mapStateToProps = (state) => {
         loadDeletion: state.app.loadDeletion,
         loadPaste: state.app.loadPaste,
         loadCurrentItem: state.app.loadCurrentItem,
+        isSearchBarExpanded: state.app.isSearchBarExpanded,
     };
 };
 
@@ -254,5 +275,6 @@ export default withRouter(
         sendNotification,
         fetchCurrentItem,
         setSelection,
+        setSearchbarStatus,
     })(Drive)
 );

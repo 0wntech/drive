@@ -34,6 +34,13 @@
 }
 
 @media (max-width: $screen_m) {
+    .search__option {
+        height: 48px !important;
+    }
+
+    .search__menu-list {
+        max-height: 50vh !important;
+    }
     .search__control {
         background-color: initial !important;
 
@@ -42,7 +49,8 @@
         }
 
         .search__indicators {
-            justify-content: flex-end;
+            justify-content: center;
+            min-width: 48px;
         }
     }
 
