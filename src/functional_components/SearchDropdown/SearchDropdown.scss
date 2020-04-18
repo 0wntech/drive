@@ -45,7 +45,9 @@
         background-color: initial !important;
 
         .search__value-container {
-            display: none;
+            .search__placeholder {
+                display: none;
+            }
         }
 
         .search__indicators {
