@@ -45,4 +45,10 @@
             justify-content: flex-end;
         }
     }
+
+    .search__control--menu-is-open {
+        .search__value-container {
+            display: initial;
+        }
+    }
 }
