@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from './SearchDropdown.module.css';
+import styles from './SearchDropdown.module.scss';
+import './SearchDropdown.scss';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { ClassicSpinner } from 'react-spinners-kit';
@@ -42,6 +43,7 @@ export default function SearchDropdown({
                 options={items}
                 onChange={onChange}
                 className={className}
+                classNamePrefix="search"
                 value={null}
                 onInputChange={onInputChange}
                 filterOption={filterOption}

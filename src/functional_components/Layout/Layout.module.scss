@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .spinner {
     position: absolute;
     top: 50%;
@@ -57,4 +59,30 @@
     overflow-y: auto;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+}
+
+@media (max-width: $screen_m) {
+    .grid {
+        grid-template-rows: 56px 1fr;
+        border-radius: initial;
+    }
+
+    .toolbarArea {
+        background-color: initial;
+        border-top-left-radius: initial;
+        border-top-right-radius: initial;
+        height: 100%;
+    }
+
+    .toolbarLeft {
+        display: none;
+    }
+
+    .toolbarRight {
+        grid-area: label;
+    }
+
+    .header {
+        display: none;
+    }
 }

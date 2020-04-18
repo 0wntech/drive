@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .container {
     cursor: pointer;
     position: relative;
@@ -84,4 +86,35 @@
 
 .itemLabel {
     z-index: 3;
+}
+
+@media (max-width: $screen_m) {
+    .gridCell {
+        height: 128px;
+        width: 100px;
+        justify-self: center;
+    }
+
+    .label {
+        position: initial;
+        width: 100%;
+        transform: initial;
+        padding: initial;
+    }
+
+    .container {
+        width: 100px;
+        justify-content: space-between;
+    }
+
+    .innerContainer {
+        display: flex;
+        justify-content: center;
+        position: initial;
+    }
+
+    .icon {
+        width: 80px;
+        height: 60px;
+    }
 }
