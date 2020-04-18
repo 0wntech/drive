@@ -12,7 +12,7 @@
         justify-self: center;
         align-self: center;
         width: 400px;
-        height: 400px;
+        max-height: 400px;
         overflow-y: auto;
         border: 2px solid rgba($color: #000, $alpha: 0.2);
         border-radius: 20px;
@@ -50,8 +50,8 @@
             background: #f0f0f0;
         }
 
-        .option:nth-last-child() {
-            display: initial;
+        .option:last-child {
+            display: none;
         }
 
         .disabled {
