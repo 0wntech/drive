@@ -42,6 +42,8 @@ import {
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
     CLEAR_ERROR,
+    OPEN_DRIVE_MENU,
+    CLOSE_DRIVE_MENU,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -72,6 +74,7 @@ const INITIAL_STATE = {
     isConsentWindowVisible: false,
     creatingFile: false,
     creatingFolder: false,
+    isDriveMenuVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -191,6 +194,16 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isRenameWindowVisible: false,
                 renamedItem: null,
+            };
+        case OPEN_DRIVE_MENU:
+            return {
+                ...state,
+                isDriveMenuVisible: true,
+            };
+        case CLOSE_DRIVE_MENU:
+            return {
+                ...state,
+                isDriveMenuVisible: false,
             };
         case RENAME_ITEM:
             return {

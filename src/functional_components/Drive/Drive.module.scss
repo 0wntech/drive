@@ -20,7 +20,7 @@
 .mainArea {
     grid-area: main;
     height: 100%;
-    padding: 0 6.3%;
+    padding: 40px 6.3%;
 }
 
 .emptyMessage {
@@ -31,9 +31,9 @@
 
 .grid {
     display: grid;
-    grid-template-rows: 40px 23fr;
+    grid-template-rows: 1fr;
     grid-template-columns: 1fr 10fr 1fr;
-    grid-template-areas: 'toolbar toolbar toolbar' 'main main main';
+    grid-template-areas: 'main main main';
 }
 
 .breadcrumbsContainer {
@@ -53,8 +53,8 @@
     }
 
     .grid {
-      grid-template-rows: 1fr;
-      grid-template-columns: 12fr;
-      grid-template-areas: 'main';
+        grid-template-rows: 1fr;
+        grid-template-columns: 12fr;
+        grid-template-areas: 'main';
     }
 }

@@ -93,6 +93,9 @@ export const CLOSE_CREATE_FOLDER_WINDOW = 'close_create_folder_window';
 export const OPEN_RENAME_WINDOW = 'open_rename_window';
 export const CLOSE_RENAME_WINDOW = 'close_rename_window';
 
+export const OPEN_DRIVE_MENU = 'open_drive_menu';
+export const CLOSE_DRIVE_MENU = 'close_drive_menu';
+
 export const CREATE_FOLDER = 'create_folder';
 export const CREATE_FOLDER_SUCCESS = 'create_folder_success';
 export const CREATE_FOLDER_FAILURE = 'create_folder_failure';
