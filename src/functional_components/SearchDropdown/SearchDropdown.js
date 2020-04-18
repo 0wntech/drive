@@ -53,22 +53,6 @@ export default function SearchDropdown({
 }
 
 const customStyles = {
-    placeholder: (provided) => ({
-        ...provided,
-        fontSize: '22px',
-        marginLeft: '-9px',
-    }),
-    container: (provided) => ({
-        ...provided,
-        display: 'flex',
-        height: '80%',
-        width: '100%    ',
-    }),
-    input: (provided) => ({
-        ...provided,
-        fontSize: '22px',
-        marginLeft: '-9px',
-    }),
     option: (provided, state) => ({
         ...provided,
         padding:
@@ -78,30 +62,6 @@ const customStyles = {
         height: state.data.type === 'separator' ? 25 : 64,
         display: 'flex',
         alignItems: state.data.type === 'separator' ? 'flex-end' : 'center',
-    }),
-    menu: (provided) => ({
-        // none of react-select's styles are passed to <Control />
-        ...provided,
-        borderRadius: '0 0 20px 20px',
-        overflow: 'hidden',
-        marginTop: 0,
-        marginBottom: 0,
-        zIndex: 1,
-        boxShadow: '0 7px 6px 0 rgba(0, 0, 0, 0.25)',
-        top: 'calc(100% - 3px)',
-    }),
-    menuList: (provided) => ({
-        ...provided,
-        paddingTop: '0px',
-        paddinBottom: '0px',
-    }),
-    indicatorSeparator: (provided) => ({
-        display: 'none',
-    }),
-    indicatorsContainer: (provided) => ({
-        ...provided,
-        minWidth: 78,
-        justifyContent: 'center',
     }),
     control: (provided, state) => {
         return {
