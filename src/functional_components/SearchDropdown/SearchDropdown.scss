@@ -1,0 +1,15 @@
+@import '../../../styles/constants.scss';
+
+@media (max-width: $screen_m) {
+    .search__control {
+        background-color: initial !important;
+
+        .search__value-container {
+            display: none;
+        }
+
+        .search__indicators {
+            justify-content: flex-end;
+        }
+    }
+}

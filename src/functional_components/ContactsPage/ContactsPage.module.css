@@ -21,7 +21,6 @@
     display: grid;
     grid-template-columns: 2fr 6fr 2fr;
     grid-template-areas: '. contacts .';
-    background-color: #ffffff;
 }
 
 .recommendLabel {

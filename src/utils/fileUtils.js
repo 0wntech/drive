@@ -1,6 +1,26 @@
 import rdf from 'rdflib';
 import auth from 'solid-auth-client';
+import url from 'url';
+import mime from 'mime';
 const ns = require('solid-namespace')(rdf);
+
+function allowFileName(fileName, currentFolder, fileSuffix) {
+    if (fileName == '') {
+        return false;
+    }
+
+    const re = new RegExp('^[a-zA-Z0-9]*$');
+
+    if (currentFolder && fileSuffix) {
+        if (namingConflict(`${fileName}.${fileSuffix}`, currentFolder))
+            return false;
+    }
+    return !!re.exec(fileName) || mime.getType(fileName);
+}
+
+export const isImageType = (fileType) => {
+    return fileType ? fileType.indexOf('image') !== -1 : false;
+};
 
 function getContentType(file) {
     const mimeTypes = {
@@ -25,6 +45,18 @@ function getContentType(file) {
         return 'folder';
     }
 }
+
+const addForDelete = (item, selectedItems) => {
+    const newSelection = [...selectedItems];
+    if (item && url.parse(item).path !== '/' && !selectedItems.includes(item)) {
+        newSelection.push(item);
+        return newSelection;
+    }
+    if (selectedItems.length !== 0 || newSelection.length !== 0) {
+        return newSelection;
+    }
+    return false;
+};
 
 function namingConflict(name, currentFolder) {
     if (currentFolder) {
@@ -111,11 +143,11 @@ function uploadFile(filePath, currPath, callback) {
 // input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
 // returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
 function convertFilesAndFoldersToArray(files, folders) {
-    const fileObjects = files.map((fileName) => {
+    const fileObjects = files.map((file) => {
         return {
-            name: fileName,
+            name: file.name ? file.name : file,
             type: 'file',
-            fileType: getFileType(fileName),
+            fileType: getFileType(file),
         };
     });
 
@@ -131,7 +163,7 @@ function convertFilesAndFoldersToArray(files, folders) {
 
 // input "fav.ico" returns "ico"
 function getFileType(file) {
-    const splittedFile = file.split('.');
+    const splittedFile = file.name ? file.name.split('.') : file.split('.');
     // no dot || nothing after dot
     if (
         splittedFile.length === 1 ||
@@ -361,7 +393,7 @@ function sendNotification(notifParams) {
         method: 'PUT',
         headers: {
             'content-type': 'text/turtle',
-            'slug': notificationAddress.replace(inboxAddress + '/', ''),
+            "slug": notificationAddress.replace(inboxAddress + '/', ''),
         },
         body: notification,
     };
@@ -401,4 +433,7 @@ export default {
     convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
     namingConflict: namingConflict,
     getSuffixAndPlaceholder: getSuffixAndPlaceholder,
+    addForDelete: addForDelete,
+    allowFileName: allowFileName,
+    isImageType: isImageType,
 };

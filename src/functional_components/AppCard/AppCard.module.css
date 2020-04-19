@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.deleteButton {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: -13px;
+    right: -13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f4f4f4;
+}
+
+.xIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.appIcon {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    margin-top: 24px;
+}
+
+.name {
+    letter-spacing: 0.04em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    margin: 27px 0 24px 0;
+    width: 100%;
+    text-align: center;
+}

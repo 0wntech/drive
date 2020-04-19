@@ -3,16 +3,33 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
 import mime from 'mime';
-import { ClassicSpinner } from 'react-spinners-kit';
 import { Layout } from '../Layout';
 import styles from './FileView.module.css';
 import { setCurrentPath, updateFile } from '../../actions/appActions';
-import { getBreadcrumbsFromUrl, getFileParamsFromUrl } from '../../utils/url';
+import {
+    getBreadcrumbsFromUrl,
+    getFileParamsFromUrl,
+    convertFileUrlToName,
+} from '../../utils/url';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
+import { isImageType } from '../../utils/fileUtils';
+import BackButton from '../BackButton/BackButton';
+
+const getPlaceholder = (body) => {
+    if (body && body !== '') return body;
+
+    return 'Empty';
+};
+
+const getValue = (newBody, body) => {
+    if (newBody === '' && body && body !== '') return body;
+
+    return newBody;
+};
 
 export const FileView = ({
     loadCurrentItem,
@@ -28,16 +45,23 @@ export const FileView = ({
     useEffect(() => {
         const fileParam = getFileParamsFromUrl(window.location.href).f;
         if (fileParam) {
-            if (!currentItem.body || !currentPath) {
-                setCurrentPath(fileParam);
+            if (!currentItem || !currentItem.body || !currentPath) {
+                let options = {};
+                if (
+                    mime.getType(fileParam) &&
+                    isImageType(mime.getType(fileParam))
+                ) {
+                    options = { noFetch: true };
+                }
+                setCurrentPath(fileParam, options);
             } else if (currentItem.files || currentItem.folders) {
                 history.push('/home');
             }
         }
     });
 
-    const fileType = mime.getType(currentItem.url);
-    const isImage = fileType && fileType.split('/')[0] === 'image';
+    const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
+    const isImage = isImageType(fileType);
 
     const [isEditable, setEditable] = useState(false);
     const [newBody, setNewBody] = useState('');
@@ -100,40 +124,36 @@ export const FileView = ({
             className={styles.container}
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
+            label={
+                currentItem &&
+                currentItem.url &&
+                convertFileUrlToName(currentItem.url)
+            }
+            isLoading={updatingFile || loadCurrentItem}
+            label={
+                currentItem &&
+                currentItem.url &&
+                convertFileUrlToName(currentItem.url)
+            }
         >
-            {(updatingFile, loadCurrentItem) ? (
-                <div className={styles.spinner}>
-                    <ClassicSpinner
-                        size={30}
-                        color="#686769"
-                        loading={(updatingFile, loadCurrentItem)}
-                    />
-                </div>
-            ) : error ? (
+            {error.FETCH_CURRENT_ITEM ? (
                 <>
+                    {console.log('error:', error)}
                     <div>Sorry, we cannot load this file.</div>
-                    <p className={styles.error}>{error.message}</p>
+                    <p className={styles.error}>
+                        Error: {error.FETCH_CURRENT_ITEM.message}
+                    </p>
                 </>
-            ) : currentItem.body || currentItem.body === '' ? (
-                !isImage ? (
+            ) : currentItem ? (
+                !isImage && currentItem.url ? (
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
-                            value={
-                                newBody === '' &&
-                                currentItem.body &&
-                                currentItem.body !== ''
-                                    ? currentItem.body
-                                    : newBody
-                            }
+                            value={getValue(newBody, currentItem.body)}
                             onChange={(e) => {
                                 setNewBody(e.target.value);
                             }}
-                            placeholder={
-                                currentItem.body && currentItem.body !== ''
-                                    ? currentItem.body
-                                    : 'Empty'
-                            }
+                            placeholder={getPlaceholder(currentItem.body)}
                         />
                     ) : (
                         <pre
@@ -155,6 +175,7 @@ export const FileView = ({
                     />
                 )
             ) : null}
+            <BackButton />
         </Layout>
     );
 };

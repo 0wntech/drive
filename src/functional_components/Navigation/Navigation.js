@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import styles from './Navigation.module.css';
+import { bindActionCreators } from 'redux';
+import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath } from '../../actions/appActions';
-import { searchContact, setCurrentContact } from '../../actions/contactActions';
+import {
+    searchContact,
+    setCurrentContact,
+    fetchContacts,
+} from '../../actions/contactActions';
+import { navigate } from '../../utils/helper';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import { getUsernameFromWebId } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 
 const Navigation = ({
-    picture,
+    resetError,
     webId,
-    onLogout,
     setCurrentPath,
-    username,
     history,
     currentItem,
     contacts,
@@ -26,18 +30,29 @@ const Navigation = ({
     contactSearchResult,
     searchingContacts,
     searchContact,
+    fetchContacts,
+    dispatch,
 }) => {
     const [typingTimer, setTypingTimer] = useState(null);
 
+    useEffect(() => {
+        if (!contacts) fetchContacts(webId);
+    }, []);
+
     const handleChange = (selected) => {
+        resetError();
         if (selected.type === 'folder') {
             setCurrentPath(`${currentPath}/${selected.name}/`);
-            history.push('/home');
+            navigate('/home', history, dispatch);
         } else if (selected.type === 'file') {
-            history.push(`/file?f=${currentPath + selected.value}`);
+            navigate(
+                `/file?f=${currentPath + selected.value}`,
+                history,
+                dispatch
+            );
         } else if (selected.type === 'contact') {
             setCurrentContact(selected.contact);
-            history.push('/contact');
+            navigate('/contact', history, dispatch);
         }
     };
 
@@ -49,13 +64,18 @@ const Navigation = ({
     };
 
     const getSearchDropdownOptions = () => {
-        const contactOptions = [...contactSearchResult, ...contacts].map(
-            (contact) => ({
-                value: getUsernameFromWebId(contact.webId),
-                type: 'contact',
-                contact,
-            })
-        );
+        const contactSearchDropdownItems = contactSearchResult
+            ? [...contactSearchResult]
+            : [];
+        const contactsDropdownItems = contacts ? [...contacts] : [];
+        const contactOptions = [
+            ...contactSearchDropdownItems,
+            ...contactsDropdownItems,
+        ].map((contact) => ({
+            value: getUsernameFromWebId(contact.webId),
+            type: 'contact',
+            contact,
+        }));
 
         const separator = {
             label: 'People',
@@ -86,11 +106,12 @@ const Navigation = ({
                 <img
                     alt="logo"
                     onClick={() => {
+                        resetError();
                         if (webId) {
                             setCurrentPath(
-                                webId.replace('/profile/card#me', '')
+                                webId.replace('profile/card#me', '')
                             );
-                            history.push('/home');
+                            navigate('/home', history, dispatch);
                         } else {
                             history.push('/');
                         }
@@ -100,7 +121,7 @@ const Navigation = ({
                 />
             </div>
             <div className={styles.search}>
-                {currentItem ? (
+                {currentItem || contacts ? (
                     <SearchDropdown
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
@@ -114,11 +135,8 @@ const Navigation = ({
                 ) : null}
             </div>
             <NavbarMenu
+                resetError={resetError}
                 className={styles.menuWrapper}
-                onLogout={onLogout}
-                webId={webId}
-                picture={picture}
-                username={username}
             />
         </div>
     );
@@ -195,13 +213,18 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 };
 
 const mapStateToProps = (state) => ({
+    webId: state.user.webId,
     currentPath: state.app.currentPath,
     currentItem: state.app.currentItem,
     contacts: state.contact.contacts,
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
 });
-export default connect(
-    mapStateToProps,
-    { setCurrentPath, setCurrentContact, searchContact }
-)(withRouter(Navigation));
+
+export default connect(mapStateToProps, (dispatch) => ({
+    ...bindActionCreators(
+        { setCurrentPath, setCurrentContact, searchContact, fetchContacts },
+        dispatch
+    ),
+    dispatch,
+}))(withRouter(Navigation));

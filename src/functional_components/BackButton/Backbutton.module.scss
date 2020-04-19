@@ -1,0 +1,23 @@
+@import '../../../styles/constants.scss';
+
+.container {
+    bottom: calc(40px + 1em);
+    left: calc(15% + 1em);
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: $screen_m) {
+    .container {
+        position: absolute;
+        bottom: 1em;
+        left: 1em;
+        padding: 0.5em 2em;
+        border-radius: 20px;
+        background: #ffffff;
+        z-index: 4;
+        cursor: pointer;
+    }
+}
