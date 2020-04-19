@@ -299,7 +299,7 @@ export const pasteItems = (items, location) => {
 export const createFile = function(name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FILE });
-        const contentType = mime.getType(name);
+        const contentType = mime.getType(name) || 'text/plain';
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(name).host + '/',
         });
@@ -354,7 +354,7 @@ export const renameItem = function(renamedItem, value) {
                     location = location.join('/');
                     dispatch({ type: RENAME_ITEM_SUCCESS });
                     dispatch(setCurrentPath(location + '/'));
-                    dispatch(fetchCurrentItem(location + '/'));
+                    dispatch(fetchCurrentItem(location + '/', true));
                 })
                 .catch((err) => {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
