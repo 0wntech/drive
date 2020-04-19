@@ -23,6 +23,7 @@ import { isCmdPressed, handleError } from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 import { getParentFolderUrl } from '../../utils/url';
+import BackButton from '../BackButton/BackButton';
 
 const Drive = ({
     selectedItems,
@@ -227,6 +228,7 @@ const Drive = ({
                             This folder is empty
                         </p>
                     )}
+                    <BackButton />
                 </div>
             </DriveContextMenu>
         </Layout>

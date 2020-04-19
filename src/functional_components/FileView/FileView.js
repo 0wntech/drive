@@ -17,6 +17,7 @@ import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
 import { isImageType } from '../../utils/fileUtils';
+import BackButton from '../BackButton/BackButton';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -174,6 +175,7 @@ export const FileView = ({
                     />
                 )
             ) : null}
+            <BackButton />
         </Layout>
     );
 };
