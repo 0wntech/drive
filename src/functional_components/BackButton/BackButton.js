@@ -9,7 +9,6 @@ import { getRootFromWebId, getPreviousPath } from '../../utils/url';
 
 export const BackButton = ({ setCurrentPath, currentPath, webId, history }) => {
     const previousPath = getPreviousPath(currentPath);
-    console.log(previousPath);
     return (
         <div
             className={classNames(styles.container, {
