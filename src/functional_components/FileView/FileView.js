@@ -45,7 +45,11 @@ export const FileView = ({
     useEffect(() => {
         const fileParam = getFileParamsFromUrl(window.location.href).f;
         if (fileParam) {
-            if (!currentItem || !currentItem.body || !currentPath) {
+            if (
+                !currentItem ||
+                typeof currentItem.body !== 'string' ||
+                !currentPath
+            ) {
                 let options = {};
                 if (
                     mime.getType(fileParam) &&
@@ -58,7 +62,7 @@ export const FileView = ({
                 history.push('/home');
             }
         }
-    });
+    }, []);
 
     const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
     const isImage = isImageType(fileType);
