@@ -41,9 +41,4 @@
         grid-template-rows: 70px 1fr;
         grid-template-areas: 'nav' 'main';
     }
-
-    .navArea {
-      position: sticky;
-      top: 0px;
-    }
 }
