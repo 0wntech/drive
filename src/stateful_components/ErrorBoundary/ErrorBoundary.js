@@ -3,6 +3,7 @@ import styles from './ErrorBoundary.module.css';
 import { Layout } from '../../functional_components/Layout/Layout';
 import mediumEmoji from '../../assets/icons/medium_emoji.png';
 import ActionButton from '../../functional_components/ActionButton/ActionButton';
+import * as Sentry from '@sentry/browser';
 class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
@@ -14,10 +15,15 @@ class ErrorBoundary extends React.Component {
         return { hasError: true };
     }
 
-    componentDidCatch(error, info) {
+    componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
-        console.log(error, info);
+        console.log(error, errorInfo);
         this.setState({ error: error.message });
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            const eventId = Sentry.captureException(error);
+            this.setState({ eventId });
+        });
     }
 
     render() {
@@ -37,6 +43,19 @@ class ErrorBoundary extends React.Component {
                         color="blue"
                         size="sm"
                     />
+                    <ActionButton
+                        label="Report Feedback"
+                        className={styles.feedbackButton}
+                        color="white"
+                        size="sm"
+                        onClick={() =>
+                            Sentry.showReportDialog({
+                                eventId: this.state.eventId,
+                            })
+                        }
+                    >
+                        Report feedback
+                    </ActionButton>
                 </Layout>
             );
         }

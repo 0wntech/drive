@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
+    "@sentry/browser": "^5.15.5",
     "babel-jest": "^24.9.0",
     "babel-plugin-remove-test-ids": "^1.1.0",
     "classnames": "^2.2.6",
