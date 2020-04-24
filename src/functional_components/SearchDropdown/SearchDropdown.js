@@ -85,6 +85,16 @@ const customStyles = {
         display: 'flex',
         alignItems: state.data.type === 'separator' ? 'flex-end' : 'center',
     }),
+    indicatorsContainer: (provided, state) => ({
+        ...provided,
+        left: state.selectProps.menuIsOpen ? '0' : 'unset',
+        position: state.selectProps.menuIsOpen ? 'absolute' : 'unset',
+    }),
+    valueContainer: (provided, state) => ({
+        ...provided,
+        marginRight: state.selectProps.menuIsOpen ? '0' : '-48px',
+        marginLeft: state.selectProps.menuIsOpen ? '48px' : '0',
+    }),
     control: (provided, state) => {
         return {
             width: '100%',
