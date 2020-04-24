@@ -17,7 +17,7 @@ import {
     sendNotification,
     fetchCurrentItem,
     openConsentWindow,
-    openDriveMenu,
+    toggleDriveMenu,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed, handleError } from '../../utils/helper';
@@ -32,7 +32,7 @@ const Drive = ({
     currentPath,
     loadCurrentItem,
     openConsentWindow,
-    openDriveMenu,
+    toggleDriveMenu,
     isDriveMenuVisible,
     webId,
     setCurrentPath,
@@ -168,7 +168,7 @@ const Drive = ({
                     openConsentWindow(selectedItems);
                 }
             }}
-            onMore={openDriveMenu}
+            onMore={toggleDriveMenu}
         />
     );
 
@@ -260,7 +260,7 @@ const mapStateToProps = (state) => {
 export default withRouter(
     connect(mapStateToProps, {
         openConsentWindow,
-        openDriveMenu,
+        toggleDriveMenu,
         setCurrentPath,
         sendNotification,
         fetchCurrentItem,

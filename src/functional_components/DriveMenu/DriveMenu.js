@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import styles from './DriveMenu.module.scss';
 import { logout } from '../../actions/userActions';
 import {
-    closeDriveMenu,
+    toggleDriveMenu,
     copyItems,
     pasteItems,
     openConsentWindow,
@@ -13,7 +13,6 @@ import {
     openCreateFolderWindow,
     openRenameWindow,
 } from '../../actions/appActions';
-import useClickOutside from '../../hooks/useClickOutside';
 import Trash2 from '../../assets/svgIcons/Trash2';
 import Edit3 from '../../assets/svgIcons/Edit3';
 import Copy from '../../assets/svgIcons/Copy';
@@ -26,7 +25,7 @@ export const DriveMenu = ({
     isDriveMenuVisible,
     selectedItems,
     renderOption,
-    closeDriveMenu,
+    toggleDriveMenu,
     clipboard,
     pasteItems,
     copyItems,
@@ -45,7 +44,7 @@ export const DriveMenu = ({
                     !option.disabled
                         ? () => {
                               option.onClick();
-                              closeDriveMenu();
+                              toggleDriveMenu();
                           }
                         : undefined
                 }
@@ -77,23 +76,23 @@ export const DriveMenu = ({
         },
         {
             label: 'Rename',
-            onClick: () => openRenameWindow,
+            onClick: () => openRenameWindow(),
             disabled: !selectedItems || selectedItems.length !== 1,
             icon: <Edit3 />,
         },
         {
             label: 'Create Folder',
-            onClick: () => openCreateFolderWindow,
+            onClick: () => openCreateFolderWindow(),
             icon: <FolderPlus />,
         },
         {
             label: 'Create File',
-            onClick: openCreateFileWindow,
+            onClick: () => openCreateFileWindow(),
             icon: <FilePlus />,
         },
         {
             label: 'Delete',
-            onClick: openConsentWindow,
+            onClick: () => openConsentWindow(),
             disabled: !selectedItems || selectedItems.length !== 1,
             icon: <Trash2 />,
             red: true,
@@ -105,14 +104,21 @@ export const DriveMenu = ({
         },
     ];
 
-    const driveMenuWrapper = useRef(null);
-    useClickOutside(driveMenuWrapper, () => {
-        closeDriveMenu();
-    });
-
     return isDriveMenuVisible ? (
-        <div className={styles.wrapper} onClick={closeDriveMenu}>
-            <div className={styles.container} onBlur={closeDriveMenu}>
+        <div
+            className={styles.wrapper}
+            onClick={(e) => {
+                console.log(e);
+                toggleDriveMenu();
+            }}
+        >
+            <div
+                className={styles.container}
+                onClick={(e) => {
+                    console.log(e);
+                    toggleDriveMenu();
+                }}
+            >
                 {renderOption
                     ? options.map((option, index) => (
                           <div key={index} className={styles.option}>
@@ -134,7 +140,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    closeDriveMenu,
+    toggleDriveMenu,
     logout,
     copyItems,
     pasteItems,

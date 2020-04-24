@@ -42,8 +42,7 @@ import {
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
     CLEAR_ERROR,
-    OPEN_DRIVE_MENU,
-    CLOSE_DRIVE_MENU,
+    TOGGLE_DRIVE_MENU,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -195,15 +194,10 @@ export default (state = INITIAL_STATE, action) => {
                 isRenameWindowVisible: false,
                 renamedItem: null,
             };
-        case OPEN_DRIVE_MENU:
+        case TOGGLE_DRIVE_MENU:
             return {
                 ...state,
-                isDriveMenuVisible: true,
-            };
-        case CLOSE_DRIVE_MENU:
-            return {
-                ...state,
-                isDriveMenuVisible: false,
+                isDriveMenuVisible: !state.isDriveMenuVisible,
             };
         case RENAME_ITEM:
             return {

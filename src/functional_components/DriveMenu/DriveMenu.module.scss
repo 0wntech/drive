@@ -50,10 +50,6 @@
             background: #f0f0f0;
         }
 
-        .option:last-child {
-            display: none;
-        }
-
         .disabled {
             color: #8c8c8c;
             cursor: default;
@@ -83,10 +79,6 @@
             justify-self: flex-end;
             align-self: flex-end;
             border-radius: 20px 20px 0 0;
-
-            .option:nth-last-child() {
-                display: initial;
-            }
         }
     }
 }
