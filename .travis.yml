@@ -24,7 +24,8 @@ notifications:
 install: npm ci
 
 stages:
-    - name: test
+    - name: unit_test
+    - name: e2e_test
     - name: deploy_production
       if: type != pull_request AND branch = production
     - name: deploy_staging
@@ -32,13 +33,19 @@ stages:
 
 jobs:
     include:
-        - stage: test
+        - stage: unit_test
           before_install:
               # Enable user namespace cloning
               - 'sysctl kernel.unprivileged_userns_clone=1'
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov
+
+        - stage: e2e_test
+          before_install:
+              # Enable user namespace cloning
+              - 'sysctl kernel.unprivileged_userns_clone=1'
+          script:
               - npm run test:e2e
 
         - stage: deploy_production
