@@ -44,7 +44,7 @@
     "test:coverage": "npm run test:unit -- --coverage",
     "test:unit": "cross-env CI=true npm test --env=jsdom",
     "test": "cross-env CI=true react-scripts test",
-    "test:e2e": "rimraf ./user-data && jest -c ./test/e2e_tests/login.jest.config.json && jest -c ./test/e2e_tests/jest.config.json",
+    "test:e2e": "rimraf ./user-data && npm test -- -c ./test/e2e_tests/login.jest.config.json && jest -c ./test/e2e_tests/jest.config.json",
     "test:watch": "npm test --watchAll",
     "test:all": "npm run test:unit --coverage && npm run test:e2e",
     "eject": "react-scripts eject",
