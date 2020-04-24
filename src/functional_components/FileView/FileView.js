@@ -17,6 +17,7 @@ import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
 import { FileEditor } from '../FileEditor/FileEditor';
 import { isImageType } from '../../utils/fileUtils';
+import BackButton from '../BackButton/BackButton';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -44,7 +45,11 @@ export const FileView = ({
     useEffect(() => {
         const fileParam = getFileParamsFromUrl(window.location.href).f;
         if (fileParam) {
-            if (!currentItem || !currentItem.body || !currentPath) {
+            if (
+                !currentItem ||
+                typeof currentItem.body !== 'string' ||
+                !currentPath
+            ) {
                 let options = {};
                 if (
                     mime.getType(fileParam) &&
@@ -174,6 +179,7 @@ export const FileView = ({
                     />
                 )
             ) : null}
+            <BackButton />
         </Layout>
     );
 };

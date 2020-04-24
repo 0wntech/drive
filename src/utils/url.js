@@ -33,6 +33,27 @@ export const getFileParamsFromUrl = (url) => {
     return paramObj;
 };
 
+export const getPreviousPath = (url) => {
+    if (!url) return undefined;
+    const urlObject = urlUtils.parse(url);
+    const { pathname } = urlObject;
+    return pathname[pathname.length - 1] === '/'
+        ? urlUtils.format({
+              ...urlObject,
+              pathname: pathname.replace(
+                  pathname.split('/')[pathname.split('/').length - 2] + '/',
+                  ''
+              ),
+          })
+        : urlUtils.format({
+              ...urlObject,
+              pathname: pathname.replace(
+                  pathname.split('/')[pathname.split('/').length - 1],
+                  ''
+              ),
+          });
+};
+
 export const convertFolderUrlToName = (folderUrl) => {
     return folderUrl.split('/').splice(-2)[0];
 };
