@@ -1,0 +1,237 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ItemList ItemList Snapshot matches the snapshot for folders 1`] = `
+<div
+  className="listContainer"
+>
+  <MyItem
+    contextMenuOptions={
+      Array [
+        Object {
+          "disabled": false,
+          "label": "Info",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Copy*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": undefined,
+          "label": "Paste*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Rename",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Manage Access",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": true,
+          "label": "Share*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Delete",
+          "onClick": [Function],
+        },
+      ]
+    }
+    label="hehe"
+    onClick={[Function]}
+  />
+  <MyItem
+    contextMenuOptions={
+      Array [
+        Object {
+          "disabled": false,
+          "label": "Info",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Copy*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": undefined,
+          "label": "Paste*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Rename",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Manage Access",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": true,
+          "label": "Share*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Delete",
+          "onClick": [Function],
+        },
+      ]
+    }
+    label="hihi"
+    onClick={[Function]}
+  />
+</div>
+`;
+
+exports[`ItemList ItemList Snapshot matches the snapshot for items 1`] = `
+<div
+  className="listContainer"
+>
+  <MyItem
+    contextMenuOptions={
+      Array [
+        Object {
+          "disabled": false,
+          "label": "Info",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Copy*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": undefined,
+          "label": "Paste*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Rename",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Manage Access",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": true,
+          "label": "Share*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Delete",
+          "onClick": [Function],
+        },
+      ]
+    }
+    label="haha.jpg"
+    onClick={[Function]}
+  />
+</div>
+`;
+
+exports[`ItemList ItemList Snapshot matches the snapshot for selected folders 1`] = `
+<div
+  className="listContainer"
+>
+  <MyItem
+    contextMenuOptions={
+      Array [
+        Object {
+          "disabled": false,
+          "label": "Info",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Copy*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": undefined,
+          "label": "Paste*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Rename",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Manage Access",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": true,
+          "label": "Share*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Delete",
+          "onClick": [Function],
+        },
+      ]
+    }
+    label="hehe"
+    onClick={[Function]}
+  />
+  <MyItem
+    contextMenuOptions={
+      Array [
+        Object {
+          "disabled": false,
+          "label": "Info",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Copy*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": undefined,
+          "label": "Paste*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Rename",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Manage Access",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": true,
+          "label": "Share*",
+          "onClick": [Function],
+        },
+        Object {
+          "disabled": false,
+          "label": "Delete",
+          "onClick": [Function],
+        },
+      ]
+    }
+    label="hihi"
+    onClick={[Function]}
+  />
+</div>
+`;

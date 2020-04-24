@@ -7,6 +7,7 @@ exports[`File should render correctly (image) 1`] = `
 >
   <div
     className="container"
+    data-test-id="file-Test.png"
     onClick={[MockFunction]}
   >
     <div
@@ -27,11 +28,11 @@ exports[`File should render correctly (image) 1`] = `
         />
       </div>
     </div>
-  </div>
-  <div
-    className="label"
-  >
-    Test.png
+    <div
+      className="label"
+    >
+      Test.png
+    </div>
   </div>
 </div>
 `;
@@ -43,22 +44,32 @@ exports[`File should render correctly (no image) 1`] = `
 >
   <div
     className="container"
+    data-test-id="file-Test.png"
     onClick={[MockFunction]}
   >
     <div
       className="innerContainer"
     >
-      <img
-        alt="file"
-        className="icon"
-        src="https://owntech.de/favicon.ico"
-      />
+      <div
+        className="iconContainer"
+      >
+        <img
+          alt="file"
+          className="thumbnail"
+          src="https://bejow.solid.community/1234/Test.png"
+        />
+        <img
+          alt="file"
+          className="icon"
+          src="https://owntech.de/favicon.ico"
+        />
+      </div>
     </div>
-  </div>
-  <div
-    className="label"
-  >
-    Test
+    <div
+      className="label"
+    >
+      Test.png
+    </div>
   </div>
 </div>
 `;

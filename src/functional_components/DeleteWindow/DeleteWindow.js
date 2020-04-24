@@ -12,7 +12,7 @@ export default function DeleteWindow({
     windowName,
     visible,
 }) {
-    const multiple = selectedItems.length > 1;
+    const multiple = selectedItems ? selectedItems.length > 1 : null;
 
     return (
         <Window
@@ -30,14 +30,16 @@ export default function DeleteWindow({
                 before, deleting it will make it unavailable for pasting.
             </p>
             <div className={styles.selectedFiles}>
-                {selectedItems.map((item, index) => {
-                    return (
-                        <SelectedFile
-                            fileName={decodeURIComponent(item)}
-                            key={index}
-                        />
-                    );
-                })}
+                {selectedItems
+                    ? selectedItems.map((item, index) => {
+                          return (
+                              <SelectedFile
+                                  item={decodeURIComponent(item)}
+                                  key={index}
+                              />
+                          );
+                      })
+                    : null}
             </div>
             <div className={styles.buttonBar}>
                 <ActionButton

@@ -1,0 +1,47 @@
+@import '../styles/constants.scss';
+
+.spinner {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.grid {
+    min-height: 0;
+    display: grid;
+    height: 100%;
+    margin: 0 15% 0 15%;
+
+    grid-template-areas:
+        '.'
+        'nav'
+        '.'
+        'main'
+        '.';
+    grid-template-rows: 40px 80px 20px 1fr 40px;
+}
+
+.navArea {
+    grid-area: nav;
+    /* overflow: hidden;
+    min-width: 0; */
+    align-items: center;
+    display: flex;
+    z-index: 4;
+}
+
+.mainArea {
+    grid-area: main;
+    height: 100%;
+    overflow: hidden;
+}
+
+@media (max-width: $screen_m) {
+    .grid {
+        margin: initial;
+        grid-template-rows: 70px 1fr;
+        grid-template-areas: 'nav' 'main';
+    }
+}

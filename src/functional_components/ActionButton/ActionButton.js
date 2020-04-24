@@ -3,12 +3,21 @@ import PropTypes from 'prop-types';
 import styles from './ActionButton.module.css';
 import classNames from 'classnames';
 
-const ActionButton = ({ label, className, color, onClick, size, disabled }) => {
+const ActionButton = ({
+    label,
+    className,
+    color,
+    onClick,
+    size,
+    disabled,
+    dataId,
+}) => {
     color = color ? color : 'blue';
     size = size ? size : 'lg';
 
     return (
         <div
+            data-test-id={dataId}
             className={classNames(
                 styles.container,
                 className,
@@ -31,6 +40,7 @@ ActionButton.propTypes = {
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
+    dataId: PropTypes.string,
 };
 
 export default ActionButton;

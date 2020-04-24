@@ -19,9 +19,12 @@
     flex-direction: column;
     margin-top: -40px;
     width: 100%;
-    font-size: 5rem;
-    font-weight: 300;
-    color: #666;
+}
+
+.slogan {
+    font-size: 2em;
+    font-weight: 400;
+    color: #000;
     text-align: center;
 }
 
@@ -29,7 +32,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 64px;
+    margin-top: 1em;
     font-size: 2rem;
 }
 

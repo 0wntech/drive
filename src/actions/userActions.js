@@ -16,10 +16,8 @@ import {
 import User from 'ownuser';
 import auth from 'solid-auth-client';
 import rdf from 'rdflib';
-import { fetchContacts } from './contactActions';
-import { setCurrentPath } from './appActions';
 
-export const login = (username, password) => {
+export const login = () => {
     return (dispatch) => {
         dispatch({ type: LOGIN });
         auth.currentSession()
@@ -28,7 +26,6 @@ export const login = (username, password) => {
                     dispatch({ type: LOGIN_FAIL, payload: 'No Session' });
                 } else if (session) {
                     dispatch(setSessionInfo(session));
-                    dispatch(fetchContacts(session.webId));
                 }
             })
             .catch((error) => {
@@ -37,11 +34,20 @@ export const login = (username, password) => {
     };
 };
 
+export const logout = () => {
+    return (dispatch) => {
+        auth.logout().then(() => {
+            dispatch(setWebId(null));
+            window.localStorage.removeItem('solid-auth-client');
+            window.location = '/';
+        });
+    };
+};
+
 const setSessionInfo = (session) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_SUCCESS, payload: session });
         dispatch({ type: SET_WEBID, payload: session.webId });
-        dispatch(setCurrentPath(session.webId.replace('profile/card#me', '')));
         dispatch(fetchUser(session.webId));
     };
 };

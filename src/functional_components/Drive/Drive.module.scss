@@ -1,0 +1,60 @@
+@import '../../../styles/constants.scss';
+
+.fileMarkup li {
+    list-style: none;
+}
+
+.toolbar {
+    grid-template-rows: 5fr;
+}
+
+.toolbarHeader {
+    letter-spacing: 0.05em;
+    font-size: 18px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    align-self: center;
+}
+
+.mainArea {
+    grid-area: main;
+    height: 100%;
+    padding: 0 6.3%;
+}
+
+.emptyMessage {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: 40px 23fr;
+    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-areas: 'toolbar toolbar toolbar' 'main main main';
+}
+
+.breadcrumbsContainer {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+.itemList {
+    height: 100%;
+    overflow-y: auto;
+}
+
+@media (max-width: $screen_m) {
+    .mainArea {
+        padding: 0 16px;
+    }
+
+    .grid {
+      grid-template-rows: 1fr;
+      grid-template-columns: 12fr;
+      grid-template-areas: 'main';
+    }
+}

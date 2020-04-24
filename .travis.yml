@@ -1,7 +1,13 @@
 language: node_js
 node_js:
     - 10
+dist: trusty
 warnings_are_errors: false
+addons:
+    apt:
+        packages:
+            # This is required to run new chrome on old trusty
+            - libnss3
 
 branches:
     only:
@@ -22,17 +28,21 @@ stages:
     - name: deploy_production
       if: type != pull_request AND branch = production
     - name: deploy_staging
-      if: type != pull_request AND branch = staging
+      if: type != pull_request AND branch = master
 
 jobs:
     include:
         - stage: test
+          before_install:
+              # Enable user namespace cloning
+              - 'sysctl kernel.unprivileged_userns_clone=1'
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov
+              - npm run test:e2e
 
         - stage: deploy_production
-          script: CI=false NODE_OPTIONS=--max_old_space_size=8192 npm run build
+          script: CI=false NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v
           deploy:
               on:
                   branch: production
@@ -46,7 +56,7 @@ jobs:
               local_dir: build
 
         - stage: deploy_staging
-          script: CI=false  NODE_OPTIONS=--max_old_space_size=8192 npm run build
+          script: CI=false  NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v
           deploy:
               on:
                   branch: staging
