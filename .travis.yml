@@ -43,6 +43,7 @@ jobs:
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov
+          cleanup: true
 
         - stage: e2e_test
           before_install:
@@ -50,6 +51,7 @@ jobs:
               - 'sysctl kernel.unprivileged_userns_clone=1'
           script:
               - npm run test:e2e
+          cleanup: true
 
         - stage: deploy_production
           script: CI=false NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v

@@ -12,6 +12,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "file-saver": "^2.0.2",
+    "logrocket": "^1.0.7",
     "mime": "^2.4.4",
     "node-sass": "^4.13.1",
     "ownfiles": "^1.2.13",
