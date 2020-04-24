@@ -28,14 +28,14 @@ stages:
     - name: deploy_production
       if: type != pull_request AND branch = production
     - name: deploy_staging
-      if: type != pull_request AND branch = staging
+      if: type != pull_request AND branch = master
 
 jobs:
     include:
         - stage: test
           before_install:
               # Enable user namespace cloning
-              - "sysctl kernel.unprivileged_userns_clone=1"
+              - 'sysctl kernel.unprivileged_userns_clone=1'
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov
