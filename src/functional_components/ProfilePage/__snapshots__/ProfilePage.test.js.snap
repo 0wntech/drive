@@ -1,18 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
-<UNDEFINED
+<Layout
   className="grid"
+  isLoading={false}
   label="Profile"
-  toolbarChildrenRight={
-    <div
-      className="iconWrapper"
-    >
-      <SvgSettings
-        className="settings"
-      />
-    </div>
-  }
 >
   <div
     className="profileContainer"
@@ -29,27 +21,25 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
         }
       />
       <div
-        className="nameContainer"
+        className="headDataContainer"
       >
-        <SingleValue
-          className="nameLabel"
-          dataKey="name"
-          editable={false}
-          placholder="Enter Name.."
-          setValue={[Function]}
-          value="Ben"
-        />
-        <div
-          className="webIdLabel"
-        >
-          https://bejow.owntech.de
+        <div>
+          <SingleValue
+            className="nameLabel"
+            dataKey="name"
+            editable={false}
+            placholder="Enter Name.."
+            setValue={[Function]}
+            value="Ben"
+          />
+          <div
+            className="webIdLabel"
+          >
+            https://bejow.owntech.de
+          </div>
         </div>
-      </div>
-      <div
-        className="bio"
-      >
         <SingleValue
-          className="bioLabel"
+          className="bioLabel multiline"
           editable={false}
           placeholder="Add bio.."
           setValue={[Function]}
@@ -99,5 +89,5 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       }
     />
   </div>
-</UNDEFINED>
+</Layout>
 `;

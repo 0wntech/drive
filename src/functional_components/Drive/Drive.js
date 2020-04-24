@@ -3,7 +3,7 @@ import url from 'url';
 import mime from 'mime';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import styles from './Drive.module.css';
+import styles from './Drive.module.scss';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import { ItemList } from '../ItemList';
 import fileUtils from '../../utils/fileUtils';
@@ -19,7 +19,7 @@ import {
     openConsentWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
-import { isCmdPressed } from '../../utils/helper';
+import { isCmdPressed, handleError } from '../../utils/helper';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 import { getParentFolderUrl } from '../../utils/url';
@@ -36,18 +36,35 @@ const Drive = ({
     fetchCurrentItem,
     history,
     downloadFile,
+    error,
+    loadDeletion,
+    loadPaste,
 }) => {
+    const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
         if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
             if (!currentPath) {
-                currentPath = getRootFromWebId(webId);
+                currentPath =
+                    appState && appState.currentPath
+                        ? appState.currentPath
+                        : getRootFromWebId(webId);
+                setCurrentPath(currentPath);
+            } else {
+                currentPath = getParentFolderUrl(currentPath);
                 setCurrentPath(currentPath);
             }
-            currentPath = getParentFolderUrl(currentPath);
-            setCurrentPath(currentPath);
         }
-    });
-
+        return () => {
+            localStorage.setItem(
+                'appState',
+                JSON.stringify({
+                    ...appState,
+                    currentPath: currentPath,
+                })
+            );
+        };
+    }, []);
+    handleError(error);
     // Event Handlers
     const loadFile = (url, event = {}) => {
         if (url.endsWith('/')) {
@@ -154,7 +171,6 @@ const Drive = ({
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    console.log(path);
                     setCurrentPath(path);
                 }}
                 breadcrumbs={
@@ -165,6 +181,10 @@ const Drive = ({
         </div>
     ) : null;
 
+    const noFilesAndFolders = () => {
+        return currentItem.folders.length < 1 && currentItem.files.length < 1;
+    };
+
     return (
         <Layout
             toolbarChildrenLeft={toolbarLeft}
@@ -172,6 +192,7 @@ const Drive = ({
             className={styles.grid}
             label="Drive"
             onClick={clearSelection}
+            isLoading={loadDeletion || loadPaste || loadCurrentItem}
         >
             <DriveContextMenu
                 className={styles.mainArea}
@@ -181,17 +202,17 @@ const Drive = ({
                 <div className={styles.container}>
                     <Windows />
                     {currentItem &&
-                    (currentItem.folders || currentItem.files) ? (
+                    currentItem.folders &&
+                    currentItem.files &&
+                    !noFilesAndFolders() ? (
                         <div>
-                            {currentItem.folders.length > 0 ? (
-                                <ItemList
-                                    selectedItems={selectedItems}
-                                    items={currentItem.folders}
-                                    currPath={currentPath}
-                                    image={folder}
-                                    onItemClick={loadFolder}
-                                />
-                            ) : null}
+                            <ItemList
+                                selectedItems={selectedItems}
+                                items={currentItem.folders}
+                                currPath={currentPath}
+                                image={folder}
+                                onItemClick={loadFolder}
+                            />
                             <ItemList
                                 selectedItems={selectedItems}
                                 isFile
@@ -202,7 +223,9 @@ const Drive = ({
                             />
                         </div>
                     ) : (
-                        undefined
+                        <p className={styles.emptyMessage}>
+                            This folder is empty
+                        </p>
                     )}
                 </div>
             </DriveContextMenu>
@@ -217,6 +240,9 @@ const mapStateToProps = (state) => {
         selectedItems: state.app.selectedItems,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
+        error: state.app.error,
+        loadDeletion: state.app.loadDeletion,
+        loadPaste: state.app.loadPaste,
         loadCurrentItem: state.app.loadCurrentItem,
     };
 };

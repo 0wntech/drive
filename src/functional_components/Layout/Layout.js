@@ -1,8 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import styles from './Layout.module.css';
+import styles from './Layout.module.scss';
 import { ClassicSpinner } from 'react-spinners-kit';
 
 export const Layout = ({
@@ -14,11 +13,7 @@ export const Layout = ({
     toolbarClassName,
     label,
     onClick,
-    updatingFile,
-    loadCurrentItem,
-    loadDeletion,
-    loadPaste,
-    updatingProfile,
+    isLoading,
 }) => {
     return (
         <div className={classNames(styles.grid)}>
@@ -43,22 +38,12 @@ export const Layout = ({
                 onClick={onClick}
                 className={classNames(styles.content, className)}
             >
-                {loadCurrentItem ||
-                loadDeletion ||
-                loadPaste ||
-                updatingFile ||
-                updatingProfile ? (
+                {isLoading ? (
                     <div className={styles.spinner}>
                         <ClassicSpinner
                             size={30}
                             color="#686769"
-                            loading={
-                                loadCurrentItem ||
-                                loadDeletion ||
-                                loadPaste ||
-                                updatingFile ||
-                                updatingProfile
-                            }
+                            loading={isLoading}
                         />
                     </div>
                 ) : (
@@ -78,14 +63,4 @@ Layout.propTypes = {
     label: PropTypes.string,
 };
 
-const mapStateToProps = (state) => {
-    return {
-        loadCurrentItem: state.app.loadCurrentItem,
-        loadDeletion: state.app.loadDeletion,
-        loadPaste: state.app.loadPaste,
-        updatingFile: state.app.updatingFile,
-        updatingProfile: state.user.updatingProfile,
-    };
-};
-
-export default connect(mapStateToProps, {})(Layout);
+export default Layout;

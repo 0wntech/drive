@@ -9,10 +9,5 @@ exports[`BreadcrumbItem should render correctly 1`] = `
   >
     Test
   </div>
-  <div
-    className="seperator"
-  >
-    /
-  </div>
 </div>
 `;

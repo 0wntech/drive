@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Window } from '../Window';
 import styles from './InputWindow.module.css';
 import ActionButton from '../ActionButton/ActionButton';
+import utils from '../../utils/fileUtils.js';
 
 export default function CreateWindow({
     onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
@@ -11,8 +12,10 @@ export default function CreateWindow({
     info,
     placeholder,
     visible,
+    currentItem,
 }) {
     const [value, setValue] = useState('');
+    const allow = utils.allowFileName(value, currentItem);
     return (
         <Window visible={visible} windowName={windowName} onClose={onClose}>
             <p>{info}</p>
@@ -37,6 +40,7 @@ export default function CreateWindow({
                         onSubmit(value);
                         onClose();
                     }}
+                    disabled={!allow}
                     size="lg"
                     color="green"
                     label="Confirm"
