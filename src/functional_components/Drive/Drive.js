@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import classNames from 'classnames';
 import url from 'url';
 import mime from 'mime';
 import { connect } from 'react-redux';
@@ -194,7 +195,9 @@ const Drive = ({
         <Layout
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={toolbarRight}
-            className={styles.grid}
+            className={classNames(styles.grid, {
+                [styles.noScroll]: isDriveMenuVisible,
+            })}
             label="Drive"
             onClick={clearSelection}
             isLoading={loadDeletion || loadPaste || loadCurrentItem}

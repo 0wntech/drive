@@ -6,6 +6,7 @@
     background: rgba($color: #000, $alpha: 0.2);
     grid-area: main;
     z-index: 4;
+    max-height: calc(100vh - 220px);
 
     .container {
         padding: 10px 32px;
