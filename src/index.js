@@ -8,10 +8,8 @@ import ReduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
 import { BrowserRouter } from 'react-router-dom';
-import LogRocket from 'logrocket';
 
 // Performance Tracking
-LogRocket.init('jc2kga/drive');
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
 ReactDOM.render(
