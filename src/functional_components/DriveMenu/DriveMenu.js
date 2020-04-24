@@ -76,30 +76,30 @@ export const DriveMenu = ({
         },
         {
             label: 'Rename',
-            onClick: () => openRenameWindow(),
+            onClick: openRenameWindow,
             disabled: !selectedItems || selectedItems.length !== 1,
             icon: <Edit3 />,
         },
         {
             label: 'Create Folder',
-            onClick: () => openCreateFolderWindow(),
+            onClick: openCreateFolderWindow,
             icon: <FolderPlus />,
         },
         {
             label: 'Create File',
-            onClick: () => openCreateFileWindow(),
+            onClick: openCreateFileWindow,
             icon: <FilePlus />,
         },
         {
             label: 'Delete',
-            onClick: () => openConsentWindow(),
+            onClick: openConsentWindow,
             disabled: !selectedItems || selectedItems.length !== 1,
             icon: <Trash2 />,
             red: true,
         },
         {
             label: 'Logout',
-            onClick: () => logout(),
+            onClick: logout,
             icon: <Logout />,
         },
     ];
