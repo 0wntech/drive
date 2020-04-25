@@ -13,7 +13,6 @@
         justify-self: center;
         align-self: center;
         width: 400px;
-        max-height: 400px;
         overflow-y: auto;
         border: 2px solid rgba($color: #000, $alpha: 0.2);
         border-radius: 20px;
@@ -71,6 +70,7 @@
         width: 100%;
         justify-content: flex-end;
         align-self: flex-end;
+        max-height: initial;
 
         .container {
             border: none;
