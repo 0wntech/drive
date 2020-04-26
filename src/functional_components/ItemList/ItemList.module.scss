@@ -17,3 +17,10 @@
     grid-gap: 20px 20px;
   }
 }
+
+@media (max-width: $screen_s) {
+  .listContainer {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-gap: 20px 20px;
+  }
+}

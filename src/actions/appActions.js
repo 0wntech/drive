@@ -43,6 +43,7 @@ import {
     CREATE_FOLDER,
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
+    TOGGLE_DRIVE_MENU,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -406,6 +407,12 @@ export const openRenameWindow = function(item) {
 export const closeRenameWindow = function() {
     return (dispatch) => {
         dispatch({ type: CLOSE_RENAME_WINDOW });
+    };
+};
+
+export const toggleDriveMenu = function() {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_DRIVE_MENU });
     };
 };
 
