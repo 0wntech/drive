@@ -108,9 +108,6 @@
         padding-left: 16px;
         padding: 8px 0 0 16px;
 
-        .searchDropdown {
-        }
-
         .brand {
             display: none;
         }
@@ -119,15 +116,16 @@
             display: none;
         }
     }
+    .iconContainer {
+        .folderIcon {
+            height: 24px;
+            width: auto;
+        }
 
-    .folderIcon {
-        height: 24px;
-        width: auto;
-    }
-
-    .fileIcon {
-        height: 28px;
-        width: auto;
+        .fileIcon {
+            height: 28px;
+            width: auto;
+        }
     }
 
     .iconContainer {
