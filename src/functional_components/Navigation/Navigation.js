@@ -57,6 +57,7 @@ const Navigation = ({
             setCurrentContact(selected.contact);
             navigate('/contact', history, dispatch);
         }
+        toggleSearchbar();
     };
 
     const handleInputChange = (searchText) => {

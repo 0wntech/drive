@@ -36,12 +36,6 @@ export default function SearchDropdown({
         );
     };
 
-    const handleMenuClose = () => {
-        if (isSearchBarExpanded) {
-            toggleSearchbar();
-        }
-    };
-
     const handleMenuOpen = () => {
         // conditional because menu triggers this event at every key input
         // --> prevent unneccessary state updates
@@ -64,8 +58,8 @@ export default function SearchDropdown({
             menuIsOpen={isSearchBarExpanded}
             onInputChange={onInputChange}
             filterOption={filterOption}
+            openMenuOnClick={true}
             onMenuOpen={handleMenuOpen}
-            onMenuClose={handleMenuClose}
         />
     );
 
