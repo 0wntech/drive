@@ -10,13 +10,13 @@
 }
 
 .fileIcon {
-    height: 28px;
-    width: auto;
+    width: 24px;
+    height: 32px;
 }
 
 .folderIcon {
-    height: 24px;
-    width: auto;
+    width: 42px;
+    height: 32px;
 }
 
 .iconContainer {
@@ -118,6 +118,16 @@
         .menuWrapper {
             display: none;
         }
+    }
+
+    .folderIcon {
+        height: 24px;
+        width: auto;
+    }
+
+    .fileIcon {
+        height: 28px;
+        width: auto;
     }
 
     .iconContainer {
