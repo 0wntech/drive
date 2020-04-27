@@ -427,7 +427,6 @@ export const createFolder = function(name, path) {
 };
 
 export const setSearchbarStatus = (status) => {
-    console.log('set searchbar');
     return (dispatch) => {
         dispatch({ type: SET_SEARCHBAR_STATUS, payload: status });
     };
