@@ -17,7 +17,7 @@ import {
     sendNotification,
     fetchCurrentItem,
     openConsentWindow,
-    setSearchbarStatus,
+    toggleSearchbar,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed, handleError } from '../../utils/helper';
@@ -40,7 +40,7 @@ const Drive = ({
     error,
     loadDeletion,
     loadPaste,
-    setSearchbarStatus,
+    toggleSearchbar,
     isSearchBarExpanded,
 }) => {
     const appState = JSON.parse(localStorage.getItem('appState'));
@@ -123,7 +123,7 @@ const Drive = ({
 
     const handleClick = (e) => {
         if (isSearchBarExpanded) {
-            setSearchbarStatus(false);
+            toggleSearchbar();
             e.stopPropagation();
         } else {
             clearSelection(e);
@@ -225,7 +225,7 @@ const Drive = ({
                                 image={folder}
                                 onItemClick={
                                     isSearchBarExpanded
-                                        ? () => setSearchbarStatus(false)
+                                        ? toggleSearchbar
                                         : loadFolder
                                 }
                             />
@@ -237,7 +237,7 @@ const Drive = ({
                                 image={fileIcon}
                                 onItemClick={
                                     isSearchBarExpanded
-                                        ? () => setSearchbarStatus(false)
+                                        ? toggleSearchbar
                                         : loadFile
                                 }
                             />
@@ -275,6 +275,6 @@ export default withRouter(
         sendNotification,
         fetchCurrentItem,
         setSelection,
-        setSearchbarStatus,
+        toggleSearchbar,
     })(Drive)
 );

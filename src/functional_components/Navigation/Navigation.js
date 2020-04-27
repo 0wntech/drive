@@ -7,7 +7,7 @@ import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
-import { setCurrentPath, setSearchbarStatus } from '../../actions/appActions';
+import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
 import {
     searchContact,
     setCurrentContact,
@@ -33,7 +33,7 @@ const Navigation = ({
     searchContact,
     fetchContacts,
     dispatch,
-    setSearchbarStatus,
+    toggleSearchbar,
     isSearchBarExpanded,
 }) => {
     const [typingTimer, setTypingTimer] = useState(null);
@@ -138,7 +138,7 @@ const Navigation = ({
                         items={getSearchDropdownOptions()}
                         loading={searchingContacts}
                         filterOption={customFilter}
-                        setSearchbarStatus={setSearchbarStatus}
+                        toggleSearchbar={toggleSearchbar}
                         isSearchBarExpanded={isSearchBarExpanded}
                     />
                 ) : null}
@@ -238,7 +238,7 @@ export default connect(mapStateToProps, (dispatch) => ({
             setCurrentContact,
             searchContact,
             fetchContacts,
-            setSearchbarStatus,
+            toggleSearchbar,
         },
         dispatch
     ),

@@ -42,7 +42,7 @@ import {
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
     CLEAR_ERROR,
-    SET_SEARCHBAR_STATUS,
+    TOGGLE_SEARCHBAR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -282,8 +282,11 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, creatingFolder: false };
         case CREATE_FOLDER_FAILURE:
             return { ...state, creatingFolder: false };
-        case SET_SEARCHBAR_STATUS:
-            return { ...state, isSearchBarExpanded: payload };
+        case TOGGLE_SEARCHBAR:
+            return {
+                ...state,
+                isSearchBarExpanded: !state.isSearchBarExpanded,
+            };
         default:
             return state;
     }

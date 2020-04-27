@@ -43,7 +43,7 @@ import {
     CREATE_FOLDER,
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
-    SET_SEARCHBAR_STATUS,
+    TOGGLE_SEARCHBAR,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -426,8 +426,8 @@ export const createFolder = function(name, path) {
     };
 };
 
-export const setSearchbarStatus = (status) => {
+export const toggleSearchbar = () => {
     return (dispatch) => {
-        dispatch({ type: SET_SEARCHBAR_STATUS, payload: status });
+        dispatch({ type: TOGGLE_SEARCHBAR });
     };
 };

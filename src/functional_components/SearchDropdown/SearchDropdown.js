@@ -15,7 +15,7 @@ export default function SearchDropdown({
     onInputChange,
     filterOption,
     loading,
-    setSearchbarStatus,
+    toggleSearchbar,
     isSearchBarExpanded,
 }) {
     const DropdownIndicator = (props) => {
@@ -38,7 +38,7 @@ export default function SearchDropdown({
 
     const handleMenuClose = () => {
         if (isSearchBarExpanded) {
-            setSearchbarStatus(false);
+            toggleSearchbar();
         }
     };
 
@@ -46,7 +46,7 @@ export default function SearchDropdown({
         // conditional because menu triggers this event at every key input
         // --> prevent unneccessary state updates
         if (!isSearchBarExpanded) {
-            setSearchbarStatus(true);
+            toggleSearchbar();
         }
     };
 
