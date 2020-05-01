@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Search from '../../assets/svgIcons/Search';
+
 export default function SearchDropdown({
     items,
     formatOptionLabel,
@@ -14,6 +15,8 @@ export default function SearchDropdown({
     onInputChange,
     filterOption,
     loading,
+    toggleSearchbar,
+    isSearchBarExpanded,
 }) {
     const DropdownIndicator = (props) => {
         return (
@@ -33,42 +36,42 @@ export default function SearchDropdown({
         );
     };
 
+    const handleMenuOpen = () => {
+        // conditional because menu triggers this event at every key input
+        // --> prevent unneccessary state updates
+        if (!isSearchBarExpanded) {
+            toggleSearchbar();
+        }
+    };
+
+    const select = (
+        <Select
+            components={{ DropdownIndicator }}
+            placeholder={placeholder}
+            styles={customStyles}
+            formatOptionLabel={formatOptionLabel}
+            options={loading ? [] : items}
+            onChange={onChange}
+            className={className}
+            classNamePrefix="search"
+            value={null}
+            menuIsOpen={isSearchBarExpanded}
+            onInputChange={onInputChange}
+            filterOption={filterOption}
+            openMenuOnClick={true}
+            onMenuOpen={handleMenuOpen}
+            noOptionsMessage={() =>
+                loading ? 'Loading results...' : 'No search results'
+            }
+        />
+    );
+
     return (
-        <div className={classNames(styles.container, className)}>
-            <Select
-                components={{ DropdownIndicator }}
-                placeholder={placeholder}
-                styles={customStyles}
-                formatOptionLabel={formatOptionLabel}
-                options={items}
-                onChange={onChange}
-                className={className}
-                classNamePrefix="search"
-                value={null}
-                onInputChange={onInputChange}
-                filterOption={filterOption}
-            />
-        </div>
+        <div className={classNames(styles.container, className)}>{select}</div>
     );
 }
 
 const customStyles = {
-    placeholder: (provided) => ({
-        ...provided,
-        fontSize: '22px',
-        marginLeft: '-9px',
-    }),
-    container: (provided) => ({
-        ...provided,
-        display: 'flex',
-        height: '80%',
-        width: '100%    ',
-    }),
-    input: (provided) => ({
-        ...provided,
-        fontSize: '22px',
-        marginLeft: '-9px',
-    }),
     option: (provided, state) => ({
         ...provided,
         padding:
@@ -76,32 +79,26 @@ const customStyles = {
                 ? '8px 12px 3px 0'
                 : '8px 12px 8px 0',
         height: state.data.type === 'separator' ? 25 : 64,
-        display: 'flex',
+        display:
+            state.data.type === 'separator' && state.data.loading
+                ? 'none'
+                : 'flex',
         alignItems: state.data.type === 'separator' ? 'flex-end' : 'center',
     }),
-    menu: (provided) => ({
-        // none of react-select's styles are passed to <Control />
+    indicatorsContainer: (provided, state) => ({
         ...provided,
-        borderRadius: '0 0 20px 20px',
-        overflow: 'hidden',
-        marginTop: 0,
-        marginBottom: 0,
-        zIndex: 1,
-        boxShadow: '0 7px 6px 0 rgba(0, 0, 0, 0.25)',
-        top: 'calc(100% - 3px)',
+        left: state.selectProps.menuIsOpen ? '0' : 'unset',
+        top: state.selectProps.menuIsOpen ? '50%' : 'unset',
+        transform: state.selectProps.menuIsOpen
+            ? 'translate(0, -50%)'
+            : 'unset',
+
+        position: state.selectProps.menuIsOpen ? 'absolute' : 'unset',
     }),
-    menuList: (provided) => ({
+    valueContainer: (provided, state) => ({
         ...provided,
-        paddingTop: '0px',
-        paddinBottom: '0px',
-    }),
-    indicatorSeparator: (provided) => ({
-        display: 'none',
-    }),
-    indicatorsContainer: (provided) => ({
-        ...provided,
-        minWidth: 78,
-        justifyContent: 'center',
+        marginRight: state.selectProps.menuIsOpen ? '0' : '-48px',
+        marginLeft: state.selectProps.menuIsOpen ? '78px' : '0',
     }),
     control: (provided, state) => {
         return {

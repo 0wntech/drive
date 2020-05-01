@@ -43,6 +43,7 @@ import {
     CREATE_FOLDER,
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
+    TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
 } from './types';
 import auth from 'solid-auth-client';
@@ -429,5 +430,11 @@ export const createFolder = function(name, path) {
             .catch((err) => {
                 dispatch({ type: CREATE_FOLDER_FAILURE, payload: err });
             });
+    };
+};
+
+export const toggleSearchbar = () => {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_SEARCHBAR });
     };
 };

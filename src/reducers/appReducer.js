@@ -42,6 +42,7 @@ import {
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
     CLEAR_ERROR,
+    TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
 } from '../actions/types';
 
@@ -73,6 +74,7 @@ const INITIAL_STATE = {
     isConsentWindowVisible: false,
     creatingFile: false,
     creatingFolder: false,
+    isSearchBarExpanded: false,
     isDriveMenuVisible: false,
 };
 
@@ -287,6 +289,11 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, creatingFolder: false };
         case CREATE_FOLDER_FAILURE:
             return { ...state, creatingFolder: false };
+        case TOGGLE_SEARCHBAR:
+            return {
+                ...state,
+                isSearchBarExpanded: !state.isSearchBarExpanded,
+            };
         default:
             return state;
     }
