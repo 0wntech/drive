@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import classNames from 'classnames';
 import url from 'url';
 import mime from 'mime';
 import { connect } from 'react-redux';
@@ -18,12 +19,14 @@ import {
     fetchCurrentItem,
     openConsentWindow,
     toggleSearchbar,
+    toggleDriveMenu,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed, handleError } from '../../utils/helper';
+import { getParentFolderUrl } from '../../utils/url';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
-import { getParentFolderUrl } from '../../utils/url';
+import DriveMenu from '../DriveMenu/DriveMenu';
 
 const Drive = ({
     selectedItems,
@@ -31,6 +34,8 @@ const Drive = ({
     currentPath,
     loadCurrentItem,
     openConsentWindow,
+    toggleDriveMenu,
+    isDriveMenuVisible,
     webId,
     setCurrentPath,
     setSelection,
@@ -176,6 +181,7 @@ const Drive = ({
                     openConsentWindow(selectedItems);
                 }
             }}
+            onMore={toggleDriveMenu}
         />
     );
 
@@ -201,11 +207,17 @@ const Drive = ({
         <Layout
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={toolbarRight}
-            className={styles.grid}
+            className={classNames(styles.grid, {
+                [styles.noScroll]: isDriveMenuVisible,
+            })}
             label="Drive"
             onClick={handleClick}
             isLoading={loadDeletion || loadPaste || loadCurrentItem}
         >
+            <DriveMenu
+                isDriveMenuVisible={isDriveMenuVisible}
+                selectedItems={selectedItems}
+            />
             <DriveContextMenu
                 className={styles.mainArea}
                 drive
@@ -265,12 +277,14 @@ const mapStateToProps = (state) => {
         loadPaste: state.app.loadPaste,
         loadCurrentItem: state.app.loadCurrentItem,
         isSearchBarExpanded: state.app.isSearchBarExpanded,
+        isDriveMenuVisible: state.app.isDriveMenuVisible,
     };
 };
 
 export default withRouter(
     connect(mapStateToProps, {
         openConsentWindow,
+        toggleDriveMenu,
         setCurrentPath,
         sendNotification,
         fetchCurrentItem,

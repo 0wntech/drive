@@ -1,13 +1,18 @@
 import React from 'react';
-import styles from './ToolbarButtons.module.css';
-// import SvgShare from '../../assets/svgIcons/Share';
+import classNames from 'classnames';
+import styles from './ToolbarButtons.module.scss';
 import SvgDownload from '../../assets/svgIcons/Download';
 import SvgUpload from '../../assets/svgIcons/Upload';
 import SvgTrash from '../../assets/svgIcons/Trash';
-// import SvgInfo from '../../assets/svgIcons/Info';
 import FileUpload from '../FileUpload/FileUpload';
+import MoreVertical from '../../assets/svgIcons/MoreVertical';
 
-export default function ToolbarButtons({ uploadFile, onDownload, onDelete }) {
+export default function ToolbarButtons({
+    uploadFile,
+    onDownload,
+    onDelete,
+    onMore,
+}) {
     return (
         <div className={styles.container}>
             {/* <SvgShare className={styles.toolbarIcon} /> */}
@@ -16,6 +21,10 @@ export default function ToolbarButtons({ uploadFile, onDownload, onDelete }) {
                 <SvgUpload onClick={uploadFile} />
             </FileUpload>
             <SvgTrash className={styles.toolbarIcon} onClick={onDelete} />
+            <MoreVertical
+                className={classNames(styles.toolbarIcon, styles.more)}
+                onClick={onMore}
+            />
             {/* <SvgInfo className={styles.toolbarIcon} /> */}
         </div>
     );

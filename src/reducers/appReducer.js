@@ -43,6 +43,7 @@ import {
     CREATE_FOLDER_FAILURE,
     CLEAR_ERROR,
     TOGGLE_SEARCHBAR,
+    TOGGLE_DRIVE_MENU,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -74,6 +75,7 @@ const INITIAL_STATE = {
     creatingFile: false,
     creatingFolder: false,
     isSearchBarExpanded: false,
+    isDriveMenuVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -193,6 +195,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isRenameWindowVisible: false,
                 renamedItem: null,
+            };
+        case TOGGLE_DRIVE_MENU:
+            return {
+                ...state,
+                isDriveMenuVisible: !state.isDriveMenuVisible,
             };
         case RENAME_ITEM:
             return {
