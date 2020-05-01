@@ -85,6 +85,7 @@ const Navigation = ({
             label: 'People',
             type: 'separator',
             isDisabled: true,
+            loading: searchingContacts,
         };
 
         if (currentItem && currentItem.files && currentItem.folders) {

@@ -50,7 +50,7 @@ export default function SearchDropdown({
             placeholder={placeholder}
             styles={customStyles}
             formatOptionLabel={formatOptionLabel}
-            options={items}
+            options={loading ? [] : items}
             onChange={onChange}
             className={className}
             classNamePrefix="search"
@@ -60,6 +60,9 @@ export default function SearchDropdown({
             filterOption={filterOption}
             openMenuOnClick={true}
             onMenuOpen={handleMenuOpen}
+            noOptionsMessage={() =>
+                loading ? 'Loading results...' : 'No search results'
+            }
         />
     );
 
@@ -76,7 +79,10 @@ const customStyles = {
                 ? '8px 12px 3px 0'
                 : '8px 12px 8px 0',
         height: state.data.type === 'separator' ? 25 : 64,
-        display: 'flex',
+        display:
+            state.data.type === 'separator' && state.data.loading
+                ? 'none'
+                : 'flex',
         alignItems: state.data.type === 'separator' ? 'flex-end' : 'center',
     }),
     indicatorsContainer: (provided, state) => ({
