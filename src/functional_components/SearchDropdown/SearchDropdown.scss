@@ -38,6 +38,15 @@
         height: 48px !important;
     }
 
+    .search__option--is-focused {
+        background-color: initial !important;
+    }
+
+    .search__option--is-disabled {
+        height: initial !important;
+        padding: 0 8px !important;
+    }
+
     .search__input {
         font-size: 18px;
     }
@@ -45,6 +54,7 @@
     .search__menu-list {
         max-height: 50vh !important;
     }
+
     .search__control {
         background-color: initial !important;
 
@@ -65,6 +75,10 @@
         .search__value-container {
             display: initial;
             margin-left: 48px;
+        }
+
+        .search__control {
+            box-shadow: initial !important;
         }
     }
 }
