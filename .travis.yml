@@ -22,7 +22,7 @@ notifications:
         - ben.wetzel@code.berlin
         - ludwig.schubert@code.berlin
 
-install: npm install
+install: npm ci
 
 stages:
     - name: unit_test
@@ -46,7 +46,6 @@ jobs:
               # Enable user namespace cloning
               - 'sysctl kernel.unprivileged_userns_clone=1'
           script:
-              - npm ls jest
               - npm run test:e2e
 
         - stage: deploy_production
