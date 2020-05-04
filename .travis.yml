@@ -49,7 +49,7 @@ jobs:
               # Enable user namespace cloning
               - 'sysctl kernel.unprivileged_userns_clone=1'
           script:
-              - npm show jest
+              - npm ls jest
               - npm run test:e2e
 
         - stage: deploy_production
