@@ -4,6 +4,7 @@ import { Layout } from '../../functional_components/Layout/Layout';
 import mediumEmoji from '../../assets/icons/medium_emoji.png';
 import ActionButton from '../../functional_components/ActionButton/ActionButton';
 import * as Sentry from '@sentry/browser';
+
 class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
@@ -20,6 +21,7 @@ class ErrorBoundary extends React.Component {
         console.log(error, errorInfo);
         this.setState({ error: error.message });
         Sentry.withScope((scope) => {
+            scope.setTag('environment', process.env.NODE_ENV);
             scope.setExtras(errorInfo);
             const eventId = Sentry.captureException(error);
             this.setState({ eventId });
