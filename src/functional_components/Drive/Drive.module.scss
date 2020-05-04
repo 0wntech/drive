@@ -54,6 +54,7 @@
 @media (max-width: $screen_m) {
     .mainArea {
         padding: 0 16px;
+        overflow: auto;
     }
 
     .grid {

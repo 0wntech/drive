@@ -48,10 +48,7 @@ export const App = ({
         );
     } else {
         return (
-            <div
-                className={styles.grid}
-                style={{ height: '100%', overflowY: 'hidden' }}
-            >
+            <div className={styles.grid}>
                 <div className={styles.navArea}>
                     <Navigation
                         resetError={resetError}
