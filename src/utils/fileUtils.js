@@ -1,4 +1,4 @@
-import rdf from 'rdflib';
+import * as rdf from 'rdflib';
 import auth from 'solid-auth-client';
 import url from 'url';
 import mime from 'mime';
@@ -90,9 +90,9 @@ function uploadCurrentItemOrFile(file, url) {
 
     const fileType = file.type ? file.type : 'text/plain';
 
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         const reader = new FileReader();
-        reader.onload = function() {
+        reader.onload = function () {
             const data = this.result;
 
             fetcher
@@ -116,7 +116,7 @@ function uploadFile(filePath, currPath, callback) {
     const fetcher = new rdf.Fetcher(store);
 
     const reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
         const data = this.result;
         const filename = encodeURIComponent(filePath.name);
         const contentType = getContentType(filePath.name);
@@ -135,7 +135,7 @@ function uploadFile(filePath, currPath, callback) {
                 }
             });
     };
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         reader.readAsArrayBuffer(filePath);
     });
 }
@@ -214,7 +214,7 @@ function getFolderTree(folderUrl) {
                     fileList.push(Promise.resolve(getFolderTree(folder[i])));
                 } else {
                     fileList.push(
-                        new Promise(function(resolve) {
+                        new Promise(function (resolve) {
                             resolve(folder[i]);
                         })
                     );
@@ -222,13 +222,13 @@ function getFolderTree(folderUrl) {
             }
 
             fileList.push(
-                new Promise(function(resolve) {
+                new Promise(function (resolve) {
                     resolve(folderUrl);
                 })
             );
             return Promise.all(fileList);
         })
-        .then(function(results) {
+        .then(function (results) {
             while (hasArray(results)) {
                 const nextResult = results.shift();
                 if (Array.isArray(nextResult)) {
@@ -244,10 +244,10 @@ function getFolderTree(folderUrl) {
 }
 
 function deleteRecursively(url) {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
-        fetcher.load(url).then(function() {
+        fetcher.load(url).then(function () {
             const promises = store
                 .each(rdf.sym(url), ns.ldp('contains'))
                 .map((file) => {
