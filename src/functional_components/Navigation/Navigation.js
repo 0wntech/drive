@@ -45,7 +45,7 @@ const Navigation = ({
     const handleChange = (selected) => {
         resetError();
         if (selected.type === 'folder') {
-            setCurrentPath(`${currentPath}/${selected.name}/`);
+            setCurrentPath(`${currentPath}${selected.name}/`);
             navigate('/home', history, dispatch);
         } else if (selected.type === 'file') {
             navigate(
@@ -98,6 +98,7 @@ const Navigation = ({
                     ...resource,
                     value: resource.name,
                 }));
+            console.log(filesAndFolders);
             return contactOptions.length > 0
                 ? [...filesAndFolders, separator, ...contactOptions]
                 : filesAndFolders;
