@@ -1,5 +1,5 @@
 import React from 'react';
-import rdf from 'rdflib';
+import * as rdf from 'rdflib';
 import styles from './NotificationsPage.module.css';
 import { Notification } from '../../functional_components/Notification';
 import { connect } from 'react-redux';

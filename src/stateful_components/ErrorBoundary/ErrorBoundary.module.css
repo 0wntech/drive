@@ -22,6 +22,10 @@
     color: #ff0000;
 }
 
+.feedbackButton {
+    margin-top: 1em;
+}
+
 .image {
     width: 128px;
     height: 128px;
