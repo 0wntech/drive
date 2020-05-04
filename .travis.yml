@@ -37,9 +37,6 @@ stages:
 jobs:
     include:
         - stage: unit_test
-          before_install:
-              # Enable user namespace cloning
-              - 'sysctl kernel.unprivileged_userns_clone=1'
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov
