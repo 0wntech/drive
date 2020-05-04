@@ -45,7 +45,7 @@ const Navigation = ({
     const handleChange = (selected) => {
         resetError();
         if (selected.type === 'folder') {
-            setCurrentPath(`${currentPath}/${selected.name}/`);
+            setCurrentPath(`${currentPath}${selected.name}/`);
             navigate('/home', history, dispatch);
         } else if (selected.type === 'file') {
             navigate(
