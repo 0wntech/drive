@@ -93,6 +93,8 @@ export const CLOSE_CREATE_FOLDER_WINDOW = 'close_create_folder_window';
 export const OPEN_RENAME_WINDOW = 'open_rename_window';
 export const CLOSE_RENAME_WINDOW = 'close_rename_window';
 
+export const TOGGLE_DRIVE_MENU = 'toggle_drive_menu';
+
 export const CREATE_FOLDER = 'create_folder';
 export const CREATE_FOLDER_SUCCESS = 'create_folder_success';
 export const CREATE_FOLDER_FAILURE = 'create_folder_failure';
@@ -120,3 +122,5 @@ export const REMOVE_APP_SUCCESS = 'remove_app_success';
 export const REMOVE_APP_FAILURE = 'remove_app_failure';
 
 export const CLEAR_ERROR = 'clear_error';
+
+export const TOGGLE_SEARCHBAR = 'toggle_searchbar';
