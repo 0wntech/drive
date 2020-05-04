@@ -22,7 +22,7 @@ notifications:
         - ben.wetzel@code.berlin
         - ludwig.schubert@code.berlin
 
-install: npm ci
+install: npm install
 
 stages:
     - name: unit_test
