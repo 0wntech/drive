@@ -5,6 +5,7 @@
 }
 
 .head {
+    height: initial !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -28,7 +29,7 @@
 
 .container {
     position: absolute;
-    top: 5px;
+    top: 7px;
     width: 100%;
     justify-content: center;
     display: flex;
