@@ -98,7 +98,6 @@ const Navigation = ({
                     ...resource,
                     value: resource.name,
                 }));
-            console.log(filesAndFolders);
             return contactOptions.length > 0
                 ? [...filesAndFolders, separator, ...contactOptions]
                 : filesAndFolders;
