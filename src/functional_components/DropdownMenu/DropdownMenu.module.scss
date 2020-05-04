@@ -5,10 +5,10 @@
 }
 
 .head {
+    height: initial !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: -9px;
     padding: 5px;
     cursor: pointer;
 }
@@ -29,7 +29,7 @@
 
 .container {
     position: absolute;
-    top: 9px;
+    top: 7px;
     width: 100%;
     justify-content: center;
     display: flex;
