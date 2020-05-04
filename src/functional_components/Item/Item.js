@@ -8,9 +8,11 @@ const MyItem = ({
     image,
     label,
     onClick,
+    onMouseUp,
+    onMouseDown,
     contextMenuOptions,
     selectedItem,
-    currPath,
+    currentPath,
 }) => {
     return (
         <MenuProvider
@@ -23,11 +25,17 @@ const MyItem = ({
                 className={classNames(styles.container)}
                 data-test-id={`item-${label}`}
                 onClick={onClick}
+                onMouseUp={onMouseUp}
+                onMouseDown={onMouseDown}
+                onTouchEnd={onMouseUp}
+                onTouchStart={onMouseDown}
             >
                 <div className={styles.innerContainer}>
                     <img alt="item" className={styles.icon} src={image} />
                 </div>
-                <div className={styles.label}>{label}</div>
+                <div className={styles.labelContainer}>
+                    <div className={styles.label}>{label}</div>
+                </div>
             </div>
             <Menu className={styles.contextMenu} id={label + 'contextmenu'}>
                 {contextMenuOptions &&
@@ -39,7 +47,7 @@ const MyItem = ({
                                 !option.disabled
                                     ? () => {
                                           option.onClick(
-                                              currPath + label + '/'
+                                              currentPath + label + '/'
                                           );
                                       }
                                     : undefined

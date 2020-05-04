@@ -93,7 +93,7 @@ export const DriveMenu = ({
         {
             label: 'Delete',
             onClick: openConsentWindow,
-            disabled: !selectedItems || selectedItems.length !== 1,
+            disabled: !selectedItems || selectedItems.length === 0,
             icon: <Trash2 />,
             red: true,
         },

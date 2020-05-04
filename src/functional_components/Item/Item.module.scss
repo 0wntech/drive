@@ -2,9 +2,8 @@
 
 .container {
     cursor: pointer;
-    position: relative;
     width: 90px;
-    height: 90px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -16,23 +15,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: 142px;
     width: 100%;
 }
 
 .selected {
-    box-shadow: 0 0 0 1px #6db7db;
+    border: solid 2px #24b0ff;
     border-radius: 20px;
 }
 
 .innerContainer {
-    position: absolute;
     width: 100%;
 }
 
-.container:hover .label {
-    overflow: visible;
-    font-size: 105%;
+.labelContainer {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .label {
@@ -43,19 +42,12 @@
     font-size: 16px;
     line-height: 21px;
     z-index: 1;
-    position: absolute;
     color: #000000;
-    background-color: white;
-    text-overflow: ellipsis;
     white-space: nowrap;
     text-align: center;
     overflow: hidden;
-    width: 90%;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: all 0.2s;
-    padding: 0px 5px;
+    text-overflow: ellipsis;
+    padding: 2px 5px;
 }
 
 .icon {
@@ -95,6 +87,10 @@
         justify-self: center;
     }
 
+    .labelContainer {
+        margin-top: 8px;
+    }
+
     .label {
         position: initial;
         width: 100%;
@@ -104,7 +100,6 @@
 
     .container {
         width: 100px;
-        justify-content: space-between;
     }
 
     .innerContainer {

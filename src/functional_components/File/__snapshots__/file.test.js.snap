@@ -19,7 +19,7 @@ exports[`File should render correctly (image) 1`] = `
         <img
           alt="file"
           className="thumbnail"
-          src="https://bejow.solid.community/1234/Test.png"
+          src="undefinedTest.png"
         />
         <img
           alt="file"
@@ -29,9 +29,13 @@ exports[`File should render correctly (image) 1`] = `
       </div>
     </div>
     <div
-      className="label"
+      className="labelContainer"
     >
-      Test.png
+      <div
+        className="label"
+      >
+        Test.png
+      </div>
     </div>
   </div>
 </div>
@@ -56,7 +60,7 @@ exports[`File should render correctly (no image) 1`] = `
         <img
           alt="file"
           className="thumbnail"
-          src="https://bejow.solid.community/1234/Test.png"
+          src="undefinedTest.png"
         />
         <img
           alt="file"
@@ -66,9 +70,13 @@ exports[`File should render correctly (no image) 1`] = `
       </div>
     </div>
     <div
-      className="label"
+      className="labelContainer"
     >
-      Test.png
+      <div
+        className="label"
+      >
+        Test.png
+      </div>
     </div>
   </div>
 </div>

@@ -6,11 +6,13 @@ import SvgUpload from '../../assets/svgIcons/Upload';
 import SvgTrash from '../../assets/svgIcons/Trash';
 import FileUpload from '../FileUpload/FileUpload';
 import MoreVertical from '../../assets/svgIcons/MoreVertical';
+import FolderPlus from '../../assets/svgIcons/FolderPlus';
 
 export default function ToolbarButtons({
     uploadFile,
     onDownload,
     onDelete,
+    onCreateFolder,
     onMore,
 }) {
     return (
@@ -20,6 +22,10 @@ export default function ToolbarButtons({
             <FileUpload className={styles.toolbarIcon} onChange={uploadFile}>
                 <SvgUpload onClick={uploadFile} />
             </FileUpload>
+            <FolderPlus
+                className={styles.toolbarIcon}
+                onClick={onCreateFolder}
+            />
             <SvgTrash className={styles.toolbarIcon} onClick={onDelete} />
             <MoreVertical
                 className={classNames(styles.toolbarIcon, styles.more)}
