@@ -79,6 +79,16 @@
         position: initial;
     }
 
+    .dropdownContent {
+        display: none;
+    }
+
+    .active {
+        background: initial;
+        box-shadow: initial;
+        border-radius: initial;
+    }
+
     .iconWrapper {
         display: none;
     }
