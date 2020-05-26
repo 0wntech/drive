@@ -28,7 +28,7 @@ stages:
     - name: deploy_production
       if: type != pull_request AND branch = production
     - name: deploy_staging
-      if: type != pull_request AND branch = master
+      if: type != pull_request AND branch = master OR branch = staging
 
 jobs:
     include:
