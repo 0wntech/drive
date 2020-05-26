@@ -2,13 +2,17 @@ const config = require('./testConfig.json');
 require('dotenv').config();
 
 // config
-const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
-jest.setTimeout(timeout);
-Promise.resolve(page.setDefaultNavigationTimeout(timeout));
+const initPage = async (browser) => {
+    const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
+    jest.setTimeout(timeout);
+    const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(timeout);
+    return page;
+};
 
 describe('drive', () => {
     it('should click folders and files', async () => {
-        const page = await browser.newPage();
+        const page = await initPage(browser);
         await page.goto(config.baseUrl + 'home');
         await page.waitForSelector('[data-test-id="item-profile"]');
         await page.click('[data-test-id="item-profile"]');

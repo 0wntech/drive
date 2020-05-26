@@ -9,7 +9,6 @@ import { Provider } from 'react-redux';
 import reducers from './reducers';
 import { BrowserRouter } from 'react-router-dom';
 
-// Performance Tracking
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
 ReactDOM.render(

@@ -2,12 +2,18 @@ const config = require('./testConfig.json');
 require('dotenv').config();
 
 // config
-const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
-jest.setTimeout(timeout);
-Promise.resolve(page.setDefaultNavigationTimeout(timeout));
+const initPage = async (browser) => {
+    const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
+    jest.setTimeout(timeout);
+    const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(timeout);
+    return page;
+};
 
 describe('e2e edit profile', () => {
     it('should change profile data', async () => {
+        const page = await initPage(browser);
+
         await page.goto(config.baseUrl + 'home');
         await page.waitForSelector(
             '[data-test-id="navigation-profile-picture"]'

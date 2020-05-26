@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import classNames from 'classnames';
 import url from 'url';
 import mime from 'mime';
 import { connect } from 'react-redux';
@@ -17,13 +18,17 @@ import {
     sendNotification,
     fetchCurrentItem,
     openConsentWindow,
+    toggleSearchbar,
+    toggleDriveMenu,
+    openCreateFolderWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed, handleError } from '../../utils/helper';
+import { getParentFolderUrl } from '../../utils/url';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
-import { getParentFolderUrl } from '../../utils/url';
 import BackButton from '../BackButton/BackButton';
+import DriveMenu from '../DriveMenu/DriveMenu';
 
 const Drive = ({
     selectedItems,
@@ -31,6 +36,9 @@ const Drive = ({
     currentPath,
     loadCurrentItem,
     openConsentWindow,
+    openCreateFolderWindow,
+    toggleDriveMenu,
+    isDriveMenuVisible,
     webId,
     setCurrentPath,
     setSelection,
@@ -40,6 +48,8 @@ const Drive = ({
     error,
     loadDeletion,
     loadPaste,
+    toggleSearchbar,
+    isSearchBarExpanded,
 }) => {
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
@@ -72,8 +82,7 @@ const Drive = ({
             url = url.substr(0, url.lastIndexOf('/'));
         }
         if (isCmdPressed(event) && selectedItems.includes(url) === false) {
-            const newSelection = [...selectedItems];
-            newSelection.push(url);
+            const newSelection = [...selectedItems, url];
             setSelection(newSelection);
         } else if (isCmdPressed(event) && selectedItems.includes(url)) {
             const newSelection = selectedItems.filter((item) => item !== url);
@@ -116,6 +125,15 @@ const Drive = ({
         ) {
             console.log('Emptying selection');
             setSelection([]);
+        }
+    };
+
+    const handleClick = (e) => {
+        if (isSearchBarExpanded) {
+            toggleSearchbar();
+            e.stopPropagation();
+        } else {
+            clearSelection(e);
         }
     };
 
@@ -165,6 +183,8 @@ const Drive = ({
                     openConsentWindow(selectedItems);
                 }
             }}
+            onCreateFolder={openCreateFolderWindow}
+            onMore={toggleDriveMenu}
         />
     );
 
@@ -190,11 +210,17 @@ const Drive = ({
         <Layout
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={toolbarRight}
-            className={styles.grid}
+            className={classNames(styles.grid, {
+                [styles.noScroll]: isDriveMenuVisible,
+            })}
             label="Drive"
-            onClick={clearSelection}
+            onClick={handleClick}
             isLoading={loadDeletion || loadPaste || loadCurrentItem}
         >
+            <DriveMenu
+                isDriveMenuVisible={isDriveMenuVisible}
+                selectedItems={selectedItems}
+            />
             <DriveContextMenu
                 className={styles.mainArea}
                 drive
@@ -212,7 +238,11 @@ const Drive = ({
                                 items={currentItem.folders}
                                 currPath={currentPath}
                                 image={folder}
-                                onItemClick={loadFolder}
+                                onItemClick={
+                                    isSearchBarExpanded
+                                        ? toggleSearchbar
+                                        : loadFolder
+                                }
                             />
                             <ItemList
                                 selectedItems={selectedItems}
@@ -220,7 +250,11 @@ const Drive = ({
                                 items={currentItem.files}
                                 currPath={currentPath}
                                 image={fileIcon}
-                                onItemClick={loadFile}
+                                onItemClick={
+                                    isSearchBarExpanded
+                                        ? toggleSearchbar
+                                        : loadFile
+                                }
                             />
                         </div>
                     ) : (
@@ -246,15 +280,20 @@ const mapStateToProps = (state) => {
         loadDeletion: state.app.loadDeletion,
         loadPaste: state.app.loadPaste,
         loadCurrentItem: state.app.loadCurrentItem,
+        isSearchBarExpanded: state.app.isSearchBarExpanded,
+        isDriveMenuVisible: state.app.isDriveMenuVisible,
     };
 };
 
 export default withRouter(
     connect(mapStateToProps, {
         openConsentWindow,
+        openCreateFolderWindow,
+        toggleDriveMenu,
         setCurrentPath,
         sendNotification,
         fetchCurrentItem,
         setSelection,
+        toggleSearchbar,
     })(Drive)
 );

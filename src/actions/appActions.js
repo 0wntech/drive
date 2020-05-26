@@ -43,6 +43,8 @@ import {
     CREATE_FOLDER,
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
+    TOGGLE_SEARCHBAR,
+    TOGGLE_DRIVE_MENU,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -409,6 +411,12 @@ export const closeRenameWindow = function() {
     };
 };
 
+export const toggleDriveMenu = function() {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_DRIVE_MENU });
+    };
+};
+
 export const createFolder = function(name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FOLDER });
@@ -422,5 +430,11 @@ export const createFolder = function(name, path) {
             .catch((err) => {
                 dispatch({ type: CREATE_FOLDER_FAILURE, payload: err });
             });
+    };
+};
+
+export const toggleSearchbar = () => {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_SEARCHBAR });
     };
 };

@@ -14,6 +14,21 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    margin: 2px;
+    border-radius: 10px;
+    background-color: #e2e2e6;
+}
+
 p,
 div {
     font-family: 'Helvetica Neue Light';
@@ -32,6 +47,7 @@ body,
 html,
 #root {
     height: 100%;
+    overflow: hidden;
 }
 
 #root {
