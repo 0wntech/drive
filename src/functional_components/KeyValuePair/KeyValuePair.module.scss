@@ -1,5 +1,4 @@
 .container {
-    border: 0.5px solid #c4c4c4;
     box-sizing: border-box;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -7,9 +6,7 @@
 
 .keyValueContainer {
     display: flex;
-    margin-left: 5%;
-    padding: 20px 0 20px 0;
-    justify-content: center;
+    margin-left: 26px;
 }
 
 .valueWrapper {
@@ -39,10 +36,6 @@
     border-top: none;
 }
 
-.containerFooter.active {
-    border-top: 0.5px solid #c4c4c4;
-}
-
 .multiValueContainer {
     display: flex;
     flex-direction: column;
@@ -53,7 +46,7 @@
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
-    width: 30%;
+    width: 140px;
     letter-spacing: 0.2em;
 }
 
@@ -66,7 +59,7 @@
 }
 
 .value {
-    width: 80%;
+    width: calc(100% - 32px);
     /* text-underline-position: under; */
     font-family: 'Helvetica Neue Light';
     font-style: normal;
@@ -112,6 +105,6 @@
 }
 
 .valueContainer {
-    width: 70%;
+    width: calc(100% - 166px);
     max-width: 70%;
 }

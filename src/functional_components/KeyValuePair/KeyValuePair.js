@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 
-import styles from './KeyValuePair.module.css';
+import styles from './KeyValuePair.module.scss';
 import classNames from 'classnames';
 import MultipleValue from './MultipleValue';
 import SingleValue from './SingleValue';

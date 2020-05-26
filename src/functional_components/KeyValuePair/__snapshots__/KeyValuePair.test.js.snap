@@ -31,7 +31,7 @@ exports[`KeyValuePair should render expanded 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": "0px",
+        "height": 0,
         "overflow": "hidden",
       }
     }
@@ -117,7 +117,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": "0px",
+        "height": 0,
         "overflow": "hidden",
       }
     }
@@ -167,7 +167,7 @@ exports[`KeyValuePair should render unexpanded 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": "0px",
+        "height": 0,
         "overflow": "hidden",
       }
     }
