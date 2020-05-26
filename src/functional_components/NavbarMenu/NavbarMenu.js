@@ -35,12 +35,11 @@ export const NavbarMenu = ({
             },
             label: 'Home',
         },
+        { onClick: () => history.push('/settings'), label: 'Settings' },
         {
             onClick: () => navigate('/profile', history, dispatch, resetError),
             label: 'Profile',
         },
-        // { onClick: () => console.log('test2'), label: 'Settings*' },
-        // { onClick: () => console.log('test2'), label: 'Notifications*' },
         {
             onClick: () => navigate('/contacts', history, dispatch, resetError),
             label: 'Contacts',

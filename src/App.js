@@ -16,6 +16,7 @@ import { ContactsPage } from './functional_components/ContactsPage';
 import { ContactProfilePage } from './functional_components/ContactProfilePage';
 import AppOverviewPage from './functional_components/AppOverviewPage';
 import FileView from './functional_components/FileView/FileView';
+import SettingsPage from './functional_components/SettingsPage';
 
 export const App = ({
     login,
@@ -59,7 +60,6 @@ export const App = ({
                         username={user ? user.name : undefined}
                     />
                 </div>
-
                 <div className={styles.mainArea}>
                     <ErrorBoundary key={errorKey}>
                         <Switch>
@@ -68,6 +68,11 @@ export const App = ({
                                 session={session}
                                 path="/home"
                                 component={<Drive />}
+                            />
+                            <PrivateRoute
+                                session={session}
+                                path="/settings"
+                                component={<SettingsPage />}
                             />
                             <PrivateRoute
                                 session={session}

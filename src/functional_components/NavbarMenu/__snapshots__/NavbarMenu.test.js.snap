@@ -64,6 +64,12 @@ exports[`NavbarMenu Should render correctly 1`] = `
           className="option"
           onClick={[Function]}
         >
+          Settings
+        </div>
+        <div
+          className="option"
+          onClick={[Function]}
+        >
           Profile
         </div>
         <div
