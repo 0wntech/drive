@@ -9,6 +9,18 @@
 
 Feel free to contribute.
 
+## Setup
+- Clone git repo
+- Install:
+```
+npm install
+```
+- Run:
+```
+npm start
+```
+
+
 ## Documentation
 
 -   [Documentation Repository](https://github.com/0wntech/drive-documentation)
@@ -39,6 +51,12 @@ npm run test:local
 
 ```
 npm run test:coverage
+```
+
+-   End to End Tests
+
+```
+npm run test:e2e
 ```
 
 ## Deployment
