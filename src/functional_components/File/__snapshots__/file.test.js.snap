@@ -19,7 +19,7 @@ exports[`File should render correctly (image) 1`] = `
         <img
           alt="file"
           className="thumbnail"
-          src="undefinedTest.png"
+          src="https://bejow.solid.community/1234/Test.png"
         />
         <img
           alt="file"
@@ -60,7 +60,7 @@ exports[`File should render correctly (no image) 1`] = `
         <img
           alt="file"
           className="thumbnail"
-          src="undefinedTest.png"
+          src="https://bejow.solid.community/1234/Test.png"
         />
         <img
           alt="file"
