@@ -60,7 +60,7 @@ export const ProfilePage = ({
                             label="Cancel"
                             size="lg"
                             color="red"
-                            data-test-id="edit-cancel"
+                            dataId="edit-cancel"
                         />
                         <ActionButton
                             className={styles.actionButton}
@@ -68,7 +68,7 @@ export const ProfilePage = ({
                             label="Save"
                             size="lg"
                             color="green"
-                            data-test-id="edit-submit"
+                            dataIid="edit-submit"
                         />
                     </div>
                 );
@@ -91,13 +91,20 @@ export const ProfilePage = ({
         } else {
             if (width < styleConstants.screen_m) {
                 return (
-                    <IconButton onClick={() => setEditable(!isEditable)}>
+                    <IconButton
+                        onClick={() => setEditable(!isEditable)}
+                        size="lg"
+                        color="blue"
+                    >
                         <EditIcon
+                            viewBox="3 2 30 30"
+                            width="20"
+                            height="20"
                             onClick={() => setEditable(!isEditable)}
-                            className={styles.icon}
+                            className={styles.iconWhite}
                             data-test-id="edit"
                         />
-                        Edit
+                        Edit Profile
                     </IconButton>
                 );
             } else {
