@@ -1,4 +1,4 @@
-@import '../../../styles/constants.scss';
+@import '../../styles/constants.scss';
 
 .listContainer {
     color: #000;
@@ -12,15 +12,15 @@
 }
 
 @media (max-width: $screen_m) {
-  .listContainer {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    grid-gap: 20px 20px;
-  }
+    .listContainer {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-gap: 20px 20px;
+    }
 }
 
 @media (max-width: $screen_s) {
-  .listContainer {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    grid-gap: 20px 20px;
-  }
+    .listContainer {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        grid-gap: 20px 20px;
+    }
 }

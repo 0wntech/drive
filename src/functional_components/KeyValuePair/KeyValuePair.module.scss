@@ -1,3 +1,5 @@
+@import '../../styles/constants.scss';
+
 .container {
     box-sizing: border-box;
     border-radius: 20px;
@@ -107,4 +109,14 @@
 .valueContainer {
     width: calc(100% - 166px);
     max-width: 70%;
+}
+
+@media (max-width: $screen_m) {
+    .keyLabel {
+        font-size: 16px;
+    }
+
+    .value {
+        font-size: 16px;
+    }
 }

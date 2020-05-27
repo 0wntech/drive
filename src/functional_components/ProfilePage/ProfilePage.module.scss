@@ -1,5 +1,5 @@
-@import '../../../styles/mixins.scss';
-
+@import '../../styles/mixins.scss';
+@import '../../styles/constants.scss';
 .grid {
     height: 100%;
     display: grid;
@@ -198,4 +198,50 @@ svg:hover {
         $lineCount: 2,
         $bgColor: white
     );
+}
+
+.actionButton {
+    margin: 0 4px;
+}
+
+@media (max-width: $screen_m) {
+    .headContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .grid {
+        grid-template-areas: 'profile profile profile';
+        grid-template-rows: 1fr;
+    }
+
+    .profileContainer {
+        margin-top: 26px;
+    }
+
+    .nameLabel {
+        margin-top: 10px;
+    }
+
+    .webIdLabel {
+        margin-top: 10px;
+    }
+
+    .bioLabel {
+        margin-top: 10px;
+    }
+
+    .editButtons {
+        flex-direction: row;
+    }
+
+    .editWrapper {
+        margin-top: 18px;
+        position: relative;
+        top: initial;
+        right: initial;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

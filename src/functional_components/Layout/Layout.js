@@ -16,7 +16,11 @@ export const Layout = ({
     isLoading,
 }) => {
     return (
-        <div className={classNames(styles.grid)}>
+        <div
+            className={classNames(styles.grid, {
+                [styles.hideToolbar]: hideToolbar,
+            })}
+        >
             {hideToolbar ? null : (
                 <div
                     className={classNames(styles.toolbarArea, toolbarClassName)}

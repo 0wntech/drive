@@ -10,8 +10,12 @@ import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
+import IconButton from '../IconButton/IconButton';
+import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
+import useWindowDimension from '../../hooks/useWindowDimension';
+import styleConstants from '../../styles/constants.scss';
 
 export const ProfilePage = ({
     user,
@@ -23,6 +27,10 @@ export const ProfilePage = ({
     handleError(error);
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
+
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimension();
+
     const updateUserData = (key, value) => {
         setUserData({ ...userData, [key]: value });
     };
@@ -41,12 +49,76 @@ export const ProfilePage = ({
         changeProfilePhoto(e, user.webId);
     };
 
+    const renderEditButtons = () => {
+        if (isEditable) {
+            if (width < styleConstants.screen_m) {
+                return (
+                    <div className={styles.editButtons}>
+                        <ActionButton
+                            className={styles.actionButton}
+                            onClick={onCancel}
+                            label="Cancel"
+                            size="lg"
+                            color="red"
+                            data-test-id="edit-cancel"
+                        />
+                        <ActionButton
+                            className={styles.actionButton}
+                            onClick={onSubmit}
+                            label="Save"
+                            size="lg"
+                            color="green"
+                            data-test-id="edit-submit"
+                        />
+                    </div>
+                );
+            } else if (width > styleConstants.screen_m) {
+                return (
+                    <div className={styles.editButtons}>
+                        <X
+                            onClick={onCancel}
+                            className={styles.icon}
+                            data-test-id="edit-cancel"
+                        />{' '}
+                        <Check
+                            className={styles.icon}
+                            onClick={onSubmit}
+                            data-test-id="edit-submit"
+                        />
+                    </div>
+                );
+            }
+        } else {
+            if (width < styleConstants.screen_m) {
+                return (
+                    <IconButton onClick={() => setEditable(!isEditable)}>
+                        <EditIcon
+                            onClick={() => setEditable(!isEditable)}
+                            className={styles.icon}
+                            data-test-id="edit"
+                        />
+                        Edit
+                    </IconButton>
+                );
+            } else {
+                return (
+                    <EditIcon
+                        onClick={() => setEditable(!isEditable)}
+                        className={styles.icon}
+                        data-test-id="edit"
+                    />
+                );
+            }
+        }
+    };
+
     if (user) {
         return (
             <Layout
                 isLoading={updatingProfile || !user}
                 className={styles.grid}
                 label="Profile"
+                hideToolbar={width < styleConstants.screen_m ? true : false}
             >
                 <div className={styles.profileContainer}>
                     <div className={styles.headContainer}>
@@ -106,30 +178,11 @@ export const ProfilePage = ({
                             />
                         </div>
                         <div className={styles.editWrapper}>
-                            {isEditable ? (
-                                <div className={styles.editButtons}>
-                                    <X
-                                        onClick={onCancel}
-                                        className={styles.icon}
-                                        data-test-id="edit-cancel"
-                                    />{' '}
-                                    <Check
-                                        className={styles.icon}
-                                        onClick={onSubmit}
-                                        data-test-id="edit-submit"
-                                    />
-                                </div>
-                            ) : (
-                                <EditIcon
-                                    onClick={() => setEditable(!isEditable)}
-                                    className={styles.icon}
-                                    data-test-id="edit"
-                                />
-                            )}
+                            {renderEditButtons()}
                         </div>
                     </div>
                     <KeyValuePair
-                        label="Job"
+                        label="Job:"
                         dataKey="job"
                         value={userData.job}
                         editable={isEditable}
@@ -138,7 +191,7 @@ export const ProfilePage = ({
                     />
                     <KeyValuePair
                         setValue={updateUserData}
-                        label="Email"
+                        label="Email:"
                         dataKey="emails"
                         value={userData.emails}
                         editable={isEditable}
@@ -149,7 +202,7 @@ export const ProfilePage = ({
                     <KeyValuePair
                         setValue={updateUserData}
                         dataKey="telephones"
-                        label="Telephone"
+                        label="Telephone:"
                         value={userData.telephones}
                         editable={isEditable}
                         placeholder={

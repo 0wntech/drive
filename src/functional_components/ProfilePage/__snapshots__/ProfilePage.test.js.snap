@@ -3,6 +3,7 @@
 exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
 <Layout
   className="grid"
+  hideToolbar={false}
   isLoading={false}
   label="Profile"
 >
@@ -59,7 +60,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
     <KeyValuePair
       dataKey="job"
       editable={false}
-      label="Job"
+      label="Job:"
       placeholder="Software Engineer"
       setValue={[Function]}
       value="Software Engineer"
@@ -67,7 +68,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
     <KeyValuePair
       dataKey="emails"
       editable={false}
-      label="Email"
+      label="Email:"
       placeholder="add Email"
       setValue={[Function]}
       value={
@@ -79,7 +80,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
     <KeyValuePair
       dataKey="telephones"
       editable={false}
-      label="Telephone"
+      label="Telephone:"
       placeholder="add Number"
       setValue={[Function]}
       value={
