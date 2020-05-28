@@ -220,6 +220,7 @@ svg:hover {
         flex-direction: column;
         align-items: center;
         width: 100%;
+        padding-right: 0px;
     }
 
     .grid {
@@ -236,12 +237,14 @@ svg:hover {
         width: 100%;
         font-size: 16px;
         text-align: center;
+        line-height: initial;
     }
 
     .webIdLabel {
         width: 100%;
         margin-top: 10px;
-        font-size: 18px;
+        font-size: 16px;
+        margin-bottom: 3px;
     }
 
     .bioLabel {
@@ -267,5 +270,10 @@ svg:hover {
 
     .multiline {
         padding-right: 0px;
+        margin-right: 0px;
+    }
+
+    .profileImage {
+        margin-right: 0px;
     }
 }

@@ -95,7 +95,7 @@ export const changeProfilePhoto = (e, webId) => {
         const reader = new FileReader();
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
-        reader.onload = function () {
+        reader.onload = function() {
             const data = this.result;
             const contentType = file.type;
             const pictureUrl = webId.replace(
