@@ -3,7 +3,7 @@
 .grid {
     height: 100%;
     display: grid;
-    grid-template-columns: 2fr 6fr 2fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 6fr) minmax(0, 2fr);
     grid-template-areas: '. profile .';
 }
 
@@ -74,7 +74,6 @@ svg:hover {
 }
 
 .nameContainer {
-    grid-area: name;
     padding: 0 0 0 30px;
     display: flex;
     flex-direction: column;
@@ -166,6 +165,10 @@ svg:hover {
     overflow: hidden;
 }
 
+.carouselContainer {
+    margin: 10px;
+}
+
 .valueLabel {
     letter-spacing: 0.2em;
     font-family: 'Helvetica Neue Light';
@@ -209,6 +212,11 @@ svg:hover {
 
 .actionButton {
     margin: 0 4px;
+}
+
+.item {
+    width: 70px !important;
+    height: 97px !important;
 }
 
 @media (max-width: $screen_m) {

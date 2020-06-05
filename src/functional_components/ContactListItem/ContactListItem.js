@@ -11,37 +11,41 @@ const ContactListItem = ({
     className,
     removeContact,
     onClick,
+    size,
 }) => {
     return (
         <div
             onClick={() => onClick(contact)}
-            className={classNames(styles.container, className)}
+            className={classNames(styles.container, className, styles[size])}
         >
-            <div className={styles.imageContainer}>
+            <div className={classNames(styles.imageContainer, styles[size])}>
                 {contact.picture ? (
                     <div
-                        className={styles.image}
+                        className={classNames(styles.image, styles[size])}
                         style={{ backgroundImage: `url('${contact.picture}')` }}
                     />
                 ) : (
                     <img
                         alt="profile"
-                        className={styles.image}
+                        className={classNames(styles.image, styles[size])}
                         src={defaultIcon}
                     />
                 )}
             </div>
-            <div className={styles.nameContainer}>
+            <div className={classNames(styles.nameContainer, styles[size])}>
                 {contact.name ? contact.name : 'No Name'}
             </div>
-            <div className={styles.iconContainer}>
-                <Delete
-                    onClick={(e) => {
-                        removeContact(webId, contact.webId);
-                        e.stopPropagation();
-                    }}
-                />
-            </div>
+
+            {removeContact ? (
+                <div className={classNames(styles.iconContainer, styles[size])}>
+                    <Delete
+                        onClick={(e) => {
+                            removeContact(webId, contact.webId);
+                            e.stopPropagation();
+                        }}
+                    />
+                </div>
+            ) : null}
         </div>
     );
 };
@@ -49,6 +53,7 @@ const ContactListItem = ({
 ContactListItem.propTypes = {
     contact: PropTypes.object,
     className: PropTypes.string,
+    size: PropTypes.oneOf(['sm']),
 };
 
 export default ContactListItem;

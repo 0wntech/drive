@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import styles from './ProfilePage.module.scss';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
+import { fetchContacts } from '../../actions/contactActions';
+import { fetchApps } from '../../actions/userAppActions';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
 import X from '../../assets/svgIcons/X';
@@ -10,26 +14,55 @@ import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
-import IconButton from '../IconButton/IconButton';
 import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
+import { ContactListItem } from '../ContactListItem';
+
+const responsive = {
+    superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 3,
+    },
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 3,
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 3,
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 3,
+    },
+};
 
 export const ProfilePage = ({
     user,
     changeProfilePhoto,
     updateProfile,
     updatingProfile,
+    fetchApps,
+    fetchContacts,
+    contacts,
+    apps,
+    webId,
     error,
 }) => {
     handleError(error);
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
 
+    useEffect(() => {
+        if (!contacts) fetchContacts(webId);
+    }, []);
+
     // eslint-disable-next-line no-unused-vars
-    const { _, width } = useWindowDimension();
+    const { width } = useWindowDimension();
 
     const updateUserData = (key, value) => {
         setUserData({ ...userData, [key]: value });
@@ -91,7 +124,7 @@ export const ProfilePage = ({
         } else {
             if (width < styleConstants.screen_m) {
                 return (
-                    <IconButton
+                    <ActionButton
                         onClick={() => setEditable(!isEditable)}
                         size="lg"
                         color="blue"
@@ -105,7 +138,7 @@ export const ProfilePage = ({
                             data-test-id="edit"
                         />
                         Edit Profile
-                    </IconButton>
+                    </ActionButton>
                 );
             } else {
                 return (
@@ -218,6 +251,27 @@ export const ProfilePage = ({
                                 : `add Number`
                         }
                     />
+                    {contacts ? (
+                        <div className={styles.carouselContainer}>
+                            <Carousel
+                                containerClass=""
+                                responsive={responsive}
+                                renderButtonGroupOutside={false}
+                                renderDotsOutside={false}
+                                centerMode={false}
+                            >
+                                {contacts.map((contact) => {
+                                    return (
+                                        <ContactListItem
+                                            className={styles.item}
+                                            contact={contact}
+                                            size="sm"
+                                        />
+                                    );
+                                })}
+                            </Carousel>
+                        </div>
+                    ) : null}
                 </div>
             </Layout>
         );
@@ -228,10 +282,16 @@ export const ProfilePage = ({
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
+    webId: state.user.webId,
     updatingProfile: state.user.updatingProfile,
     error: state.user.error,
+    apps: state.userApps.apps,
+    contacts: state.contact.contacts,
 });
 
-export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
-    ProfilePage
-);
+export default connect(mapStateToProps, {
+    updateProfile,
+    changeProfilePhoto,
+    fetchContacts,
+    fetchApps,
+})(ProfilePage);

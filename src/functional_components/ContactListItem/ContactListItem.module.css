@@ -16,9 +16,19 @@
     position: relative;
 }
 
+.container.sm {
+    padding: 10px;
+    border-radius: 10px;
+}
+
 .imageContainer {
     width: 80px;
     height: 80px;
+}
+
+.imageContainer.sm {
+    width: 50px;
+    height: 50px;
 }
 
 .iconContainer {
@@ -40,6 +50,11 @@
     background-position: center;
 }
 
+.image.sm {
+    width: 50px;
+    height: 50px;
+}
+
 .nameContainer {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -47,4 +62,9 @@
     text-align: center;
     margin-top: 30px;
     width: 80%;
+}
+
+.nameContainer.sm {
+    font-size: 14px;
+    margin: unset;
 }

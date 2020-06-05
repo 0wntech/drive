@@ -8,14 +8,14 @@ exports[`ContactList should render correctly 1`] = `
     className="itemContainer"
   >
     <div
-      className="container"
+      className="container undefined"
       onClick={[Function]}
     >
       <div
-        className="imageContainer"
+        className="imageContainer undefined"
       >
         <div
-          className="image"
+          className="image undefined"
           style={
             Object {
               "backgroundImage": "url('https://ludwigschubert.solid.community/profile/aa.jpeg')",
@@ -24,12 +24,12 @@ exports[`ContactList should render correctly 1`] = `
         />
       </div>
       <div
-        className="nameContainer"
+        className="nameContainer undefined"
       >
         Ludwig Faust Schubert
       </div>
       <div
-        className="iconContainer"
+        className="iconContainer undefined"
       >
         <svg
           fill="none"
@@ -79,14 +79,14 @@ exports[`ContactList should render correctly 1`] = `
     className="itemContainer"
   >
     <div
-      className="container"
+      className="container undefined"
       onClick={[Function]}
     >
       <div
-        className="imageContainer"
+        className="imageContainer undefined"
       >
         <div
-          className="image"
+          className="image undefined"
           style={
             Object {
               "backgroundImage": "url('https://bejow.solid.community/profile/meme_ben_gang.jpg')",
@@ -95,12 +95,12 @@ exports[`ContactList should render correctly 1`] = `
         />
       </div>
       <div
-        className="nameContainer"
+        className="nameContainer undefined"
       >
         Ben Wetzel
       </div>
       <div
-        className="iconContainer"
+        className="iconContainer undefined"
       >
         <svg
           fill="none"
@@ -150,14 +150,14 @@ exports[`ContactList should render correctly 1`] = `
     className="itemContainer"
   >
     <div
-      className="container"
+      className="container undefined"
       onClick={[Function]}
     >
       <div
-        className="imageContainer"
+        className="imageContainer undefined"
       >
         <div
-          className="image"
+          className="image undefined"
           style={
             Object {
               "backgroundImage": "url('https://bejow.solid.community/profile/meme_ben_gang.jpg')",
@@ -166,12 +166,12 @@ exports[`ContactList should render correctly 1`] = `
         />
       </div>
       <div
-        className="nameContainer"
+        className="nameContainer undefined"
       >
         Ben Wetzel
       </div>
       <div
-        className="iconContainer"
+        className="iconContainer undefined"
       >
         <svg
           fill="none"
