@@ -50,10 +50,11 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       <div
         className="editWrapper"
       >
-        <SvgEdit
-          className="icon"
-          data-test-id="edit"
-          onClick={[Function]}
+        <EditButtons
+          isEditable={false}
+          onCancel={[Function]}
+          onEdit={[Function]}
+          onSubmit={[Function]}
         />
       </div>
     </div>

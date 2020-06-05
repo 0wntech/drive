@@ -8,18 +8,15 @@ import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
 import { fetchContacts } from '../../actions/contactActions';
 import { fetchApps } from '../../actions/userAppActions';
 import Camera from '../../assets/svgIcons/Camera';
-import EditIcon from '../../assets/svgIcons/Edit';
-import X from '../../assets/svgIcons/X';
-import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
-import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
 import { ContactListItem } from '../ContactListItem';
+import { EditButtons } from '../EditButtons';
 
 const responsive = {
     superLargeDesktop: {
@@ -80,76 +77,6 @@ export const ProfilePage = ({
 
     const onPhotoChange = (e) => {
         changeProfilePhoto(e, user.webId);
-    };
-
-    const renderEditButtons = () => {
-        if (isEditable) {
-            if (width < styleConstants.screen_m) {
-                return (
-                    <div className={styles.editButtons}>
-                        <ActionButton
-                            className={styles.actionButton}
-                            onClick={onCancel}
-                            label="Cancel"
-                            size="lg"
-                            color="red"
-                            dataId="edit-cancel"
-                        />
-                        <ActionButton
-                            className={styles.actionButton}
-                            onClick={onSubmit}
-                            label="Save"
-                            size="lg"
-                            color="green"
-                            dataIid="edit-submit"
-                        />
-                    </div>
-                );
-            } else if (width > styleConstants.screen_m) {
-                return (
-                    <div className={styles.editButtons}>
-                        <X
-                            onClick={onCancel}
-                            className={styles.icon}
-                            data-test-id="edit-cancel"
-                        />{' '}
-                        <Check
-                            className={styles.icon}
-                            onClick={onSubmit}
-                            data-test-id="edit-submit"
-                        />
-                    </div>
-                );
-            }
-        } else {
-            if (width < styleConstants.screen_m) {
-                return (
-                    <ActionButton
-                        onClick={() => setEditable(!isEditable)}
-                        size="lg"
-                        color="blue"
-                    >
-                        <EditIcon
-                            viewBox="3 2 30 30"
-                            width="20"
-                            height="20"
-                            onClick={() => setEditable(!isEditable)}
-                            className={styles.iconWhite}
-                            data-test-id="edit"
-                        />
-                        Edit Profile
-                    </ActionButton>
-                );
-            } else {
-                return (
-                    <EditIcon
-                        onClick={() => setEditable(!isEditable)}
-                        className={styles.icon}
-                        data-test-id="edit"
-                    />
-                );
-            }
-        }
     };
 
     if (user) {
@@ -218,7 +145,12 @@ export const ProfilePage = ({
                             />
                         </div>
                         <div className={styles.editWrapper}>
-                            {renderEditButtons()}
+                            <EditButtons
+                                isEditable={isEditable}
+                                onSubmit={onSubmit}
+                                onCancel={onCancel}
+                                onEdit={() => setEditable(!isEditable)}
+                            />
                         </div>
                     </div>
                     <KeyValuePair
