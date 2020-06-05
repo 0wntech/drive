@@ -64,7 +64,6 @@ const ContactProfilePage = ({
                         <SingleValue
                             value={currentContact.bio}
                             className={styles.bioLabel}
-                            placeholder="no bio"
                         />
                     </div>
                     <div className={styles.buttonWrapper}>
