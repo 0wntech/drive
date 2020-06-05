@@ -6,7 +6,7 @@ import { addContact, removeContact } from '../../actions/contactActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
-import IconButton from '../IconButton/IconButton';
+import ActionButton from '../ActionButton/ActionButton';
 import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
 import { isContact } from '../../reducers/contactReducer';
@@ -69,16 +69,16 @@ const ContactProfilePage = ({
                     </div>
                     <div className={styles.buttonWrapper}>
                         {isContact ? (
-                            <IconButton
+                            <ActionButton
                                 onClick={() =>
                                     removeContact(webId, currentContact.webId)
                                 }
                                 className={styles.removeButton}
                             >
                                 Remove
-                            </IconButton>
+                            </ActionButton>
                         ) : (
-                            <IconButton
+                            <ActionButton
                                 label="Add"
                                 className={styles.addButton}
                                 onClick={() =>
@@ -87,7 +87,7 @@ const ContactProfilePage = ({
                             >
                                 <Plus className={styles.icon} />
                                 Add
-                            </IconButton>
+                            </ActionButton>
                         )}
                     </div>
                 </div>
