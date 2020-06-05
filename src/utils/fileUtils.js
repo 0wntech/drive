@@ -1,6 +1,26 @@
-import rdf from 'rdflib';
+import * as rdf from 'rdflib';
 import auth from 'solid-auth-client';
+import url from 'url';
+import mime from 'mime';
 const ns = require('solid-namespace')(rdf);
+
+function allowFileName(fileName, currentFolder, fileSuffix) {
+    if (fileName == '') {
+        return false;
+    }
+
+    const re = new RegExp('^[a-zA-Z0-9]*$');
+
+    if (currentFolder && fileSuffix) {
+        if (namingConflict(`${fileName}.${fileSuffix}`, currentFolder))
+            return false;
+    }
+    return !!re.exec(fileName) || mime.getType(fileName);
+}
+
+export const isImageType = (fileType) => {
+    return fileType ? fileType.indexOf('image') !== -1 : false;
+};
 
 function getContentType(file) {
     const mimeTypes = {
@@ -25,6 +45,18 @@ function getContentType(file) {
         return 'folder';
     }
 }
+
+const addForDelete = (item, selectedItems) => {
+    const newSelection = [...selectedItems];
+    if (item && url.parse(item).path !== '/' && !selectedItems.includes(item)) {
+        newSelection.push(item);
+        return newSelection;
+    }
+    if (selectedItems.length !== 0 || newSelection.length !== 0) {
+        return newSelection;
+    }
+    return false;
+};
 
 function namingConflict(name, currentFolder) {
     if (currentFolder) {
@@ -52,15 +84,15 @@ function getSuffixAndPlaceholder(placeholder) {
     return { fileSuffix: fileSuffix, placeholder: placeholder };
 }
 
-function uploadFolderOrFile(file, url) {
+function uploadCurrentItemOrFile(file, url) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
 
     const fileType = file.type ? file.type : 'text/plain';
 
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         const reader = new FileReader();
-        reader.onload = function() {
+        reader.onload = function () {
             const data = this.result;
 
             fetcher
@@ -84,7 +116,7 @@ function uploadFile(filePath, currPath, callback) {
     const fetcher = new rdf.Fetcher(store);
 
     const reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
         const data = this.result;
         const filename = encodeURIComponent(filePath.name);
         const contentType = getContentType(filePath.name);
@@ -103,7 +135,7 @@ function uploadFile(filePath, currPath, callback) {
                 }
             });
     };
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         reader.readAsArrayBuffer(filePath);
     });
 }
@@ -111,11 +143,11 @@ function uploadFile(filePath, currPath, callback) {
 // input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
 // returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
 function convertFilesAndFoldersToArray(files, folders) {
-    const fileObjects = files.map((fileName) => {
+    const fileObjects = files.map((file) => {
         return {
-            name: fileName,
+            name: file.name ? file.name : file,
             type: 'file',
-            fileType: getFileType(fileName),
+            fileType: getFileType(file),
         };
     });
 
@@ -131,7 +163,7 @@ function convertFilesAndFoldersToArray(files, folders) {
 
 // input "fav.ico" returns "ico"
 function getFileType(file) {
-    const splittedFile = file.split('.');
+    const splittedFile = file.name ? file.name.split('.') : file.split('.');
     // no dot || nothing after dot
     if (
         splittedFile.length === 1 ||
@@ -182,7 +214,7 @@ function getFolderTree(folderUrl) {
                     fileList.push(Promise.resolve(getFolderTree(folder[i])));
                 } else {
                     fileList.push(
-                        new Promise(function(resolve) {
+                        new Promise(function (resolve) {
                             resolve(folder[i]);
                         })
                     );
@@ -190,13 +222,13 @@ function getFolderTree(folderUrl) {
             }
 
             fileList.push(
-                new Promise(function(resolve) {
+                new Promise(function (resolve) {
                     resolve(folderUrl);
                 })
             );
             return Promise.all(fileList);
         })
-        .then(function(results) {
+        .then(function (results) {
             while (hasArray(results)) {
                 const nextResult = results.shift();
                 if (Array.isArray(nextResult)) {
@@ -212,10 +244,10 @@ function getFolderTree(folderUrl) {
 }
 
 function deleteRecursively(url) {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
-        fetcher.load(url).then(function() {
+        fetcher.load(url).then(function () {
             const promises = store
                 .each(rdf.sym(url), ns.ldp('contains'))
                 .map((file) => {
@@ -361,7 +393,7 @@ function sendNotification(notifParams) {
         method: 'PUT',
         headers: {
             'content-type': 'text/turtle',
-            'slug': notificationAddress.replace(inboxAddress + '/', ''),
+            "slug": notificationAddress.replace(inboxAddress + '/', ''),
         },
         body: notification,
     };
@@ -387,7 +419,7 @@ export default {
     getContentType: getContentType,
     getFolderContents: getFolderContents,
     getFolderTree: getFolderTree,
-    uploadFolderOrFile: uploadFolderOrFile,
+    uploadCurrentItemOrFile: uploadCurrentItemOrFile,
     deleteItems: deleteItems,
     changeAccess: changeAccess,
     getInfo: getInfo,
@@ -401,4 +433,7 @@ export default {
     convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
     namingConflict: namingConflict,
     getSuffixAndPlaceholder: getSuffixAndPlaceholder,
+    addForDelete: addForDelete,
+    allowFileName: allowFileName,
+    isImageType: isImageType,
 };

@@ -4,26 +4,42 @@ import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
 import PropTypes from 'prop-types';
 const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
     const root = 'https://' + webId.split('/')[2];
-    const currentUrl = root;
     const breadcrumbMarkup = breadcrumbs
         ? breadcrumbs.map((currentBreadcrumb, currentIndex) => {
-              if (currentBreadcrumb !== '/') {
-                  const breadcrumbUrl = currentUrl + currentBreadcrumb;
+              if (currentIndex !== 0) {
+                  // breadcrumb in the middle
+                  let currentUrl = root;
+                  for (let i = 0; i < currentIndex; i++) {
+                      currentUrl += breadcrumbs[i + 1];
+                  }
                   const currentLabel = currentBreadcrumb.replace('/', '');
-                  return (
-                      <BreadcrumbItem
-                          key={currentIndex}
-                          label={currentLabel}
-                          onClick={() => {
-                              onClick(`${breadcrumbUrl}/`);
-                          }}
-                      >
-                          {currentBreadcrumb.replace('/', '')}
-                      </BreadcrumbItem>
-                  );
+                  if (currentIndex + 1 === breadcrumbs.length) {
+                      return (
+                          <BreadcrumbItem
+                              key={currentIndex}
+                              label={currentLabel}
+                              onClick={() => {
+                                  onClick(currentUrl + '/');
+                              }}
+                          />
+                      );
+                  } else {
+                      return (
+                          <BreadcrumbItem
+                              seperator
+                              key={currentIndex}
+                              label={currentLabel}
+                              onClick={() => {
+                                  onClick(currentUrl + '/');
+                              }}
+                          />
+                      );
+                  }
               } else {
+                  // first breadcrumb
                   return (
                       <BreadcrumbItem
+                          seperator
                           key={0}
                           label={'Home'}
                           onClick={() => onClick(root + '/')}

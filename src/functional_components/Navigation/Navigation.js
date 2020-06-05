@@ -1,57 +1,63 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import styles from './Navigation.module.css';
+import { bindActionCreators } from 'redux';
+import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/File.png';
 import FolderIcon from '../../assets/icons/Folder.png';
 import fileUtils from '../../utils/fileUtils';
+import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
 import {
-    setCurrentPath,
-    setCurrentContact,
     searchContact,
-} from '../../actions/UserActions';
+    setCurrentContact,
+    fetchContacts,
+} from '../../actions/contactActions';
+import { navigate } from '../../utils/helper';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
-import DropdownMenu from '../DropdownMenu';
-import ActionButton from '../ActionButton/ActionButton';
 import { getUsernameFromWebId } from '../../utils/url';
+import NavbarMenu from '../NavbarMenu/NavbarMenu';
+import classNames from 'classnames';
 
 const Navigation = ({
-    picture,
+    resetError,
     webId,
-    onLogout,
     setCurrentPath,
-    username,
     history,
-    items,
+    currentItem,
     contacts,
     currentPath,
     setCurrentContact,
     contactSearchResult,
     searchingContacts,
     searchContact,
+    fetchContacts,
+    dispatch,
+    toggleSearchbar,
+    isSearchBarExpanded,
 }) => {
-    const DROPDOWN_OPTIONS = [
-        { onClick: () => history.push('/profile'), label: 'Profile' },
-        { onClick: () => console.log('test2'), label: 'Settings*' },
-        { onClick: () => console.log('test2'), label: 'Notifications*' },
-        { onClick: () => history.push('/contacts'), label: 'Contacts' },
-        { onClick: () => onLogout(), label: 'Logout' },
-    ];
-    const [isDropdownExpanded, setDropdownExpanded] = useState(false);
     const [typingTimer, setTypingTimer] = useState(null);
 
+    useEffect(() => {
+        if (!contacts) fetchContacts(webId);
+    }, []);
+
     const handleChange = (selected) => {
+        resetError();
         if (selected.type === 'folder') {
-            setCurrentPath(`${currentPath}/${selected.name}/`);
-            history.push('/home');
+            setCurrentPath(`${currentPath}${selected.name}/`);
+            navigate('/home', history, dispatch);
         } else if (selected.type === 'file') {
-            console.log('implement redux on file click');
+            navigate(
+                `/file?f=${currentPath + selected.value}`,
+                history,
+                dispatch
+            );
         } else if (selected.type === 'contact') {
             setCurrentContact(selected.contact);
-            history.push('/contact');
+            navigate('/contact', history, dispatch);
         }
+        toggleSearchbar();
     };
 
     const handleInputChange = (searchText) => {
@@ -62,38 +68,59 @@ const Navigation = ({
     };
 
     const getSearchDropdownOptions = () => {
-        const filesAndFolders = fileUtils
-            .convertFilesAndFoldersToArray(items.files, items.folders)
-            .map((item) => ({
-                ...item,
-                value: item.name,
-            }));
-
-        const contactOptions = [...contactSearchResult, ...contacts].map(
-            (contact) => ({
-                value: getUsernameFromWebId(contact.webId),
-                type: 'contact',
-                contact,
-            })
-        );
+        const contactSearchDropdownItems = contactSearchResult
+            ? [...contactSearchResult]
+            : [];
+        const contactsDropdownItems = contacts ? [...contacts] : [];
+        const contactOptions = [
+            ...contactSearchDropdownItems,
+            ...contactsDropdownItems,
+        ].map((contact) => ({
+            value: getUsernameFromWebId(contact.webId),
+            type: 'contact',
+            contact,
+        }));
 
         const separator = {
             label: 'People',
             type: 'separator',
             isDisabled: true,
+            loading: searchingContacts,
         };
-        return contactOptions.length > 0
-            ? [...filesAndFolders, separator, ...contactOptions]
-            : filesAndFolders;
+
+        if (currentItem && currentItem.files && currentItem.folders) {
+            const filesAndFolders = fileUtils
+                .convertFilesAndFoldersToArray(
+                    currentItem.files,
+                    currentItem.folders
+                )
+                .map((resource) => ({
+                    ...resource,
+                    value: resource.name,
+                }));
+            return contactOptions.length > 0
+                ? [...filesAndFolders, separator, ...contactOptions]
+                : filesAndFolders;
+        } else {
+            return contactOptions;
+        }
     };
     return (
-        <div className={styles.container}>
+        <div
+            className={classNames(styles.container, {
+                [styles.active]: isSearchBarExpanded,
+            })}
+        >
             <div className={styles.brandWrapper}>
                 <img
                     alt="logo"
                     onClick={() => {
+                        resetError();
                         if (webId) {
-                            history.push('/home');
+                            setCurrentPath(
+                                webId.replace('profile/card#me', '')
+                            );
+                            navigate('/home', history, dispatch);
                         } else {
                             history.push('/');
                         }
@@ -103,7 +130,7 @@ const Navigation = ({
                 />
             </div>
             <div className={styles.search}>
-                {items ? (
+                {currentItem || contacts ? (
                     <SearchDropdown
                         className={styles.searchDropdown}
                         formatOptionLabel={formatOptionLabel}
@@ -113,44 +140,15 @@ const Navigation = ({
                         items={getSearchDropdownOptions()}
                         loading={searchingContacts}
                         filterOption={customFilter}
+                        toggleSearchbar={toggleSearchbar}
+                        isSearchBarExpanded={isSearchBarExpanded}
                     />
                 ) : null}
             </div>
-            <div className={styles.menuWrapper}>
-                {webId ? (
-                    <div className={styles.dropdownWrapper}>
-                        <div className={styles.profileSection}>
-                            <div
-                                onClick={() => history.push('/profile')}
-                                className={styles.profileIcon}
-                                style={{
-                                    backgroundImage: `url('${
-                                        picture ? picture : defaultIcon
-                                    }')`,
-                                }}
-                            />
-
-                            <div className={styles.username}>{username}</div>
-                        </div>
-                        <DropdownMenu
-                            options={DROPDOWN_OPTIONS}
-                            isExpanded={isDropdownExpanded}
-                            setExpanded={setDropdownExpanded}
-                        />
-                        <div
-                            className={classNames(styles.mask, {
-                                [styles.active]: isDropdownExpanded,
-                            })}
-                        />
-                    </div>
-                ) : (
-                    <ActionButton
-                        size="sm"
-                        label="Login"
-                        onClick={() => history.push('/login')}
-                    />
-                )}
-            </div>
+            <NavbarMenu
+                resetError={resetError}
+                className={styles.menuWrapper}
+            />
         </div>
     );
 };
@@ -226,13 +224,25 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
 };
 
 const mapStateToProps = (state) => ({
+    webId: state.user.webId,
     currentPath: state.app.currentPath,
-    items: state.app.currentItems,
-    contacts: state.app.contacts,
-    searchingContacts: state.app.searchingContacts,
-    contactSearchResult: state.app.contactSearchResult,
+    currentItem: state.app.currentItem,
+    contacts: state.contact.contacts,
+    searchingContacts: state.contact.searchingContacts,
+    contactSearchResult: state.contact.contactSearchResult,
+    isSearchBarExpanded: state.app.isSearchBarExpanded,
 });
-export default connect(
-    mapStateToProps,
-    { setCurrentPath, setCurrentContact, searchContact }
-)(withRouter(Navigation));
+
+export default connect(mapStateToProps, (dispatch) => ({
+    ...bindActionCreators(
+        {
+            setCurrentPath,
+            setCurrentContact,
+            searchContact,
+            fetchContacts,
+            toggleSearchbar,
+        },
+        dispatch
+    ),
+    dispatch,
+}))(withRouter(Navigation));

@@ -1,0 +1,85 @@
+@import '../../../styles/constants.scss';
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    background: rgba($color: #000, $alpha: 0.2);
+    grid-area: main;
+    z-index: 4;
+    max-height: calc(100vh - 220px);
+
+    .container {
+        padding: 10px 32px;
+        justify-self: center;
+        align-self: center;
+        width: 400px;
+        overflow-y: auto;
+        border: 2px solid rgba($color: #000, $alpha: 0.2);
+        border-radius: 20px;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+
+        .option {
+            display: grid;
+            grid-template-columns: 28px 8px 1fr;
+            grid-template-areas: 'icon . label';
+            align-items: center;
+            padding: 10px 0;
+
+            svg {
+                grid-area: icon;
+            }
+
+            .optionLabel {
+                grid-area: label;
+                padding: 5px 0;
+                width: 100%;
+                font-family: 'Helvetica Neue Light';
+                font-style: normal;
+                font-weight: 300;
+                font-size: 18px;
+                line-height: 28px;
+                letter-spacing: 5%;
+                vertical-align: middle;
+                cursor: pointer;
+            }
+        }
+
+        .option:hover {
+            background: #f0f0f0;
+        }
+
+        .disabled {
+            color: #8c8c8c;
+            cursor: default;
+        }
+
+        .red {
+            color: #d10000;
+        }
+    }
+}
+
+@media (max-width: $screen_m) {
+    .wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        justify-content: flex-end;
+        align-self: flex-end;
+        max-height: initial;
+
+        .container {
+            border: none;
+            height: initial;
+            max-height: 50%;
+            width: 100%;
+            justify-self: flex-end;
+            align-self: flex-end;
+            border-radius: 20px 20px 0 0;
+        }
+    }
+}

@@ -1,19 +1,21 @@
 import React from 'react';
-import styles from './File.module.css';
+import styles from './File.module.scss';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { Menu, MenuProvider, Item } from 'react-contexify';
+import mime from 'mime';
+import { isImageType } from '../../utils/fileUtils';
+import linkedFileImage from '../../assets/icons/shared_file.png';
+
 export default function File({
     currPath,
     onClick,
     image,
-    label,
+    file,
     selectedItem,
     contextMenuOptions,
 }) {
-    const imageTypes = ['ico', 'png', 'jpeg', 'jpg'];
-    const labelFragments = encodeURIComponent(label).split('.');
-    const isImage =
-        imageTypes.indexOf(labelFragments[labelFragments.length - 1]) > -1;
+    const isImage = isImageType(file.type);
 
     const renderFile = () => {
         if (isImage) {
@@ -23,7 +25,7 @@ export default function File({
                         <img
                             alt="file"
                             className={styles.thumbnail}
-                            src={currPath + label}
+                            src={currPath + file.name}
                         />
                         <img alt="file" className={styles.icon} src={image} />
                     </div>
@@ -31,7 +33,22 @@ export default function File({
             );
         } else {
             return (
-                <div className={styles.innerContainer}>
+                <div
+                    className={styles.innerContainer}
+                    data-test-id={`file-${file.name}`}
+                >
+                    {file.type ? (
+                        file.type === 'rdf' ? (
+                            <img
+                                src={linkedFileImage}
+                                className={styles.linkedFile}
+                            />
+                        ) : (
+                            <p className={styles.fileType}>
+                                {mime.getExtension(file.type)}
+                            </p>
+                        )
+                    ) : null}
                     <img alt="file" className={styles.icon} src={image} />
                 </div>
             );
@@ -43,17 +60,17 @@ export default function File({
             className={classNames(styles.gridCell, {
                 [styles.selected]: selectedItem,
             })}
-            id={label + 'contextmenu'}
+            id={file.name + 'contextmenu'}
         >
             <div
                 className={styles.container}
-                style={selectedItem ? { opacity: 0.5 } : undefined}
                 onClick={onClick}
+                data-test-id={`file-${file.name}`}
             >
                 {renderFile()}
+                <div className={styles.label}>{file.name}</div>
             </div>
-            <div className={styles.label}>{label}</div>
-            <Menu className={styles.contextMenu} id={label + 'contextmenu'}>
+            <Menu className={styles.contextMenu} id={file.name + 'contextmenu'}>
                 {contextMenuOptions &&
                     contextMenuOptions.map((option, index) => (
                         <Item
@@ -62,7 +79,7 @@ export default function File({
                             onClick={
                                 !option.disabled
                                     ? () => {
-                                          option.onClick(currPath + label);
+                                          option.onClick(currPath + file.name);
                                       }
                                     : undefined
                             }
@@ -77,3 +94,17 @@ export default function File({
         </MenuProvider>
     );
 }
+File.propTypes = {
+    currPath: PropTypes.string,
+    onClick: PropTypes.func,
+    image: PropTypes.string,
+    label: PropTypes.string,
+    selectedItem: PropTypes.bool,
+    contextMenuOptions: PropTypes.arrayOf(
+        PropTypes.shape({
+            disabled: PropTypes.bool,
+            label: PropTypes.string,
+            onClick: PropTypes.func,
+        })
+    ),
+};

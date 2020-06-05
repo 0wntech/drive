@@ -1,0 +1,26 @@
+@import '../../../styles/constants.scss';
+
+.button {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.buttonBar {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.input {
+    width: 100%;
+}
+
+@media (max-width: $screen_m) {
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(50vh - 50px);
+    }
+}

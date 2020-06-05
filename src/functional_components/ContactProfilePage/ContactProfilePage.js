@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styles from './ContactProfilePage.module.css';
-
-import { addContact, removeContact } from '../../actions/UserActions';
+import styles from './ContactProfilePage.module.scss';
+import { addContact, removeContact } from '../../actions/contactActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
-import Settings from '../../assets/svgIcons/Settings';
 import IconButton from '../IconButton/IconButton';
 import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
-import { isContact } from '../../reducers/AppReducer';
-
-const toolbarRight = <Settings className={styles.settings} />;
+import { isContact } from '../../reducers/contactReducer';
+import { handleError } from '../../utils/helper';
+import { getUsernameFromWebId } from '../../utils/url';
 
 const ContactProfilePage = ({
     currentContact,
@@ -21,12 +19,19 @@ const ContactProfilePage = ({
     removeContact,
     webId,
     isContact,
+    error,
 }) => {
+    handleError(error);
     return (
         <Layout
             className={styles.grid}
             label={currentContact.name}
-            toolbarChildrenRight={toolbarRight}
+            isLoading={currentContact === null}
+            label={`Profile of ${
+                currentContact.name
+                    ? currentContact.name
+                    : getUsernameFromWebId(currentContact.webId)
+            }`}
         >
             <div className={styles.profileContainer}>
                 <div className={styles.headContainer}>
@@ -59,7 +64,6 @@ const ContactProfilePage = ({
                         <SingleValue
                             value={currentContact.bio}
                             className={styles.bioLabel}
-                            placeholder="no bio"
                         />
                     </div>
                     <div className={styles.buttonWrapper}>
@@ -111,12 +115,12 @@ ContactProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    currentContact: state.app.currentContact,
-    webId: state.app.webId,
-    isContact: isContact(state.app, state.app.currentContact.webId),
+    error: state.contact.error,
+    currentContact: state.contact.currentContact,
+    webId: state.user.webId,
+    isContact: isContact(state.contact, state.contact.currentContact.webId),
 });
 
-export default connect(
-    mapStateToProps,
-    { addContact, removeContact }
-)(ContactProfilePage);
+export default connect(mapStateToProps, { addContact, removeContact })(
+    ContactProfilePage
+);

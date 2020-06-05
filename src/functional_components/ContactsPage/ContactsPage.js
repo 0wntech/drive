@@ -1,47 +1,91 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ContactsPage.module.css';
 import { connect } from 'react-redux';
-import { addContact, setCurrentContact } from '../../actions/UserActions';
-import { ClassicSpinner } from 'react-spinners-kit';
+import { withRouter } from 'react-router-dom';
+import {
+    setCurrentContact,
+    addContact,
+    removeContact,
+    fetchContactRecommendations,
+    fetchContacts,
+} from '../../actions/contactActions';
 
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';
+import { handleError } from '../../utils/helper';
 
 const ContactsPage = ({
     contacts,
     addContact,
     loadContacts,
+    fetchContacts,
     webId,
     setCurrentContact,
+    contactRecommendations,
+    removeContact,
+    history,
+    fetchContactRecommendations,
+    error,
 }) => {
+    useEffect(() => {
+        if (!contacts) fetchContacts(webId);
+        if (!contactRecommendations) fetchContactRecommendations(webId);
+    }, []);
+
+    handleError(error);
+
+    const [displayedRows, setDisplayedRows] = useState(2);
+    const contactRecommendationsToDisplay =
+        contactRecommendations &&
+        contactRecommendations.slice(0, displayedRows * 3);
+
     return (
-        <Layout label="Contacts" className={styles.grid}>
-            {loadContacts ? (
-                <div className={styles.spinner}>
-                    <ClassicSpinner
-                        size={30}
-                        color="#686769"
-                        loading={loadContacts}
-                    />
-                </div>
-            ) : (
-                <div className={styles.contactsContainer}>
-                    <ContactList
-                        onItemClick={setCurrentContact}
-                        contacts={contacts}
-                    />
-                    <button
-                        onClick={() =>
-                            addContact(
-                                webId,
-                                'https://ludwigschubert.solid.community/profile/card#me'
-                            )
-                        }
-                    >
-                        add
-                    </button>
-                </div>
-            )}
+        <Layout
+            label="Contacts"
+            className={styles.grid}
+            isLoading={loadContacts}
+        >
+            <div className={styles.contactsContainer}>
+                <ContactList
+                    onItemClick={(contact) => {
+                        setCurrentContact(contact);
+                        history.push('/contact');
+                    }}
+                    contacts={contacts}
+                    webId={webId}
+                    removeContact={removeContact}
+                />
+                {contactRecommendations ? (
+                    <>
+                        <div className={styles.recommendLabel}>
+                            People you might know:
+                        </div>
+                        <ContactList
+                            onItemClick={(contact) => {
+                                setCurrentContact(contact);
+                                history.push('/contact');
+                            }}
+                            contacts={contactRecommendationsToDisplay}
+                            webId={webId}
+                            addContact={addContact}
+                            recommended
+                        />
+                        {displayedRows * 3 < contactRecommendations.length ? (
+                            <div
+                                onClick={() =>
+                                    setDisplayedRows(displayedRows + 2)
+                                }
+                                className={styles.showMoreWrapper}
+                            >
+                                <div className={styles.showMoreLabel}>
+                                    Show more
+                                </div>
+                                <div className={styles.showMoreIcon}>...</div>
+                            </div>
+                        ) : null}
+                    </>
+                ) : null}
+            </div>
         </Layout>
     );
 };
@@ -49,12 +93,17 @@ const ContactsPage = ({
 ContactsPage.propTypes = {};
 
 const mapStateToProps = (state) => ({
-    contacts: state.app.contacts,
-    webId: state.app.webId,
-    loadContacts: state.app.loadContacts,
+    contacts: state.contact.contacts,
+    webId: state.user.webId,
+    loadContacts: state.contact.loadContacts,
+    contactRecommendations: state.contact.contactRecommendations,
+    error: state.contact.error,
 });
 
-export default connect(
-    mapStateToProps,
-    { setCurrentContact, addContact }
-)(ContactsPage);
+export default connect(mapStateToProps, {
+    setCurrentContact,
+    addContact,
+    removeContact,
+    fetchContacts,
+    fetchContactRecommendations,
+})(withRouter(ContactsPage));

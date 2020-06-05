@@ -1,26 +1,37 @@
 import React from 'react';
-import styles from './Window.module.css';
-import closeIcon from '../../assets/icons/x.png';
+import classnames from 'classnames';
+import styles from './Window.module.scss';
 import PropTypes from 'prop-types';
+import X from '../../assets/svgIcons/X';
 
-function Window({ windowName, className, children, onClose }) {
-    return (
-        <div className={className}>
+function Window({ windowName, className, children, onClose, visible }) {
+    return visible ? (
+        <div
+            className={styles.wrapper}
+            onClick={(e) => {
+                if (
+                    typeof e.target.className === 'string' &&
+                    e.target.className.includes('Window_wrapper')
+                )
+                    onClose();
+            }}
+        >
             <div className={styles.container}>
                 <div className={styles.head}>
                     <span className={styles.title}>{windowName}</span>
-                    <img
+                    <X
                         className={styles.close}
-                        src={closeIcon}
+                        preserveAspectRatio="none"
+                        viewBox="5 4 24 24"
                         onClick={onClose}
-                        alt="close"
                     />
                 </div>
-                <div className={styles.body}>{children}</div>
+                <div className={classnames(styles.body, className)}>
+                    {children}
+                </div>
             </div>
-            <div className={styles.opacity} />
         </div>
-    );
+    ) : null;
 }
 
 Window.propTypes = {
@@ -28,6 +39,7 @@ Window.propTypes = {
     className: PropTypes.string,
     children: PropTypes.array,
     onClose: PropTypes.func,
+    visible: PropTypes.bool,
 };
 
 export default Window;

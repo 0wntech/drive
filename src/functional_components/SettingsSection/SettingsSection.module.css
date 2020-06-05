@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-weight: 600;
+    font-size: 2em;
+    margin-top: auto;
+}

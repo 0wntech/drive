@@ -1,7 +1,14 @@
+os: linux
 language: node_js
 node_js:
     - 10
+dist: trusty
 warnings_are_errors: false
+addons:
+    apt:
+        packages:
+            # This is required to run new chrome on old trusty
+            - libnss3
 
 branches:
     only:
@@ -18,21 +25,31 @@ notifications:
 install: npm ci
 
 stages:
-    - name: test
+    - name: unit_test
+    - name: e2e_test
+    # only deploy to production if there are changes on production branch
     - name: deploy_production
       if: type != pull_request AND branch = production
+    # deploy every time to staging when there are change on the master or staging branches
     - name: deploy_staging
-      if: type != pull_request AND branch = staging
+      if: type != pull_request AND branch = master OR branch = staging
 
 jobs:
     include:
-        - stage: test
+        - stage: unit_test
           script:
               - npm run lint
               - npm run test:coverage -- --runInBand && codecov
 
+        - stage: e2e_test
+          before_install:
+              # Enable user namespace cloning
+              - 'sysctl kernel.unprivileged_userns_clone=1'
+          script:
+              - npm run test:e2e
+
         - stage: deploy_production
-          script: CI=false npm run build
+          script: CI=false NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v
           deploy:
               on:
                   branch: production
@@ -41,12 +58,11 @@ jobs:
               access_key_id: $AWS_KEY
               secret_access_key: $AWS_SECRET
               bucket: 'drive.owntech.io'
-              skip_cleanup: true
               acl: public_read
               local_dir: build
 
         - stage: deploy_staging
-          script: CI=false npm run build
+          script: CI=false  NODE_OPTIONS=--max_old_space_size=8192 npm run build -- -v
           deploy:
               on:
                   branch: staging
@@ -55,6 +71,5 @@ jobs:
               access_key_id: $AWS_KEY
               secret_access_key: $AWS_SECRET
               bucket: 'staging.drive.owntech.io'
-              skip_cleanup: true
               acl: public_read
               local_dir: build

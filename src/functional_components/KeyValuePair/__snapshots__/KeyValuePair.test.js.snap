@@ -17,6 +17,7 @@ exports[`KeyValuePair should render expanded 1`] = `
     >
       <input
         className="value active"
+        data-test-id="testKey-input"
         onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
@@ -30,7 +31,7 @@ exports[`KeyValuePair should render expanded 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": 0,
+        "height": "0px",
         "overflow": "hidden",
       }
     }
@@ -72,6 +73,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         >
           <input
             className="value"
+            data-test-id="testKey-input"
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -85,6 +87,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         >
           <input
             className="value"
+            data-test-id="testKey-input"
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -98,6 +101,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         >
           <input
             className="value"
+            data-test-id="testKey-input"
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -113,7 +117,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": 0,
+        "height": "0px",
         "overflow": "hidden",
       }
     }
@@ -149,6 +153,7 @@ exports[`KeyValuePair should render unexpanded 1`] = `
     >
       <input
         className="value"
+        data-test-id="testKey-input"
         onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
@@ -162,7 +167,7 @@ exports[`KeyValuePair should render unexpanded 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": 0,
+        "height": "0px",
         "overflow": "hidden",
       }
     }

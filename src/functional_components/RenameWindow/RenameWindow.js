@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Window } from '../Window';
-import styles from './RenameWindow.module.css';
-import classNames from 'classnames';
+import styles from './RenameWindow.module.scss';
 import utils from '../../utils/fileUtils';
-import Warning from '../Warning';
+import ActionButton from '../ActionButton/ActionButton';
 
 export default function RenameWindow({
     className,
-    onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
+    onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
     windowName,
     placeholder,
-    currentFolder,
+    visible,
+    currentItem,
 }) {
     const [newName, setNewName] = useState('');
 
@@ -20,49 +20,34 @@ export default function RenameWindow({
         fileSuffix,
         placeholder: cleanPlaceholder,
     } = utils.getSuffixAndPlaceholder(placeholder);
-    const newFileName = fileSuffix ? `${newName}.${fileSuffix}` : newName;
 
-    let allow;
-    let warning;
-    if (newName !== cleanPlaceholder) {
-        const re = new RegExp('^[a-zA-Z0-9]*$');
-        allow = re.exec(newName) && newName !== '' ? true : false;
-        warning = utils.namingConflict(newFileName, currentFolder);
-    } else {
-        allow = false;
-        warning = false;
-    }
+    const allow = utils.allowFileName(newName, currentItem, fileSuffix);
 
     return (
         <Window
             windowName={windowName}
+            visible={visible}
             onClose={() => {
                 setNewName('');
                 onClose();
             }}
-            className={className}
+            className={styles.window}
         >
-            <p className={styles.prompt}>Enter a new name:</p>
-            <p className={styles.description}>
-                Please only use valid characters (A-z, 0-9)
-            </p>
-            {warning ? (
-                <Warning
-                    message={
-                        'A file or folder named ' +
-                        newFileName +
-                        ' already exists. Renaming will replace the already existing resource.'
-                    }
-                />
-            ) : null}
-            <input
-                className={styles.input}
-                value={newName}
-                onChange={(event) => setNewName(event.target.value)}
-                placeholder={cleanPlaceholder}
-            ></input>
+            <div>
+                <p className={styles.prompt}>Enter a new name:</p>
+                <p className={styles.description}>
+                    Please only use valid characters (A-z, 0-9)
+                </p>
+                <input
+                    autoFocus
+                    className={styles.input}
+                    value={newName}
+                    onChange={(event) => setNewName(event.target.value)}
+                    placeholder={cleanPlaceholder}
+                ></input>
+            </div>
             <div className={styles.buttonBar}>
-                <div
+                <ActionButton
                     onClick={() => {
                         if (onCancel) {
                             setNewName('');
@@ -73,10 +58,11 @@ export default function RenameWindow({
                         }
                     }}
                     className={styles.button}
-                >
-                    Cancel
-                </div>
-                <div
+                    label="Cancel"
+                    color="white"
+                    size="lg"
+                />
+                <ActionButton
                     onClick={() => {
                         if (allow) {
                             onSubmit(newName);
@@ -84,12 +70,12 @@ export default function RenameWindow({
                             onClose();
                         }
                     }}
-                    className={classNames(styles.button, styles.confirm, {
-                        [styles.disabled]: !allow,
-                    })}
-                >
-                    Rename
-                </div>
+                    className={styles.button}
+                    disabled={!allow}
+                    color="green"
+                    size="lg"
+                    label="Rename"
+                />
             </div>
         </Window>
     );

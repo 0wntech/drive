@@ -2,22 +2,13 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
-import styles from './LoginScreen.module.css';
 import LoginForm from '../../functional_components/LoginForm/LoginForm';
-import { fetchIdps, login } from '../../actions/UserActions';
+import { Layout } from '../../functional_components/Layout';
+import { fetchIdps } from '../../actions/appActions';
 
 class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
-
-        this.onLogin = this.onLogin.bind(this);
-    }
-
-    onLogin(loginUrl) {
-        const { login } = this.props;
-        auth.login(loginUrl).then(() => {
-            login();
-        });
     }
 
     getIdpStyles(title) {
@@ -43,24 +34,56 @@ class LoginScreen extends React.Component {
     }
 
     componentDidMount() {
-        const { webId, loadIdps, idps, fetchIdps } = this.props;
-        if (!webId && !loadIdps && !idps) {
-            fetchIdps();
+        const {
+            webId,
+            loadIdps,
+            idps,
+            fetchIdps,
+            history,
+            location,
+        } = this.props;
+
+        if (!loadIdps && !idps) fetchIdps();
+
+        const cachedPath = localStorage.getItem('returnToUrl')
+            ? JSON.parse(localStorage.getItem('returnToUrl'))
+            : undefined;
+
+        if (
+            !webId &&
+            history.location.state &&
+            history.location.state.from.pathname
+        ) {
+            const attemptedPath = history.location.state.from;
+            if (attemptedPath)
+                localStorage.setItem(
+                    'returnToUrl',
+                    JSON.stringify(attemptedPath)
+                );
         } else if (webId) {
-            this.props.history.push('/home');
+            if (!!cachedPath) {
+                history.push(cachedPath.pathname + cachedPath.search);
+                localStorage.removeItem('returnToUrl');
+            } else if (location.state && location.state.from.pathname) {
+                history.push(
+                    location.state.from.pathname + location.state.from.search
+                );
+            } else {
+                history.push('/home');
+            }
         }
     }
 
     render() {
         const { idps } = this.props;
         return (
-            <div className={styles.container}>
+            <Layout label="Login">
                 <LoginForm
                     idps={idps}
-                    onLogin={this.onLogin}
+                    onLogin={auth.login}
                     getIdpStyles={this.getIdpStyles}
                 />
-            </div>
+            </Layout>
         );
     }
 }
@@ -68,12 +91,9 @@ class LoginScreen extends React.Component {
 const mapStateToProps = (state) => {
     return {
         loadIdps: state.app.loadIdps,
-        webId: state.app.webId,
+        webId: state.user.webId,
         idps: state.app.idps,
     };
 };
 
-export default connect(
-    mapStateToProps,
-    { fetchIdps, login }
-)(withRouter(LoginScreen));
+export default connect(mapStateToProps, { fetchIdps })(withRouter(LoginScreen));

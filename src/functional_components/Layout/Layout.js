@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import styles from './Layout.module.css';
+import styles from './Layout.module.scss';
+import { ClassicSpinner } from 'react-spinners-kit';
 
-const Layout = ({
+export const Layout = ({
     className,
     hideToolbar,
     children,
@@ -12,6 +13,7 @@ const Layout = ({
     toolbarClassName,
     label,
     onClick,
+    isLoading,
 }) => {
     return (
         <div className={classNames(styles.grid)}>
@@ -22,7 +24,11 @@ const Layout = ({
                     <div className={styles.toolbarLeft}>
                         {toolbarChildrenLeft}
                     </div>
-                    <div className={styles.header}>{label}</div>
+                    {label && (
+                        <div className={styles.header} data-test-id="header">
+                            {label}
+                        </div>
+                    )}
                     <div className={styles.toolbarRight}>
                         {toolbarChildrenRight}
                     </div>
@@ -32,7 +38,17 @@ const Layout = ({
                 onClick={onClick}
                 className={classNames(styles.content, className)}
             >
-                {children}
+                {isLoading ? (
+                    <div className={styles.spinner}>
+                        <ClassicSpinner
+                            size={30}
+                            color="#686769"
+                            loading={isLoading}
+                        />
+                    </div>
+                ) : (
+                    children
+                )}
             </div>
         </div>
     );

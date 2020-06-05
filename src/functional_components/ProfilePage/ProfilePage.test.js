@@ -1,8 +1,9 @@
 import React from 'react';
-import { ProfilePage } from './ProfilePage.js';
+import ProfilePage from './ProfilePage.js';
 import { FETCH_USER_SUCCESS } from '../../actions/types';
-import appReducer from '../../reducers/AppReducer';
-import TestRenderer from 'react-test-renderer';
+import userReducer from '../../reducers/userReducer';
+import ShallowRenderer from 'react-test-renderer/shallow';
+
 describe('ProfilePage', () => {
     const user = {
         webId: 'https://bejow.owntech.de/profile/card#me',
@@ -16,9 +17,9 @@ describe('ProfilePage', () => {
     };
     describe('ProfilePage Redux', () => {
         // passing undefined to get initial state
-        const initialState = appReducer(undefined, {});
+        const initialState = userReducer(undefined, {});
         it('receives user', () => {
-            const result = appReducer(initialState, {
+            const result = userReducer(initialState, {
                 type: FETCH_USER_SUCCESS,
                 payload: user,
             });
@@ -31,8 +32,13 @@ describe('ProfilePage', () => {
     });
     describe('ProfilePage Snapshot', () => {
         it('matches the snapshot', () => {
-            const tree = TestRenderer.create(<ProfilePage user={user} />);
-            expect(tree.toJSON()).toMatchSnapshot();
+            const result = new ShallowRenderer().render(
+                <ProfilePage.WrappedComponent
+                    user={user}
+                    updatingProfile={false}
+                />
+            );
+            expect(result).toMatchSnapshot();
         });
     });
 

@@ -1,43 +1,57 @@
 import React, { useState } from 'react';
 import { Window } from '../Window';
-import styles from './InputWindow.module.css';
-import classNames from 'classnames';
+import styles from './InputWindow.module.scss';
+import ActionButton from '../ActionButton/ActionButton';
+import utils from '../../utils/fileUtils.js';
 
 export default function CreateWindow({
-    className,
-    onSubmit, // requires a function that takes the input value as an argument ==> onSubmit(inputValue)
+    onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
     windowName,
     info,
     placeholder,
+    visible,
+    currentItem,
 }) {
     const [value, setValue] = useState('');
+    const allow = utils.allowFileName(value, currentItem);
     return (
-        <Window windowName={windowName} onClose={onClose} className={className}>
-            <p>{info}</p>
-            <input
-                className={styles.input}
-                value={value}
-                onChange={(event) => setValue(event.target.value)}
-                placeholder={placeholder}
-            ></input>
+        <Window
+            visible={visible}
+            windowName={windowName}
+            onClose={onClose}
+            className={styles.window}
+        >
+            <div>
+                <p>{info}</p>
+                <input
+                    className={styles.input}
+                    value={value}
+                    onChange={(event) => setValue(event.target.value)}
+                    placeholder={placeholder}
+                    autoFocus
+                ></input>
+            </div>
             <div className={styles.buttonBar}>
-                <div
+                <ActionButton
                     onClick={onCancel ? onCancel : onClose}
                     className={styles.button}
-                >
-                    Cancel
-                </div>
-                <div
+                    color="white"
+                    label="Cancel"
+                    size="lg"
+                />
+                <ActionButton
+                    className={styles.button}
                     onClick={() => {
                         onSubmit(value);
                         onClose();
                     }}
-                    className={classNames(styles.button, styles.confirm)}
-                >
-                    Confirm
-                </div>
+                    disabled={!allow}
+                    size="lg"
+                    color="green"
+                    label="Confirm"
+                />
             </div>
         </Window>
     );

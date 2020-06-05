@@ -1,50 +1,72 @@
 .container {
     border-radius: 20px;
-    color: #666;
-    letter-spacing: 0.2em;
-    line-height: 29px;
+    color: #000;
     display: flex;
     align-items: center;
     font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
         'Lucida Grande', sans-serif;
+    cursor: pointer;
 }
 
 .blue {
-    border: solid #2771ff 2px;
+    color: #fff;
+    background: #2791ff;
+}
+
+.red {
+    color: #fff;
+    background: #cd0000;
+}
+
+.red:hover {
+    background: #bd0000;
+}
+
+.white {
+    background: #fff;
+}
+
+.white:hover {
+    color: #333;
+    background-color: #ddd;
 }
 
 .blue:hover {
-    border: solid #fff 2px;
-    color: #fff;
     cursor: pointer;
-    background: linear-gradient(to top, #2771ff, rgba(39, 113, 255, 0.5));
+    background-color: #2771ff;
 }
 
 .green {
-    border: solid #36a510 2px;
+    background: #36c510;
+    color: #fff;
 }
 
 .green:hover {
-    border: solid #fff 2px;
-    color: #fff;
     cursor: pointer;
-    background: linear-gradient(to top, #36a510, rgba(54, 165, 16, 0.5));
+    background: #36a510;
 }
 
 .sm {
-    font-size: 0.75rem;
-    padding: 0px 20px;
+    font-size: 1em;
+    padding: 0.2em 1.5em;
     font-weight: 500;
 }
 
 .md {
-    font-size: 1.125rem;
-    padding: 3px 25px;
+    font-size: 0.75em;
+    letter-spacing: 0.02em;
+    padding: 0.1em 1.5em 0.15em 1.5em;
     font-weight: 500;
 }
 
 .lg {
-    font-size: 1.5rem;
-    padding: 4px 30px;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    padding: 0.2em 1.5em;
     font-weight: 400;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: initial;
 }

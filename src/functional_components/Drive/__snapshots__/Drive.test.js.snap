@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drive Drive Snapshot matches the snapshot 1`] = `
+<Layout
+  className="grid"
+  label="Drive"
+  onClick={[Function]}
+  toolbarChildrenLeft={null}
+  toolbarChildrenRight={
+    <ToolbarButtons
+      onDelete={[Function]}
+      onDownload={[Function]}
+      onFolderUpload={[Function]}
+      uploadFile={[Function]}
+    />
+  }
+>
+  <UNDEFINED />
+  <UNDEFINED
+    className="mainArea"
+    drive={true}
+    id="drive contextmenu"
+  >
+    <div
+      className="container"
+    >
+      <UNDEFINED />
+      <div>
+        <UNDEFINED
+          image="Folder.png"
+          items={
+            Array [
+              "hehe",
+              "hihi",
+            ]
+          }
+          onItemClick={[Function]}
+        />
+        <UNDEFINED
+          image="File.png"
+          isFile={true}
+          items={
+            Array [
+              "haha.jpg",
+            ]
+          }
+          onItemClick={[Function]}
+        />
+      </div>
+      <withRouter(Connect(BackButton)) />
+    </div>
+  </UNDEFINED>
+</Layout>
+`;

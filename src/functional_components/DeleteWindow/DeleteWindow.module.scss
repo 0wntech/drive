@@ -1,0 +1,45 @@
+@import '../../../styles/constants.scss';
+
+.prompt {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.selectedFiles {
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
+.button {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.buttonBar {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.input {
+    width: 100%;
+}
+
+@media (max-width: $screen_m) {
+    .body {
+        overflow-y: auto;
+    }
+
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(50vh - 50px);
+        overflow-y: auto;
+    }
+}

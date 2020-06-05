@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import styles from './ProfilePage.module.css';
-import { ClassicSpinner } from 'react-spinners-kit';
-
-import { updateProfile, changeProfilePhoto } from '../../actions/UserActions';
-import Settings from '../../assets/svgIcons/Settings';
+import classNames from 'classnames';
+import styles from './ProfilePage.module.scss';
+import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
 import X from '../../assets/svgIcons/X';
@@ -13,14 +11,16 @@ import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 import { Layout } from '../Layout';
+import { handleError } from '../../utils/helper';
 
 export const ProfilePage = ({
-    webId,
     user,
-    updateProfilePic,
     changeProfilePhoto,
     updateProfile,
+    updatingProfile,
+    error,
 }) => {
+    handleError(error);
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
     const updateUserData = (key, value) => {
@@ -34,24 +34,18 @@ export const ProfilePage = ({
 
     const onSubmit = () => {
         setEditable(false);
-        updateProfile(userData, webId);
+        updateProfile(userData, user.webId);
     };
 
     const onPhotoChange = (e) => {
-        changeProfilePhoto(e, webId);
+        changeProfilePhoto(e, user.webId);
     };
 
-    const toolbarRight = (
-        <div className={styles.iconWrapper}>
-            <Settings className={styles.settings} />
-        </div>
-    );
-
-    if (user || updateProfilePic) {
+    if (user) {
         return (
             <Layout
+                isLoading={updatingProfile || !user}
                 className={styles.grid}
-                toolbarChildrenRight={toolbarRight}
                 label="Profile"
             >
                 <div className={styles.profileContainer}>
@@ -82,21 +76,22 @@ export const ProfilePage = ({
                                       }
                             }
                         />
-                        <div className={styles.nameContainer}>
-                            <SingleValue
-                                editable={isEditable}
-                                value={userData.name}
-                                setValue={(value) =>
-                                    updateUserData('name', value)
-                                }
-                                className={styles.nameLabel}
-                                placholder="Enter Name.."
-                            />
-                            <div className={styles.webIdLabel}>
-                                {user.webId.replace('/profile/card#me', '')}
+                        <div className={styles.headDataContainer}>
+                            <div>
+                                <SingleValue
+                                    editable={isEditable}
+                                    value={userData.name}
+                                    dataKey="name"
+                                    setValue={(value) =>
+                                        updateUserData('name', value)
+                                    }
+                                    className={styles.nameLabel}
+                                    placholder="Enter Name.."
+                                />
+                                <div className={styles.webIdLabel}>
+                                    {user.webId.replace('/profile/card#me', '')}
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.bio}>
                             <SingleValue
                                 editable={isEditable}
                                 value={userData.bio}
@@ -104,7 +99,10 @@ export const ProfilePage = ({
                                     updateUserData('bio', value)
                                 }
                                 placeholder="Add bio.."
-                                className={styles.bioLabel}
+                                className={classNames(
+                                    styles.bioLabel,
+                                    styles.multiline
+                                )}
                             />
                         </div>
                         <div className={styles.editWrapper}>
@@ -113,16 +111,19 @@ export const ProfilePage = ({
                                     <X
                                         onClick={onCancel}
                                         className={styles.icon}
+                                        data-test-id="edit-cancel"
                                     />{' '}
                                     <Check
                                         className={styles.icon}
                                         onClick={onSubmit}
+                                        data-test-id="edit-submit"
                                     />
                                 </div>
                             ) : (
                                 <EditIcon
                                     onClick={() => setEditable(!isEditable)}
                                     className={styles.icon}
+                                    data-test-id="edit"
                                 />
                             )}
                         </div>
@@ -161,21 +162,16 @@ export const ProfilePage = ({
             </Layout>
         );
     } else {
-        return (
-            <div className={styles.spinner}>
-                <ClassicSpinner size={30} color="#686769" loading={!user} />
-            </div>
-        );
+        return null;
     }
 };
 
 const mapStateToProps = (state) => ({
-    user: state.app.user,
-    webId: state.app.webId,
-    updateProfilePic: state.app.updateProfilePic,
+    user: state.user.user,
+    updatingProfile: state.user.updatingProfile,
+    error: state.user.error,
 });
 
-export default connect(
-    mapStateToProps,
-    { updateProfile, changeProfilePhoto }
-)(ProfilePage);
+export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
+    ProfilePage
+);
