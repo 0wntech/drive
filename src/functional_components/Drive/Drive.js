@@ -118,9 +118,9 @@ const Drive = ({
     const clearSelection = (e) => {
         if (
             typeof e.target.className === 'string' &&
-            !e.target.className.includes('Item_') &&
-            !e.target.className.includes('File_') &&
-            e.target.className !== ''
+            (e.target.className.includes('Drive_') ||
+                e.target.className.includes('Layout_') ||
+                e.target.className.includes('ItemList_'))
         ) {
             console.log('Emptying selection');
             setSelection([]);

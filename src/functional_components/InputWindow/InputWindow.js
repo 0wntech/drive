@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Window } from '../Window';
-import styles from './InputWindow.module.css';
+import styles from './InputWindow.module.scss';
 import ActionButton from '../ActionButton/ActionButton';
 import utils from '../../utils/fileUtils.js';
 
@@ -17,15 +17,22 @@ export default function CreateWindow({
     const [value, setValue] = useState('');
     const allow = utils.allowFileName(value, currentItem);
     return (
-        <Window visible={visible} windowName={windowName} onClose={onClose}>
-            <p>{info}</p>
-            <input
-                className={styles.input}
-                value={value}
-                onChange={(event) => setValue(event.target.value)}
-                placeholder={placeholder}
-                autoFocus
-            ></input>
+        <Window
+            visible={visible}
+            windowName={windowName}
+            onClose={onClose}
+            className={styles.window}
+        >
+            <div>
+                <p>{info}</p>
+                <input
+                    className={styles.input}
+                    value={value}
+                    onChange={(event) => setValue(event.target.value)}
+                    placeholder={placeholder}
+                    autoFocus
+                ></input>
+            </div>
             <div className={styles.buttonBar}>
                 <ActionButton
                     onClick={onCancel ? onCancel : onClose}

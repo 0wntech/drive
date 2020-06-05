@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .container {
     z-index: 5;
     position: fixed;
@@ -12,16 +14,15 @@
     border: 1px solid #000;
 }
 
-.opacity {
-    z-index: 4;
-    position: fixed;
+.wrapper {
+    display: flex;
+    position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
-    opacity: 0.3;
-    background: #fff;
-    backdrop-filter: blur(5px);
+    height: 100%;
+    width: 100%;
+    z-index: 4;
+    background: rgba($color: #000, $alpha: 0.2);
 }
 
 .close {
@@ -58,4 +59,23 @@
     width: 100%;
     position: absolute;
     text-align: center;
+}
+
+@media (max-width: $screen_m) {
+    .wrapper {
+        align-items: flex-end;
+    }
+
+    .container {
+        border: none;
+        top: initial;
+        left: 0;
+        transform: initial;
+        min-width: initial;
+        max-width: initial;
+        width: 100%;
+        min-height: 50%;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 }

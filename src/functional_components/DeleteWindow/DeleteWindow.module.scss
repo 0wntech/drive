@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .prompt {
     margin-bottom: 8px;
 }
@@ -26,4 +28,18 @@
 
 .input {
     width: 100%;
+}
+
+@media (max-width: $screen_m) {
+    .body {
+        overflow-y: auto;
+    }
+
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(50vh - 50px);
+        overflow-y: auto;
+    }
 }
