@@ -209,7 +209,7 @@ export const ProfilePage = ({
                     <KeyValuePair
                         setValue={updateUserData}
                         dataKey="telephones"
-                        label="Telephone:"
+                        label="Phone:"
                         value={userData.telephones}
                         editable={isEditable}
                         placeholder={

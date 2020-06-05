@@ -80,7 +80,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
     <KeyValuePair
       dataKey="telephones"
       editable={false}
-      label="Telephone:"
+      label="Phone:"
       placeholder="add Number"
       setValue={[Function]}
       value={
