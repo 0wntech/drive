@@ -59,6 +59,7 @@ jobs:
               secret_access_key: $AWS_SECRET
               bucket: 'drive.owntech.io'
               acl: public_read
+              skip_cleanup: true
               local_dir: build
 
         - stage: deploy_staging
@@ -72,4 +73,5 @@ jobs:
               secret_access_key: $AWS_SECRET
               bucket: 'staging.drive.owntech.io'
               acl: public_read
+              skip_cleanup: true
               local_dir: build
