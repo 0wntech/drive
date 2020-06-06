@@ -8,8 +8,10 @@ import { isImageType } from '../../utils/fileUtils';
 import linkedFileImage from '../../assets/icons/shared_file.png';
 
 export default function File({
-    currPath,
+    currentPath,
     onClick,
+    onMouseUp,
+    onMouseDown,
     image,
     file,
     selectedItem,
@@ -25,7 +27,7 @@ export default function File({
                         <img
                             alt="file"
                             className={styles.thumbnail}
-                            src={currPath + file.name}
+                            src={currentPath + file.name}
                         />
                         <img alt="file" className={styles.icon} src={image} />
                     </div>
@@ -65,10 +67,16 @@ export default function File({
             <div
                 className={styles.container}
                 onClick={onClick}
+                onMouseUp={onMouseUp}
+                onMouseDown={onMouseDown}
+                onTouchEnd={onMouseUp}
+                onTouchStart={onMouseDown}
                 data-test-id={`file-${file.name}`}
             >
                 {renderFile()}
-                <div className={styles.label}>{file.name}</div>
+                <div className={styles.labelContainer}>
+                    <div className={styles.label}>{file.name}</div>
+                </div>
             </div>
             <Menu className={styles.contextMenu} id={file.name + 'contextmenu'}>
                 {contextMenuOptions &&
@@ -79,7 +87,9 @@ export default function File({
                             onClick={
                                 !option.disabled
                                     ? () => {
-                                          option.onClick(currPath + file.name);
+                                          option.onClick(
+                                              currentPath + file.name
+                                          );
                                       }
                                     : undefined
                             }
@@ -95,7 +105,7 @@ export default function File({
     );
 }
 File.propTypes = {
-    currPath: PropTypes.string,
+    currentPath: PropTypes.string,
     onClick: PropTypes.func,
     image: PropTypes.string,
     label: PropTypes.string,

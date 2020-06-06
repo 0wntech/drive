@@ -20,6 +20,7 @@ import {
     openConsentWindow,
     toggleSearchbar,
     toggleDriveMenu,
+    openCreateFolderWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed, handleError } from '../../utils/helper';
@@ -35,6 +36,7 @@ const Drive = ({
     currentPath,
     loadCurrentItem,
     openConsentWindow,
+    openCreateFolderWindow,
     toggleDriveMenu,
     isDriveMenuVisible,
     webId,
@@ -80,8 +82,7 @@ const Drive = ({
             url = url.substr(0, url.lastIndexOf('/'));
         }
         if (isCmdPressed(event) && selectedItems.includes(url) === false) {
-            const newSelection = [...selectedItems];
-            newSelection.push(url);
+            const newSelection = [...selectedItems, url];
             setSelection(newSelection);
         } else if (isCmdPressed(event) && selectedItems.includes(url)) {
             const newSelection = selectedItems.filter((item) => item !== url);
@@ -182,6 +183,7 @@ const Drive = ({
                     openConsentWindow(selectedItems);
                 }
             }}
+            onCreateFolder={openCreateFolderWindow}
             onMore={toggleDriveMenu}
         />
     );
@@ -286,6 +288,7 @@ const mapStateToProps = (state) => {
 export default withRouter(
     connect(mapStateToProps, {
         openConsentWindow,
+        openCreateFolderWindow,
         toggleDriveMenu,
         setCurrentPath,
         sendNotification,

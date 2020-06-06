@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import fileUtils from '../../utils/fileUtils';
 import { getRootFromWebId } from '../../utils/url';
@@ -23,7 +23,6 @@ const ItemList = ({
     items,
     image,
     onItemClick,
-    currPath,
     isFile = false,
     setSelection,
     copyItems,
@@ -31,6 +30,33 @@ const ItemList = ({
     openConsentWindow,
     openRenameWindow,
 }) => {
+    const [mouseHoldTimer, setMouseHoldTimer] = useState(null);
+
+    // Event Handlers
+    const handleMouseDown = (item) => {
+        setMouseHoldTimer(
+            setTimeout(() => {
+                if (!selectedItems.includes(item)) {
+                    setSelection([...selectedItems, item]);
+                } else {
+                    setSelection(
+                        selectedItems.filter(
+                            (selectedItem) => selectedItem !== item
+                        )
+                    );
+                }
+            }, 200)
+        );
+    };
+
+    const handleMouseUp = (item, event) => {
+        console.log(mouseHoldTimer);
+        if (!selectedItems.includes(item)) {
+            onItemClick(item, event);
+        }
+        clearTimeout(mouseHoldTimer);
+    };
+
     const CONTEXTMENU_OPTIONS = [
         {
             label: 'Info',
@@ -88,34 +114,40 @@ const ItemList = ({
               return isFile ? (
                   <File
                       selectedItem={
-                          selectedItems.includes(currPath + item.name)
+                          selectedItems.includes(currentPath + item.name)
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
-                      onClick={(event) => {
-                          onItemClick(currPath + item.name, event);
-                      }}
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
                       file={item}
-                      currPath={currPath}
+                      currentPath={currentPath}
+                      onMouseUp={(e) =>
+                          handleMouseUp(currentPath + item.name, e)
+                      }
+                      onMouseDown={() =>
+                          handleMouseDown(currentPath + item.name)
+                      }
                   />
               ) : (
                   <Item
                       selectedItem={
-                          selectedItems.includes(currPath + item + '/')
+                          selectedItems.includes(currentPath + item + '/')
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
-                      onClick={(event) =>
-                          onItemClick(currPath + item + '/', event)
-                      }
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
-                      currPath={currPath}
+                      currentPath={currentPath}
                       label={decodeURIComponent(item)}
+                      onMouseUp={(e) =>
+                          handleMouseUp(currentPath + item + '/', e)
+                      }
+                      onMouseDown={() =>
+                          handleMouseDown(currentPath + item + '/')
+                      }
                   />
               );
           })

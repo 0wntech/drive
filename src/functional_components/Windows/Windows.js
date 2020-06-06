@@ -36,7 +36,6 @@ export const Windows = ({
     return (
         <Fragment>
             <DeleteWindow
-                windowName="Delete File"
                 selectedItems={selectedItems}
                 onSubmit={(selectedItems) => {
                     deleteItems(selectedItems, currentPath);

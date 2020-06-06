@@ -9,23 +9,25 @@ export default function DeleteWindow({
     onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
-    windowName,
     visible,
 }) {
     const multiple = selectedItems ? selectedItems.length > 1 : null;
 
     return (
         <Window
-            windowName={windowName}
+            windowName={multiple ? 'Delete Item' : 'Delete Items'}
             onClose={onCancel ? onCancel : onClose}
             visible={visible}
             className={styles.window}
         >
             <div className={styles.body}>
                 <p className={styles.prompt}>
-                    {multiple
-                        ? 'Do you really want to delete these items?'
-                        : 'Do you really want to delete this item?'}
+                    <p className={styles.description}>
+                        If you copied{' '}
+                        {multiple ? 'some of these items' : 'this item'} before,
+                        deleting {multiple ? 'them' : 'it'} will make{' '}
+                        {multiple ? 'them' : 'it'} unavailable for pasting.
+                    </p>
                 </p>
                 <p className={styles.description}>
                     If you copied{' '}
