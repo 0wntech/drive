@@ -100,13 +100,21 @@
     }
 
     .search__control--menu-is-open {
+        padding-top: 40px;
+
         .search__value-container {
             display: initial;
-            margin-left: 48px;
+            margin-left: 48px !important;
         }
 
         .search__control {
             box-shadow: initial !important;
         }
+    }
+}
+
+@media (max-width: $screen_s) {
+    .search__control--menu-is-open {
+        padding-top: 60px;
     }
 }

@@ -108,9 +108,7 @@
 
 @media (max-width: $screen_m) {
     .active {
-        grid-template-areas: 'search search search';
-        padding-left: 16px;
-        padding: 8px 0 0 16px;
+        grid-template-areas: '. search search search .';
 
         .brand {
             display: none;
@@ -157,22 +155,15 @@
     .container {
         border-radius: initial;
         height: 70px;
-        grid-template-columns: 2fr 9fr 1fr;
-    }
-
-    .search {
-        height: initial;
-        padding: initial;
+        grid-template-columns: 16px 2fr 9fr 1fr 16px;
     }
 
     .menuWrapper {
         justify-content: flex-end;
-        padding-right: 16px;
     }
 
     .brandWrapper {
         justify-content: flex-start;
-        padding-left: 16px;
     }
 
     .brandWrapper {
