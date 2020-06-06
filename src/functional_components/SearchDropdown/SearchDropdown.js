@@ -98,17 +98,15 @@ const customStyles = {
     valueContainer: (provided, state) => ({
         ...provided,
         marginRight: state.selectProps.menuIsOpen ? '0' : '-48px',
-        marginLeft: state.selectProps.menuIsOpen ? '78px' : '0',
+        marginLeft: state.selectProps.menuIsOpen ? '64px' : '0',
     }),
+    menu: (provided) => ({ ...provided, boxShadow: 'initial' }),
     control: (provided, state) => {
         return {
             width: '100%',
             height: '100%',
             backgroundColor: state.menuIsOpen ? '#ffffff' : '#F8F8F8',
             borderRadius: state.menuIsOpen ? '20px 20px 0 0' : '20px',
-            boxShadow: state.menuIsOpen
-                ? '0px 4px 6px rgba(0, 0, 0, 0.25)'
-                : 'none',
             borderWidth: 0,
             display: 'flex',
             flexDirection: 'row-reverse',
