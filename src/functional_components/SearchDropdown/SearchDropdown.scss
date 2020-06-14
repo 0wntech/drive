@@ -79,8 +79,15 @@
         font-size: 18px;
     }
 
-    .search__menu-list {
-        max-height: 50vh !important;
+    .search__menu {
+        padding-bottom: 4px;
+        
+        .search__menu-list {
+            padding-top: initial;
+            padding-bottom: initial;
+            overflow-x: hidden;
+            max-height: 50vh !important;
+        }
     }
 
     .search__control {

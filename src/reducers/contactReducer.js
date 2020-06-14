@@ -103,9 +103,11 @@ export default (state = INITIAL_STATE, action) => {
 // selectors
 
 export const isContact = (state, webId) => {
-    for (let i = 0; i < state.contacts.length; i++) {
-        if (state.contacts[i].webId === webId) {
-            return true;
+    if (state.contacts && webId) {
+        for (let i = 0; i < state.contacts.length; i++) {
+            if (state.contacts[i].webId === webId) {
+                return true;
+            }
         }
     }
     return false;

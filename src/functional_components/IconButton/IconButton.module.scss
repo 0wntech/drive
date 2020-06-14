@@ -1,17 +1,13 @@
+@import '../../../styles/constants.scss';
+
 .container {
     display: flex;
-    border: 2px solid #36a510;
+    background: $dark_green;
     border-radius: 20px;
-    padding: 0 28px;
+    padding: 5px 28px;
     height: 35px;
     align-items: center;
     cursor: pointer;
     justify-content: space-around;
     letter-spacing: 0.05em;
-}
-
-.label {
-    margin-left: 15px;
-    color: #36a510;
-    margin-top: 2px;
 }

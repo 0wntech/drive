@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
-import FileIcon from '../../assets/icons/File.png';
-import FolderIcon from '../../assets/icons/Folder.png';
+import FileIcon from '../../assets/icons/FileIconMd.png';
+import FolderIcon from '../../assets/icons/FolderMd.png';
+import FileIconSm from '../../assets/icons/FileIconSm.png';
+import FolderIconSm from '../../assets/icons/FolderSm.png';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
 import {
@@ -54,8 +56,9 @@ const Navigation = ({
                 dispatch
             );
         } else if (selected.type === 'contact') {
-            setCurrentContact(selected.contact);
-            navigate('/contact', history, dispatch);
+            const { contact } = selected;
+            setCurrentContact(contact);
+            navigate(`/contact?u=${contact.webId}`, history, dispatch);
         }
         toggleSearchbar();
     };
@@ -208,13 +211,15 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
             <div className={styles.optionContainer}>
                 <div className={styles.iconContainer}>
                     <img
-                        alt="icon"
                         className={
                             type === 'file'
                                 ? styles.fileIcon
                                 : styles.folderIcon
                         }
-                        src={type === 'file' ? FileIcon : FolderIcon}
+                        srcSet={`
+                          ${type === 'file' ? FileIconSm : FolderIconSm} 567px,
+                          ${type === 'file' ? FileIcon : FolderIcon}
+                          `}
                     />
                 </div>
                 <span>{name}</span>

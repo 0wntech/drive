@@ -8,7 +8,7 @@ import styles from './FileView.module.css';
 import { setCurrentPath, updateFile } from '../../actions/appActions';
 import {
     getBreadcrumbsFromUrl,
-    getFileParamsFromUrl,
+    getParamsFromUrl,
     convertFileUrlToName,
 } from '../../utils/url';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
@@ -43,7 +43,7 @@ export const FileView = ({
     error,
 }) => {
     useEffect(() => {
-        const fileParam = getFileParamsFromUrl(window.location.href).f;
+        const fileParam = getParamsFromUrl(window.location.href).f;
         if (fileParam) {
             if (
                 !currentItem ||

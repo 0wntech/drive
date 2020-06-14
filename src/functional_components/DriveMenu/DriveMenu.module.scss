@@ -14,7 +14,8 @@
         align-self: center;
         width: 400px;
         overflow-y: auto;
-        border: 2px solid rgba($color: #000, $alpha: 0.2);
+        border: 5px solid $light_grey;
+        box-sizing: border-box;
         border-radius: 20px;
         background: #ffffff;
         display: flex;

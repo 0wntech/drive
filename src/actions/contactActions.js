@@ -11,6 +11,9 @@ import {
     FETCH_CONTACT_RECOMMENDATIONS,
     FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
     FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
+    FETCH_CONTACT,
+    FETCH_CONTACT_SUCCESS,
+    FETCH_CONTACT_FAILURE,
 } from './types';
 import User from 'ownuser';
 import idps from '../constants/idps.json';
@@ -39,6 +42,21 @@ export const removeContact = (webId, contactWebId) => {
         user.deleteContact(contactWebId).then(() =>
             dispatch(fetchContacts(webId))
         );
+    };
+};
+
+export const fetchContact = (webId) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CONTACT });
+        const user = new User(webId);
+        user.getProfile()
+            .then((profile) => {
+                dispatch(setCurrentContact(profile));
+                dispatch({ type: FETCH_CONTACT_SUCCESS });
+            })
+            .catch((error) => {
+                dispatch({ type: FETCH_CONTACT_FAILURE, payload: error });
+            });
     };
 };
 

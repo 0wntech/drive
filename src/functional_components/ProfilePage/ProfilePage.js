@@ -12,6 +12,7 @@ import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
+import { getIdpFromWebId } from '../../utils/url.js';
 
 export const ProfilePage = ({
     user,
@@ -77,21 +78,22 @@ export const ProfilePage = ({
                             }
                         />
                         <div className={styles.headDataContainer}>
-                            <div>
-                                <SingleValue
-                                    editable={isEditable}
-                                    value={userData.name}
-                                    dataKey="name"
-                                    setValue={(value) =>
-                                        updateUserData('name', value)
-                                    }
-                                    className={styles.nameLabel}
-                                    placholder="Enter Name.."
-                                />
-                                <div className={styles.webIdLabel}>
-                                    {user.webId.replace('/profile/card#me', '')}
-                                </div>
-                            </div>
+                            <SingleValue
+                                editable={isEditable}
+                                value={userData.name}
+                                dataKey="name"
+                                setValue={(value) =>
+                                    updateUserData('name', value)
+                                }
+                                className={styles.nameLabel}
+                                placholder="Enter Name.."
+                            />
+                            <a
+                                className={styles.webIdLabel}
+                                href={user && user.webId}
+                            >
+                                {user && getIdpFromWebId(user.webId)}
+                            </a>
                             <SingleValue
                                 editable={isEditable}
                                 value={userData.bio}

@@ -23,21 +23,20 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       <div
         className="headDataContainer"
       >
-        <div>
-          <SingleValue
-            className="nameLabel"
-            dataKey="name"
-            editable={false}
-            placholder="Enter Name.."
-            setValue={[Function]}
-            value="Ben"
-          />
-          <div
-            className="webIdLabel"
-          >
-            https://bejow.owntech.de
-          </div>
-        </div>
+        <SingleValue
+          className="nameLabel"
+          dataKey="name"
+          editable={false}
+          placholder="Enter Name.."
+          setValue={[Function]}
+          value="Ben"
+        />
+        <a
+          className="webIdLabel"
+          href="https://bejow.owntech.de/profile/card#me"
+        >
+          owntech.de
+        </a>
         <SingleValue
           className="bioLabel multiline"
           editable={false}

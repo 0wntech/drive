@@ -129,12 +129,7 @@ const Drive = ({
     };
 
     const handleClick = (e) => {
-        if (isSearchBarExpanded) {
-            toggleSearchbar();
-            e.stopPropagation();
-        } else {
-            clearSelection(e);
-        }
+        clearSelection(e);
     };
 
     const downloadItems = () => {

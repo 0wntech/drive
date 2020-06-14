@@ -29,11 +29,6 @@ export default function DeleteWindow({
                         {multiple ? 'them' : 'it'} unavailable for pasting.
                     </p>
                 </p>
-                <p className={styles.description}>
-                    If you copied{' '}
-                    {multiple ? 'some of these items' : 'this item'} before,
-                    deleting it will make it unavailable for pasting.
-                </p>
                 <div className={styles.selectedFiles}>
                     {selectedItems
                         ? selectedItems.map((item, index) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './IconButton.module.css';
+import styles from './IconButton.module.scss';
 import classNames from 'classnames';
 
 const IconButton = ({ children, className, onClick }) => {

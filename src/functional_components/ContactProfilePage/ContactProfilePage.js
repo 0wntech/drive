@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './ContactProfilePage.module.scss';
-import { addContact, removeContact } from '../../actions/contactActions';
+import {
+    addContact,
+    removeContact,
+    fetchContacts,
+    fetchContact,
+} from '../../actions/contactActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import SingleValue from '../KeyValuePair/SingleValue';
@@ -11,10 +16,16 @@ import Plus from '../../assets/svgIcons/Plus';
 import { Layout } from '../Layout';
 import { isContact } from '../../reducers/contactReducer';
 import { handleError } from '../../utils/helper';
-import { getUsernameFromWebId } from '../../utils/url';
+import {
+    getUsernameFromWebId,
+    getParamsFromUrl,
+    getIdpFromWebId,
+} from '../../utils/url';
 
 const ContactProfilePage = ({
     currentContact,
+    fetchContact,
+    fetchContacts,
     addContact,
     removeContact,
     webId,
@@ -22,49 +33,68 @@ const ContactProfilePage = ({
     error,
 }) => {
     handleError(error);
+    useEffect(() => {
+        if (!currentContact) {
+            const currentUser = getParamsFromUrl(window.location.href).u;
+            fetchContacts();
+            fetchContact(currentUser);
+        }
+    }, []);
     return (
         <Layout
+            toolbarClassName={styles.toolBar}
             className={styles.grid}
-            label={currentContact.name}
+            label={currentContact && currentContact.name}
             isLoading={currentContact === null}
             label={`Profile of ${
-                currentContact.name
+                currentContact && currentContact.name
                     ? currentContact.name
-                    : getUsernameFromWebId(currentContact.webId)
+                    : getUsernameFromWebId(
+                          currentContact && currentContact.webId
+                      )
             }`}
         >
-            <div className={styles.profileContainer}>
-                <div className={styles.headContainer}>
-                    <div
-                        className={styles.profileImage}
-                        style={
-                            currentContact && currentContact.picture
-                                ? {
-                                      backgroundImage: `url('${currentContact.picture}')`,
-                                  }
-                                : {
-                                      backgroundImage: `url('${defaultIcon}')`,
-                                  }
-                        }
-                    />
-                    <div className={styles.nameContainer}>
-                        <SingleValue
-                            value={currentContact.name}
-                            className={styles.nameLabel}
-                            placeholder="no name"
+            {currentContact ? (
+                <div className={styles.profileContainer}>
+                    <div className={styles.headContainer}>
+                        <div
+                            className={styles.profileImage}
+                            style={
+                                currentContact.picture
+                                    ? {
+                                          backgroundImage: `url('${currentContact.picture}')`,
+                                      }
+                                    : {
+                                          backgroundImage: `url('${defaultIcon}')`,
+                                      }
+                            }
                         />
-                        <div className={styles.webIdLabel}>
-                            {currentContact.webId.replace(
-                                '/profile/card#me',
-                                ''
-                            )}
+                        <div className={styles.nameContainer}>
+                            <SingleValue
+                                value={
+                                    currentContact.name
+                                        ? currentContact.name
+                                        : getUsernameFromWebId(
+                                              currentContact.webId
+                                          )
+                                }
+                                className={styles.nameLabel}
+                            />
+                            <a
+                                className={styles.webIdLabel}
+                                href={
+                                    currentContact &&
+                                    getIdpFromWebId(currentContact.webId)
+                                }
+                            >
+                                {currentContact &&
+                                    getIdpFromWebId(currentContact.webId)}
+                            </a>
+                            <SingleValue
+                                value={currentContact.bio}
+                                className={styles.bioLabel}
+                            />
                         </div>
-                    </div>
-                    <div className={styles.bio}>
-                        <SingleValue
-                            value={currentContact.bio}
-                            className={styles.bioLabel}
-                        />
                     </div>
                     <div className={styles.buttonWrapper}>
                         {isContact ? (
@@ -78,34 +108,34 @@ const ContactProfilePage = ({
                             </IconButton>
                         ) : (
                             <IconButton
-                                label="Add"
+                                label="Add to Contacts"
                                 className={styles.addButton}
                                 onClick={() =>
                                     addContact(webId, currentContact.webId)
                                 }
                             >
                                 <Plus className={styles.icon} />
-                                Add
+                                Add to Contacts
                             </IconButton>
                         )}
                     </div>
+                    <KeyValuePair
+                        label="Job"
+                        dataKey="job"
+                        value={currentContact.job}
+                    />
+                    <KeyValuePair
+                        label="Email"
+                        dataKey="emails"
+                        value={currentContact.emails}
+                    />
+                    <KeyValuePair
+                        dataKey="telephones"
+                        label="Telephone"
+                        value={currentContact.telephones}
+                    />
                 </div>
-                <KeyValuePair
-                    label="Job"
-                    dataKey="job"
-                    value={currentContact.job}
-                />
-                <KeyValuePair
-                    label="Email"
-                    dataKey="emails"
-                    value={currentContact.emails}
-                />
-                <KeyValuePair
-                    dataKey="telephones"
-                    label="Telephone"
-                    value={currentContact.telephones}
-                />
-            </div>
+            ) : null}
         </Layout>
     );
 };
@@ -118,9 +148,15 @@ const mapStateToProps = (state) => ({
     error: state.contact.error,
     currentContact: state.contact.currentContact,
     webId: state.user.webId,
-    isContact: isContact(state.contact, state.contact.currentContact.webId),
+    isContact:
+        state.contact && state.contact.currentContact
+            ? isContact(state.contact, state.contact.currentContact.webId)
+            : undefined,
 });
 
-export default connect(mapStateToProps, { addContact, removeContact })(
-    ContactProfilePage
-);
+export default connect(mapStateToProps, {
+    addContact,
+    removeContact,
+    fetchContacts,
+    fetchContact,
+})(ContactProfilePage);
