@@ -40,8 +40,9 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
           </div>
         </div>
         <SingleValue
-          className="bioLabel multiline"
+          className="bioLabel"
           editable={false}
+          maxInput={256}
           placeholder="Add bio.."
           setValue={[Function]}
           value="This is bens Bio!"
@@ -50,11 +51,21 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       <div
         className="editWrapper"
       >
-        <SvgEdit
-          className="icon"
-          data-test-id="edit"
+        <IconButton
+          color="blue"
           onClick={[Function]}
-        />
+          size="lg"
+        >
+          <SvgEdit
+            className="iconWhite"
+            data-test-id="edit"
+            height="20"
+            onClick={[Function]}
+            viewBox="3 2 30 30"
+            width="20"
+          />
+          Edit Profile
+        </IconButton>
       </div>
     </div>
     <KeyValuePair
@@ -69,25 +80,25 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       dataKey="emails"
       editable={false}
       label="Email:"
-      placeholder="add Email"
-      setValue={[Function]}
-      value={
+      placeholder={
         Array [
           "ben.test@owntech.de",
         ]
       }
+      setValue={[Function]}
+      value="ben.test@owntech.de"
     />
     <KeyValuePair
       dataKey="telephones"
       editable={false}
       label="Phone:"
-      placeholder="add Number"
-      setValue={[Function]}
-      value={
+      placeholder={
         Array [
           "0177313131",
         ]
       }
+      setValue={[Function]}
+      value="0177313131"
     />
   </div>
 </Layout>

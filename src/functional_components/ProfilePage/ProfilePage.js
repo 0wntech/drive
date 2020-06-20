@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import styles from './ProfilePage.module.scss';
-import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
+import {
+    updateProfile,
+    changeProfilePhoto,
+    fetchUser,
+} from '../../actions/userActions';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
-import X from '../../assets/svgIcons/X';
-import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
@@ -19,12 +21,21 @@ import styleConstants from '../../styles/constants.scss';
 
 export const ProfilePage = ({
     user,
+    webId,
     changeProfilePhoto,
     updateProfile,
     updatingProfile,
     error,
+    fetchUser,
+    loadUser,
 }) => {
     handleError(error);
+    useEffect(() => {
+        if (!user && !loadUser && webId) {
+            fetchUser(webId);
+        }
+    }, []);
+
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
 
@@ -51,71 +62,44 @@ export const ProfilePage = ({
 
     const renderEditButtons = () => {
         if (isEditable) {
-            if (width < styleConstants.screen_m) {
-                return (
-                    <div className={styles.editButtons}>
-                        <ActionButton
-                            className={styles.actionButton}
-                            onClick={onCancel}
-                            label="Cancel"
-                            size="lg"
-                            color="red"
-                            dataId="edit-cancel"
-                        />
-                        <ActionButton
-                            className={styles.actionButton}
-                            onClick={onSubmit}
-                            label="Save"
-                            size="lg"
-                            color="green"
-                            dataIid="edit-submit"
-                        />
-                    </div>
-                );
-            } else if (width > styleConstants.screen_m) {
-                return (
-                    <div className={styles.editButtons}>
-                        <X
-                            onClick={onCancel}
-                            className={styles.icon}
-                            data-test-id="edit-cancel"
-                        />{' '}
-                        <Check
-                            className={styles.icon}
-                            onClick={onSubmit}
-                            data-test-id="edit-submit"
-                        />
-                    </div>
-                );
-            }
-        } else {
-            if (width < styleConstants.screen_m) {
-                return (
-                    <IconButton
-                        onClick={() => setEditable(!isEditable)}
+            return (
+                <div className={styles.editButtons}>
+                    <ActionButton
+                        className={styles.actionButton}
+                        onClick={onCancel}
+                        label="Cancel"
                         size="lg"
-                        color="blue"
-                    >
-                        <EditIcon
-                            viewBox="3 2 30 30"
-                            width="20"
-                            height="20"
-                            onClick={() => setEditable(!isEditable)}
-                            className={styles.iconWhite}
-                            data-test-id="edit"
-                        />
-                        Edit Profile
-                    </IconButton>
-                );
-            } else {
-                return (
+                        color="red"
+                        dataId="edit-cancel"
+                    />
+                    <ActionButton
+                        className={styles.actionButton}
+                        onClick={onSubmit}
+                        label="Save"
+                        size="lg"
+                        color="green"
+                        dataIid="edit-submit"
+                    />
+                </div>
+            );
+        } else {
+            return (
+                <IconButton
+                    onClick={() => setEditable(!isEditable)}
+                    size="lg"
+                    color="blue"
+                >
                     <EditIcon
+                        viewBox="3 2 30 30"
+                        width="20"
+                        height="20"
                         onClick={() => setEditable(!isEditable)}
-                        className={styles.icon}
+                        className={styles.iconWhite}
                         data-test-id="edit"
                     />
-                );
-            }
+                    Edit Profile
+                </IconButton>
+            );
         }
     };
 
@@ -178,10 +162,8 @@ export const ProfilePage = ({
                                     updateUserData('bio', value)
                                 }
                                 placeholder="Add bio.."
-                                className={classNames(
-                                    styles.bioLabel,
-                                    styles.multiline
-                                )}
+                                className={classNames(styles.bioLabel)}
+                                maxInput={256}
                             />
                         </div>
                         <div className={styles.editWrapper}>
@@ -200,20 +182,20 @@ export const ProfilePage = ({
                         setValue={updateUserData}
                         label="Email:"
                         dataKey="emails"
-                        value={userData.emails}
+                        value={userData.emails[0]}
                         editable={isEditable}
                         placeholder={
-                            user.emails.length > 1 ? user.emails : `add Email`
+                            user.emails.length > 0 ? user.emails : `add Email`
                         }
                     />
                     <KeyValuePair
                         setValue={updateUserData}
                         dataKey="telephones"
                         label="Phone:"
-                        value={userData.telephones}
+                        value={userData.telephones[0]}
                         editable={isEditable}
                         placeholder={
-                            user.telephones.length > 1
+                            user.telephones.length > 0
                                 ? user.telephones
                                 : `add Number`
                         }
@@ -230,8 +212,12 @@ const mapStateToProps = (state) => ({
     user: state.user.user,
     updatingProfile: state.user.updatingProfile,
     error: state.user.error,
+    loadUser: state.user.loadUser,
+    webId: state.user.webId,
 });
 
-export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
-    ProfilePage
-);
+export default connect(mapStateToProps, {
+    updateProfile,
+    changeProfilePhoto,
+    fetchUser,
+})(ProfilePage);

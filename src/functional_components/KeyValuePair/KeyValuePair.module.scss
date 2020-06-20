@@ -4,10 +4,12 @@
     box-sizing: border-box;
     border-radius: 20px;
     margin-bottom: 20px;
+    width: 50%;
 }
 
 .keyValueContainer {
     display: flex;
+    flex-direction: column;
 }
 
 .valueWrapper {
@@ -48,7 +50,6 @@
     font-weight: 600;
     font-size: 18px;
     width: calc(150px + 1em);
-    letter-spacing: 0.2em;
 }
 
 .addLabel {
@@ -56,24 +57,20 @@
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
-    letter-spacing: 0.2em;
 }
 
 .value {
-    width: calc(100% - 32px);
+    width: 100%;
     /* text-underline-position: under; */
     font-family: 'Helvetica Neue Light';
     font-style: normal;
     box-sizing: border-box;
     font-weight: 300;
     font-size: 18px;
-    letter-spacing: 0.2em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
     border: none;
     border-bottom: 2px solid transparent;
     outline: none;
+    resize: none;
 }
 
 .value.active::placeholder {
@@ -106,13 +103,12 @@
 }
 
 .valueContainer {
-    width: calc(100% - 166px);
-    max-width: 70%;
+    width: 100%;
 }
 
 @media (max-width: $screen_m) {
-    .keyValueContainer {
-        margin-left: 16px;
+    .container {
+        width: 80%;
     }
 
     .keyLabel {
