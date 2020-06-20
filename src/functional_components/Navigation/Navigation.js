@@ -21,6 +21,78 @@ import { getUsernameFromWebId, getContactRoute } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import classNames from 'classnames';
 
+const customFilter = (option, searchText) => {
+    if (!option.value) {
+        return true;
+    }
+    if (option.data.type === 'contact') {
+        if (
+            option.value.toLowerCase().includes(searchText.toLowerCase()) ||
+            (option.data.contact.name &&
+                option.data.contact.name
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase()))
+        ) {
+            return true;
+        }
+        return false;
+    }
+    if (option.value.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+    }
+    return false;
+};
+
+const formatOptionLabel = ({ value, label, name, type, contact }) => {
+    if (type === 'contact') {
+        return (
+            <div className={styles.optionContainer}>
+                <div className={styles.iconContainer}>
+                    <div
+                        className={styles.contactIcon}
+                        style={{
+                            backgroundImage: `url('${
+                                contact.picture ? contact.picture : defaultIcon
+                            }')`,
+                        }}
+                    />
+                </div>
+                <span>{`${contact.name} (${contact.webId.replace(
+                    '/profile/card#me',
+                    ''
+                )})`}</span>
+            </div>
+        );
+    } else if (type === 'separator') {
+        return (
+            <div className={styles.separatorContainer}>
+                <div className={styles.iconContainer}>
+                    <div className={styles.separator}>{label}</div>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <div className={styles.optionContainer}>
+                <div className={styles.iconContainer}>
+                    <img
+                        className={
+                            type === 'file'
+                                ? styles.fileIcon
+                                : styles.folderIcon
+                        }
+                        srcSet={`
+                        ${type === 'file' ? FileIconSm : FolderIconSm} 567px,
+                        ${type === 'file' ? FileIcon : FolderIcon}
+                        `}
+                    />
+                </div>
+                <span>{name}</span>
+            </div>
+        );
+    }
+};
+
 const Navigation = ({
     resetError,
     webId,
@@ -61,7 +133,7 @@ const Navigation = ({
             setCurrentContact(contact);
             navigate(getContactRoute(contact), history, dispatch);
         }
-        toggleSearchbar();
+        if (isSearchBarExpanded) toggleSearchbar();
     };
 
     const handleInputChange = (searchText) => {
@@ -155,78 +227,6 @@ const Navigation = ({
             />
         </div>
     );
-};
-
-const customFilter = (option, searchText) => {
-    if (!option.value) {
-        return true;
-    }
-    if (option.data.type === 'contact') {
-        if (
-            option.value.toLowerCase().includes(searchText.toLowerCase()) ||
-            (option.data.contact.name &&
-                option.data.contact.name
-                    .toLowerCase()
-                    .includes(searchText.toLowerCase()))
-        ) {
-            return true;
-        }
-        return false;
-    }
-    if (option.value.toLowerCase().includes(searchText.toLowerCase())) {
-        return true;
-    }
-    return false;
-};
-
-const formatOptionLabel = ({ value, label, name, type, contact }) => {
-    if (type === 'contact') {
-        return (
-            <div className={styles.optionContainer}>
-                <div className={styles.iconContainer}>
-                    <div
-                        className={styles.contactIcon}
-                        style={{
-                            backgroundImage: `url('${
-                                contact.picture ? contact.picture : defaultIcon
-                            }')`,
-                        }}
-                    />
-                </div>
-                <span>{`${contact.name} (${contact.webId.replace(
-                    '/profile/card#me',
-                    ''
-                )})`}</span>
-            </div>
-        );
-    } else if (type === 'separator') {
-        return (
-            <div className={styles.separatorContainer}>
-                <div className={styles.iconContainer}>
-                    <div className={styles.separator}>{label}</div>
-                </div>
-            </div>
-        );
-    } else {
-        return (
-            <div className={styles.optionContainer}>
-                <div className={styles.iconContainer}>
-                    <img
-                        className={
-                            type === 'file'
-                                ? styles.fileIcon
-                                : styles.folderIcon
-                        }
-                        srcSet={`
-                          ${type === 'file' ? FileIconSm : FolderIconSm} 567px,
-                          ${type === 'file' ? FileIcon : FolderIcon}
-                          `}
-                    />
-                </div>
-                <span>{name}</span>
-            </div>
-        );
-    }
 };
 
 const mapStateToProps = (state) => ({

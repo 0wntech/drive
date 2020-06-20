@@ -2,6 +2,7 @@
     border-radius: 20px;
     color: #000;
     display: flex;
+    justify-content: center;
     align-items: center;
     font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
         'Lucida Grande', sans-serif;
@@ -48,13 +49,12 @@
 
 .sm {
     font-size: 1em;
-    padding: 0.2em 1.5em;
+    padding: 4px 10px;
     font-weight: 500;
 }
 
 .md {
     font-size: 0.75em;
-    letter-spacing: 0.02em;
     padding: 0.1em 1.5em 0.15em 1.5em;
     font-weight: 500;
 }
@@ -62,8 +62,10 @@
 .lg {
     font-size: 1em;
     letter-spacing: 0.1em;
-    padding: 0.2em 1.5em;
+    padding: 6px 20px;
     font-weight: 400;
+    max-height: 40px;
+    box-sizing: border-box;
 }
 
 .disabled {

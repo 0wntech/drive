@@ -10,7 +10,7 @@ import {
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import { isContact } from '../../reducers/contactReducer';
 import { handleError } from '../../utils/helper';
-import { getParamsFromUrl } from '../../utils/url';
+import { getParamsFromUrl, getUsernameFromWebId } from '../../utils/url';
 import ProfileView from '../ProfileView/ProfileView';
 
 const ContactProfilePage = ({
@@ -40,17 +40,26 @@ const ContactProfilePage = ({
         }
     }, []);
 
-    return (
+    return currentContact ? (
         <ProfileView
+            label={
+                currentContact.name
+                    ? currentContact.name
+                    : getUsernameFromWebId(currentContact.webId)
+            }
             user={currentContact}
-            userData={currentContact}
+            userData={{
+                ...currentContact,
+                emails: currentContact.emails[0],
+                telephones: currentContact.telephones[0],
+            }}
             isContact={isContact}
             defaultIcon={defaultIcon}
             addContact={addContact}
             removeContact={removeContact}
             webId={webId}
         />
-    );
+    ) : null;
 };
 
 ContactProfilePage.propTypes = {

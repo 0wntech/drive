@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import styles from './KeyValuePair.module.css';
+import styles from './KeyValuePair.module.scss';
 
 const SingleValue = ({
     dataKey,
@@ -32,8 +32,9 @@ const SingleValue = ({
             setFallbackValue(e.target.value);
         }
     };
-
-    if (!editable) {
+    if (!value || value === '') {
+        return null;
+    } else if (!editable) {
         return (
             <div className={classNames(styles.value, className)}>{value}</div>
         );

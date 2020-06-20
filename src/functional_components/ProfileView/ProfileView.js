@@ -23,6 +23,7 @@ export const ProfileView = ({
     addContact,
     removeContact,
     webId,
+    label,
 }) => {
     // eslint-disable-next-line no-unused-vars
     const { _, width } = useWindowDimension();
@@ -33,7 +34,7 @@ export const ProfileView = ({
             <Layout
                 isLoading={updatingProfile || !user}
                 className={styles.grid}
-                label="Profile"
+                label={label}
                 hideToolbar={width < styleConstants.screen_m ? true : false}
             >
                 <div className={styles.profileContainer}>
@@ -107,7 +108,7 @@ export const ProfileView = ({
                                             styles.removeButton,
                                             styles.actionButton
                                         )}
-                                    ></ActionButton>
+                                    />
                                 ) : (
                                     <ActionButton
                                         label="Add"

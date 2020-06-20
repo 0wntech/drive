@@ -73,6 +73,10 @@
     resize: none;
 }
 
+.value + .value {
+  margin-top: 1em;
+}
+
 .value.active::placeholder {
     /* text-decoration: underline;
     text-decoration-color: #6db7db; */

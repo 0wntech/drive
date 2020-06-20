@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import X from '../../assets/svgIcons/X';
 import SingleValue from './SingleValue';
-import styles from './KeyValuePair.module.css';
+import styles from './KeyValuePair.module.scss';
 
 const MultipleValue = ({
     dataKey,
