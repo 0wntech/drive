@@ -12,7 +12,6 @@ import EditIcon from '../../assets/svgIcons/Edit';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
-import IconButton from '../IconButton/IconButton';
 import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
@@ -84,7 +83,7 @@ export const ProfilePage = ({
             );
         } else {
             return (
-                <IconButton
+                <ActionButton
                     onClick={() => setEditable(!isEditable)}
                     size="lg"
                     color="blue"
@@ -98,7 +97,7 @@ export const ProfilePage = ({
                         data-test-id="edit"
                     />
                     Edit Profile
-                </IconButton>
+                </ActionButton>
             );
         }
     };

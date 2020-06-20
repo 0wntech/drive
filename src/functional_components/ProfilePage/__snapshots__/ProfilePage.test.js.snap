@@ -51,7 +51,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       <div
         className="editWrapper"
       >
-        <IconButton
+        <ActionButton
           color="blue"
           onClick={[Function]}
           size="lg"
@@ -65,7 +65,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
             width="20"
           />
           Edit Profile
-        </IconButton>
+        </ActionButton>
       </div>
     </div>
     <KeyValuePair
