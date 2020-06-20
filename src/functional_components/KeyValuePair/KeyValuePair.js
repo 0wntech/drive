@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 
-import styles from './KeyValuePair.module.css';
+import styles from './KeyValuePair.module.scss';
 import classNames from 'classnames';
 import MultipleValue from './MultipleValue';
 import SingleValue from './SingleValue';
@@ -19,6 +19,7 @@ const KeyValuePair = ({
     placeholder,
     setValue,
     value,
+    maxInput,
 }) => {
     const renderValues = (value) => {
         if (typeof value === 'object') {
@@ -41,6 +42,7 @@ const KeyValuePair = ({
                     value={value}
                     placeholder={placeholder}
                     editable={editable}
+                    maxInput={maxInput}
                 />
             );
         }

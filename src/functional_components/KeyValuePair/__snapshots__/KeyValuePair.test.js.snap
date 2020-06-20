@@ -31,7 +31,7 @@ exports[`KeyValuePair should render expanded 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": 0,
+        "height": "0px",
         "overflow": "hidden",
       }
     }
@@ -71,44 +71,29 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         <div
           className="valueWrapper"
         >
-          <input
+          <div
             className="value"
-            data-test-id="testKey-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            placeholder="multiple"
-            readOnly={true}
-            value="multiple"
-          />
+          >
+            multiple
+          </div>
         </div>
         <div
           className="valueWrapper"
         >
-          <input
+          <div
             className="value"
-            data-test-id="testKey-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            placeholder="values"
-            readOnly={true}
-            value="values"
-          />
+          >
+            values
+          </div>
         </div>
         <div
           className="valueWrapper"
         >
-          <input
+          <div
             className="value"
-            data-test-id="testKey-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            placeholder="test"
-            readOnly={true}
-            value="test"
-          />
+          >
+            test
+          </div>
         </div>
       </div>
     </div>
@@ -117,7 +102,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": 0,
+        "height": "0px",
         "overflow": "hidden",
       }
     }
@@ -151,23 +136,18 @@ exports[`KeyValuePair should render unexpanded 1`] = `
     <div
       className="valueContainer"
     >
-      <input
+      <div
         className="value"
-        data-test-id="testKey-input"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        placeholder="testValue"
-        readOnly={true}
-        value="testValue"
-      />
+      >
+        testValue
+      </div>
     </div>
   </div>
   <div
     className="ReactCollapse--collapse"
     style={
       Object {
-        "height": 0,
+        "height": "0px",
         "overflow": "hidden",
       }
     }

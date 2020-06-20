@@ -43,6 +43,8 @@ import {
     CREATE_FOLDER,
     CREATE_FOLDER_SUCCESS,
     CREATE_FOLDER_FAILURE,
+    TOGGLE_SEARCHBAR,
+    TOGGLE_DRIVE_MENU,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -294,7 +296,7 @@ export const pasteItems = (items, location) => {
     };
 };
 
-export const createFile = function(name, path) {
+export const createFile = function (name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FILE });
         const contentType = mime.getType(name) || 'text/plain';
@@ -313,7 +315,7 @@ export const createFile = function(name, path) {
     };
 };
 
-export const renameItem = function(renamedItem, value) {
+export const renameItem = function (renamedItem, value) {
     return (dispatch) => {
         dispatch({ type: RENAME_ITEM });
         auth.currentSession().then((session) => {
@@ -361,55 +363,61 @@ export const renameItem = function(renamedItem, value) {
     };
 };
 
-export const openCreateFileWindow = function() {
+export const openCreateFileWindow = function () {
     return (dispatch) => {
         dispatch({ type: OPEN_CREATE_FILE_WINDOW });
     };
 };
 
-export const closeCreateFileWindow = function() {
+export const closeCreateFileWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_CREATE_FILE_WINDOW });
     };
 };
 
-export const openCreateFolderWindow = function() {
+export const openCreateFolderWindow = function () {
     return (dispatch) => {
         dispatch({ type: OPEN_CREATE_FOLDER_WINDOW });
     };
 };
 
-export const closeCreateFolderWindow = function() {
+export const closeCreateFolderWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_CREATE_FOLDER_WINDOW });
     };
 };
 
-export const openConsentWindow = function() {
+export const openConsentWindow = function () {
     return (dispatch) => {
         dispatch({ type: OPEN_CONSENT_WINDOW });
     };
 };
 
-export const closeConsentWindow = function() {
+export const closeConsentWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_CONSENT_WINDOW });
     };
 };
 
-export const openRenameWindow = function(item) {
+export const openRenameWindow = function (item) {
     return (dispatch) => {
         dispatch({ type: OPEN_RENAME_WINDOW, payload: item });
     };
 };
 
-export const closeRenameWindow = function() {
+export const closeRenameWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_RENAME_WINDOW });
     };
 };
 
-export const createFolder = function(name, path) {
+export const toggleDriveMenu = function () {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_DRIVE_MENU });
+    };
+};
+
+export const createFolder = function (name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FOLDER });
         const fileClient = new PodClient();
@@ -422,5 +430,11 @@ export const createFolder = function(name, path) {
             .catch((err) => {
                 dispatch({ type: CREATE_FOLDER_FAILURE, payload: err });
             });
+    };
+};
+
+export const toggleSearchbar = () => {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_SEARCHBAR });
     };
 };

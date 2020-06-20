@@ -15,7 +15,7 @@ import {
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
-import rdf from 'rdflib';
+import * as rdf from 'rdflib';
 
 export const login = () => {
     return (dispatch) => {
@@ -95,7 +95,7 @@ export const changeProfilePhoto = (e, webId) => {
         const reader = new FileReader();
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
-        reader.onload = function() {
+        reader.onload = function () {
             const data = this.result;
             const contentType = file.type;
             const pictureUrl = webId.replace(

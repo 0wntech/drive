@@ -1,4 +1,4 @@
-@import '../../../styles/constants.scss';
+@import '../../styles/constants.scss';
 
 .navbar  {
     position: fixed;
@@ -39,6 +39,12 @@
     height: 100%;
     grid-template-columns: 2fr 7fr 3fr;
     grid-template-areas: 'logo search dropdown';
+}
+
+.searchDropdown {
+    display: flex;
+    height: 80%;
+    width: 100%;
 }
 
 .search {
@@ -97,6 +103,35 @@
 }
 
 @media (max-width: $screen_m) {
+    .active {
+        grid-template-areas: 'search search search';
+        padding-left: 16px;
+        padding: 8px 0 0 16px;
+
+        .brand {
+            display: none;
+        }
+
+        .menuWrapper {
+            display: none;
+        }
+    }
+    .iconContainer {
+        .folderIcon {
+            height: 24px;
+            width: auto;
+        }
+
+        .fileIcon {
+            height: 28px;
+            width: auto;
+        }
+    }
+
+    .iconContainer {
+        min-width: 48px;
+    }
+
     .menuWrapper {
         justify-content: flex-end;
         padding-right: initial;
@@ -109,7 +144,6 @@
         width: 50px;
         height: 50px;
     }
-    
     .profileIcon {
         max-width: 50px;
         height: 50px;

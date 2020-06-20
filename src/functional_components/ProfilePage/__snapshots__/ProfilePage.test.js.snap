@@ -3,6 +3,7 @@
 exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
 <Layout
   className="grid"
+  hideToolbar={false}
   isLoading={false}
   label="Profile"
 >
@@ -39,8 +40,9 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
           </div>
         </div>
         <SingleValue
-          className="bioLabel multiline"
+          className="bioLabel"
           editable={false}
+          maxInput={256}
           placeholder="Add bio.."
           setValue={[Function]}
           value="This is bens Bio!"
@@ -49,17 +51,27 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       <div
         className="editWrapper"
       >
-        <SvgEdit
-          className="icon"
-          data-test-id="edit"
+        <ActionButton
+          color="blue"
           onClick={[Function]}
-        />
+          size="lg"
+        >
+          <SvgEdit
+            className="iconWhite"
+            data-test-id="edit"
+            height="20"
+            onClick={[Function]}
+            viewBox="3 2 30 30"
+            width="20"
+          />
+          Edit Profile
+        </ActionButton>
       </div>
     </div>
     <KeyValuePair
       dataKey="job"
       editable={false}
-      label="Job"
+      label="Job:"
       placeholder="Software Engineer"
       setValue={[Function]}
       value="Software Engineer"
@@ -67,26 +79,26 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
     <KeyValuePair
       dataKey="emails"
       editable={false}
-      label="Email"
-      placeholder="add Email"
-      setValue={[Function]}
-      value={
+      label="Email:"
+      placeholder={
         Array [
           "ben.test@owntech.de",
         ]
       }
+      setValue={[Function]}
+      value="ben.test@owntech.de"
     />
     <KeyValuePair
       dataKey="telephones"
       editable={false}
-      label="Telephone"
-      placeholder="add Number"
-      setValue={[Function]}
-      value={
+      label="Phone:"
+      placeholder={
         Array [
           "0177313131",
         ]
       }
+      setValue={[Function]}
+      value="0177313131"
     />
   </div>
 </Layout>

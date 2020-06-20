@@ -1,28 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import styles from './ProfilePage.module.scss';
-import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
+import {
+    updateProfile,
+    changeProfilePhoto,
+    fetchUser,
+} from '../../actions/userActions';
 import Camera from '../../assets/svgIcons/Camera';
 import EditIcon from '../../assets/svgIcons/Edit';
-import X from '../../assets/svgIcons/X';
-import Check from '../../assets/svgIcons/Check';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
+import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
+import useWindowDimension from '../../hooks/useWindowDimension';
+import styleConstants from '../../styles/constants.scss';
 
 export const ProfilePage = ({
     user,
+    webId,
     changeProfilePhoto,
     updateProfile,
     updatingProfile,
     error,
+    fetchUser,
+    loadUser,
 }) => {
     handleError(error);
+    useEffect(() => {
+        if (!user && !loadUser && webId) {
+            fetchUser(webId);
+        }
+    }, []);
+
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
+
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimension();
+
     const updateUserData = (key, value) => {
         setUserData({ ...userData, [key]: value });
     };
@@ -41,12 +59,56 @@ export const ProfilePage = ({
         changeProfilePhoto(e, user.webId);
     };
 
+    const renderEditButtons = () => {
+        if (isEditable) {
+            return (
+                <div className={styles.editButtons}>
+                    <ActionButton
+                        className={styles.actionButton}
+                        onClick={onCancel}
+                        label="Cancel"
+                        size="lg"
+                        color="red"
+                        dataId="edit-cancel"
+                    />
+                    <ActionButton
+                        className={styles.actionButton}
+                        onClick={onSubmit}
+                        label="Save"
+                        size="lg"
+                        color="green"
+                        dataId="edit-submit"
+                    />
+                </div>
+            );
+        } else {
+            return (
+                <ActionButton
+                    onClick={() => setEditable(!isEditable)}
+                    size="lg"
+                    color="blue"
+                >
+                    <EditIcon
+                        viewBox="3 2 30 30"
+                        width="20"
+                        height="20"
+                        onClick={() => setEditable(!isEditable)}
+                        className={styles.iconWhite}
+                        data-test-id="edit"
+                    />
+                    Edit Profile
+                </ActionButton>
+            );
+        }
+    };
+
     if (user) {
         return (
             <Layout
                 isLoading={updatingProfile || !user}
                 className={styles.grid}
                 label="Profile"
+                hideToolbar={width < styleConstants.screen_m ? true : false}
             >
                 <div className={styles.profileContainer}>
                     <div className={styles.headContainer}>
@@ -99,37 +161,16 @@ export const ProfilePage = ({
                                     updateUserData('bio', value)
                                 }
                                 placeholder="Add bio.."
-                                className={classNames(
-                                    styles.bioLabel,
-                                    styles.multiline
-                                )}
+                                className={classNames(styles.bioLabel)}
+                                maxInput={256}
                             />
                         </div>
                         <div className={styles.editWrapper}>
-                            {isEditable ? (
-                                <div className={styles.editButtons}>
-                                    <X
-                                        onClick={onCancel}
-                                        className={styles.icon}
-                                        data-test-id="edit-cancel"
-                                    />{' '}
-                                    <Check
-                                        className={styles.icon}
-                                        onClick={onSubmit}
-                                        data-test-id="edit-submit"
-                                    />
-                                </div>
-                            ) : (
-                                <EditIcon
-                                    onClick={() => setEditable(!isEditable)}
-                                    className={styles.icon}
-                                    data-test-id="edit"
-                                />
-                            )}
+                            {renderEditButtons()}
                         </div>
                     </div>
                     <KeyValuePair
-                        label="Job"
+                        label="Job:"
                         dataKey="job"
                         value={userData.job}
                         editable={isEditable}
@@ -138,22 +179,22 @@ export const ProfilePage = ({
                     />
                     <KeyValuePair
                         setValue={updateUserData}
-                        label="Email"
+                        label="Email:"
                         dataKey="emails"
-                        value={userData.emails}
+                        value={userData.emails[0]}
                         editable={isEditable}
                         placeholder={
-                            user.emails.length > 1 ? user.emails : `add Email`
+                            user.emails.length > 0 ? user.emails : `add Email`
                         }
                     />
                     <KeyValuePair
                         setValue={updateUserData}
                         dataKey="telephones"
-                        label="Telephone"
-                        value={userData.telephones}
+                        label="Phone:"
+                        value={userData.telephones[0]}
                         editable={isEditable}
                         placeholder={
-                            user.telephones.length > 1
+                            user.telephones.length > 0
                                 ? user.telephones
                                 : `add Number`
                         }
@@ -170,8 +211,12 @@ const mapStateToProps = (state) => ({
     user: state.user.user,
     updatingProfile: state.user.updatingProfile,
     error: state.user.error,
+    loadUser: state.user.loadUser,
+    webId: state.user.webId,
 });
 
-export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
-    ProfilePage
-);
+export default connect(mapStateToProps, {
+    updateProfile,
+    changeProfilePhoto,
+    fetchUser,
+})(ProfilePage);

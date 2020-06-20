@@ -15,6 +15,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
     />
   }
 >
+  <UNDEFINED />
   <UNDEFINED
     className="mainArea"
     drive={true}
@@ -46,6 +47,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
           onItemClick={[Function]}
         />
       </div>
+      <withRouter(Connect(BackButton)) />
     </div>
   </UNDEFINED>
 </Layout>

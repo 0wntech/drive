@@ -11,6 +11,9 @@ import { setCurrentPath } from '../../actions/appActions';
 import { logout } from '../../actions/userActions';
 import { getRootFromWebId } from '../../utils/url';
 import { navigate } from '../../utils/helper';
+import useWindowDimension from '../../hooks/useWindowDimension';
+import styleConstants from '../../styles/constants.scss';
+import SvgSettings from '../../assets/svgIcons/Settings';
 
 const onRegister = () => {
     window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
@@ -35,12 +38,11 @@ export const NavbarMenu = ({
             },
             label: 'Home',
         },
+        { onClick: () => history.push('/settings'), label: 'Settings' },
         {
             onClick: () => navigate('/profile', history, dispatch, resetError),
             label: 'Profile',
         },
-        // { onClick: () => console.log('test2'), label: 'Settings*' },
-        // { onClick: () => console.log('test2'), label: 'Notifications*' },
         {
             onClick: () => navigate('/contacts', history, dispatch, resetError),
             label: 'Contacts',
@@ -52,22 +54,38 @@ export const NavbarMenu = ({
         { onClick: () => logout(), label: 'Logout' },
     ];
 
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimension();
+
     const getMenuHead = () => (
         <div className={styles.profileSection}>
-            <div
-                data-test-id="navigation-profile-picture"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setDropdownExpanded(false);
-                    navigate('/profile', history, dispatch, resetError);
-                }}
-                className={styles.profileIcon}
-                style={{
-                    backgroundImage: `url('${
-                        user.picture ? user.picture : defaultIcon
-                    }')`,
-                }}
-            />
+            {width < styleConstants.screen_m &&
+            history.location.pathname === '/profile' ? (
+                <div
+                    className={styles.settings}
+                    onClick={(e) => {
+                        setDropdownExpanded(false);
+                        navigate('/settings', history, dispatch, resetError);
+                    }}
+                >
+                    <SvgSettings />
+                </div>
+            ) : (
+                <div
+                    data-test-id="navigation-profile-picture"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setDropdownExpanded(false);
+                        navigate('/profile', history, dispatch, resetError);
+                    }}
+                    className={styles.profileIcon}
+                    style={{
+                        backgroundImage: `url('${
+                            user.picture ? user.picture : defaultIcon
+                        }')`,
+                    }}
+                />
+            )}
 
             <div data-test-id="navbar-username" className={styles.username}>
                 {user.name}

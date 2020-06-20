@@ -20,10 +20,7 @@ export const getBreadcrumbsFromUrl = (url) => {
 };
 
 export const getFileParamsFromUrl = (url) => {
-    const params = urlUtils
-        .parse(url)
-        .search.replace('?', '')
-        .split('&');
+    const params = urlUtils.parse(url).search.replace('?', '').split('&');
     const paramObj = {};
     params.forEach((param) => {
         const paramName = param.split('=')[0];
@@ -31,6 +28,27 @@ export const getFileParamsFromUrl = (url) => {
         paramObj[paramName] = paramVal;
     });
     return paramObj;
+};
+
+export const getPreviousPath = (url) => {
+    if (!url) return undefined;
+    const urlObject = urlUtils.parse(url);
+    const { pathname } = urlObject;
+    return pathname[pathname.length - 1] === '/'
+        ? urlUtils.format({
+              ...urlObject,
+              pathname: pathname.replace(
+                  pathname.split('/')[pathname.split('/').length - 2] + '/',
+                  ''
+              ),
+          })
+        : urlUtils.format({
+              ...urlObject,
+              pathname: pathname.replace(
+                  pathname.split('/')[pathname.split('/').length - 1],
+                  ''
+              ),
+          });
 };
 
 export const convertFolderUrlToName = (folderUrl) => {
