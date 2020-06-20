@@ -77,7 +77,7 @@ export const ProfilePage = ({
                         label="Save"
                         size="lg"
                         color="green"
-                        dataIid="edit-submit"
+                        dataId="edit-submit"
                     />
                 </div>
             );
@@ -94,7 +94,7 @@ export const ProfilePage = ({
                         height="20"
                         onClick={() => setEditable(!isEditable)}
                         className={styles.iconWhite}
-                        data-test-id="edit-submit"
+                        data-test-id="edit"
                     />
                     Edit Profile
                 </ActionButton>

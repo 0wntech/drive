@@ -58,7 +58,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
         >
           <SvgEdit
             className="iconWhite"
-            data-test-id="edit-submit"
+            data-test-id="edit"
             height="20"
             onClick={[Function]}
             viewBox="3 2 30 30"
