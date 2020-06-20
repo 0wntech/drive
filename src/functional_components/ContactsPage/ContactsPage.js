@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './ContactsPage.module.css';
+import styles from './ContactsPage.module.scss';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {
@@ -54,6 +54,7 @@ const ContactsPage = ({
                     contacts={contacts}
                     webId={webId}
                     removeContact={removeContact}
+                    alreadyContacts
                 />
                 {contactRecommendations ? (
                     <>
@@ -69,6 +70,7 @@ const ContactsPage = ({
                             webId={webId}
                             addContact={addContact}
                             recommended
+                            removeContact={removeContact}
                         />
                         {displayedRows * 3 < contactRecommendations.length ? (
                             <div

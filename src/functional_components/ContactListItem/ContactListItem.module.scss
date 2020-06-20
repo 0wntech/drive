@@ -1,10 +1,12 @@
+@import '../../../styles/constants.scss';
+
 .container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    border: 1px solid #c4c4c4;
+    border: 10px solid $dark_grey;
     box-sizing: border-box;
     border-radius: 20px;
     height: 185px;
@@ -28,8 +30,12 @@
     cursor: pointer;
 }
 
-.iconContainer:hover ellipse {
-    fill: #ff697b;
+.iconContainer.added:hover ellipse {
+    fill: #36a510;
+}
+
+.iconContainer.added ellipse {
+    fill: #36c510;
 }
 
 .image {
@@ -45,6 +51,5 @@
     overflow: hidden;
     white-space: nowrap;
     text-align: center;
-    margin-top: 30px;
     width: 80%;
 }

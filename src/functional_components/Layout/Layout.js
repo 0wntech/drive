@@ -19,7 +19,7 @@ export const Layout = ({
     return (
         <>
             <Helmet>
-                <title>{label} - owndrive</title>
+                <title>{label ? `${label} - owndrive` : 'owndrive'}</title>
             </Helmet>
             <div className={classNames(styles.grid)}>
                 {hideToolbar ? null : (

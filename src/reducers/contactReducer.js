@@ -10,6 +10,10 @@ import {
     FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
     FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
     CLEAR_ERROR,
+    ADD_CONTACT,
+    ADD_CONTACT_FAILURE,
+    REMOVE_CONTACT,
+    REMOVE_CONTACT_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -21,6 +25,8 @@ const INITIAL_STATE = {
     searchingContacts: false,
     error: {
         FETCH_CONTACTS: false,
+        ADD_CONTACT: false,
+        REMOVE_CONTACT: false,
         SEARCH_CONTACT: false,
         FETCH_CONTACT_RECOMMENDATIONS: false,
     },
@@ -33,6 +39,26 @@ export default (state = INITIAL_STATE, action) => {
     switch (type) {
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
+        case ADD_CONTACT:
+            return {
+                ...state,
+                error: { ...state.error, ADD_CONTACT: false },
+            };
+        case ADD_CONTACT_FAILURE:
+            return {
+                ...state,
+                error: { ...state.error, ADD_CONTACT: payload },
+            };
+        case REMOVE_CONTACT:
+            return {
+                ...state,
+                error: { ...state.error, REMOVE_CONTACT: false },
+            };
+        case REMOVE_CONTACT_FAILURE:
+            return {
+                ...state,
+                error: { ...state.error, REMOVE_CONTACT: payload },
+            };
         case FETCH_CONTACTS:
             return {
                 ...state,

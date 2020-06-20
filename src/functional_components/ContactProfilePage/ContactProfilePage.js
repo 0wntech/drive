@@ -36,14 +36,12 @@ const ContactProfilePage = ({
     handleError(error);
     useEffect(() => {
         const currentUser = getParamsFromUrl(window.location.href).u;
-        if (contacts) {
+        if (!currentContact && contacts) {
             const contactFromContacts = contacts.find(
                 (contact) => contact.webId == currentUser
             );
-
-            setCurrentContact(contactFromContacts);
-        }
-        if (
+            if (contactFromContacts) setCurrentContact(contactFromContacts);
+        } else if (
             !currentContact ||
             (currentContact && currentContact.webId !== currentUser)
         ) {
@@ -113,7 +111,7 @@ const ContactProfilePage = ({
                         {isContact ? (
                             <IconButton
                                 onClick={() =>
-                                    removeContact(webId, currentContact.webId)
+                                    removeContact(webId, currentContact)
                                 }
                                 className={styles.removeButton}
                             >
@@ -124,7 +122,7 @@ const ContactProfilePage = ({
                                 label="Add to Contacts"
                                 className={styles.addButton}
                                 onClick={() =>
-                                    addContact(webId, currentContact.webId)
+                                    addContact(webId, currentContact)
                                 }
                             >
                                 <Plus className={styles.icon} />
