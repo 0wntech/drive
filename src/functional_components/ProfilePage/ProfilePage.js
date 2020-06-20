@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import styles from './ProfilePage.module.scss';
-import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
-import Camera from '../../assets/svgIcons/Camera';
-import EditIcon from '../../assets/svgIcons/Edit';
-import X from '../../assets/svgIcons/X';
-import Check from '../../assets/svgIcons/Check';
+import {
+    updateProfile,
+    changeProfilePhoto,
+    fetchUser,
+} from '../../actions/userActions';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
-import KeyValuePair from '../KeyValuePair/KeyValuePair';
-import SingleValue from '../KeyValuePair/SingleValue';
-import { Layout } from '../Layout';
+import EditIcon from '../../assets/svgIcons/Edit';
+import ActionButton from '../ActionButton/ActionButton';
 import { handleError } from '../../utils/helper';
-import { getIdpFromWebId } from '../../utils/url.js';
+import ProfileView from '../ProfileView/ProfileView';
 
 export const ProfilePage = ({
     user,
@@ -20,21 +18,34 @@ export const ProfilePage = ({
     updateProfile,
     updatingProfile,
     error,
+    webId,
+    loadUser,
 }) => {
     handleError(error);
-    const [userData, setUserData] = useState({ ...user });
-    const [isEditable, setEditable] = useState(false);
+    useEffect(() => {
+        if (!user && !loadUser && webId) {
+            fetchUser(webId);
+        }
+    }, []);
+
+    const [userData, setUserData] = useState({
+        ...user,
+        emails: user.emails[0],
+        telephones: user.telephones[0],
+    });
+    const [editState, setEditState] = useState(false);
+
     const updateUserData = (key, value) => {
         setUserData({ ...userData, [key]: value });
     };
 
     const onCancel = () => {
-        setEditable(false);
+        setEditState(false);
         setUserData({ ...user });
     };
 
     const onSubmit = () => {
-        setEditable(false);
+        setEditState(false);
         updateProfile(userData, user.webId);
     };
 
@@ -42,136 +53,69 @@ export const ProfilePage = ({
         changeProfilePhoto(e, user.webId);
     };
 
-    if (user) {
-        return (
-            <Layout
-                isLoading={updatingProfile || !user}
-                className={styles.grid}
-                label="Profile"
-            >
-                <div className={styles.profileContainer}>
-                    <div className={styles.headContainer}>
-                        {isEditable ? (
-                            <div className={styles.editPhoto}>
-                                <input
-                                    type="file"
-                                    onChange={onPhotoChange}
-                                    style={{ display: 'none' }}
-                                    id="pictureUpload"
-                                    accept="*/*"
-                                />
-                                <label htmlFor="pictureUpload">
-                                    <Camera />
-                                </label>
-                            </div>
-                        ) : null}
-                        <div
-                            className={styles.profileImage}
-                            style={
-                                user && user.picture
-                                    ? {
-                                          backgroundImage: `url('${user.picture}')`,
-                                      }
-                                    : {
-                                          backgroundImage: `url('${defaultIcon}')`,
-                                      }
-                            }
-                        />
-                        <div className={styles.headDataContainer}>
-                            <SingleValue
-                                editable={isEditable}
-                                value={userData.name}
-                                dataKey="name"
-                                setValue={(value) =>
-                                    updateUserData('name', value)
-                                }
-                                className={styles.nameLabel}
-                                placholder="Enter Name.."
-                            />
-                            <a
-                                className={styles.webIdLabel}
-                                href={user && user.webId}
-                            >
-                                {user && getIdpFromWebId(user.webId)}
-                            </a>
-                            <SingleValue
-                                editable={isEditable}
-                                value={userData.bio}
-                                setValue={(value) =>
-                                    updateUserData('bio', value)
-                                }
-                                placeholder="Add bio.."
-                                className={classNames(
-                                    styles.bioLabel,
-                                    styles.multiline
-                                )}
-                            />
-                        </div>
-                        <div className={styles.editWrapper}>
-                            {isEditable ? (
-                                <div className={styles.editButtons}>
-                                    <X
-                                        onClick={onCancel}
-                                        className={styles.icon}
-                                        data-test-id="edit-cancel"
-                                    />{' '}
-                                    <Check
-                                        className={styles.icon}
-                                        onClick={onSubmit}
-                                        data-test-id="edit-submit"
-                                    />
-                                </div>
-                            ) : (
-                                <EditIcon
-                                    onClick={() => setEditable(!isEditable)}
-                                    className={styles.icon}
-                                    data-test-id="edit"
-                                />
-                            )}
-                        </div>
-                    </div>
-                    <KeyValuePair
-                        label="Job"
-                        dataKey="job"
-                        value={userData.job}
-                        editable={isEditable}
-                        setValue={updateUserData}
-                        placeholder={user.job ? user.job : `add Job`}
+    const renderEditButtons = () => {
+        if (editState) {
+            return (
+                <div className={styles.editButtons}>
+                    <ActionButton
+                        className={styles.actionButton}
+                        onClick={onCancel}
+                        label="Cancel"
+                        size="lg"
+                        color="red"
+                        dataId="edit-cancel"
                     />
-                    <KeyValuePair
-                        setValue={updateUserData}
-                        label="Email"
-                        dataKey="emails"
-                        value={userData.emails}
-                        editable={isEditable}
-                        placeholder={
-                            user.emails.length > 1 ? user.emails : `add Email`
-                        }
-                    />
-                    <KeyValuePair
-                        setValue={updateUserData}
-                        dataKey="telephones"
-                        label="Telephone"
-                        value={userData.telephones}
-                        editable={isEditable}
-                        placeholder={
-                            user.telephones.length > 1
-                                ? user.telephones
-                                : `add Number`
-                        }
+                    <ActionButton
+                        className={styles.actionButton}
+                        onClick={onSubmit}
+                        label="Save"
+                        size="lg"
+                        color="green"
+                        dataId="edit-submit"
                     />
                 </div>
-            </Layout>
-        );
-    } else {
-        return null;
-    }
+            );
+        } else {
+            return (
+                <ActionButton
+                    onClick={() => setEditState(!editState)}
+                    size="lg"
+                    color="blue"
+                >
+                    <EditIcon
+                        viewBox="3 2 30 30"
+                        width="20"
+                        height="20"
+                        onClick={() => setEditState(!editState)}
+                        className={styles.iconWhite}
+                        data-test-id="edit"
+                    />
+                    Edit Profile
+                </ActionButton>
+            );
+        }
+    };
+
+    return (
+        <ProfileView
+            user={user}
+            updatingProfile={updatingProfile}
+            renderButtons={renderEditButtons}
+            onPhotoChange={onPhotoChange}
+            updateUserData={updateUserData}
+            editState={editState}
+            userData={userData}
+            defaultIcon={defaultIcon}
+        ></ProfileView>
+    );
 };
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
     updatingProfile: state.user.updatingProfile,
     error: state.user.error,
+    webId: state.user.webId,
+    loadUser: state.user.loadUser,
 });
 
 export default connect(mapStateToProps, { updateProfile, changeProfilePhoto })(
