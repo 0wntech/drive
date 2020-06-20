@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ContactList.module.css';
 import { ContactListItem } from '../ContactListItem';
-import { RecommendationItem } from '../RecommendationItem';
 
 const ContactList = ({
     contacts,
@@ -10,30 +9,20 @@ const ContactList = ({
     webId,
     removeContact,
     addContact,
-    recommended,
+    alreadyContacts,
 }) => {
     const renderContact = (contact) => {
-        if (recommended) {
-            return (
-                <RecommendationItem
-                    addContact={() => addContact(webId, contact.webId)}
-                    onClick={(contact) => {
-                        onItemClick(contact);
-                    }}
-                    contact={contact}
-                />
-            );
-        } else {
-            return (
-                <ContactListItem
-                    removeContact={() => removeContact(webId, contact.webId)}
-                    onClick={(contact) => {
-                        onItemClick(contact);
-                    }}
-                    contact={contact}
-                />
-            );
-        }
+        return (
+            <ContactListItem
+                addContact={() => addContact(webId, contact)}
+                onClick={(contact) => {
+                    onItemClick(contact);
+                }}
+                contact={contact}
+                removeContact={() => removeContact(webId, contact)}
+                isContact={alreadyContacts}
+            />
+        );
     };
 
     return (

@@ -5,7 +5,7 @@
     cursor: pointer;
     position: relative;
     width: 80px;
-    height: 115px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,14 +13,13 @@
 }
 
 .innerContainer {
-    position: absolute;
     width: 100%;
 }
 
 .fileType {
     z-index: 2;
     position: absolute;
-    top: 50%;
+    top: 25%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     font-weight: 300;
@@ -33,15 +32,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: 142px;
     width: 100%;
-    position: relative;
+    border: solid transparent 2px;
 }
 
 .selected {
-    box-shadow: 0 0 0 1px #6db7db;
-
+    border: solid 2px #24b0ff;
     border-radius: 20px;
+}
+
+.labelContainer {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
 }
 
 .label {
@@ -53,17 +58,10 @@
     line-height: 21px;
     letter-spacing: 0.05em;
     z-index: 1;
-    width: 100%;
     text-align: center;
-    position: absolute;
-    background-color: white;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    bottom: -1.2em;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: all 0.2s;
 }
 
 .contextMenu {
@@ -93,28 +91,8 @@
     color: #000;
 }
 
-.gridCell:hover .label {
-    overflow: visible;
-    font-size: 105%;
-}
-
-.container:hover .label {
-    overflow: visible;
-    font-size: 105%;
-}
-.icon:hover .label {
-    overflow: visible;
-    font-size: 105%;
-}
-
-.innerContainer:hover .label {
-    overflow: visible;
-    font-size: 105%;
-}
-
 .iconContainer {
     position: relative;
-    display: inline;
 }
 
 .thumbnail {
@@ -175,16 +153,19 @@
         justify-self: center;
     }
 
+    .labelContainer {
+        margin-top: 8px;
+    }
+
     .label {
         position: initial;
-        width: 100%;
+        width: initial;
         transform: initial;
         padding: initial;
     }
 
     .container {
         width: 100px;
-        justify-content: space-between;
     }
 
     .innerContainer {

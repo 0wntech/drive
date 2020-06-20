@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './SearchDropdown.module.scss';
 import './SearchDropdown.scss';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Search from '../../assets/svgIcons/Search';
+import useClickOutside from '../../hooks/useClickOutside';
 
 export default function SearchDropdown({
     items,
@@ -18,6 +19,11 @@ export default function SearchDropdown({
     toggleSearchbar,
     isSearchBarExpanded,
 }) {
+    const dropdownWrapper = useRef(null);
+    useClickOutside(dropdownWrapper, () => {
+        if (isSearchBarExpanded) toggleSearchbar();
+    });
+
     const DropdownIndicator = (props) => {
         return (
             components.DropdownIndicator && (
@@ -67,7 +73,12 @@ export default function SearchDropdown({
     );
 
     return (
-        <div className={classNames(styles.container, className)}>{select}</div>
+        <div
+            className={classNames(styles.container, className)}
+            ref={dropdownWrapper}
+        >
+            {select}
+        </div>
     );
 }
 
@@ -98,17 +109,15 @@ const customStyles = {
     valueContainer: (provided, state) => ({
         ...provided,
         marginRight: state.selectProps.menuIsOpen ? '0' : '-48px',
-        marginLeft: state.selectProps.menuIsOpen ? '78px' : '0',
+        marginLeft: state.selectProps.menuIsOpen ? '64px' : '0',
     }),
+    menu: (provided) => ({ ...provided, boxShadow: 'initial' }),
     control: (provided, state) => {
         return {
             width: '100%',
             height: '100%',
             backgroundColor: state.menuIsOpen ? '#ffffff' : '#F8F8F8',
             borderRadius: state.menuIsOpen ? '20px 20px 0 0' : '20px',
-            boxShadow: state.menuIsOpen
-                ? '0px 4px 6px rgba(0, 0, 0, 0.25)'
-                : 'none',
             borderWidth: 0,
             display: 'flex',
             flexDirection: 'row-reverse',

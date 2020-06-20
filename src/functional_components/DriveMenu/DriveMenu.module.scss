@@ -9,12 +9,13 @@
     max-height: calc(100vh - 220px);
 
     .container {
-        padding: 10px 32px;
+        padding: 10px 16px;
         justify-self: center;
         align-self: center;
         width: 400px;
         overflow-y: auto;
-        border: 2px solid rgba($color: #000, $alpha: 0.2);
+        border: 5px solid $light_grey;
+        box-sizing: border-box;
         border-radius: 20px;
         background: #ffffff;
         display: flex;
@@ -25,7 +26,9 @@
             grid-template-columns: 28px 8px 1fr;
             grid-template-areas: 'icon . label';
             align-items: center;
-            padding: 10px 0;
+            padding: 4px 16px;
+            border-radius: 5px;
+            margin: 5px 0;
 
             svg {
                 grid-area: icon;
@@ -47,7 +50,7 @@
         }
 
         .option:hover {
-            background: #f0f0f0;
+            background: #f6f6f6;
         }
 
         .disabled {

@@ -20,6 +20,7 @@ import {
     openConsentWindow,
     toggleSearchbar,
     toggleDriveMenu,
+    openCreateFolderWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { isCmdPressed, handleError } from '../../utils/helper';
@@ -35,6 +36,7 @@ const Drive = ({
     currentPath,
     loadCurrentItem,
     openConsentWindow,
+    openCreateFolderWindow,
     toggleDriveMenu,
     isDriveMenuVisible,
     webId,
@@ -80,8 +82,7 @@ const Drive = ({
             url = url.substr(0, url.lastIndexOf('/'));
         }
         if (isCmdPressed(event) && selectedItems.includes(url) === false) {
-            const newSelection = [...selectedItems];
-            newSelection.push(url);
+            const newSelection = [...selectedItems, url];
             setSelection(newSelection);
         } else if (isCmdPressed(event) && selectedItems.includes(url)) {
             const newSelection = selectedItems.filter((item) => item !== url);
@@ -118,9 +119,9 @@ const Drive = ({
     const clearSelection = (e) => {
         if (
             typeof e.target.className === 'string' &&
-            !e.target.className.includes('Item_') &&
-            !e.target.className.includes('File_') &&
-            e.target.className !== ''
+            (e.target.className.includes('Drive_') ||
+                e.target.className.includes('Layout_') ||
+                e.target.className.includes('ItemList_'))
         ) {
             console.log('Emptying selection');
             setSelection([]);
@@ -128,12 +129,7 @@ const Drive = ({
     };
 
     const handleClick = (e) => {
-        if (isSearchBarExpanded) {
-            toggleSearchbar();
-            e.stopPropagation();
-        } else {
-            clearSelection(e);
-        }
+        clearSelection(e);
     };
 
     const downloadItems = () => {
@@ -182,6 +178,7 @@ const Drive = ({
                     openConsentWindow(selectedItems);
                 }
             }}
+            onCreateFolder={openCreateFolderWindow}
             onMore={toggleDriveMenu}
         />
     );
@@ -286,6 +283,7 @@ const mapStateToProps = (state) => {
 export default withRouter(
     connect(mapStateToProps, {
         openConsentWindow,
+        openCreateFolderWindow,
         toggleDriveMenu,
         setCurrentPath,
         sendNotification,

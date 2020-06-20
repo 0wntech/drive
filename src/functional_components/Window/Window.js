@@ -1,11 +1,21 @@
 import React from 'react';
-import styles from './Window.module.css';
+import classnames from 'classnames';
+import styles from './Window.module.scss';
 import PropTypes from 'prop-types';
 import X from '../../assets/svgIcons/X';
 
 function Window({ windowName, className, children, onClose, visible }) {
     return visible ? (
-        <div className={className}>
+        <div
+            className={styles.wrapper}
+            onClick={(e) => {
+                if (
+                    typeof e.target.className === 'string' &&
+                    e.target.className.includes('Window_wrapper')
+                )
+                    onClose();
+            }}
+        >
             <div className={styles.container}>
                 <div className={styles.head}>
                     <span className={styles.title}>{windowName}</span>
@@ -16,9 +26,10 @@ function Window({ windowName, className, children, onClose, visible }) {
                         onClick={onClose}
                     />
                 </div>
-                <div className={styles.body}>{children}</div>
+                <div className={classnames(styles.body, className)}>
+                    {children}
+                </div>
             </div>
-            <div onClick={onClose} className={styles.opacity} />
         </div>
     ) : null;
 }

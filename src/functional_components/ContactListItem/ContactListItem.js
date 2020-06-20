@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import styles from './ContactListItem.module.css';
+import styles from './ContactListItem.module.scss';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
+import Add from '../../assets/svgIcons/Add';
 import Delete from '../../assets/svgIcons/Delete';
 
 const ContactListItem = ({
     contact,
     webId,
     className,
+    addContact,
     removeContact,
     onClick,
+    isContact,
 }) => {
+    const [wasAdded, setWasAdded] = useState(isContact);
     return (
         <div
             onClick={() => onClick(contact)}
@@ -34,13 +38,32 @@ const ContactListItem = ({
             <div className={styles.nameContainer}>
                 {contact.name ? contact.name : 'No Name'}
             </div>
-            <div className={styles.iconContainer}>
-                <Delete
-                    onClick={(e) => {
-                        removeContact(webId, contact.webId);
-                        e.stopPropagation();
-                    }}
-                />
+            <div
+                className={classNames(styles.iconContainer, {
+                    [styles.added]: !wasAdded,
+                })}
+            >
+                {wasAdded ? (
+                    <Delete
+                        onClick={(e) => {
+                            removeContact(webId, contact);
+                            if (wasAdded) {
+                                setWasAdded(false);
+                            }
+                            e.stopPropagation();
+                        }}
+                    />
+                ) : (
+                    <Add
+                        onClick={(e) => {
+                            addContact(webId, contact);
+                            if (!wasAdded) {
+                                setWasAdded(true);
+                            }
+                            e.stopPropagation();
+                        }}
+                    />
+                )}
             </div>
         </div>
     );

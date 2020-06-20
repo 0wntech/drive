@@ -33,7 +33,7 @@ const KeyValuePair = ({
                     placeholder={placeholder}
                 />
             );
-        } else if (typeof value === 'string') {
+        } else {
             // is a single value
             return (
                 <SingleValue
@@ -47,7 +47,8 @@ const KeyValuePair = ({
             );
         }
     };
-    return (
+
+    return value || editable ? (
         <div className={styles.container}>
             <div className={styles.keyValueContainer}>
                 <div className={styles.keyLabel}>{label}</div>
@@ -69,7 +70,7 @@ const KeyValuePair = ({
                 </div>
             </Collapse>
         </div>
-    );
+    ) : null;
 };
 
 KeyValuePair.propTypes = {

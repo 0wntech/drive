@@ -44,6 +44,7 @@ import {
     CLEAR_ERROR,
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
+    SET_CURRENT_CONTACT,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -86,6 +87,8 @@ export default (state = INITIAL_STATE, action) => {
     switch (type) {
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
+        case SET_CURRENT_CONTACT:
+            return { ...state, isSearchBarExpanded: false };
         case SET_CURRENT_PATH:
             return { ...state, currentPath: payload, selectedItem: [] };
         case SET_SELECTION:

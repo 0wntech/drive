@@ -13,8 +13,10 @@
         "context": true,
         "jestPuppeteer": true
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
+            "modules": true,
             "jsx": true
         },
         "ecmaVersion": 2018,

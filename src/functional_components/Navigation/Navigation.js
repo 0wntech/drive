@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
-import FileIcon from '../../assets/icons/File.png';
-import FolderIcon from '../../assets/icons/Folder.png';
+import FileIcon from '../../assets/icons/FileIconMd.png';
+import FolderIcon from '../../assets/icons/FolderMd.png';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
 import {
@@ -15,7 +15,7 @@ import {
 } from '../../actions/contactActions';
 import { navigate } from '../../utils/helper';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
-import { getUsernameFromWebId } from '../../utils/url';
+import { getUsernameFromWebId, getContactRoute } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import classNames from 'classnames';
 
@@ -102,6 +102,7 @@ const Navigation = ({
     searchingContacts,
     searchContact,
     fetchContacts,
+    loadContacts,
     dispatch,
     toggleSearchbar,
     isSearchBarExpanded,
@@ -109,7 +110,7 @@ const Navigation = ({
     const [typingTimer, setTypingTimer] = useState(null);
 
     useEffect(() => {
-        if (!contacts) fetchContacts(webId);
+        if (!contacts && !loadContacts) fetchContacts(webId);
     }, []);
 
     const handleChange = (selected) => {
@@ -124,8 +125,9 @@ const Navigation = ({
                 dispatch
             );
         } else if (selected.type === 'contact') {
-            setCurrentContact(selected.contact);
-            navigate('/contact', history, dispatch);
+            const { contact } = selected;
+            setCurrentContact(contact);
+            navigate(getContactRoute(contact), history, dispatch);
         }
         toggleSearchbar();
     };
@@ -231,6 +233,7 @@ const mapStateToProps = (state) => ({
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
     isSearchBarExpanded: state.app.isSearchBarExpanded,
+    loadContacts: state.contact.loadContacts,
 });
 
 export default connect(mapStateToProps, (dispatch) => ({

@@ -1,0 +1,55 @@
+@import '../../../styles/constants.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 10px solid $dark_grey;
+    box-sizing: border-box;
+    border-radius: 20px;
+    height: 185px;
+    padding: 0 20px;
+    letter-spacing: 0.05em;
+    font-size: 18px;
+    padding: 35px 10px 16px 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.imageContainer {
+    width: 80px;
+    height: 80px;
+}
+
+.iconContainer {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    cursor: pointer;
+}
+
+.iconContainer.added:hover ellipse {
+    fill: #36a510;
+}
+
+.iconContainer.added ellipse {
+    fill: #36c510;
+}
+
+.image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+.nameContainer {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    width: 80%;
+}

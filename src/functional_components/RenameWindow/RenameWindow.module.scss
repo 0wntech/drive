@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .prompt {
     margin-bottom: 8px;
 }
@@ -36,4 +38,13 @@
     color: white;
     font-weight: 300;
     border-radius: 20px;
+}
+
+@media (max-width: $screen_m) {
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(50vh - 50px);
+    }
 }
