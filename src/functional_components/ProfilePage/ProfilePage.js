@@ -94,7 +94,7 @@ export const ProfilePage = ({
                         height="20"
                         onClick={() => setEditable(!isEditable)}
                         className={styles.iconWhite}
-                        data-test-id="edit"
+                        data-test-id="edit-submit"
                     />
                     Edit Profile
                 </ActionButton>
