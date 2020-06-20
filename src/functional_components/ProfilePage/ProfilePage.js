@@ -98,6 +98,7 @@ export const ProfilePage = ({
 
     return (
         <ProfileView
+            label="Profile"
             user={user}
             updatingProfile={updatingProfile}
             renderButtons={renderEditButtons}

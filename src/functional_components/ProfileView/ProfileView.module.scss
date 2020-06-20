@@ -37,7 +37,7 @@ svg:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 65px 0;
+    margin: 60px 0;
 }
 
 .profileImage {
@@ -96,9 +96,9 @@ svg:hover {
     justify-content: space-around;
     flex: 1;
     align-items: center;
-  }
-  
-  .headContainer {
+}
+
+.headContainer {
     width: 50%;
     max-height: 100%;
     display: flex;
@@ -197,7 +197,6 @@ svg:hover {
 .addButton {
     color: #fff;
     width: 100%;
-    justify-content: center !important;
     background-color: $light_green;
 }
 
@@ -210,7 +209,6 @@ svg:hover {
     color: #aaaaaa;
     border: 5px solid #c4c4c4 !important;
     width: 100%;
-    box-sizing: border-box;
 }
 
 .removeButton:hover {

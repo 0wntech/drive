@@ -6,6 +6,8 @@ import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/FileIconMd.png';
 import FolderIcon from '../../assets/icons/FolderMd.png';
+import FileIconSm from '../../assets/icons/FileIconSm.png';
+import FolderIconSm from '../../assets/icons/FolderSm.png';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
 import {
@@ -80,7 +82,10 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
                                 ? styles.fileIcon
                                 : styles.folderIcon
                         }
-                        src={type === 'file' ? FileIcon : FolderIcon}
+                        srcSet={`
+                        ${type === 'file' ? FileIconSm : FolderIconSm} 567px,
+                        ${type === 'file' ? FileIcon : FolderIcon}
+                        `}
                     />
                 </div>
                 <span>{name}</span>
@@ -129,7 +134,7 @@ const Navigation = ({
             setCurrentContact(contact);
             navigate(getContactRoute(contact), history, dispatch);
         }
-        toggleSearchbar();
+        if (isSearchBarExpanded) toggleSearchbar();
     };
 
     const handleInputChange = (searchText) => {

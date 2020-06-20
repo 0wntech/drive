@@ -4,6 +4,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
 <ProfileView
   defaultIcon="defaultUserPic.png"
   editState={false}
+  label="Profile"
   onPhotoChange={[Function]}
   renderButtons={[Function]}
   updateUserData={[Function]}

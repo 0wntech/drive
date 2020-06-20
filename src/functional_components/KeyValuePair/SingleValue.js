@@ -32,8 +32,9 @@ const SingleValue = ({
             setFallbackValue(e.target.value);
         }
     };
-
-    if (!editable) {
+    if (!value || value === '') {
+        return null;
+    } else if (!editable) {
         return (
             <div className={classNames(styles.value, className)}>{value}</div>
         );

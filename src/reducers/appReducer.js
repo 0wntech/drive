@@ -4,7 +4,6 @@ import {
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
     FETCH_CURRENT_ITEM_FAIL,
-    SET_CURRENT_PATH,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
@@ -89,8 +88,6 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, error: INITIAL_STATE.error };
         case SET_CURRENT_CONTACT:
             return { ...state, isSearchBarExpanded: false };
-        case SET_CURRENT_PATH:
-            return { ...state, currentPath: payload, selectedItem: [] };
         case SET_SELECTION:
             return { ...state, selectedItems: [...payload] };
         case FETCH_CURRENT_ITEM:
