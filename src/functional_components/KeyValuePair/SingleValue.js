@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import styles from './KeyValuePair.module.css';
+import TextareaAutosize from 'react-textarea-autosize';
+import styles from './KeyValuePair.module.scss';
 
 const SingleValue = ({
     dataKey,
@@ -10,15 +11,9 @@ const SingleValue = ({
     placeholder,
     setValue,
     className,
+    maxInput,
 }) => {
     const [fallbackValue, setFallbackValue] = useState(value);
-
-    const onFocusIn = (e) => {
-        // make Placeholder visible
-        if (editable) {
-            setValue('');
-        }
-    };
 
     const onFocusOut = (e) => {
         // restore default if no change is made
@@ -31,7 +26,22 @@ const SingleValue = ({
         }
     };
 
-    return (
+    return maxInput ? (
+        <TextareaAutosize
+            readOnly={!editable}
+            data-test-id={`${dataKey}-input`}
+            className={classNames(styles.value, className, {
+                [styles.active]: editable,
+            })}
+            value={value}
+            placeholder={fallbackValue ? fallbackValue : placeholder}
+            onBlur={onFocusOut}
+            onChange={(e) => {
+                if (e.target.value.length < 256) setValue(e.target.value);
+            }}
+            maxLength={256}
+        />
+    ) : (
         <input
             readOnly={!editable}
             data-test-id={`${dataKey}-input`}
@@ -40,9 +50,10 @@ const SingleValue = ({
             })}
             value={value}
             placeholder={fallbackValue ? fallbackValue : placeholder}
-            onFocus={onFocusIn}
             onBlur={onFocusOut}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+                if (e.target.value.length < 256) setValue(e.target.value);
+            }}
         />
     );
 };

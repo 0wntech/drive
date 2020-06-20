@@ -11,6 +11,7 @@ const ActionButton = ({
     size,
     disabled,
     dataId,
+    children,
 }) => {
     color = color ? color : 'blue';
     size = size ? size : 'lg';
@@ -29,7 +30,7 @@ const ActionButton = ({
             )}
             onClick={onClick}
         >
-            {label}
+            {label ? label : children}
         </div>
     );
 };

@@ -13,3 +13,12 @@ $dark-grey: #e2e2e6;
 $light-blue: #6db7db;
 $danger-red: #bd0000;
 $dark-green: #36a510;
+
+// for js import (example see ProfilePage.js)
+:export {
+    screen_xs: 0;
+    screen_s: 567;
+    screen_m: 768;
+    screen_l: 992;
+    screen_xl: 1200;
+}

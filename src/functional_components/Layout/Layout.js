@@ -16,24 +16,22 @@ export const Layout = ({
     isLoading,
 }) => {
     return (
-        <div className={classNames(styles.grid)}>
-            {hideToolbar ? null : (
-                <div
-                    className={classNames(styles.toolbarArea, toolbarClassName)}
-                >
-                    <div className={styles.toolbarLeft}>
-                        {toolbarChildrenLeft}
+        <div
+            className={classNames(styles.grid, {
+                [styles.hideToolbar]: hideToolbar,
+            })}
+        >
+            <div className={classNames(styles.toolbarArea, toolbarClassName)}>
+                <div className={styles.toolbarLeft}>{toolbarChildrenLeft}</div>
+                {label && (
+                    <div className={styles.header} data-test-id="header">
+                        {label}
                     </div>
-                    {label && (
-                        <div className={styles.header} data-test-id="header">
-                            {label}
-                        </div>
-                    )}
-                    <div className={styles.toolbarRight}>
-                        {toolbarChildrenRight}
-                    </div>
+                )}
+                <div className={styles.toolbarRight}>
+                    {toolbarChildrenRight}
                 </div>
-            )}
+            </div>
             <div
                 onClick={onClick}
                 className={classNames(styles.content, className)}
