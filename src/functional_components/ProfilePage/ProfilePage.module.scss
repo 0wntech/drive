@@ -144,7 +144,6 @@ svg:hover {
     width: 100% !important;
     font-weight: 300;
     font-size: 24px !important;
-    line-height: 28px;
     position: relative;
     letter-spacing: 0.2em;
     text-overflow: ellipsis;
@@ -158,12 +157,12 @@ svg:hover {
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
-    line-height: 16px;
     letter-spacing: 0.2em;
     color: #454545;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    text-decoration: initial;
 }
 
 .valueLabel {

@@ -102,18 +102,16 @@ svg:hover {
 }
 
 .removeButton {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     color: #aaaaaa;
-    border: 2px solid #c4c4c4 !important;
+    border: 5px solid #c4c4c4 !important;
+    width: 100%;
+    padding: 17.5px 0 !important;
+    box-sizing: border-box;
 }
 
 .removeButton:hover {
-    background: linear-gradient(
-        0deg,
-        #aaaaaa 0%,
-        rgba(170, 170, 170, 0.5) 100%
-    );
-    color: white;
+    cursor: pointer;
 }
 
 .iconContainer {
@@ -137,7 +135,6 @@ svg:hover {
     width: 100% !important;
     font-weight: 300;
     font-size: 24px !important;
-    line-height: 28px;
     position: relative;
     letter-spacing: 0.2em;
     text-overflow: ellipsis;
@@ -150,10 +147,10 @@ svg:hover {
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
-    line-height: 16px;
     letter-spacing: 0.2em;
     color: #454545;
     text-overflow: ellipsis;
+    text-decoration: initial;
     white-space: nowrap;
     overflow: hidden;
 }

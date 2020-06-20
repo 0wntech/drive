@@ -25,9 +25,13 @@ export const getParamsFromUrl = (url) => {
     params.forEach((param) => {
         const paramName = param.split('=')[0];
         const paramVal = param.split('=')[1];
-        paramObj[paramName] = paramVal;
+        paramObj[paramName] = decodeURIComponent(paramVal);
     });
     return paramObj;
+};
+
+export const getContactRoute = (contact) => {
+    return `/contact?u=${encodeURIComponent(contact.webId)}`;
 };
 
 export const getPreviousPath = (url) => {

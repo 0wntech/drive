@@ -9,10 +9,10 @@ import {
     fetchContactRecommendations,
     fetchContacts,
 } from '../../actions/contactActions';
-
 import ContactList from '../ContactList/ContactsList';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
+import { getContactRoute } from '../../utils/url';
 
 const ContactsPage = ({
     contacts,
@@ -49,7 +49,7 @@ const ContactsPage = ({
                 <ContactList
                     onItemClick={(contact) => {
                         setCurrentContact(contact);
-                        history.push('/contact');
+                        history.push(getContactRoute(contact));
                     }}
                     contacts={contacts}
                     webId={webId}
@@ -63,7 +63,7 @@ const ContactsPage = ({
                         <ContactList
                             onItemClick={(contact) => {
                                 setCurrentContact(contact);
-                                history.push('/contact');
+                                history.push(getContactRoute(contact));
                             }}
                             contacts={contactRecommendationsToDisplay}
                             webId={webId}

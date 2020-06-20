@@ -5,8 +5,8 @@ import styles from './ContactProfilePage.module.scss';
 import {
     addContact,
     removeContact,
-    fetchContacts,
     fetchContact,
+    setCurrentContact,
 } from '../../actions/contactActions';
 import { KeyValuePair } from '../KeyValuePair';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
@@ -25,18 +25,28 @@ import {
 const ContactProfilePage = ({
     currentContact,
     fetchContact,
-    fetchContacts,
     addContact,
     removeContact,
+    setCurrentContact,
     webId,
     isContact,
+    contacts,
     error,
 }) => {
     handleError(error);
     useEffect(() => {
-        if (!currentContact) {
-            const currentUser = getParamsFromUrl(window.location.href).u;
-            fetchContacts();
+        const currentUser = getParamsFromUrl(window.location.href).u;
+        if (contacts) {
+            const contactFromContacts = contacts.find(
+                (contact) => contact.webId == currentUser
+            );
+
+            setCurrentContact(contactFromContacts);
+        }
+        if (
+            !currentContact ||
+            (currentContact && currentContact.webId !== currentUser)
+        ) {
             fetchContact(currentUser);
         }
     }, []);
@@ -84,8 +94,11 @@ const ContactProfilePage = ({
                                 className={styles.webIdLabel}
                                 href={
                                     currentContact &&
-                                    getIdpFromWebId(currentContact.webId)
+                                    `https://${getIdpFromWebId(
+                                        currentContact.webId
+                                    )}`
                                 }
+                                target="_blank"
                             >
                                 {currentContact &&
                                     getIdpFromWebId(currentContact.webId)}
@@ -147,6 +160,7 @@ ContactProfilePage.propTypes = {
 const mapStateToProps = (state) => ({
     error: state.contact.error,
     currentContact: state.contact.currentContact,
+    contacts: state.contact.contacts,
     webId: state.user.webId,
     isContact:
         state.contact && state.contact.currentContact
@@ -157,6 +171,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     addContact,
     removeContact,
-    fetchContacts,
+    setCurrentContact,
     fetchContact,
 })(ContactProfilePage);
