@@ -225,6 +225,7 @@ const Navigation = ({
             <NavbarMenu
                 resetError={resetError}
                 className={styles.menuWrapper}
+                iconClassName={styles.icon}
             />
         </div>
     );

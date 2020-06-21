@@ -20,6 +20,13 @@
     margin: 0 4px;
 }
 
+.iconWhite {
+  path {
+      fill: #ffffff;
+  }
+  margin-right: 10px;
+}
+
 @media (max-width: $screen_m) {
     .grid {
         grid-template-areas: 'profile profile profile';

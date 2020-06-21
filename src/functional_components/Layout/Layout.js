@@ -43,22 +43,22 @@ export const Layout = ({
                     <div className={styles.toolbarRight}>
                         {toolbarChildrenRight}
                     </div>
-                    <div
-                        onClick={onClick}
-                        className={classNames(styles.content, className)}
-                    >
-                        {isLoading ? (
-                            <div className={styles.spinner}>
-                                <ClassicSpinner
-                                    size={30}
-                                    color="#686769"
-                                    loading={isLoading}
-                                />
-                            </div>
-                        ) : (
-                            children
-                        )}
-                    </div>
+                </div>
+                <div
+                    onClick={onClick}
+                    className={classNames(styles.content, className)}
+                >
+                    {isLoading ? (
+                        <div className={styles.spinner}>
+                            <ClassicSpinner
+                                size={30}
+                                color="#686769"
+                                loading={isLoading}
+                            />
+                        </div>
+                    ) : (
+                        children
+                    )}
                 </div>
             </div>
         </>

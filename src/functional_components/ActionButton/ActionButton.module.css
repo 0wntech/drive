@@ -64,8 +64,9 @@
     letter-spacing: 0.1em;
     padding: 6px 20px;
     font-weight: 400;
-    max-height: 40px;
     box-sizing: border-box;
+    max-height: 40px;
+    height: 40px;
 }
 
 .disabled {

@@ -21,6 +21,7 @@ const KeyValuePair = ({
     value,
     maxInput,
 }) => {
+    console.log(value);
     const renderValues = (value) => {
         if (typeof value === 'object') {
             // is an array

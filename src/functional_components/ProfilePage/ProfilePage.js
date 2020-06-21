@@ -41,7 +41,11 @@ export const ProfilePage = ({
 
     const onCancel = () => {
         setEditState(false);
-        setUserData({ ...user });
+        setUserData({
+            ...user,
+            emails: user.emails[0],
+            telephones: user.telephones[0],
+        });
     };
 
     const onSubmit = () => {
