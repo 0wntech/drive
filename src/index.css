@@ -47,3 +47,9 @@ html,
 #root {
     background-color: #f4f4f4;
 }
+
+@media (max-width: 768px) {
+    #root {
+        background-color: #ffffff;
+    }
+}

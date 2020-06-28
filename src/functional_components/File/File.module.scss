@@ -142,6 +142,7 @@
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+    background-size: contain;
 }
 
 @media (max-width: $screen_m) {

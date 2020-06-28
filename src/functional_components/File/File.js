@@ -29,7 +29,11 @@ export default function File({
                             className={styles.thumbnail}
                             src={currentPath + file.name}
                         />
-                        <img alt="file" className={styles.icon} src={image} />
+                        <div
+                            alt="file"
+                            className={styles.icon}
+                            style={{ backgroundImage: `url(${image})` }}
+                        />
                     </div>
                 </div>
             );
@@ -51,7 +55,12 @@ export default function File({
                             </p>
                         )
                     ) : null}
-                    <img alt="file" className={styles.icon} src={image} />
+                    <div
+                        alt="file"
+                        className={styles.icon}
+                        src={image}
+                        style={{ backgroundImage: `url(${image})` }}
+                    />
                 </div>
             );
         }

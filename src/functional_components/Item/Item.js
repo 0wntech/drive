@@ -31,7 +31,11 @@ const MyItem = ({
                 onTouchStart={onMouseDown}
             >
                 <div className={styles.innerContainer}>
-                    <img alt="item" className={styles.icon} src={image} />
+                    <div
+                        alt="item"
+                        className={styles.icon}
+                        style={{ backgroundImage: `url(${image})` }}
+                    />
                 </div>
                 <div className={styles.labelContainer}>
                     <div className={styles.label}>{label}</div>
