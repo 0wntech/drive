@@ -42,6 +42,10 @@ html,
 #root {
     height: 100%;
     overflow: hidden;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #root {
