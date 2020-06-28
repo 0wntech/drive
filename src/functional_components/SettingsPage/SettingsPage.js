@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Layout } from '../Layout/Layout';
-import styles from './SettingsPage.module.css';
+import styles from './SettingsPage.module.scss';
 import { SettingsSection } from '../SettingsSection/SettingsSection';
 import { idp } from '../../selectors/userSelectors';
 
@@ -16,7 +16,7 @@ export const SettingsPage = ({ idp }) => {
     ];
 
     return (
-        <Layout label="Settings" className={styles.layout}>
+        <Layout label="Settings" className={styles.layout} hideToolbar>
             <div className={styles.container}>
                 <SettingsSection label="Account" options={settings} />
             </div>

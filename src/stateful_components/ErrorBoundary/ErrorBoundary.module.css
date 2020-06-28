@@ -11,14 +11,12 @@
     font-weight: 300;
     font-size: 18px;
     margin-bottom: 0.8em;
-    letter-spacing: 0.05em;
 }
 
 .errorText {
     margin-bottom: 1em;
     font-weight: 300;
     font-size: 18px;
-    letter-spacing: 0.05em;
     color: #ff0000;
 }
 
