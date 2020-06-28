@@ -16,7 +16,7 @@ svg:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 18px;
+    margin-top: 1em;
     width: 100%;
 }
 
@@ -80,7 +80,6 @@ svg:hover {
 }
 
 .bioLabel {
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
@@ -96,6 +95,7 @@ svg:hover {
     justify-content: space-around;
     flex: 1;
     align-items: center;
+    margin-top: 1em;
 }
 
 .headContainer {
@@ -133,7 +133,6 @@ svg:hover {
 }
 
 .nameLabel {
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
     width: 100% !important;
     font-weight: 600 !important;
@@ -144,7 +143,6 @@ svg:hover {
 
 .webIdLabel {
     margin: 10px;
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
@@ -154,7 +152,6 @@ svg:hover {
 }
 
 .valueLabel {
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 300;
     font-size: 18px;

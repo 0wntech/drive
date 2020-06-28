@@ -28,7 +28,6 @@
     max-height: 63px;
     width: 100%;
     font-size: 16px;
-    font-family: 'Helvetica Neue Light';
     margin: 0 10px;
     @include multiLineEllipsis(
         $lineHeight: 21px,
