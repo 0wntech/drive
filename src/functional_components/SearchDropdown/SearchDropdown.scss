@@ -1,7 +1,7 @@
 @import '../../styles/constants.scss';
 
 .search__control--menu-is-open {
-    border: solid $dark_grey 10px !important;
+    border: solid $dark_grey 5px !important;
     border-bottom: initial !important;
     box-sizing: border-box !important;
 
@@ -40,7 +40,7 @@
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     z-index: 1 !important;
-    border: solid $dark_grey 10px !important;
+    border: solid $dark_grey 5px !important;
     border-top: initial !important;
     top: calc(100% - 3px) !important;
 }
@@ -55,7 +55,7 @@
 }
 
 .search__indicators {
-    margin-left: 10px;
+    margin-left: 5px;
     min-width: 64px;
     height: 100%;
     justify-content: center;

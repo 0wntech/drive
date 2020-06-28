@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import styles from './NavbarMenu.module.scss';
-import ActionButton from '../ActionButton/ActionButton';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { setCurrentPath } from '../../actions/appActions';
 import { logout } from '../../actions/userActions';
@@ -14,10 +13,6 @@ import { navigate } from '../../utils/helper';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
 import SvgSettings from '../../assets/svgIcons/Settings';
-
-const onRegister = () => {
-    window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
-};
 
 export const NavbarMenu = ({
     className,
@@ -102,14 +97,7 @@ export const NavbarMenu = ({
                     isExpanded={isDropdownExpanded}
                     setExpanded={setDropdownExpanded}
                 />
-            ) : (
-                <ActionButton
-                    size="sm"
-                    label="Register"
-                    color="green"
-                    onClick={onRegister}
-                />
-            )}
+            ) : null}
         </div>
     );
 };
