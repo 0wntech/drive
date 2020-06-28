@@ -15,18 +15,20 @@ export const BackButton = ({ setCurrentPath, currentPath, webId, history }) => {
     }, [currentPath]);
 
     return (
-        <div
-            className={classNames(styles.container, {
-                [styles.hidden]:
-                    currentPath && getRootFromWebId(webId) === currentPath,
-            })}
-            onClick={() => {
-                setCurrentPath(previousPath);
-                history.push('/home');
-            }}
-        >
-            Back
-        </div>
+        currentPath && (
+            <div
+                className={classNames(styles.container, {
+                    [styles.hidden]:
+                        currentPath && getRootFromWebId(webId) === currentPath,
+                })}
+                onClick={() => {
+                    setCurrentPath(previousPath);
+                    history.push('/home');
+                }}
+            >
+                Back
+            </div>
+        )
     );
 };
 

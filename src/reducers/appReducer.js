@@ -44,6 +44,7 @@ import {
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
     SET_CURRENT_CONTACT,
+    SET_CURRENT_PATH,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -88,6 +89,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, error: INITIAL_STATE.error };
         case SET_CURRENT_CONTACT:
             return { ...state, isSearchBarExpanded: false };
+        case SET_CURRENT_PATH:
+            return { ...state, currentPath: payload };
         case SET_SELECTION:
             return { ...state, selectedItems: [...payload] };
         case FETCH_CURRENT_ITEM:

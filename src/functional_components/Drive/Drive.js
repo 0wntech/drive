@@ -54,15 +54,12 @@ const Drive = ({
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
         if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
-            if (!currentPath) {
-                currentPath =
-                    appState && appState.currentPath
-                        ? appState.currentPath
-                        : getRootFromWebId(webId);
-                setCurrentPath(currentPath);
+            if (!currentPath && appState && appState.currentPath) {
+                setCurrentPath(appState.currentPath);
+            } else if (!currentPath && webId) {
+                setCurrentPath(getRootFromWebId(webId));
             } else {
-                currentPath = getParentFolderUrl(currentPath);
-                setCurrentPath(currentPath);
+                setCurrentPath(getParentFolderUrl(currentPath));
             }
         }
         return () => {
@@ -74,7 +71,7 @@ const Drive = ({
                 })
             );
         };
-    }, []);
+    }, [currentPath]);
     handleError(error);
     // Event Handlers
     const loadFile = (url, event = {}) => {
@@ -201,6 +198,8 @@ const Drive = ({
         return currentItem.folders.length < 1 && currentItem.files.length < 1;
     };
 
+    console.log(currentPath, 'lala');
+
     return (
         <Layout
             toolbarChildrenLeft={toolbarLeft}
@@ -223,7 +222,8 @@ const Drive = ({
             >
                 <div className={styles.container}>
                     <Windows />
-                    {currentItem &&
+                    {currentPath &&
+                    currentItem &&
                     currentItem.folders &&
                     currentItem.files &&
                     !noFilesAndFolders() ? (

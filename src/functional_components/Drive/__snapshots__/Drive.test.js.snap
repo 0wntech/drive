@@ -27,6 +27,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
       <UNDEFINED />
       <div>
         <UNDEFINED
+          currPath="https://tester.owntech.de/"
           image="Folder.png"
           items={
             Array [
@@ -37,6 +38,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
           onItemClick={[Function]}
         />
         <UNDEFINED
+          currPath="https://tester.owntech.de/"
           image="File.png"
           isFile={true}
           items={
