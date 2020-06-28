@@ -15,28 +15,21 @@ const SingleValue = ({
 }) => {
     const [fallbackValue, setFallbackValue] = useState(value);
 
-    const onFocusIn = (e) => {
-        // make Placeholder visible
-        if (editable) {
-            setValue('');
-        }
+    const onFocusOut = (e) => {
+        // set new fallback value
+        setFallbackValue(e.target.value);
     };
 
-    const onFocusOut = (e) => {
-        // restore default if no change is made
-        if (value === '' && editable) {
-            setValue(fallbackValue);
-        }
-        // set new fallback value
-        if (value !== '') {
-            setFallbackValue(e.target.value);
-        }
-    };
-    if (!value || value === '') {
+    if ((!value || value === '') && !editable) {
         return null;
     } else if (!editable) {
         return (
-            <div className={classNames(styles.value, className)}>{value}</div>
+            <div
+                className={classNames(styles.value, className)}
+                data-test-id={`${dataKey}`}
+            >
+                {value}
+            </div>
         );
     }
 
@@ -64,7 +57,6 @@ const SingleValue = ({
             })}
             value={value}
             placeholder={fallbackValue ? fallbackValue : placeholder}
-            onFocus={onFocusIn}
             onBlur={onFocusOut}
             onChange={(e) => setValue(e.target.value)}
         />

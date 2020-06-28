@@ -36,6 +36,7 @@ export const ProfilePage = ({
     const [editState, setEditState] = useState(false);
 
     const updateUserData = (key, value) => {
+        console.log(key, value);
         setUserData({ ...userData, [key]: value });
     };
 

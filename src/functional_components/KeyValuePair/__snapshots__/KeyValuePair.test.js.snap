@@ -20,7 +20,6 @@ exports[`KeyValuePair should render expanded 1`] = `
         data-test-id="testKey-input"
         onBlur={[Function]}
         onChange={[Function]}
-        onFocus={[Function]}
         placeholder="testValue"
         readOnly={false}
         value="testValue"
@@ -73,6 +72,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         >
           <div
             className="value"
+            data-test-id="testKey"
           >
             multiple
           </div>
@@ -82,6 +82,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         >
           <div
             className="value"
+            data-test-id="testKey"
           >
             values
           </div>
@@ -91,6 +92,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         >
           <div
             className="value"
+            data-test-id="testKey"
           >
             test
           </div>
@@ -138,6 +140,7 @@ exports[`KeyValuePair should render unexpanded 1`] = `
     >
       <div
         className="value"
+        data-test-id="testKey"
       >
         testValue
       </div>

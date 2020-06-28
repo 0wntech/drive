@@ -69,7 +69,7 @@ export const ProfileView = ({
                             <SingleValue
                                 editable={editState}
                                 value={
-                                    userData.name
+                                    typeof userData.name !== 'undefined'
                                         ? userData.name
                                         : getUsernameFromWebId(userData.webId)
                                 }
