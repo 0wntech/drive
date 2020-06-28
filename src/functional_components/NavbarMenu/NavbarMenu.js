@@ -59,6 +59,7 @@ export const NavbarMenu = ({
                 <div
                     className={styles.settings}
                     onClick={(e) => {
+                        e.stopPropagation();
                         setDropdownExpanded(false);
                         navigate('/settings', history, dispatch, resetError);
                     }}
