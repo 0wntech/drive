@@ -80,6 +80,9 @@
         top: 0px;
         position: initial;
         padding: initial;
+        width: 100%;
+        justify-content: center;
+        align-items: flex-end;
     }
 
     .iconWrapper {
@@ -95,7 +98,7 @@
     }
 
     .dropdownWrapper {
-        width: initial;
+        width: 100%;
         position: initial;
     }
 }

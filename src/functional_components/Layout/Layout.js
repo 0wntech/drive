@@ -40,9 +40,6 @@ export const Layout = ({
                     <div className={styles.toolbarRight}>
                         {toolbarChildrenRight}
                     </div>
-                    <div className={styles.toolbarRight}>
-                        {toolbarChildrenRight}
-                    </div>
                 </div>
                 <div
                     onClick={onClick}

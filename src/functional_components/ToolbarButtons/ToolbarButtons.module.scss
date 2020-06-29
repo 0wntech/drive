@@ -16,8 +16,23 @@
 .container {
     align-items: center;
     display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 2em;
 }
 
 .showBack {
     display: none;
+}
+
+@media (max-width: $screen_m) {
+    .toolbarIcon {
+        padding: 2em;
+    }
+}
+
+@media (max-width: $screen_s) {
+    .toolbarIcon {
+        padding: initial;
+    }
 }

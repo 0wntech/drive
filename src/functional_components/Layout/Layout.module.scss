@@ -77,6 +77,8 @@
         border-top-left-radius: initial;
         border-top-right-radius: initial;
         height: 100%;
+        display: flex;
+        justify-content: space-between;
     }
 
     .toolbarLeft {
@@ -84,7 +86,7 @@
     }
 
     .toolbarRight {
-        grid-area: label;
+        width: 100%;
     }
 
     .header {
