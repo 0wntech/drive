@@ -10,7 +10,6 @@ import { getRootFromWebId, getPreviousPath } from '../../utils/url';
 export const BackButton = ({ setCurrentPath, currentPath, webId, history }) => {
     const [previousPath, setPreviousPath] = useState(currentPath);
     useEffect(() => {
-        console.log(currentPath, 'kaka');
         setPreviousPath(getPreviousPath(currentPath));
     }, [currentPath]);
 

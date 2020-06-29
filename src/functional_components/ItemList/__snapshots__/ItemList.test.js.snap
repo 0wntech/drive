@@ -46,6 +46,7 @@ exports[`ItemList ItemList Snapshot matches the snapshot for folders 1`] = `
     }
     currentPath="https://example.com/"
     label="hehe"
+    onClick={[Function]}
     onMouseDown={[Function]}
     onMouseUp={[Function]}
   />
@@ -91,6 +92,7 @@ exports[`ItemList ItemList Snapshot matches the snapshot for folders 1`] = `
     }
     currentPath="https://example.com/"
     label="hihi"
+    onClick={[Function]}
     onMouseDown={[Function]}
     onMouseUp={[Function]}
   />
@@ -143,6 +145,7 @@ exports[`ItemList ItemList Snapshot matches the snapshot for items 1`] = `
     }
     currentPath="https://example.com/"
     label="haha.jpg"
+    onClick={[Function]}
     onMouseDown={[Function]}
     onMouseUp={[Function]}
   />
@@ -195,6 +198,7 @@ exports[`ItemList ItemList Snapshot matches the snapshot for selected folders 1`
     }
     currentPath="https://example.com/"
     label="hehe"
+    onClick={[Function]}
     onMouseDown={[Function]}
     onMouseUp={[Function]}
   />
@@ -240,6 +244,7 @@ exports[`ItemList ItemList Snapshot matches the snapshot for selected folders 1`
     }
     currentPath="https://example.com/"
     label="hihi"
+    onClick={[Function]}
     onMouseDown={[Function]}
     onMouseUp={[Function]}
   />

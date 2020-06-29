@@ -50,6 +50,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
         />
       </div>
       <withRouter(Connect(BackButton)) />
+      <withRouter(Connect(SelectModeButton)) />
     </div>
   </UNDEFINED>
 </Layout>

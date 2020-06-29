@@ -4,6 +4,7 @@ import {
     FETCH_CURRENT_ITEM_FAIL,
     SET_CURRENT_PATH,
     SET_SELECTION,
+    TOGGLE_SELECTION_MODE,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
     FETCH_NOTIFICATIONS_FAILURE,
@@ -86,7 +87,6 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
             .then((item) => {
                 if (item && item.folders) {
                     const files = item.files.map((file) => {
-                        console.log(file);
                         return {
                             name: convertFileUrlToName(file.name),
                             type: file.type,
@@ -219,6 +219,10 @@ export const sendNotification = (to, notification) => {
 
 export const setSelection = (selection) => {
     return { type: SET_SELECTION, payload: selection };
+};
+
+export const toggleSelectionMode = () => {
+    return { type: TOGGLE_SELECTION_MODE };
 };
 
 export const fetchIdps = () => {

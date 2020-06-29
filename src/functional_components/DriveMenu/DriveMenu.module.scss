@@ -9,7 +9,7 @@
     max-height: calc(100vh - 220px);
 
     .container {
-        padding: 10px 16px;
+        padding: 10px 1em;
         justify-self: center;
         align-self: center;
         width: 400px;
@@ -26,7 +26,7 @@
             grid-template-columns: 28px 8px 1fr;
             grid-template-areas: 'icon . label';
             align-items: center;
-            padding: 4px 16px;
+            padding: 4px 0;
             border-radius: 5px;
             margin: 5px 0;
 

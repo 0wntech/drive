@@ -29,6 +29,7 @@ export const FETCH_NOTIFICATIONS_SUCCESS = 'fetch_notifications_success';
 export const FETCH_NOTIFICATIONS_FAILURE = 'fetch_notifications_failure';
 
 export const SET_SELECTION = 'set_selection';
+export const TOGGLE_SELECTION_MODE = 'toggle_selection_mode';
 
 export const SEND_NOTIFICATION = 'send_notification';
 export const SEND_NOTIFICATION_SUCCESS = 'send_notification_success';

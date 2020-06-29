@@ -7,6 +7,10 @@
     grid-gap: 10px 10px;
 }
 
+.listContainer + .listContainer {
+    margin-top: 5px;
+}
+
 @media (max-width: $screen_m) {
     .listContainer {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));

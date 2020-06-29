@@ -13,6 +13,7 @@ import {
     openCreateFileWindow,
     openCreateFolderWindow,
     openRenameWindow,
+    toggleSelectionMode,
 } from '../../actions/appActions';
 
 const ItemList = ({
@@ -20,6 +21,8 @@ const ItemList = ({
     clipboard,
     currentPath,
     selectedItems,
+    selectionMode,
+    toggleSelectionMode,
     items,
     image,
     onItemClick,
@@ -34,26 +37,19 @@ const ItemList = ({
 
     // Event Handlers
     const handleMouseDown = (item) => {
-        setMouseHoldTimer(
-            setTimeout(() => {
-                if (!selectedItems.includes(item)) {
-                    setSelection([...selectedItems, item]);
-                } else {
-                    setSelection(
-                        selectedItems.filter(
-                            (selectedItem) => selectedItem !== item
-                        )
-                    );
-                }
-            }, 1000)
-        );
+        if (!selectionMode) {
+            setMouseHoldTimer(
+                setTimeout(() => {
+                    if (!selectedItems.includes(item)) {
+                        setSelection([...selectedItems, item]);
+                        toggleSelectionMode();
+                    }
+                }, 1000)
+            );
+        }
     };
 
-    const handleMouseUp = (item, event) => {
-        console.log(mouseHoldTimer);
-        if (!selectedItems.includes(item)) {
-            onItemClick(item, event);
-        }
+    const handleMouseUp = () => {
         clearTimeout(mouseHoldTimer);
     };
 
@@ -123,6 +119,13 @@ const ItemList = ({
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
                       file={item}
                       currentPath={currentPath}
+                      onClick={(e) => {
+                          if (
+                              !selectedItems.includes(currentPath + item.name)
+                          ) {
+                              onItemClick(currentPath + item.name, e);
+                          }
+                      }}
                       onMouseUp={(e) =>
                           handleMouseUp(currentPath + item.name, e)
                       }
@@ -142,6 +145,13 @@ const ItemList = ({
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
                       currentPath={currentPath}
                       label={decodeURIComponent(item)}
+                      onClick={(e) => {
+                          if (
+                              !selectedItems.includes(currentPath + item + '/')
+                          ) {
+                              onItemClick(currentPath + item + '/', e);
+                          }
+                      }}
                       onMouseUp={(e) =>
                           handleMouseUp(currentPath + item + '/', e)
                       }
@@ -162,6 +172,7 @@ const mapStateToProps = (state) => {
         clipboard: state.app.clipboard,
         currentPath: state.app.currentPath,
         selectedItems: state.app.selectedItems,
+        selectionMode: state.app.selectionMode,
     };
 };
 
@@ -173,4 +184,5 @@ export default connect(mapStateToProps, {
     openConsentWindow,
     openCreateFileWindow,
     openCreateFolderWindow,
+    toggleSelectionMode,
 })(ItemList);

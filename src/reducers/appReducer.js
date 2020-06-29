@@ -45,6 +45,7 @@ import {
     TOGGLE_DRIVE_MENU,
     SET_CURRENT_CONTACT,
     SET_CURRENT_PATH,
+    TOGGLE_SELECTION_MODE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -65,6 +66,7 @@ const INITIAL_STATE = {
     currentItem: null,
     notifications: null,
     selectedItems: [],
+    selectionMode: false,
     clipboard: [],
     loadPaste: false,
     idps: idps,
@@ -93,6 +95,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, currentPath: payload };
         case SET_SELECTION:
             return { ...state, selectedItems: [...payload] };
+        case TOGGLE_SELECTION_MODE:
+            return { ...state, selectionMode: !state.selectionMode };
         case FETCH_CURRENT_ITEM:
             return {
                 ...state,

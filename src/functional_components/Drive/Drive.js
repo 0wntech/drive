@@ -23,15 +23,18 @@ import {
     openCreateFolderWindow,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
-import { isCmdPressed, handleError } from '../../utils/helper';
+import { handleError } from '../../utils/helper';
 import { getParentFolderUrl } from '../../utils/url';
 import Windows from '../Windows/Windows';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 import BackButton from '../BackButton/BackButton';
 import DriveMenu from '../DriveMenu/DriveMenu';
+import SelectModeButton from '../SelectModeButton/SelectModeButton';
 
 const Drive = ({
     selectedItems,
+    selectionMode,
+    setSelection,
     currentItem,
     currentPath,
     loadCurrentItem,
@@ -41,7 +44,6 @@ const Drive = ({
     isDriveMenuVisible,
     webId,
     setCurrentPath,
-    setSelection,
     fetchCurrentItem,
     history,
     downloadFile,
@@ -74,14 +76,14 @@ const Drive = ({
     }, [currentPath]);
     handleError(error);
     // Event Handlers
-    const loadFile = (url, event = {}) => {
+    const loadFile = (url) => {
         if (url.endsWith('/')) {
             url = url.substr(0, url.lastIndexOf('/'));
         }
-        if (isCmdPressed(event) && selectedItems.includes(url) === false) {
+        if (selectionMode && !selectedItems.includes(url)) {
             const newSelection = [...selectedItems, url];
             setSelection(newSelection);
-        } else if (isCmdPressed(event) && selectedItems.includes(url)) {
+        } else if (selectionMode) {
             const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
@@ -89,13 +91,12 @@ const Drive = ({
         }
     };
 
-    const loadFolder = (path, event = {}) => {
-        if (loadCurrentItem) return;
-        if (isCmdPressed(event) && selectedItems.includes(path)) {
-            const newSelection = selectedItems.filter((item) => item !== path);
-            setSelection(newSelection);
-        } else if (isCmdPressed(event) && !selectedItems.includes(path)) {
+    const loadFolder = (path) => {
+        if (selectionMode && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];
+            setSelection(newSelection);
+        } else if (selectionMode) {
+            const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else {
             setCurrentPath(path);
@@ -198,8 +199,6 @@ const Drive = ({
         return currentItem.folders.length < 1 && currentItem.files.length < 1;
     };
 
-    console.log(currentPath, 'lala');
-
     return (
         <Layout
             toolbarChildrenLeft={toolbarLeft}
@@ -258,6 +257,7 @@ const Drive = ({
                         </p>
                     )}
                     <BackButton />
+                    <SelectModeButton />
                 </div>
             </DriveContextMenu>
         </Layout>
@@ -269,6 +269,7 @@ const mapStateToProps = (state) => {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         selectedItems: state.app.selectedItems,
+        selectionMode: state.app.selectionMode,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
         error: state.app.error,
