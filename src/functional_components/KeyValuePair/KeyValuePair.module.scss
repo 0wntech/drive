@@ -4,11 +4,13 @@
     box-sizing: border-box;
     border-radius: 20px;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .keyValueContainer {
     display: flex;
     margin-left: 26px;
+    width: 100%;
 }
 
 .valueWrapper {
@@ -46,14 +48,13 @@
 .keyLabel {
     font-style: normal;
     font-size: 18px;
-    width: 140px;
+    min-width: calc(150px + 1em - 26px);
 }
 
 .addLabel {
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
-    letter-spacing: 0.2em;
 }
 
 .value {
@@ -69,6 +70,7 @@
     border: none;
     border-bottom: 2px solid transparent;
     outline: none;
+    resize: none;
 }
 
 .value.active::placeholder {
@@ -103,6 +105,22 @@
 .valueContainer {
     width: calc(100% - 166px);
     max-width: 70%;
+    width: 100%;
+}
+
+@media (max-width: $screen_m) {
+    .container {
+        width: 80%;
+    }
+
+    .keyLabel {
+        width: calc(70px + 1em);
+        font-size: 16px;
+    }
+
+    .value {
+        font-size: 16px;
+    }
 }
 
 @media (max-width: $screen_m) {

@@ -4,7 +4,11 @@ import classNames from 'classnames';
 import styles from './ProfilePage.module.scss';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
+import {
+    updateProfile,
+    changeProfilePhoto,
+    fetchUser,
+} from '../../actions/userActions';
 import { fetchContacts, setCurrentContact } from '../../actions/contactActions';
 import { fetchApps, removeApp } from '../../actions/userAppActions';
 import Camera from '../../assets/svgIcons/Camera';
@@ -16,12 +20,13 @@ import { handleError } from '../../utils/helper';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
 import { ContactListItem } from '../ContactListItem';
-import { EditButtons } from '../EditButtons';
 import { withRouter } from 'react-router-dom';
 import { responsiveApps, responsiveContacts } from './constants';
+import EditButtons from '../EditButtons/EditButtons';
 
 export const ProfilePage = ({
     user,
+    webId,
     changeProfilePhoto,
     updateProfile,
     updatingProfile,
@@ -29,13 +34,19 @@ export const ProfilePage = ({
     fetchContacts,
     contacts,
     apps,
-    webId,
     error,
     history,
     setCurrentContact,
-    removeApp,
+    fetchUser,
+    loadUser,
 }) => {
     handleError(error);
+    useEffect(() => {
+        if (!user && !loadUser && webId) {
+            fetchUser(webId);
+        }
+    }, []);
+
     const [userData, setUserData] = useState({ ...user });
     const [isEditable, setEditable] = useState(false);
 
@@ -124,10 +135,8 @@ export const ProfilePage = ({
                                     updateUserData('bio', value)
                                 }
                                 placeholder="Add bio.."
-                                className={classNames(
-                                    styles.bioLabel,
-                                    styles.multiline
-                                )}
+                                className={classNames(styles.bioLabel)}
+                                maxInput={256}
                             />
                         </div>
                         <div className={styles.editWrapper}>
@@ -151,26 +160,26 @@ export const ProfilePage = ({
                         setValue={updateUserData}
                         label="Email:"
                         dataKey="emails"
-                        value={userData.emails}
+                        value={userData.emails[0]}
                         editable={isEditable}
                         placeholder={
-                            user.emails.length > 1 ? user.emails : `add Email`
+                            user.emails.length > 0 ? user.emails : `add Email`
                         }
                     />
-                    {user.telephones.length > 0 ? (
-                        <KeyValuePair
-                            setValue={updateUserData}
-                            dataKey="telephones"
-                            label="Phone:"
-                            value={userData.telephones}
-                            editable={isEditable}
-                            placeholder={
-                                user.telephones.length > 1
-                                    ? user.telephones
-                                    : `add Number`
-                            }
-                        />
-                    ) : null}
+
+                    <KeyValuePair
+                        setValue={updateUserData}
+                        dataKey="telephones"
+                        label="Phone:"
+                        value={userData.telephones}
+                        editable={isEditable}
+                        placeholder={
+                            user.telephones.length > 1
+                                ? user.telephones
+                                : `add Number`
+                        }
+                    />
+
                     <p className={styles.label}>Contacts</p>
                     {contacts ? (
                         <div className={styles.carouselContainer}>
@@ -256,6 +265,8 @@ const mapStateToProps = (state) => ({
     error: state.user.error,
     apps: state.userApps.apps,
     contacts: state.contact.contacts,
+    loadUser: state.user.loadUser,
+    webId: state.user.webId,
 });
 
 export default connect(mapStateToProps, {
@@ -265,6 +276,7 @@ export default connect(mapStateToProps, {
     fetchContacts,
     fetchApps,
     setCurrentContact,
+    fetchUser,
 })(withRouter(ProfilePage));
 
 // remove me if user library functions return all the parameter

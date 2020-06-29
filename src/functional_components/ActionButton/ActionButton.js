@@ -30,8 +30,7 @@ const ActionButton = ({
             )}
             onClick={onClick}
         >
-            {children ? children : null}
-            {label ? label : null}
+            {label ? label : children}
         </div>
     );
 };

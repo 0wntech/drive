@@ -22,8 +22,13 @@ describe('e2e edit profile', () => {
         await page.waitForSelector('[data-test-id="edit"]');
         await page.click('[data-test-id="edit"]');
         await page.waitForSelector('[data-test-id="name-input"]');
-        await page.click('[data-test-id="name-input"]');
-        await page.type('[data-test-id="name-input"]', 'Tester');
+        const nameInput = await page.$('[data-test-id="name-input"]');
+        nameInput.click();
+        await page.waitFor(500);
+        nameInput.click({ clickCount: 3 });
+        await page.type('[data-test-id="name-input"]', 'Tester', {
+            delay: 500,
+        });
         await page.click('[data-test-id="edit-submit"]');
         await page.waitForSelector('[data-test-id="name-input"][readonly]');
         const name = await page.$eval(

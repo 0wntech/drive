@@ -40,8 +40,9 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
           </div>
         </div>
         <SingleValue
-          className="bioLabel multiline"
+          className="bioLabel"
           editable={false}
+          maxInput={256}
           placeholder="Add bio.."
           setValue={[Function]}
           value="This is bens Bio!"
@@ -70,13 +71,13 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
       dataKey="emails"
       editable={false}
       label="Email:"
-      placeholder="add Email"
-      setValue={[Function]}
-      value={
+      placeholder={
         Array [
           "ben.test@owntech.de",
         ]
       }
+      setValue={[Function]}
+      value="ben.test@owntech.de"
     />
     <KeyValuePair
       dataKey="telephones"

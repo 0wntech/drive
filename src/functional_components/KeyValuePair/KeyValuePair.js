@@ -19,6 +19,7 @@ const KeyValuePair = ({
     placeholder,
     setValue,
     value,
+    maxInput,
 }) => {
     const renderValues = (value) => {
         if (typeof value === 'object') {
@@ -41,6 +42,7 @@ const KeyValuePair = ({
                     value={value}
                     placeholder={placeholder}
                     editable={editable}
+                    maxInput={maxInput}
                 />
             );
         }
