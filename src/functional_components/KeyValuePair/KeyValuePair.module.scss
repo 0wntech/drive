@@ -44,16 +44,12 @@
 }
 
 .keyLabel {
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
-    font-weight: 600;
     font-size: 18px;
     width: 140px;
-    letter-spacing: 0.2em;
 }
 
 .addLabel {
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
@@ -63,12 +59,10 @@
 .value {
     width: calc(100% - 32px);
     /* text-underline-position: under; */
-    font-family: 'Helvetica Neue Light';
+
     font-style: normal;
     box-sizing: border-box;
-    font-weight: 300;
     font-size: 18px;
-    letter-spacing: 0.2em;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -114,6 +108,7 @@
 @media (max-width: $screen_m) {
     .keyLabel {
         font-size: 16px;
+        width: 100px;
     }
 
     .value {

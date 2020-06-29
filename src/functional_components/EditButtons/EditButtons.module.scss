@@ -1,3 +1,5 @@
+@import '../../styles/constants.scss';
+
 .editButtons {
     display: flex;
     flex-direction: column;
@@ -9,4 +11,21 @@
 
 .icon {
     cursor: pointer;
+}
+
+.iconWhite {
+    path {
+        fill: #ffffff;
+    }
+    margin-right: 10px;
+}
+
+.actionButton {
+    margin: 0 4px;
+}
+
+@media (max-width: $screen_m) {
+    .editButtons {
+        flex-direction: row;
+    }
 }

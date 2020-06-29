@@ -11,11 +11,6 @@ svg:hover {
     cursor: pointer;
 }
 
-.editButtons {
-    display: flex;
-    flex-direction: column;
-}
-
 .iconWrapper {
     height: 100%;
     display: flex;
@@ -39,12 +34,45 @@ svg:hover {
 .profileImage {
     grid-area: profileImg;
     position: relative;
-    width: 150px;
+    min-width: 150px;
     height: 150px;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
     margin-right: 1em;
+}
+
+.appCard {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #f0f0f0;
+    box-sizing: border-box;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .appCardLabel {
+        margin-bottom: 0;
+    }
+}
+
+.appCardImage {
+    width: 50px;
+    height: 50px;
+}
+
+.goToBtn {
+    border: 1px solid #333333;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 8px 0;
+    font-size: 18px;
+    text-align: center;
+    margin: 8px 0;
+    cursor: pointer;
 }
 
 .editPhoto {
@@ -79,10 +107,8 @@ svg:hover {
 }
 
 .bioLabel {
-    letter-spacing: 0.2em;
     font-family: 'Helvetica Neue Light';
     font-style: normal;
-    font-weight: 300;
     font-size: 18px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -132,15 +158,18 @@ svg:hover {
     align-self: center;
 }
 
+.label {
+    font-size: 18px;
+    margin-left: 26px;
+}
+
 .nameLabel {
     font-family: 'Helvetica Neue Light';
     font-style: normal;
     width: 100% !important;
-    font-weight: 300;
     font-size: 24px;
     line-height: 28px;
     position: relative;
-    letter-spacing: 0.2em;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: visible;
@@ -150,10 +179,8 @@ svg:hover {
     margin-top: 10px;
     font-family: 'Helvetica Neue Light';
     font-style: normal;
-    font-weight: 300;
     font-size: 14px;
     line-height: 16px;
-    letter-spacing: 0.2em;
     color: #454545;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -165,21 +192,10 @@ svg:hover {
 }
 
 .valueLabel {
-    letter-spacing: 0.2em;
     font-family: 'Helvetica Neue Light';
     font-style: normal;
-    font-weight: 300;
     font-size: 18px;
     line-height: 21px;
-}
-
-.editWrapper {
-    position: absolute;
-    top: 0;
-    right: -32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .icon {
@@ -190,13 +206,6 @@ svg:hover {
     fill: #c2c2c2;
 }
 
-.iconWhite {
-    path {
-        fill: #ffffff;
-    }
-    margin-right: 10px;
-}
-
 .multiline {
     @include multiLineEllipsis(
         $lineHeight: 1.2em,
@@ -205,16 +214,16 @@ svg:hover {
     );
 }
 
-.actionButton {
-    margin: 0 4px;
-}
-
 .item {
-    width: 70px !important;
-    height: 97px !important;
+    width: 100px !important;
+    height: 100px !important;
 }
 
 @media (max-width: $screen_m) {
+    .label {
+        font-size: 16px;
+    }
+
     .headDataContainer {
         width: 80%;
         align-items: center;
@@ -255,10 +264,6 @@ svg:hover {
         margin-top: 10px;
         font-size: 16px;
         text-align: center;
-    }
-
-    .editButtons {
-        flex-direction: row;
     }
 
     .editWrapper {

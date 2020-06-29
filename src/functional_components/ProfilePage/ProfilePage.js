@@ -5,8 +5,8 @@ import styles from './ProfilePage.module.scss';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { updateProfile, changeProfilePhoto } from '../../actions/userActions';
-import { fetchContacts } from '../../actions/contactActions';
-import { fetchApps } from '../../actions/userAppActions';
+import { fetchContacts, setCurrentContact } from '../../actions/contactActions';
+import { fetchApps, removeApp } from '../../actions/userAppActions';
 import Camera from '../../assets/svgIcons/Camera';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import KeyValuePair from '../KeyValuePair/KeyValuePair';
@@ -17,26 +17,8 @@ import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
 import { ContactListItem } from '../ContactListItem';
 import { EditButtons } from '../EditButtons';
-
-const responsive = {
-    superLargeDesktop: {
-        // the naming can be any, depends on you.
-        breakpoint: { max: 4000, min: 3000 },
-        items: 3,
-    },
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 3,
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 3,
-    },
-    mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 3,
-    },
-};
+import { withRouter } from 'react-router-dom';
+import { responsiveApps, responsiveContacts } from './constants';
 
 export const ProfilePage = ({
     user,
@@ -49,6 +31,9 @@ export const ProfilePage = ({
     apps,
     webId,
     error,
+    history,
+    setCurrentContact,
+    removeApp,
 }) => {
     handleError(error);
     const [userData, setUserData] = useState({ ...user });
@@ -56,6 +41,7 @@ export const ProfilePage = ({
 
     useEffect(() => {
         if (!contacts) fetchContacts(webId);
+        if (!apps) fetchApps(webId);
     }, []);
 
     // eslint-disable-next-line no-unused-vars
@@ -171,26 +157,27 @@ export const ProfilePage = ({
                             user.emails.length > 1 ? user.emails : `add Email`
                         }
                     />
-                    <KeyValuePair
-                        setValue={updateUserData}
-                        dataKey="telephones"
-                        label="Telephone:"
-                        value={userData.telephones}
-                        editable={isEditable}
-                        placeholder={
-                            user.telephones.length > 1
-                                ? user.telephones
-                                : `add Number`
-                        }
-                    />
+                    {user.telephones.length > 0 ? (
+                        <KeyValuePair
+                            setValue={updateUserData}
+                            dataKey="telephones"
+                            label="Phone:"
+                            value={userData.telephones}
+                            editable={isEditable}
+                            placeholder={
+                                user.telephones.length > 1
+                                    ? user.telephones
+                                    : `add Number`
+                            }
+                        />
+                    ) : null}
+                    <p className={styles.label}>Contacts</p>
                     {contacts ? (
                         <div className={styles.carouselContainer}>
                             <Carousel
                                 containerClass=""
-                                responsive={responsive}
-                                renderButtonGroupOutside={false}
-                                renderDotsOutside={false}
-                                centerMode={false}
+                                responsive={responsiveContacts}
+                                centerMode={true}
                             >
                                 {contacts.map((contact) => {
                                     return (
@@ -198,10 +185,60 @@ export const ProfilePage = ({
                                             className={styles.item}
                                             contact={contact}
                                             size="sm"
+                                            onClick={(contact) => {
+                                                setCurrentContact(contact);
+                                                history.push('/contact');
+                                            }}
                                         />
                                     );
                                 })}
                             </Carousel>
+                            <div
+                                className={styles.goToBtn}
+                                onClick={() => history.push('/contacts')}
+                            >
+                                View Contacts
+                            </div>
+                        </div>
+                    ) : null}
+                    <p className={styles.label}>Apps</p>
+                    {apps ? (
+                        <div className={styles.carouselContainer}>
+                            <Carousel
+                                containerClass=""
+                                responsive={responsiveApps}
+                                centerMode={true}
+                            >
+                                {fakeApps(apps).map((app, index) => {
+                                    console.log('app', app);
+                                    return (
+                                        <div
+                                            key={app.title + index}
+                                            className={styles.appCard}
+                                            onClick={() =>
+                                                window.open(app.url, '_blank')
+                                            }
+                                        >
+                                            <img
+                                                className={styles.appCardImage}
+                                                src={
+                                                    app.icon ||
+                                                    `${app.url}/favicon.ico`
+                                                }
+                                            />
+                                            <p className={styles.appCardLabel}>
+                                                {app.title}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
+                            </Carousel>
+                            <div
+                                className={styles.goToBtn}
+                                onClick={() => history.push('/apps')}
+                            >
+                                View Apps
+                            </div>
                         </div>
                     ) : null}
                 </div>
@@ -223,7 +260,32 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     updateProfile,
+    removeApp,
     changeProfilePhoto,
     fetchContacts,
     fetchApps,
-})(ProfilePage);
+    setCurrentContact,
+})(withRouter(ProfilePage));
+
+// remove me if user library functions return all the parameter
+const fakeApps = (apps) => {
+    if (!apps) return [];
+    return apps.map((url) => {
+        return {
+            url,
+            title: getHost(url),
+            description: url,
+            settings: url,
+            icon: undefined,
+            description: url,
+            contents: [],
+            permissions: {},
+        };
+    });
+};
+
+const getHost = function (href) {
+    const link = document.createElement('a');
+    link.href = href;
+    return link.hostname.split('.')[0];
+};

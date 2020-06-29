@@ -3,6 +3,7 @@
     color: #000;
     display: flex;
     align-items: center;
+    justify-content: center;
     font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
         'Lucida Grande', sans-serif;
     cursor: pointer;

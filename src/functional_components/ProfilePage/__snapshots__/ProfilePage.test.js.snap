@@ -81,7 +81,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
     <KeyValuePair
       dataKey="telephones"
       editable={false}
-      label="Telephone:"
+      label="Phone:"
       placeholder="add Number"
       setValue={[Function]}
       value={
@@ -90,6 +90,16 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
         ]
       }
     />
+    <p
+      className="label"
+    >
+      Contacts
+    </p>
+    <p
+      className="label"
+    >
+      Apps
+    </p>
   </div>
 </Layout>
 `;

@@ -5,16 +5,29 @@ import useHover from '../../hooks/useHover';
 
 import X from '../../assets/svgIcons/X';
 import { AppButtons } from '../AppButtons';
+import classNames from 'classnames';
 
 const mockFunction = () => {
     console.log('needs implementation');
 };
 
-const AppCard = ({ iconSrc, url, title, onClick, removeApp }) => {
+const AppCard = ({
+    iconSrc,
+    url,
+    title,
+    onClick,
+    removeApp,
+    className,
+    hideButtons,
+}) => {
     const [hoverRef, isHovered] = useHover();
     return (
-        <div ref={hoverRef} onClick={onClick} className={styles.container}>
-            {isHovered ? (
+        <div
+            ref={hoverRef}
+            onClick={onClick}
+            className={classNames(className, styles.container)}
+        >
+            {isHovered && removeApp ? (
                 <div
                     onClick={() => removeApp(url)}
                     className={styles.deleteButton}
@@ -27,22 +40,26 @@ const AppCard = ({ iconSrc, url, title, onClick, removeApp }) => {
                 style={{ backgroundImage: `url('${iconSrc}')` }}
             />
             <div className={styles.name}>{title}</div>
-            <AppButtons
-                onArrowClick={() => window.open(url, '_blank')}
-                onFolderClick={mockFunction}
-                onSettingsClick={mockFunction}
-            />
+            {hideButtons ? null : (
+                <AppButtons
+                    onArrowClick={() => window.open(url, '_blank')}
+                    onFolderClick={mockFunction}
+                    onSettingsClick={mockFunction}
+                />
+            )}
         </div>
     );
 };
 
 AppCard.propTypes = {
+    className: PropTypes.string,
     removeApp: PropTypes.func,
     iconSrc: PropTypes.string,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     permissions: PropTypes.object,
     onClick: PropTypes.func,
+    hideButtons: PropTypes.bool,
 };
 
 export default AppCard;
