@@ -35,7 +35,13 @@ const MyItem = ({
                         alt="item"
                         className={styles.icon}
                         style={{ backgroundImage: `url(${image})` }}
-                    />
+                    >
+                        <img
+                            src={image}
+                            style={{ visibility: 'hidden' }}
+                            className={styles.icon}
+                        />
+                    </div>
                 </div>
                 <div className={styles.labelContainer}>
                     <div className={styles.label}>{label}</div>

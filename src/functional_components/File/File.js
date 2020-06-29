@@ -33,7 +33,13 @@ export default function File({
                             alt="file"
                             className={styles.icon}
                             style={{ backgroundImage: `url(${image})` }}
-                        />
+                        >
+                            <img
+                                src={image}
+                                style={{ visibility: 'hidden' }}
+                                className={styles.icon}
+                            />
+                        </div>
                     </div>
                 </div>
             );
@@ -58,9 +64,14 @@ export default function File({
                     <div
                         alt="file"
                         className={styles.icon}
-                        src={image}
                         style={{ backgroundImage: `url(${image})` }}
-                    />
+                    >
+                        <img
+                            src={image}
+                            style={{ visibility: 'hidden' }}
+                            className={styles.icon}
+                        />
+                    </div>
                 </div>
             );
         }

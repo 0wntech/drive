@@ -143,6 +143,7 @@
     left: 50%;
     transform: translateX(-50%);
     background-size: contain;
+    background-repeat: no-repeat;
 }
 
 @media (max-width: $screen_m) {

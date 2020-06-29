@@ -29,7 +29,17 @@ exports[`File should render correctly (image) 1`] = `
               "backgroundImage": "url(https://owntech.de/favicon.ico)",
             }
           }
-        />
+        >
+          <img
+            className="icon"
+            src="https://owntech.de/favicon.ico"
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }
+          />
+        </div>
       </div>
     </div>
     <div
@@ -74,7 +84,17 @@ exports[`File should render correctly (no image) 1`] = `
               "backgroundImage": "url(https://owntech.de/favicon.ico)",
             }
           }
-        />
+        >
+          <img
+            className="icon"
+            src="https://owntech.de/favicon.ico"
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }
+          />
+        </div>
       </div>
     </div>
     <div
