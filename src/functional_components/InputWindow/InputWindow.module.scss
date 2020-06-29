@@ -19,7 +19,8 @@
     font-weight: 300;
     font-size: 18px;
     text-overflow: ellipsis;
-    border: none;
+    border: initial;
+    border-radius: initial;
     border-bottom: 2px solid black;
     outline: none;
 }

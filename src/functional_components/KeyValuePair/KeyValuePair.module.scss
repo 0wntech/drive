@@ -64,7 +64,7 @@
     box-sizing: border-box;
     font-weight: 300;
     font-size: 18px;
-    border: none;
+    border: initial;
     margin-bottom: 2px;
     outline: none;
     resize: none;
@@ -80,6 +80,7 @@
 }
 
 .value.active {
+    border-radius: initial;
     border-bottom: 2px solid black;
     margin-bottom: initial;
     /* text-decoration: underline; */
@@ -90,7 +91,7 @@
 }
 
 .value.active:focus {
-    outline: none;
+    outline: initial;
     border-color: #6db7db;
     caret-color: #6db7db;
     /* text-decoration-color: #6db7db; */

@@ -31,6 +31,15 @@
 
 .input {
     width: 100%;
+    font-style: normal;
+    box-sizing: border-box;
+    font-weight: 300;
+    font-size: 18px;
+    text-overflow: ellipsis;
+    border: initial;
+    border-radius: initial;
+    border-bottom: 2px solid black;
+    outline: none;
 }
 
 .confirm {
@@ -45,6 +54,5 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: calc(50vh - 50px);
     }
 }
