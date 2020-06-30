@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './LoginForm.module.css';
+import styles from './LoginForm.module.scss';
 import IdentityProvider from '../IdentityProvider/IdentityProvider';
 
 export default function LoginForm({ idps, onLogin, getIdpStyles }) {
@@ -20,11 +20,16 @@ export default function LoginForm({ idps, onLogin, getIdpStyles }) {
                                   onLogin={onLogin}
                                   color={color}
                                   textColor={textColor}
+                                  className={styles.idp}
                               />
                           );
                       })
                     : ''}
-                <IdentityProvider custom onLogin={onLogin} />
+                <IdentityProvider
+                    custom
+                    onLogin={onLogin}
+                    className={styles.customIdp}
+                />
             </div>
         </div>
     );

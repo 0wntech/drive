@@ -1,0 +1,59 @@
+@import '../../styles/constants.scss';
+
+.container {
+    border: solid $dark_grey 1px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.icon {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 48px;
+    width: 48px;
+}
+
+.info {
+    display: flex;
+    width: 100%;
+}
+
+.info p {
+    text-align: center;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.customIdp {
+    border-radius: initial;
+    border: none;
+    outline: none;
+    margin-bottom: initial;
+    padding: initial;
+    font-size: 1rem;
+    height: 1.5em;
+    width: 100%;
+    text-align: left;
+    border-bottom: 2px solid transparent;
+}
+
+.customIdp:focus {
+    border-bottom: 2px solid black;
+    box-shadow: none;
+}
+
+.customIdpWrapper {
+    background: #fff;
+    height: 48px;
+}

@@ -1,48 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
-import LoginForm from '../../functional_components/LoginForm/LoginForm';
-import { Layout } from '../../functional_components/Layout';
+import LoginForm from '../LoginForm';
+import { Layout } from '../Layout';
 import { fetchIdps } from '../../actions/appActions';
 
-class LoginScreen extends React.Component {
-    constructor(props) {
-        super(props);
+const getIdpStyles = (title) => {
+    const idp = {};
+    switch (title) {
+        case 'inrupt.net':
+            idp.color = '#18A9E6';
+            idp.textColor = '#fff';
+            break;
+        case 'solid.community':
+            idp.color = '#7C4DFF';
+            idp.textColor = '#fff';
+            break;
+        case 'solid.authing':
+            idp.color = '#fff';
+            idp.textColor = '#18A9E6';
+            break;
+        default:
+            idp.color = '#fff';
+            idp.textColor = '#333';
     }
+    return idp;
+};
 
-    getIdpStyles(title) {
-        const idp = {};
-        switch (title) {
-            case 'inrupt.net':
-                idp.color = '#18A9E6';
-                idp.textColor = '#fff';
-                break;
-            case 'solid.community':
-                idp.color = '#7C4DFF';
-                idp.textColor = '#fff';
-                break;
-            case 'solid.authing':
-                idp.color = '#fff';
-                idp.textColor = '#18A9E6';
-                break;
-            default:
-                idp.color = '#fff';
-                idp.textColor = '#18A9E6';
-        }
-        return idp;
-    }
-
-    componentDidMount() {
-        const {
-            webId,
-            loadIdps,
-            idps,
-            fetchIdps,
-            history,
-            location,
-        } = this.props;
-
+const LoginScreen = ({
+    webId,
+    loadIdps,
+    idps,
+    fetchIdps,
+    history,
+    location,
+}) => {
+    useEffect(() => {
         if (!loadIdps && !idps) fetchIdps();
 
         const cachedPath = localStorage.getItem('returnToUrl')
@@ -72,21 +66,18 @@ class LoginScreen extends React.Component {
                 history.push('/home');
             }
         }
-    }
+    });
 
-    render() {
-        const { idps } = this.props;
-        return (
-            <Layout label="Login">
-                <LoginForm
-                    idps={idps}
-                    onLogin={auth.login}
-                    getIdpStyles={this.getIdpStyles}
-                />
-            </Layout>
-        );
-    }
-}
+    return (
+        <Layout label="Login">
+            <LoginForm
+                idps={idps}
+                onLogin={auth.login}
+                getIdpStyles={getIdpStyles}
+            />
+        </Layout>
+    );
+};
 
 const mapStateToProps = (state) => {
     return {

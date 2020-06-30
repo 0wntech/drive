@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import styles from './IdentityProvider.module.css';
+import classNames from 'classnames';
+import styles from './IdentityProvider.module.scss';
 import { getSafeLogin } from '../../utils/url';
 
 export default function IdentityProvider({
@@ -11,13 +12,14 @@ export default function IdentityProvider({
     color,
     textColor,
     custom,
+    className,
 }) {
     const [customIdp, setIdp] = useState('');
 
     return (
         <button
             data-test-id={title}
-            className={styles.container}
+            className={classNames(styles.container, className)}
             onClick={() => {
                 if (custom && customIdp !== '') {
                     onLogin(getSafeLogin(customIdp));
@@ -28,7 +30,12 @@ export default function IdentityProvider({
             style={{ backgroundColor: `${color}` }}
         >
             {custom ? (
-                <div className={styles.wrapper}>
+                <div
+                    className={classNames(
+                        styles.wrapper,
+                        styles.customIdpWrapper
+                    )}
+                >
                     <input
                         className={styles.customIdp}
                         placeholder="Custom idp: e.g. inrupt.net"
@@ -39,7 +46,18 @@ export default function IdentityProvider({
                 </div>
             ) : (
                 <div className={styles.wrapper}>
-                    <img src={icon} alt={description} />
+                    <div
+                        className={styles.icon}
+                        style={{
+                            backgroundImage: `url(${icon})`,
+                        }}
+                    >
+                        <img
+                            src={icon}
+                            alt={description}
+                            style={{ visibility: 'hidden' }}
+                        />
+                    </div>
                     <div className={styles.info}>
                         <p style={{ color: `${textColor}` }}>{title}</p>
                     </div>

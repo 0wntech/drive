@@ -1,0 +1,38 @@
+@import '../../styles/constants.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.idpList {
+    border-radius: 20px;
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    background: #fff;
+}
+
+.idp + .idp {
+    margin-top: 1em;
+}
+
+.customIdp {
+    margin-top: 1em;
+    background: #fff;
+}
+
+@media(max-width: $screen_m){
+    .container {
+        justify-content: flex-start;
+    }
+
+    .idpList {
+        width: calc(100% - 1em);
+    }
+}
