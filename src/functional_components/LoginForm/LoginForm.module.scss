@@ -27,8 +27,8 @@
     background: #fff;
 }
 
-@media(max-width: $screen_m){
-    .container {
+@media (max-width: $screen_m) {
+    .container {
         justify-content: flex-start;
     }
 
