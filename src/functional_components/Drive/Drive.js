@@ -21,6 +21,7 @@ import {
     toggleSearchbar,
     toggleDriveMenu,
     openCreateFolderWindow,
+    toggleSelectionMode,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { handleError } from '../../utils/helper';
@@ -123,6 +124,7 @@ const Drive = ({
         ) {
             console.log('Emptying selection');
             setSelection([]);
+            toggleSelectionMode();
         }
     };
 

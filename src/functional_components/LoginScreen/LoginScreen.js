@@ -5,6 +5,8 @@ import auth from 'solid-auth-client';
 import LoginForm from '../LoginForm';
 import { Layout } from '../Layout';
 import { fetchIdps } from '../../actions/appActions';
+import useWindowDimension from '../../hooks/useWindowDimension';
+import {} from '../../styles/constants.scss';
 
 const getIdpStyles = (title) => {
     const idp = {};
@@ -36,6 +38,7 @@ const LoginScreen = ({
     history,
     location,
 }) => {
+    const { width } = useWindowDimension();
     useEffect(() => {
         if (!loadIdps && !idps) fetchIdps();
 
@@ -69,7 +72,7 @@ const LoginScreen = ({
     });
 
     return (
-        <Layout label="Login">
+        <Layout label="Login" hideToolbar={width < 768}>
             <LoginForm
                 idps={idps}
                 onLogin={auth.login}
