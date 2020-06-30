@@ -22,6 +22,7 @@ import {
     toggleDriveMenu,
     openCreateFolderWindow,
     toggleSelectionMode,
+    downloadFile,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { handleError } from '../../utils/helper';
@@ -36,6 +37,7 @@ const Drive = ({
     selectedItems,
     selectionMode,
     setSelection,
+    toggleSelectionMode,
     currentItem,
     currentPath,
     loadCurrentItem,
@@ -108,9 +110,9 @@ const Drive = ({
     const uploadFile = (e) => {
         const filePath =
             e.target.files && e.target.files.length ? e.target.files[0] : null;
-        if (filePath) {
+        if (filePath && currentPath) {
             fileUtils.uploadFile(filePath, currentPath, () => {
-                fetchCurrentItem(currentPath);
+                fetchCurrentItem(currentPath, true);
             });
         }
     };
@@ -124,6 +126,7 @@ const Drive = ({
         ) {
             console.log('Emptying selection');
             setSelection([]);
+            console.log(selectionMode);
             toggleSelectionMode();
         }
     };
@@ -134,10 +137,6 @@ const Drive = ({
 
     const downloadItems = () => {
         selectedItems.forEach((item) => {
-            const download =
-                webId.replace('profile/card#me', 'download?path=') +
-                url.parse(item).pathname;
-            window.open(download.replace(/\/+$/, ''));
             const file = mime.getType(item);
             if (file) {
                 downloadFile(item);
@@ -292,6 +291,8 @@ export default withRouter(
         sendNotification,
         fetchCurrentItem,
         setSelection,
+        toggleSelectionMode,
         toggleSearchbar,
+        downloadFile,
     })(Drive)
 );
