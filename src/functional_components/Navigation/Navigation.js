@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classNames from 'classnames';
+
 import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import FileIcon from '../../assets/icons/FileIconMd.png';
@@ -17,9 +19,9 @@ import {
 } from '../../actions/contactActions';
 import { navigate } from '../../utils/helper';
 import defaultIcon from '../../assets/icons/defaultUserPic.png';
+import logo from '../../assets/icons/owndrive-logo.png';
 import { getUsernameFromWebId, getContactRoute } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
-import classNames from 'classnames';
 
 const customFilter = (option, searchText) => {
     if (!option.value) {
@@ -203,7 +205,7 @@ const Navigation = ({
                         }
                     }}
                     className={styles.brand}
-                    src="https://owntech.de/favicon.ico"
+                    src={logo}
                 />
             </div>
             <div className={styles.search}>
