@@ -27,6 +27,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    width: 80%;
+    overflow-x: hidden;
 }
 
 .search__value-container {

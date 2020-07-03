@@ -32,7 +32,8 @@
 .mainArea {
     grid-area: main;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 @media (max-width: $screen_m) {

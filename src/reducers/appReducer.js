@@ -46,7 +46,9 @@ import {
     SET_CURRENT_CONTACT,
     SET_CURRENT_PATH,
     TOGGLE_SELECTION_MODE,
+    LOGIN_SUCCESS,
 } from '../actions/types';
+import { getRootFromWebId } from '../utils/url';
 
 const INITIAL_STATE = {
     loadNotifications: false,
@@ -87,6 +89,8 @@ export default (state = INITIAL_STATE, action) => {
     console.log(state);
 
     switch (type) {
+        case LOGIN_SUCCESS:
+            return { ...state, currentPath: getRootFromWebId(payload.webId) };
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
         case SET_CURRENT_CONTACT:

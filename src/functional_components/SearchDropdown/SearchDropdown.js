@@ -52,6 +52,7 @@ export default function SearchDropdown({
 
     const select = (
         <Select
+            isClearable
             components={{ DropdownIndicator }}
             placeholder={placeholder}
             styles={customStyles}

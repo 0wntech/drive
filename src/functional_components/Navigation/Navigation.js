@@ -136,7 +136,6 @@ const Navigation = ({
             setCurrentContact(contact);
             navigate(getContactRoute(contact), history, dispatch);
         }
-        if (isSearchBarExpanded) toggleSearchbar();
     };
 
     const handleInputChange = (searchText) => {
