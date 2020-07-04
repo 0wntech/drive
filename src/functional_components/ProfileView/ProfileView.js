@@ -75,6 +75,7 @@ export const ProfileView = ({
                                         ? userData.name
                                         : getUsernameFromWebId(userData.webId)
                                 }
+                                placeholder="Name"
                                 dataKey="name"
                                 setValue={(value) =>
                                     updateUserData('name', value)
@@ -84,6 +85,7 @@ export const ProfileView = ({
                             <SingleValue
                                 editable={editState}
                                 value={userData.bio}
+                                placeholder="Bio"
                                 setValue={(value) =>
                                     updateUserData('bio', value)
                                 }

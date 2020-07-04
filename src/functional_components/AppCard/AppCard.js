@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './AppCard.module.css';
+import styles from './AppCard.module.scss';
 import useHover from '../../hooks/useHover';
 
 import X from '../../assets/svgIcons/X';

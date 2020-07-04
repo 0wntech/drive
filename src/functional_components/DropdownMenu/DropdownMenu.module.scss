@@ -53,7 +53,6 @@
 
 .dropdownContent {
     position: relative;
-    padding-bottom: 4px;
 }
 
 .option {
@@ -73,6 +72,12 @@
 
 .option:hover {
     background-color: #deebff;
+}
+
+.option:hover:last-child {
+    background-color: #deebff;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 @media (max-width: $screen_m) {

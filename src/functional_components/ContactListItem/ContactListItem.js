@@ -19,11 +19,12 @@ const ContactListItem = ({
     const [wasAdded, setWasAdded] = useState(isContact);
     const initials = getInitialsFromUser(contact);
     return (
-        <div
-            onClick={() => onClick(contact)}
-            className={classNames(styles.container, className)}
-        >
-            <div className={styles.imageContainer}>
+        <div className={classNames(styles.container, className)}>
+            <div
+                className={styles.imageContainer}
+                onClick={() => onClick(contact)}
+                data-test-id="contact-picture"
+            >
                 {contact.picture ? (
                     <div
                         className={styles.image}
@@ -33,7 +34,10 @@ const ContactListItem = ({
                     <DefaultIcon initials={initials} />
                 )}
             </div>
-            <div className={styles.nameContainer}>
+            <div
+                className={styles.nameContainer}
+                onClick={() => onClick(contact)}
+            >
                 {contact.name ? contact.name : 'No Name'}
             </div>
             <div

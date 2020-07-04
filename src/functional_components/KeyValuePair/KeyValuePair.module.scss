@@ -60,10 +60,10 @@
 
 .value {
     width: 100%;
-    font-style: normal;
     box-sizing: border-box;
     font-weight: 300;
-    font-size: 18px;
+    font-family: inherit;
+    font-size: 1.2em;
     border: initial;
     margin-bottom: 2px;
     outline: none;
@@ -75,6 +75,10 @@
     margin-top: 1em;
 }
 
+.value.active + .value.active {
+    margin-top: 1em;
+}
+
 .value.active::placeholder {
     /* text-decoration: underline;
     text-decoration-color: #6db7db; */
@@ -82,7 +86,7 @@
 
 .value.active {
     border-radius: initial;
-    border-bottom: 2px solid black;
+    border-bottom: 4px solid $dark_black;
     margin-bottom: initial;
     /* text-decoration: underline; */
 }
@@ -93,8 +97,6 @@
 
 .value.active:focus {
     outline: initial;
-    border-color: #6db7db;
-    caret-color: #6db7db;
     /* text-decoration-color: #6db7db; */
 }
 
@@ -120,7 +122,7 @@
         font-size: 16px;
     }
 
-    .value {
-        font-size: 16px;
+    .value.active + .value.active {
+        margin-top: 1em;
     }
 }

@@ -1,15 +1,4 @@
-@import '../../styles/mixins.scss';
 @import '../../styles/constants.scss';
-.grid {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 2fr 6fr 2fr;
-    grid-template-areas: '. profile .';
-}
-
-.actionButton {
-    margin: 0 4px;
-}
 
 .editButtons {
     display: flex;
@@ -25,46 +14,4 @@
       fill: #ffffff;
   }
   margin-right: 10px;
-}
-
-@media (max-width: $screen_m) {
-    .grid {
-        grid-template-areas: 'profile profile profile';
-        grid-template-rows: 1fr;
-    }
-
-    .profileContainer {
-        margin-top: 26px;
-    }
-
-    .nameLabel {
-        margin-top: 10px;
-        width: 100%;
-        font-size: 16px;
-        text-align: center;
-        line-height: initial;
-    }
-
-    .webIdLabel {
-        width: 100%;
-        margin-top: 10px;
-        font-size: 16px;
-        margin-bottom: 3px;
-    }
-
-    .bioLabel {
-        width: 100%;
-        margin-top: 10px;
-        font-size: 16px;
-        text-align: center;
-    }
-
-    .multiline {
-        padding-right: 0px;
-        margin-right: 0px;
-    }
-
-    .profileImage {
-        margin-right: 0px;
-    }
 }

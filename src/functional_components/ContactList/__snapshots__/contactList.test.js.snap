@@ -9,10 +9,11 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
-      onClick={[Function]}
     >
       <div
         className="imageContainer"
+        data-test-id="contact-picture"
+        onClick={[Function]}
       >
         <div
           className="image"
@@ -25,6 +26,7 @@ exports[`ContactList should render correctly 1`] = `
       </div>
       <div
         className="nameContainer"
+        onClick={[Function]}
       >
         Ludwig Faust Schubert
       </div>
@@ -80,10 +82,11 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
-      onClick={[Function]}
     >
       <div
         className="imageContainer"
+        data-test-id="contact-picture"
+        onClick={[Function]}
       >
         <div
           className="image"
@@ -96,6 +99,7 @@ exports[`ContactList should render correctly 1`] = `
       </div>
       <div
         className="nameContainer"
+        onClick={[Function]}
       >
         Ben Wetzel
       </div>
@@ -151,10 +155,11 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
-      onClick={[Function]}
     >
       <div
         className="imageContainer"
+        data-test-id="contact-picture"
+        onClick={[Function]}
       >
         <div
           className="image"
@@ -167,6 +172,7 @@ exports[`ContactList should render correctly 1`] = `
       </div>
       <div
         className="nameContainer"
+        onClick={[Function]}
       >
         Ben Wetzel
       </div>

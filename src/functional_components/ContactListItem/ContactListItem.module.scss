@@ -11,13 +11,13 @@
     border-radius: 20px;
     height: 180px;
     padding: 1em;
-    cursor: pointer;
     position: relative;
 }
 
 .imageContainer {
     width: 80px;
     height: 80px;
+    cursor: pointer;
 }
 
 .iconContainer {
@@ -25,6 +25,14 @@
     top: 14px;
     right: 14px;
     cursor: pointer;
+}
+
+.iconContainer:hover ellipse {
+    fill: $danger_red;
+}
+
+.iconContainer ellipse {
+    fill: $light_grey;
 }
 
 .iconContainer.added:hover ellipse {
@@ -49,4 +57,5 @@
     text-align: center;
     margin-top: .5em;
     max-width: 80%;
+    cursor: pointer;
 }

@@ -81,7 +81,7 @@ describe('ContactListItem', () => {
                 onClick={onClick}
             />
         );
-        wrapper.simulate('click');
+        wrapper.find('[data-test-id="contact-picture"]').simulate('click');
         expect(onClick.mock.calls.length).toEqual(1);
     });
 });

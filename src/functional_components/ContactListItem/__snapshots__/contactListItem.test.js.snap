@@ -3,10 +3,11 @@
 exports[`ContactListItem should render correctly 1`] = `
 <div
   className="container test"
-  onClick={[Function]}
 >
   <div
     className="imageContainer"
+    data-test-id="contact-picture"
+    onClick={[Function]}
   >
     <div
       className="image"
@@ -19,6 +20,7 @@ exports[`ContactListItem should render correctly 1`] = `
   </div>
   <div
     className="nameContainer"
+    onClick={[Function]}
   >
     Ludwig Faust Schubert
   </div>

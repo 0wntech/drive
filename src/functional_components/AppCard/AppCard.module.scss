@@ -1,26 +1,38 @@
+@import '../../styles/constants.scss';
+
 .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid #cccccc;
+    border: 10px solid $light_grey;
     border-radius: 20px;
-    width: 100%;
-    height: 100%;
+    width: 180px;
+    height: 200px;
     position: relative;
+    margin: 0 0 10px 10px;
 }
 
 .deleteButton {
     width: 28px;
     height: 28px;
     position: absolute;
-    top: -13px;
-    right: -13px;
+    top: .5em;
+    right: .5em;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: #f4f4f4;
+    background: $light_grey;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background-color: $danger_red;
+}
+
+.deleteButton:hover path{
+    fill: $light_grey;
 }
 
 .xIcon {
@@ -32,7 +44,7 @@
     border-radius: 50%;
     width: 80px;
     height: 80px;
-    background-size: cover;
+    background-size: contain;
     margin-top: 24px;
 }
 

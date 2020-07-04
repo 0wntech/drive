@@ -54,6 +54,7 @@ const ContactsPage = ({
                     }}
                     contacts={contacts}
                     webId={webId}
+                    addContact={addContact}
                     removeContact={removeContact}
                     alreadyContacts
                 />
