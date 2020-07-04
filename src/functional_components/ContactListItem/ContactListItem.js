@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './ContactListItem.module.scss';
-import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import Add from '../../assets/svgIcons/Add';
 import Delete from '../../assets/svgIcons/Delete';
+import { getInitialsFromUser } from '../../utils/helper';
+import DefaultIcon from '../DefaultIcon';
 
 const ContactListItem = ({
     contact,
@@ -16,6 +17,7 @@ const ContactListItem = ({
     isContact,
 }) => {
     const [wasAdded, setWasAdded] = useState(isContact);
+    const initials = getInitialsFromUser(contact);
     return (
         <div
             onClick={() => onClick(contact)}
@@ -28,11 +30,7 @@ const ContactListItem = ({
                         style={{ backgroundImage: `url('${contact.picture}')` }}
                     />
                 ) : (
-                    <img
-                        alt="profile"
-                        className={styles.image}
-                        src={defaultIcon}
-                    />
+                    <DefaultIcon initials={initials} />
                 )}
             </div>
             <div className={styles.nameContainer}>

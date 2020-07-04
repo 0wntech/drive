@@ -1,4 +1,5 @@
 import { CLEAR_ERROR } from '../actions/types';
+import { getUsernameFromWebId } from './url';
 
 const isCmdPressed = (event) => {
     // return if strg(windows/linux) or cmd(mac) is pressed as
@@ -10,6 +11,15 @@ const isCmdPressed = (event) => {
         event.keyCode === 224 ||
         event.ctrlKey
     );
+};
+
+const getInitialsFromUser = (user) => {
+    const names = user.name
+        ? user.name.split(' ')
+        : [getUsernameFromWebId(user.webId)];
+    return names.length > 1
+        ? names[0][0] + names[1][0].toLowerCase()
+        : names[0][0] + names[0][1].toLowerCase();
 };
 
 const getErrorsFromErrorState = (errors) => {
@@ -55,4 +65,5 @@ export {
     convertArrayToString,
     handleError,
     navigate,
+    getInitialsFromUser,
 };

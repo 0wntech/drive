@@ -41,7 +41,6 @@ svg:hover {
 }
 
 .profileImage {
-    grid-area: profileImg;
     position: relative;
     width: 150px;
     height: 150px;
@@ -50,8 +49,16 @@ svg:hover {
     border-radius: 50%;
 }
 
+.defaultProfileImage {
+    position: relative;
+    width: 150px !important;
+    height: 150px !important;
+    font-size: 4em !important;
+    border: solid $dark_grey 10px !important;
+    line-height: 130px !important;
+}
+
 .editPhoto {
-    grid-area: profileImg;
     position: absolute;
     width: 150px;
     height: 150px;

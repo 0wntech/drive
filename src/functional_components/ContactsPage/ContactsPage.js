@@ -37,7 +37,7 @@ const ContactsPage = ({
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay =
         contactRecommendations &&
-        contactRecommendations.slice(0, displayedRows * 3);
+        contactRecommendations.slice(0, displayedRows * 5);
 
     return (
         <Layout
@@ -46,6 +46,7 @@ const ContactsPage = ({
             isLoading={loadContacts}
         >
             <div className={styles.contactsContainer}>
+                <div className={styles.sectionLabel}>Your Contacts:</div>
                 <ContactList
                     onItemClick={(contact) => {
                         setCurrentContact(contact);
@@ -58,7 +59,7 @@ const ContactsPage = ({
                 />
                 {contactRecommendations ? (
                     <>
-                        <div className={styles.recommendLabel}>
+                        <div className={styles.sectionLabel}>
                             People you might know:
                         </div>
                         <ContactList

@@ -9,6 +9,8 @@ import { getIdpFromWebId, getUsernameFromWebId } from '../../utils/url.js';
 import styleConstants from '../../styles/constants.scss';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import ActionButton from '../ActionButton/ActionButton';
+import DefaultIcon from '../DefaultIcon/DefaultIcon';
+import { getInitialsFromUser } from '../../utils/helper';
 
 export const ProfileView = ({
     user,
@@ -19,7 +21,6 @@ export const ProfileView = ({
     updateUserData,
     onPhotoChange,
     renderButtons,
-    defaultIcon,
     addContact,
     removeContact,
     webId,
@@ -53,18 +54,19 @@ export const ProfileView = ({
                                 </label>
                             </div>
                         ) : null}
-                        <div
-                            className={styles.profileImage}
-                            style={
-                                user && user.picture
-                                    ? {
-                                          backgroundImage: `url('${user.picture}')`,
-                                      }
-                                    : {
-                                          backgroundImage: `url('${defaultIcon}')`,
-                                      }
-                            }
-                        />
+                        {user && user.picture ? (
+                            <div
+                                className={styles.profileImage}
+                                style={{
+                                    backgroundImage: `url('${user.picture}')`,
+                                }}
+                            />
+                        ) : (
+                            <DefaultIcon
+                                className={styles.defaultProfileImage}
+                                initials={getInitialsFromUser(user)}
+                            />
+                        )}
                         <div className={styles.headDataContainer}>
                             <SingleValue
                                 editable={editState}

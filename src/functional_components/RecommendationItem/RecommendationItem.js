@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './RecommendationItem.module.css';
-import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import Add from '../../assets/svgIcons/Add';
 import Check from '../../assets/svgIcons/Check';
 
@@ -26,11 +25,7 @@ const ContactListItem = ({
                         style={{ backgroundImage: `url('${contact.picture}')` }}
                     />
                 ) : (
-                    <img
-                        alt="profile"
-                        className={styles.image}
-                        src={defaultIcon}
-                    />
+                    <DefaultIcon initials={initials} />
                 )}
             </div>
             <div className={styles.nameContainer}>

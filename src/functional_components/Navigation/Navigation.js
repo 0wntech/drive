@@ -17,11 +17,11 @@ import {
     setCurrentContact,
     fetchContacts,
 } from '../../actions/contactActions';
-import { navigate } from '../../utils/helper';
-import defaultIcon from '../../assets/icons/defaultUserPic.png';
+import { navigate, getInitialsFromUser } from '../../utils/helper';
 import logo from '../../assets/icons/owndrive-logo.png';
 import { getUsernameFromWebId, getContactRoute } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
+import DefaultIcon from '../DefaultIcon/DefaultIcon';
 
 const customFilter = (option, searchText) => {
     if (!option.value) {
@@ -50,14 +50,19 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
         return (
             <div className={styles.optionContainer}>
                 <div className={styles.iconContainer}>
-                    <div
-                        className={styles.contactIcon}
-                        style={{
-                            backgroundImage: `url('${
-                                contact.picture ? contact.picture : defaultIcon
-                            }')`,
-                        }}
-                    />
+                    {contact.picture ? (
+                        <div
+                            className={styles.contactIcon}
+                            style={{
+                                backgroundImage: `url('${contact.picture}')`,
+                            }}
+                        />
+                    ) : (
+                        <DefaultIcon
+                            className={styles.defaultContactIcon}
+                            initials={getInitialsFromUser(contact)}
+                        />
+                    )}
                 </div>
                 <span>{`${contact.name} (${contact.webId.replace(
                     '/profile/card#me',

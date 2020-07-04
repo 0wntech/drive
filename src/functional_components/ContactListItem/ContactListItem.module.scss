@@ -3,16 +3,14 @@
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
     border: 10px solid $dark_grey;
     box-sizing: border-box;
     border-radius: 20px;
-    height: 185px;
-    padding: 0 20px;
-    font-size: 18px;
-    padding: 35px 10px 16px 10px;
+    height: 180px;
+    padding: 1em;
     cursor: pointer;
     position: relative;
 }
@@ -46,9 +44,9 @@
 }
 
 .nameContainer {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    white-space: pre-wrap;
+    word-break: keep-all;
     text-align: center;
-    width: 80%;
+    margin-top: .5em;
+    max-width: 80%;
 }

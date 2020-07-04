@@ -6,7 +6,6 @@ import {
     changeProfilePhoto,
     fetchUser,
 } from '../../actions/userActions';
-import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import EditIcon from '../../assets/svgIcons/Edit';
 import ActionButton from '../ActionButton/ActionButton';
 import { handleError } from '../../utils/helper';
@@ -111,7 +110,6 @@ export const ProfilePage = ({
             updateUserData={updateUserData}
             editState={editState}
             userData={userData}
-            defaultIcon={defaultIcon}
         ></ProfileView>
     );
 };

@@ -1,0 +1,14 @@
+@import '../../styles/constants.scss';
+
+.container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: solid $dark_grey 4px;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 72px;
+    font-weight: 600;
+    font-size: 2em;
+    color: $dark_grey;   
+}
