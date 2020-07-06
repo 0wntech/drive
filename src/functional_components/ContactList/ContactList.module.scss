@@ -1,3 +1,5 @@
+@import '../../../styles/constants.scss';
+
 .container {
     display: flex;
     flex-flow: row wrap;
@@ -20,4 +22,15 @@
 .itemContainer {
     width: calc(20% - 10px);
     margin: 0 0 10px 10px;
+}
+
+@media (max-width: $screen_m) {
+    .itemContainer {
+        width: 100%;
+        margin: initial;
+    }
+
+    .itemContainer + .itemContainer {
+        margin-top: 10px;
+    }
 }

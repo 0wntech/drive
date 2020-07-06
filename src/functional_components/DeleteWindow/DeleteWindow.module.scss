@@ -6,12 +6,13 @@
 
 .description {
     color: #666;
-    font-size: 0.8rem;
 }
 
 .selectedFiles {
-    max-height: 20rem;
+    max-height: calc(50vh - 50px - 72px - 72px);
     overflow-y: auto;
+    display: flex;
+    flex-flow: row wrap;
 }
 
 .button {
@@ -20,12 +21,15 @@
 }
 
 .buttonBar {
-    margin-top: 15px;
-    width: 100%;
     display: flex;
     justify-content: flex-end;
-    position: relative;
-    bottom: 0px;
+    background-color: #ffffff;
+    width: calc(100% - 2em);
+    position: absolute;
+    bottom: 0;
+    padding: 1em 1em;
+    right: 0;
+    border-radius: 20px;
 }
 
 .input {
@@ -35,6 +39,10 @@
 @media (max-width: $screen_m) {
     .body {
         overflow-y: auto;
+    }
+
+    .selectedFiles {
+        max-height: calc(60vh - 50px - 72px - 92px);
     }
 
     .window {

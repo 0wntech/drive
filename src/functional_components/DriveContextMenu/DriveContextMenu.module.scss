@@ -1,0 +1,34 @@
+@import '../../styles/constants.scss';
+
+.contextMenu {
+    background-color: white;
+    border-radius: 10px;
+    border: 4px solid $light_black;
+    z-index: 2;
+    width: 200px;
+    padding: 0 !important;
+    box-shadow: initial;
+}
+
+.contextItem div {
+    color: #000000;
+}
+
+.contextItem:first-of-type div {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.contextItem:last-of-type div {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.contextItem:hover div {
+    background-color: $light_blue !important;
+}
+
+.disabled div {
+    color: #8c8c8c;
+    cursor: default;
+}

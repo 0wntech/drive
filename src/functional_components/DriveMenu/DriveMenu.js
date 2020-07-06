@@ -76,7 +76,7 @@ export const DriveMenu = ({
         },
         {
             label: 'Rename',
-            onClick: openRenameWindow,
+            onClick: () => openRenameWindow(selectedItems[0]),
             disabled: !selectedItems || selectedItems.length !== 1,
             icon: <Edit3 />,
         },
@@ -108,14 +108,12 @@ export const DriveMenu = ({
         <div
             className={styles.wrapper}
             onClick={(e) => {
-                console.log(e);
                 toggleDriveMenu();
             }}
         >
             <div
                 className={styles.container}
                 onClick={(e) => {
-                    console.log(e);
                     toggleDriveMenu();
                 }}
             >

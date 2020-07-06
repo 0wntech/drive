@@ -58,7 +58,7 @@ export default function DeleteWindow({
                     className={styles.button}
                     label="Delete"
                     color="red"
-                    sizte="lg"
+                    size="lg"
                 />
             </div>
         </Window>

@@ -244,14 +244,15 @@ export const fetchIdps = () => {
 export const deleteItems = (items, currentPath = '/') => {
     return (dispatch) => {
         dispatch({ type: DELETE_ITEMS });
-        fileUtils
-            .deleteItems(items)
+        const fileClient = new PodClient();
+        fileClient
+            .delete(items)
             .then(() => {
                 // To avoid reloading when not everything has been deleted
                 setTimeout(() => {
                     dispatch({ type: DELETE_ITEMS_SUCCESS });
                     dispatch(setCurrentPath(currentPath));
-                }, 2000);
+                }, 1000);
             })
             .catch((err) => {
                 dispatch({ type: DELETE_ITEMS_FAILURE, payload: err });
@@ -266,6 +267,7 @@ export const copyItems = (items) => {
 };
 
 export const pasteItems = (items, location) => {
+    console.log(location, items, 'lala');
     return (dispatch) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()

@@ -22,8 +22,8 @@
 
 .iconContainer {
     position: absolute;
-    top: 14px;
-    right: 14px;
+    top: 10px;
+    right: 10px;
     cursor: pointer;
 }
 
@@ -55,7 +55,44 @@
     white-space: pre-wrap;
     word-break: keep-all;
     text-align: center;
-    margin-top: .5em;
+    margin-top: 0.5em;
     max-width: 80%;
     cursor: pointer;
+}
+
+@media (max-width: $screen_m) {
+    .container {
+        flex-direction: row;
+        justify-content: flex-start;
+        height: 80px;
+    }
+
+    .imageContainer {
+        width: 40px;
+        height: 40px;
+    }
+
+    .image {
+        width: 40px;
+        height: 40px;
+    }
+
+    .iconContainer {
+        top: initial;
+        display: flex;
+        align-items: center;
+    }
+
+    .defaultIcon {
+        height: 40px;
+        width: 40px;
+        font-size: 1em;
+        line-height: 30px;
+    }
+
+    .nameContainer {
+        margin-top: initial;
+        margin-left: 1em;
+        text-align: left;
+    }
 }

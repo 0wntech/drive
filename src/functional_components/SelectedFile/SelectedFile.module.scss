@@ -1,16 +1,17 @@
+@import '../../styles/constants.scss';
+
 .container {
-    max-width: 80%;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px 5px 5px 0;
-    padding: 5px 20px;
-    border: solid #6db7db 1px;
+    margin: 4px 4px 4px 0;
+    padding: 4px 20px;
+    border: solid $standard_blue 4px;
+    box-sizing: border-box;
     border-radius: 20px;
 }
 
 .listing {
-    max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,7 +24,6 @@
 }
 
 .labelText {
-    max-width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

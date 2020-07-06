@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`File should render correctly (image) 1`] = `
-<div
+<UNDEFINED
   className="gridCell"
-  onContextMenu={[Function]}
+  item={
+    Object {
+      "name": "Test.png",
+      "type": "image/png",
+    }
+  }
 >
   <div
     className="container"
@@ -52,13 +57,18 @@ exports[`File should render correctly (image) 1`] = `
       </div>
     </div>
   </div>
-</div>
+</UNDEFINED>
 `;
 
 exports[`File should render correctly (no image) 1`] = `
-<div
+<UNDEFINED
   className="gridCell"
-  onContextMenu={[Function]}
+  item={
+    Object {
+      "name": "Test.png",
+      "type": "image/png",
+    }
+  }
 >
   <div
     className="container"
@@ -107,5 +117,5 @@ exports[`File should render correctly (no image) 1`] = `
       </div>
     </div>
   </div>
-</div>
+</UNDEFINED>
 `;

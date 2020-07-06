@@ -10,6 +10,8 @@ import {
     fetchContacts,
 } from '../../actions/contactActions';
 import ContactList from '../ContactList/ContactsList';
+import useWindowDimension from '../../hooks/useWindowDimension';
+import { screen_m as screenM } from '../../styles/constants.scss';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
 import { getContactRoute } from '../../utils/url';
@@ -32,6 +34,8 @@ const ContactsPage = ({
         if (!contactRecommendations) fetchContactRecommendations(webId);
     }, []);
 
+    const { width } = useWindowDimension();
+
     handleError(error);
 
     const [displayedRows, setDisplayedRows] = useState(2);
@@ -44,6 +48,7 @@ const ContactsPage = ({
             label="Contacts"
             className={styles.grid}
             isLoading={loadContacts}
+            hideToolbar={width < screenM}
         >
             <div className={styles.contactsContainer}>
                 <div className={styles.sectionLabel}>Your Contacts:</div>

@@ -1,4 +1,4 @@
-@import '../../../styles/constants.scss';
+@import '../../styles/constants.scss';
 
 .container {
     z-index: 5;
@@ -11,7 +11,10 @@
     width: 40vw;
     height: 50vh;
     border-radius: 20px;
-    border: 5px solid $dark_grey;
+    border: 5px solid $light_black;
+    display: grid;
+    grid-template-rows: 50px 1fr;
+    grid-template-areas: 'head' 'body';
 }
 
 .wrapper {
@@ -39,6 +42,7 @@
 }
 
 .head {
+    grid-area: head;
     height: 50px;
     width: 100%;
     display: flex;
@@ -50,16 +54,17 @@
 }
 
 .body {
-    padding: 1em;
+    grid-area: body;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 80%;
+    padding: 0 1em;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .title {
-    font-size: 1.1em;
-    font-weight: 300;
+    font-size: 20px;
     width: 100%;
     position: absolute;
     text-align: center;
@@ -78,7 +83,7 @@
         min-width: initial;
         max-width: initial;
         width: 100%;
-        min-height: 50%;
+        min-height: 60vh;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }

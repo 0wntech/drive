@@ -31,7 +31,10 @@ const ContactListItem = ({
                         style={{ backgroundImage: `url('${contact.picture}')` }}
                     />
                 ) : (
-                    <DefaultIcon initials={initials} />
+                    <DefaultIcon
+                        initials={initials}
+                        className={styles.defaultIcon}
+                    />
                 )}
             </div>
             <div

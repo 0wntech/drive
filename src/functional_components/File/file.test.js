@@ -1,5 +1,5 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import ShallowRenderer from 'react-test-renderer/shallow';
 import File from './File';
 import { shallow } from 'enzyme';
 
@@ -10,29 +10,17 @@ describe('File', () => {
         const image = 'https://owntech.de/favicon.ico';
         const file = { name: 'Test.png', type: 'image/png' };
         const selectedItem = false;
-        const contextMenuOptions = [
-            {
-                label: 'test',
-                onClick: () => {},
-                disabled: false,
-            },
-            {
-                label: 'test disabled',
-                onClick: () => {},
-                disabled: true,
-            },
-        ];
-        const tree = TestRenderer.create(
+
+        const tree = new ShallowRenderer().render(
             <File
                 currentPath={currentPath}
                 onClick={onClick}
                 image={image}
                 file={file}
                 selectedItem={selectedItem}
-                contextMenuOptions={contextMenuOptions}
             />
         );
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
     test('should render correctly (image)', () => {
         const currentPath = 'https://bejow.solid.community/1234/';
@@ -40,29 +28,17 @@ describe('File', () => {
         const image = 'https://owntech.de/favicon.ico';
         const file = { name: 'Test.png', type: 'image/png' };
         const selectedItem = false;
-        const contextMenuOptions = [
-            {
-                label: 'test',
-                onClick: () => {},
-                disabled: false,
-            },
-            {
-                label: 'test disabled',
-                onClick: () => {},
-                disabled: true,
-            },
-        ];
-        const tree = TestRenderer.create(
+
+        const tree = new ShallowRenderer().render(
             <File
                 currentPath={currentPath}
                 onClick={onClick}
                 image={image}
                 file={file}
                 selectedItem={selectedItem}
-                contextMenuOptions={contextMenuOptions}
             />
         );
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
     test('Should have slected class if File is selected', () => {
         const currentPath = 'https://bejow.solid.community/1234/';
@@ -70,18 +46,7 @@ describe('File', () => {
         const image = 'https://owntech.de/favicon.ico';
         const file = { name: 'Test.png', type: 'image/png' };
         const selectedItem = true;
-        const contextMenuOptions = [
-            {
-                label: 'test',
-                onClick: () => {},
-                disabled: false,
-            },
-            {
-                label: 'test disabled',
-                onClick: () => {},
-                disabled: true,
-            },
-        ];
+
         const wrapper = shallow(
             <File
                 currentPath={currentPath}
@@ -89,7 +54,6 @@ describe('File', () => {
                 image={image}
                 file={file}
                 selectedItem={selectedItem}
-                contextMenuOptions={contextMenuOptions}
             />
         );
         expect(wrapper.find('.selected').length).toBe(1);

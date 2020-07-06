@@ -82,16 +82,16 @@ const ItemList = ({
             onClick: (item) => openRenameWindow(item),
             disabled: false,
         },
-        {
-            label: 'Manage Access',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: false,
-        },
-        {
-            label: 'Share*',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: true,
-        },
+        // {
+        //     label: 'Manage Access',
+        //     onClick: (item) => fileUtils.changeAccess(item),
+        //     disabled: false,
+        // },
+        // {
+        //     label: 'Share*',
+        //     onClick: (item) => fileUtils.changeAccess(item),
+        //     disabled: true,
+        // },
         {
             label: 'Delete',
             onClick: (item) => {

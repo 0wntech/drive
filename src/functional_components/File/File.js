@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './File.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Menu, MenuProvider, Item } from 'react-contexify';
 import mime from 'mime';
 import { isImageType } from '../../utils/fileUtils';
 import linkedFileImage from '../../assets/icons/shared_file.png';
+import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 
 export default function File({
     currentPath,
@@ -15,7 +15,6 @@ export default function File({
     image,
     file,
     selectedItem,
-    contextMenuOptions,
 }) {
     const isImage = isImageType(file.type);
 
@@ -78,11 +77,11 @@ export default function File({
     };
 
     return (
-        <MenuProvider
+        <DriveContextMenu
             className={classNames(styles.gridCell, {
                 [styles.selected]: selectedItem,
             })}
-            id={file.name + 'contextmenu'}
+            item={file}
         >
             <div
                 className={styles.container}
@@ -98,30 +97,7 @@ export default function File({
                     <div className={styles.label}>{file.name}</div>
                 </div>
             </div>
-            <Menu className={styles.contextMenu} id={file.name + 'contextmenu'}>
-                {contextMenuOptions &&
-                    contextMenuOptions.map((option, index) => (
-                        <Item
-                            disabled={option.disabled}
-                            key={index + option.label}
-                            onClick={
-                                !option.disabled
-                                    ? () => {
-                                          option.onClick(
-                                              currentPath + file.name
-                                          );
-                                      }
-                                    : undefined
-                            }
-                            className={classNames(styles.contextItem, {
-                                [styles.disabled]: option.disabled,
-                            })}
-                        >
-                            <div>{option.label}</div>
-                        </Item>
-                    ))}
-            </Menu>
-        </MenuProvider>
+        </DriveContextMenu>
     );
 }
 File.propTypes = {

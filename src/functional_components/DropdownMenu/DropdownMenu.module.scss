@@ -41,7 +41,7 @@
 .active {
     padding: initial;
     background: #ffffff;
-    border: solid $dark_grey 5px;
+    border: solid $light_black 5px;
     border-radius: 20px;
     height: initial;
     top: 7px;
@@ -58,7 +58,6 @@
 .option {
     padding: 5px 15px;
     font-style: normal;
-    font-weight: 300;
     font-size: 16px;
     line-height: 21px;
 
@@ -71,11 +70,10 @@
 }
 
 .option:hover {
-    background-color: #deebff;
+    background-color: $light_blue;
 }
 
 .option:hover:last-child {
-    background-color: #deebff;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
 }

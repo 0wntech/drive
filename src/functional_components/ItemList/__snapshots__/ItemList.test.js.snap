@@ -29,16 +29,6 @@ exports[`ItemList ItemList Snapshot matches the snapshot for folders 1`] = `
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
@@ -71,16 +61,6 @@ exports[`ItemList ItemList Snapshot matches the snapshot for folders 1`] = `
         Object {
           "disabled": false,
           "label": "Rename",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
           "onClick": [Function],
         },
         Object {
@@ -128,16 +108,6 @@ exports[`ItemList ItemList Snapshot matches the snapshot for items 1`] = `
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
@@ -181,16 +151,6 @@ exports[`ItemList ItemList Snapshot matches the snapshot for selected folders 1`
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
@@ -223,16 +183,6 @@ exports[`ItemList ItemList Snapshot matches the snapshot for selected folders 1`
         Object {
           "disabled": false,
           "label": "Rename",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
           "onClick": [Function],
         },
         Object {

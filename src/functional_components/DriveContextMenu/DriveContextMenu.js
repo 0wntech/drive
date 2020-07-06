@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { Menu, MenuProvider, Item } from 'react-contexify';
-import styles from './DriveContextMenu.module.css';
+import styles from './DriveContextMenu.module.scss';
 import fileUtils from '../../utils/fileUtils';
 import {
     setSelection,
@@ -18,6 +18,7 @@ export const DriveContextMenu = ({
     className,
     currentPath,
     selectedItems,
+    setSelection,
     webId,
     clipboard,
     copyItems,
@@ -25,7 +26,9 @@ export const DriveContextMenu = ({
     openConsentWindow,
     openCreateFileWindow,
     openCreateFolderWindow,
+    openRenameWindow,
     children,
+    item,
 }) => {
     const renderMenuItem = (option, index) => {
         return (
@@ -35,7 +38,11 @@ export const DriveContextMenu = ({
                 onClick={
                     !option.disabled
                         ? () => {
-                              option.onClick(currentPath);
+                              const onClickArg = item
+                                  ? currentPath +
+                                    (item.name ? item.name : item + '/')
+                                  : currentPath;
+                              option.onClick(onClickArg);
                           }
                         : undefined
                 }
@@ -73,15 +80,25 @@ export const DriveContextMenu = ({
             disabled: clipboard && clipboard.length === 0,
         },
         {
-            label: 'Manage Access',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: false,
+            label: 'Rename',
+            onClick: () =>
+                openRenameWindow(
+                    selectedItems.length === 1
+                        ? selectedItems[0]
+                        : currentPath + (item.name ? item.name : item + '/')
+                ),
+            disabled: !selectedItems || (!item && selectedItems.length !== 1),
         },
-        {
-            label: 'Share*',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: true,
-        },
+        // {
+        //     label: 'Manage Access',
+        //     onClick: (item) => fileUtils.changeAccess(item),
+        //     disabled: false,
+        // },
+        // {
+        //     label: 'Share*',
+        //     onClick: (item) => fileUtils.changeAccess(item),
+        //     disabled: true,
+        // },
         {
             label: 'Create Folder',
             onClick: openCreateFolderWindow,
@@ -93,21 +110,28 @@ export const DriveContextMenu = ({
         {
             label: 'Delete',
             onClick: (item) => {
-                if (selectedItems.length !== 0) openConsentWindow(item);
+                const deletable = fileUtils.addForDelete(item, selectedItems);
+                if (deletable && deletable.length !== 0) {
+                    setSelection(deletable);
+                    openConsentWindow(deletable);
+                }
             },
             disabled: false,
         },
     ];
 
+    const menuIdentifier =
+        (item ? (item.name ? item.name : item) : 'drive') + ' contextmenu';
+
     return (
         <>
             <MenuProvider
                 className={classNames(styles.menu, className)}
-                id={'drive contextmenu'}
+                id={menuIdentifier}
             >
                 {children}
             </MenuProvider>
-            <Menu className={styles.contextMenu} id={'drive contextmenu'}>
+            <Menu className={styles.contextMenu} id={menuIdentifier}>
                 {CONTEXTMENU_OPTIONS_DRIVE
                     ? CONTEXTMENU_OPTIONS_DRIVE.map((option, index) =>
                           renderMenuItem(option, index)

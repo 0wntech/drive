@@ -25,7 +25,7 @@ const LandingPage = ({ webId, history }) => {
                             <div className={styles.buttons}>
                                 <ActionButton
                                     dataId="login_btn"
-                                    size="md"
+                                    size="lg"
                                     label="Go Home"
                                     color="blue"
                                     onClick={() => {
@@ -42,13 +42,13 @@ const LandingPage = ({ webId, history }) => {
                             <div className={styles.buttons}>
                                 <ActionButton
                                     dataId="login_btn"
-                                    size="md"
+                                    size="lg"
                                     label="Login"
                                     color="blue"
                                     onClick={login}
                                 />
                                 <ActionButton
-                                    size="md"
+                                    size="lg"
                                     label="Register"
                                     color="green"
                                     className={styles.registerButton}

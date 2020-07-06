@@ -1,8 +1,8 @@
 import React from 'react';
-import { Menu, MenuProvider, Item } from 'react-contexify';
 import classNames from 'classnames';
 import styles from './Item.module.scss';
 import 'react-contexify/dist/ReactContexify.min.css';
+import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 
 const MyItem = ({
     image,
@@ -10,16 +10,14 @@ const MyItem = ({
     onClick,
     onMouseUp,
     onMouseDown,
-    contextMenuOptions,
     selectedItem,
-    currentPath,
 }) => {
     return (
-        <MenuProvider
+        <DriveContextMenu
             className={classNames(styles.gridCell, {
                 [styles.selected]: selectedItem,
             })}
-            id={label + 'contextmenu'}
+            item={label}
         >
             <div
                 className={classNames(styles.container)}
@@ -47,30 +45,7 @@ const MyItem = ({
                     <div className={styles.label}>{label}</div>
                 </div>
             </div>
-            <Menu className={styles.contextMenu} id={label + 'contextmenu'}>
-                {contextMenuOptions &&
-                    contextMenuOptions.map((option, index) => (
-                        <Item
-                            disabled={option.disabled}
-                            key={index + option.label}
-                            onClick={
-                                !option.disabled
-                                    ? () => {
-                                          option.onClick(
-                                              currentPath + label + '/'
-                                          );
-                                      }
-                                    : undefined
-                            }
-                            className={classNames(styles.contextItem, {
-                                [styles.disabled]: option.disabled,
-                            })}
-                        >
-                            <div>{option.label}</div>
-                        </Item>
-                    ))}
-            </Menu>
-        </MenuProvider>
+        </DriveContextMenu>
     );
 };
 

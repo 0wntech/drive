@@ -9,12 +9,12 @@
     max-height: calc(100vh - 220px);
 
     .container {
-        padding: 10px 1em;
+        padding: 10px 0;
         justify-self: center;
         align-self: center;
         width: 400px;
         overflow-y: auto;
-        border: 5px solid $light_grey;
+        border: 5px solid $light_black;
         box-sizing: border-box;
         border-radius: 20px;
         background: #ffffff;
@@ -26,7 +26,7 @@
             grid-template-columns: 28px 8px 1fr;
             grid-template-areas: 'icon . label';
             align-items: center;
-            padding: 4px 0;
+            padding: 4px 1em;
             border-radius: 5px;
             margin: 5px 0;
 
@@ -39,7 +39,6 @@
                 padding: 5px 0;
                 width: 100%;
                 font-style: normal;
-                font-weight: 300;
                 font-size: 18px;
                 line-height: 28px;
                 vertical-align: middle;
@@ -48,7 +47,7 @@
         }
 
         .option:hover {
-            background: #f6f6f6;
+            background: $light_blue;
         }
 
         .disabled {

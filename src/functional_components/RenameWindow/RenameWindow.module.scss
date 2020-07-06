@@ -31,22 +31,13 @@
 
 .input {
     width: 100%;
-    font-style: normal;
     box-sizing: border-box;
-    font-weight: 300;
-    font-size: 18px;
+    font-size: 20px;
     text-overflow: ellipsis;
     border: initial;
     border-radius: initial;
-    border-bottom: 2px solid black;
+    border-bottom: 4px solid black;
     outline: none;
-}
-
-.confirm {
-    background: linear-gradient(to top, #0c89c6, rgba(0, 171, 255, 0.5));
-    color: white;
-    font-weight: 300;
-    border-radius: 20px;
 }
 
 @media (max-width: $screen_m) {

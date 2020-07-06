@@ -8,14 +8,12 @@
 }
 
 .infoText {
-    font-weight: 300;
     font-size: 18px;
     margin-bottom: 0.8em;
 }
 
 .errorText {
     margin-bottom: 1em;
-    font-weight: 300;
     font-size: 18px;
     color: #ff0000;
 }

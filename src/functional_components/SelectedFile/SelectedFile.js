@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../SelectedFile/SelectedFile.module.css';
+import styles from '../SelectedFile/SelectedFile.module.scss';
 import fileIcon from '../../assets/icons/FileIconSm.png';
 import folderIcon from '../../assets/icons/FolderSm.png';
 
