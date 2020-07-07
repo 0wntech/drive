@@ -6,6 +6,8 @@ import Select, { components } from 'react-select';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Search from '../../assets/svgIcons/Search';
 import useClickOutside from '../../hooks/useClickOutside';
+import useWindowDimension from '../../hooks/useWindowDimension';
+import { screen_m as screenM } from '../../styles/constants.scss';
 
 export default function SearchDropdown({
     items,
@@ -24,6 +26,8 @@ export default function SearchDropdown({
         if (isSearchBarExpanded) toggleSearchbar();
     });
 
+    const { width } = useWindowDimension();
+
     const DropdownIndicator = (props) => {
         return (
             components.DropdownIndicator && (
@@ -35,7 +39,13 @@ export default function SearchDropdown({
                             loading={loading}
                         />
                     ) : (
-                        <Search />
+                        <Search
+                            {...{
+                                viewBox: '0 0 24 24',
+                                width: width < screenM ? 24 : 36,
+                                height: width < screenM ? 24 : 36,
+                            }}
+                        />
                     )}
                 </components.DropdownIndicator>
             )

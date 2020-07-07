@@ -14,7 +14,7 @@ import {
     openRenameWindow,
 } from '../../actions/appActions';
 import Trash2 from '../../assets/svgIcons/Trash2';
-import Edit3 from '../../assets/svgIcons/Edit3';
+import Edit from '../../assets/svgIcons/Edit';
 import Copy from '../../assets/svgIcons/Copy';
 import Clipboard from '../../assets/svgIcons/Clipboard';
 import FolderPlus from '../../assets/svgIcons/FolderPlus';
@@ -78,7 +78,7 @@ export const DriveMenu = ({
             label: 'Rename',
             onClick: () => openRenameWindow(selectedItems[0]),
             disabled: !selectedItems || selectedItems.length !== 1,
-            icon: <Edit3 />,
+            icon: <Edit />,
         },
         {
             label: 'Create Folder',

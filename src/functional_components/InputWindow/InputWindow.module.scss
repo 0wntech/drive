@@ -6,8 +6,11 @@
 }
 
 .buttonBar {
-    margin-top: 15px;
-    width: 100%;
+    width: calc(100% - 2em);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 1em;
     display: flex;
     justify-content: flex-end;
 }

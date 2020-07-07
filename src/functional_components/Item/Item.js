@@ -6,7 +6,7 @@ import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 
 const MyItem = ({
     image,
-    label,
+    item,
     onClick,
     onMouseUp,
     onMouseDown,
@@ -17,11 +17,11 @@ const MyItem = ({
             className={classNames(styles.gridCell, {
                 [styles.selected]: selectedItem,
             })}
-            item={label}
+            item={item}
         >
             <div
                 className={classNames(styles.container)}
-                data-test-id={`item-${label}`}
+                data-test-id={`item-${decodeURIComponent(item)}`}
                 onClick={onClick}
                 onMouseUp={onMouseUp}
                 onMouseDown={onMouseDown}
@@ -42,7 +42,9 @@ const MyItem = ({
                     </div>
                 </div>
                 <div className={styles.labelContainer}>
-                    <div className={styles.label}>{label}</div>
+                    <div className={styles.label}>
+                        {decodeURIComponent(item)}
+                    </div>
                 </div>
             </div>
         </DriveContextMenu>

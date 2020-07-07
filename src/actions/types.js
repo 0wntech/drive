@@ -122,6 +122,10 @@ export const DOWNLOAD_FILE = 'download_file';
 export const DOWNLOAD_FILE_SUCCESS = 'download_file_success';
 export const DOWNLOAD_FILE_FAILURE = 'download_file_failure';
 
+export const UPLOAD_FILE = 'upload_file';
+export const UPLOAD_FILE_SUCCESS = 'upload_file_success';
+export const UPLOAD_FILE_FAILURE = 'upload_file_failure';
+
 export const REMOVE_APP = 'remove_app';
 export const REMOVE_APP_SUCCESS = 'remove_app_success';
 export const REMOVE_APP_FAILURE = 'remove_app_failure';

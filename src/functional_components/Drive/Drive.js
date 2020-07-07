@@ -7,7 +7,6 @@ import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.scss';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import { ItemList } from '../ItemList';
-import fileUtils from '../../utils/fileUtils';
 import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
@@ -23,6 +22,7 @@ import {
     openCreateFolderWindow,
     toggleSelectionMode,
     downloadFile,
+    uploadFileOrFolder,
 } from '../../actions/appActions';
 import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
 import { handleError } from '../../utils/helper';
@@ -50,6 +50,8 @@ const Drive = ({
     fetchCurrentItem,
     history,
     downloadFile,
+    uploadFileOrFolder,
+    uploadingFiles,
     error,
     loadDeletion,
     loadPaste,
@@ -86,7 +88,7 @@ const Drive = ({
         if (selectionMode && !selectedItems.includes(url)) {
             const newSelection = [...selectedItems, url];
             setSelection(newSelection);
-        } else if (selectionMode) {
+        } else if (selectionMode && selectedItems.includes(url)) {
             const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
@@ -98,22 +100,12 @@ const Drive = ({
         if (selectionMode && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];
             setSelection(newSelection);
-        } else if (selectionMode) {
+        } else if (selectionMode && selectedItems.includes(path)) {
             const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else {
             setCurrentPath(path);
             fetchCurrentItem(path, true);
-        }
-    };
-
-    const uploadFile = (e) => {
-        const filePath =
-            e.target.files && e.target.files.length ? e.target.files[0] : null;
-        if (filePath && currentPath) {
-            fileUtils.uploadFile(filePath, currentPath, () => {
-                fetchCurrentItem(currentPath, true);
-            });
         }
     };
 
@@ -148,29 +140,12 @@ const Drive = ({
         });
     };
 
-    const uploadCurrentItem = (e) => {
-        const files = e.target.files;
-        if (files && files.length) {
-            Promise.all(
-                files.map((file) => {
-                    return fileUtils.uploadCurrentItemOrFile(
-                        files[file],
-                        currentPath +
-                            encodeURIComponent(files[file].webkitRelativePath)
-                    );
-                })
-            ).then((response) => {
-                fetchCurrentItem(currentPath);
-            });
-        }
-    };
-
     // toolbar fragments
     const toolbarRight = (
         <ToolbarButtons
-            onFolderUpload={uploadCurrentItem}
+            onFolderUpload={uploadFileOrFolder}
             onDownload={downloadItems}
-            uploadFile={uploadFile}
+            onFileUpload={uploadFileOrFolder}
             onDelete={() => {
                 if (selectedItems.length !== 0) {
                     openConsentWindow(selectedItems);
@@ -208,7 +183,9 @@ const Drive = ({
             })}
             label="Drive"
             onClick={handleClick}
-            isLoading={loadDeletion || loadPaste || loadCurrentItem}
+            isLoading={
+                loadDeletion || loadPaste || loadCurrentItem || uploadingFiles
+            }
         >
             <DriveMenu
                 isDriveMenuVisible={isDriveMenuVisible}
@@ -278,6 +255,7 @@ const mapStateToProps = (state) => {
         loadCurrentItem: state.app.loadCurrentItem,
         isSearchBarExpanded: state.app.isSearchBarExpanded,
         isDriveMenuVisible: state.app.isDriveMenuVisible,
+        uploadingFiles: state.app.uploadingFiles,
     };
 };
 
@@ -293,5 +271,6 @@ export default withRouter(
         toggleSelectionMode,
         toggleSearchbar,
         downloadFile,
+        uploadFileOrFolder,
     })(Drive)
 );

@@ -46,6 +46,9 @@ import {
     CREATE_FOLDER_FAILURE,
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
+    UPLOAD_FILE,
+    UPLOAD_FILE_FAILURE,
+    UPLOAD_FILE_SUCCESS,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -252,7 +255,7 @@ export const deleteItems = (items, currentPath = '/') => {
                 setTimeout(() => {
                     dispatch({ type: DELETE_ITEMS_SUCCESS });
                     dispatch(setCurrentPath(currentPath));
-                }, 1000);
+                }, 2000);
             })
             .catch((err) => {
                 dispatch({ type: DELETE_ITEMS_FAILURE, payload: err });
@@ -366,6 +369,35 @@ export const renameItem = function (renamedItem, value) {
                     dispatch({ type: RENAME_ITEM_FAILURE, payload: err });
                 });
         });
+    };
+};
+
+export const uploadFileOrFolder = ({ target }, currentPath) => {
+    return (dispatch) => {
+        dispatch({ type: UPLOAD_FILE });
+        try {
+            const files = target.files;
+            if (files && files.length) {
+                const uploads = [];
+                for (const file of files) {
+                    uploads.push(fileUtils.uploadFile(file, currentPath));
+                }
+                Promise.all(uploads)
+                    .then(() => {
+                        dispatch({ type: UPLOAD_FILE_SUCCESS });
+                        dispatch(fetchCurrentItem(currentPath, true));
+                    })
+                    .catch((error) => {
+                        dispatch({
+                            type: UPLOAD_FILE_FAILURE,
+                            payload: error,
+                        });
+                    });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: UPLOAD_FILE_FAILURE, payload: error });
+        }
     };
 };
 

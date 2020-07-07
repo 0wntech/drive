@@ -1,37 +1,39 @@
-import React from 'react';
+import * as React from 'react';
 
-const SvgCamera = (props) => (
-    <svg width={36} height={36} fill="none" {...props}>
-        <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M26.25 7.5h5.25c2.55 0 4.5 1.95 4.5 4.5v16.5c0 2.55-1.95 4.5-4.5 4.5h-27C1.95 33 0 31.05 0 28.5V12c0-2.55 1.95-4.5 4.5-4.5h5.25l2.55-3.9c.3-.3.75-.6 1.2-.6h9c.45 0 .9.3 1.2.6l2.55 3.9zM31.5 30c.9 0 1.5-.6 1.5-1.5V12c0-.9-.6-1.5-1.5-1.5h-6c-.45 0-.9-.3-1.35-.6L21.6 6h-7.35L11.7 9.9c-.3.3-.75.6-1.2.6h-6c-.9 0-1.5.6-1.5 1.5v16.5c0 .9.6 1.5 1.5 1.5h27zM18 12c-4.2 0-7.5 3.3-7.5 7.5S13.8 27 18 27s7.5-3.3 7.5-7.5S22.2 12 18 12zm-4.5 7.5c0 2.55 1.95 4.5 4.5 4.5s4.5-1.95 4.5-4.5S20.55 15 18 15s-4.5 1.95-4.5 4.5z"
-            fill="#fff"
-        />
-        <mask
-            id="camera_svg__a"
-            maskUnits="userSpaceOnUse"
-            x={0}
-            y={3}
-            width={36}
-            height={30}
-        >
+function SvgCamera(props) {
+    return (
+        <svg width={36} height={36} fill="none" {...props}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M26.25 7.5h5.25c2.55 0 4.5 1.95 4.5 4.5v16.5c0 2.55-1.95 4.5-4.5 4.5h-27C1.95 33 0 31.05 0 28.5V12c0-2.55 1.95-4.5 4.5-4.5h5.25l2.55-3.9c.3-.3.75-.6 1.2-.6h9c.45 0 .9.3 1.2.6l2.55 3.9zM31.5 30c.9 0 1.5-.6 1.5-1.5V12c0-.9-.6-1.5-1.5-1.5h-6c-.45 0-.9-.3-1.35-.6L21.6 6h-7.35L11.7 9.9c-.3.3-.75.6-1.2.6h-6c-.9 0-1.5.6-1.5 1.5v16.5c0 .9.6 1.5 1.5 1.5h27zM18 12c-4.2 0-7.5 3.3-7.5 7.5S13.8 27 18 27s7.5-3.3 7.5-7.5S22.2 12 18 12zm-4.5 7.5c0 2.55 1.95 4.5 4.5 4.5s4.5-1.95 4.5-4.5S20.55 15 18 15s-4.5 1.95-4.5 4.5z"
                 fill="#fff"
             />
-        </mask>
-        <g mask="url(#camera_svg__a)">
-            <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M0 0h36v36H0V0z"
-                fill="#fff"
-            />
-        </g>
-    </svg>
-);
+            <mask
+                id="camera_svg__a"
+                maskUnits="userSpaceOnUse"
+                x={0}
+                y={3}
+                width={36}
+                height={30}
+            >
+                <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M26.25 7.5h5.25c2.55 0 4.5 1.95 4.5 4.5v16.5c0 2.55-1.95 4.5-4.5 4.5h-27C1.95 33 0 31.05 0 28.5V12c0-2.55 1.95-4.5 4.5-4.5h5.25l2.55-3.9c.3-.3.75-.6 1.2-.6h9c.45 0 .9.3 1.2.6l2.55 3.9zM31.5 30c.9 0 1.5-.6 1.5-1.5V12c0-.9-.6-1.5-1.5-1.5h-6c-.45 0-.9-.3-1.35-.6L21.6 6h-7.35L11.7 9.9c-.3.3-.75.6-1.2.6h-6c-.9 0-1.5.6-1.5 1.5v16.5c0 .9.6 1.5 1.5 1.5h27zM18 12c-4.2 0-7.5 3.3-7.5 7.5S13.8 27 18 27s7.5-3.3 7.5-7.5S22.2 12 18 12zm-4.5 7.5c0 2.55 1.95 4.5 4.5 4.5s4.5-1.95 4.5-4.5S20.55 15 18 15s-4.5 1.95-4.5 4.5z"
+                    fill="#fff"
+                />
+            </mask>
+            <g mask="url(#camera_svg__a)">
+                <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0 0h36v36H0V0z"
+                    fill="#fff"
+                />
+            </g>
+        </svg>
+    );
+}
 
 export default SvgCamera;

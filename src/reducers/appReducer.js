@@ -35,6 +35,9 @@ import {
     DOWNLOAD_FILE,
     DOWNLOAD_FILE_SUCCESS,
     DOWNLOAD_FILE_FAILURE,
+    UPLOAD_FILE,
+    UPLOAD_FILE_SUCCESS,
+    UPLOAD_FILE_FAILURE,
     OPEN_CREATE_FOLDER_WINDOW,
     CLOSE_CREATE_FOLDER_WINDOW,
     CREATE_FOLDER,
@@ -55,7 +58,9 @@ const INITIAL_STATE = {
     loadcurrentItem: false,
     loadDeletion: false,
     updatingFile: false,
+    uploadingFiles: false,
     error: {
+        UPLOAD_FILES: false,
         DOWNLOAD_FILE: false,
         CREATE_FILE: false,
         UPDATE_FILE: false,
@@ -289,6 +294,24 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 downloadingFile: false,
                 error: { ...state.error, DOWNLOAD_FILE: payload },
+            };
+        case UPLOAD_FILE:
+            return {
+                ...state,
+                uploadingFiles: true,
+                error: { ...state.error, UPLOAD_FILES: false },
+            };
+        case UPLOAD_FILE_SUCCESS:
+            return {
+                ...state,
+                uploadingFiles: false,
+                error: { ...state.error, UPLOAD_FILES: false },
+            };
+        case UPLOAD_FILE_FAILURE:
+            return {
+                ...state,
+                uploadingFiles: false,
+                error: { ...state.error, UPLOAD_FILES: payload },
             };
         case OPEN_CREATE_FOLDER_WINDOW:
             return { ...state, isCreateFolderVisible: true };

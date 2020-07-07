@@ -10,8 +10,6 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
     <ToolbarButtons
       onDelete={[Function]}
       onDownload={[Function]}
-      onFolderUpload={[Function]}
-      uploadFile={[Function]}
     />
   }
 >

@@ -34,6 +34,7 @@ const ItemList = ({
     openRenameWindow,
 }) => {
     const [mouseHoldTimer, setMouseHoldTimer] = useState(null);
+    const [longPressed, setLongPressed] = useState(false);
 
     // Event Handlers
     const handleMouseDown = (item) => {
@@ -42,6 +43,7 @@ const ItemList = ({
                 setTimeout(() => {
                     if (!selectedItems.includes(item)) {
                         setSelection([...selectedItems, item]);
+                        setLongPressed(true);
                         toggleSelectionMode();
                     }
                 }, 1000)
@@ -107,6 +109,9 @@ const ItemList = ({
 
     const itemComponents = items
         ? items.map((item, index) => {
+              const itemPath =
+                  currentPath + (item.name ? item.name : item + '/');
+
               return isFile ? (
                   <File
                       selectedItem={
@@ -120,18 +125,14 @@ const ItemList = ({
                       file={item}
                       currentPath={currentPath}
                       onClick={(e) => {
-                          if (
-                              !selectedItems.includes(currentPath + item.name)
-                          ) {
-                              onItemClick(currentPath + item.name, e);
+                          if (!longPressed) {
+                              onItemClick(itemPath, e);
+                          } else {
+                              setLongPressed(false);
                           }
                       }}
-                      onMouseUp={(e) =>
-                          handleMouseUp(currentPath + item.name, e)
-                      }
-                      onMouseDown={() =>
-                          handleMouseDown(currentPath + item.name)
-                      }
+                      onMouseUp={(e) => handleMouseUp(itemPath, e)}
+                      onMouseDown={() => handleMouseDown(itemPath)}
                   />
               ) : (
                   <Item
@@ -144,20 +145,16 @@ const ItemList = ({
                       image={image}
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
                       currentPath={currentPath}
-                      label={decodeURIComponent(item)}
+                      item={item}
                       onClick={(e) => {
-                          if (
-                              !selectedItems.includes(currentPath + item + '/')
-                          ) {
-                              onItemClick(currentPath + item + '/', e);
+                          if (!longPressed) {
+                              onItemClick(itemPath, e);
+                          } else {
+                              setLongPressed(false);
                           }
                       }}
-                      onMouseUp={(e) =>
-                          handleMouseUp(currentPath + item + '/', e)
-                      }
-                      onMouseDown={() =>
-                          handleMouseDown(currentPath + item + '/')
-                      }
+                      onMouseUp={(e) => handleMouseUp(itemPath, e)}
+                      onMouseDown={() => handleMouseDown(itemPath)}
                   />
               );
           })

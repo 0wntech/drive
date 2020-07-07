@@ -84,59 +84,35 @@ function getSuffixAndPlaceholder(placeholder) {
     return { fileSuffix: fileSuffix, placeholder: placeholder };
 }
 
-function uploadCurrentItemOrFile(file, url) {
-    const store = rdf.graph();
-    const fetcher = new rdf.Fetcher(store);
-
-    const fileType = file.type ? file.type : 'text/plain';
-
-    return new Promise(function (resolve) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const data = this.result;
-
-            fetcher
-                .webOperation('PUT', url, {
-                    data: data,
-                    contentType: fileType,
-                })
-                .then((response) => {
-                    if (response.status === 201) {
-                        console.log('Successfully uploaded!');
-                        resolve('Success');
-                    }
-                });
-        };
-        reader.readAsArrayBuffer(file);
-    });
-}
-
-function uploadFile(filePath, currPath, callback) {
+function uploadFile(file, currPath) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
 
     const reader = new FileReader();
-    reader.onload = function () {
-        const data = this.result;
-        const filename = encodeURIComponent(filePath.name);
-        const contentType = getContentType(filePath.name);
-
-        const fileUrl = currPath + filename;
-        return fetcher
-            .webOperation('PUT', fileUrl, {
-                data: data,
-                contentType: contentType,
-            })
-            .then((response) => {
-                if (response.status === 201) {
-                    console.log('Successfully uploaded!');
-                    callback();
-                    console.log('Successfully uploaded!');
-                }
-            });
-    };
     return new Promise(function (resolve, reject) {
-        reader.readAsArrayBuffer(filePath);
+        reader.onload = function () {
+            const data = this.result;
+            const filePath = file.webkitRelativePath
+                ? encodeURIComponent(file.webkitRelativePath)
+                : `${file.name}`;
+            const contentType = getContentType(file.name);
+            const fileUrl = currPath + filePath;
+            console.log(fileUrl, file, 'lala');
+            return fetcher
+                .webOperation('PUT', fileUrl, {
+                    data: data,
+                    contentType: contentType,
+                })
+                .then((response) => {
+                    if (response.status === 201) {
+                        console.log('Successfully uploaded!');
+                        resolve();
+                    } else {
+                        reject(response.error);
+                    }
+                });
+        };
+        reader.readAsArrayBuffer(file);
     });
 }
 
@@ -415,11 +391,10 @@ function renameFile(item) {
 
 export default {
     getFolderUrl: getFolderUrl,
-    uploadFile: uploadFile,
     getContentType: getContentType,
     getFolderContents: getFolderContents,
     getFolderTree: getFolderTree,
-    uploadCurrentItemOrFile: uploadCurrentItemOrFile,
+    uploadFile: uploadFile,
     deleteItems: deleteItems,
     changeAccess: changeAccess,
     getInfo: getInfo,
