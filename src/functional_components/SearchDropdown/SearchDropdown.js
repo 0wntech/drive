@@ -42,8 +42,8 @@ export default function SearchDropdown({
                         <Search
                             {...{
                                 viewBox: '0 0 24 24',
-                                width: width < screenM ? 24 : 36,
-                                height: width < screenM ? 24 : 36,
+                                width: width < screenM ? 24 : 30,
+                                height: width < screenM ? 24 : 30,
                             }}
                         />
                     )}
@@ -67,7 +67,7 @@ export default function SearchDropdown({
             placeholder={placeholder}
             styles={customStyles}
             formatOptionLabel={formatOptionLabel}
-            options={loading ? [] : items}
+            options={loading ? items : items}
             onChange={onChange}
             className={className}
             classNamePrefix="search"
@@ -127,7 +127,7 @@ const customStyles = {
         return {
             width: '100%',
             height: '100%',
-            backgroundColor: state.menuIsOpen ? '#ffffff' : '#F8F8F8',
+            backgroundColor: '#f4f4f4',
             borderRadius: state.menuIsOpen ? '20px 20px 0 0' : '20px',
             borderWidth: 0,
             display: 'flex',

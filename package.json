@@ -34,6 +34,7 @@
     "redux-thunk": "^2.3.0",
     "solid-auth-client": "^2.4.1",
     "solid-namespace": "^0.3.0",
+    "string-similarity": "^4.0.1",
     "styled-components": "^5.1.0",
     "url": "^0.11.0",
     "your-user": "^1.1.12"

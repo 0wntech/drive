@@ -19,7 +19,11 @@ import {
 } from '../../actions/contactActions';
 import { navigate, getInitialsFromUser } from '../../utils/helper';
 import logo from '../../assets/icons/owndrive-logo.png';
-import { getUsernameFromWebId, getContactRoute } from '../../utils/url';
+import {
+    getUsernameFromWebId,
+    getContactRoute,
+    getIdpFromWebId,
+} from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 
@@ -64,10 +68,9 @@ const formatOptionLabel = ({ value, label, name, type, contact }) => {
                         />
                     )}
                 </div>
-                <span>{`${contact.name} (${contact.webId.replace(
-                    '/profile/card#me',
-                    ''
-                )})`}</span>
+                <span>{`${contact.name} (${getUsernameFromWebId(
+                    contact.webId
+                )}.${getIdpFromWebId(contact.webId)})`}</span>
             </div>
         );
     } else if (type === 'separator') {
@@ -146,15 +149,26 @@ const Navigation = ({
     const handleInputChange = (searchText) => {
         clearTimeout(typingTimer);
         if (searchText !== '') {
-            setTypingTimer(setTimeout(() => searchContact(searchText), 500));
+            searchText = searchText.toLowerCase();
+            console.log(contacts, 'kaka');
+            setTypingTimer(
+                setTimeout(
+                    () =>
+                        contacts
+                            ? searchContact(searchText, contacts)
+                            : searchContact(searchText, []),
+                    1000
+                )
+            );
         }
     };
 
     const getSearchDropdownOptions = () => {
         const contactSearchDropdownItems = contactSearchResult
-            ? [...contactSearchResult]
+            ? contactSearchResult
             : [];
-        const contactsDropdownItems = contacts ? [...contacts] : [];
+        const contactsDropdownItems =
+            !contactSearchResult && contacts ? contacts : [];
         const contactOptions = [
             ...contactSearchDropdownItems,
             ...contactsDropdownItems,
@@ -163,13 +177,6 @@ const Navigation = ({
             type: 'contact',
             contact,
         }));
-
-        const separator = {
-            label: 'People',
-            type: 'separator',
-            isDisabled: true,
-            loading: searchingContacts,
-        };
 
         if (currentItem && currentItem.files && currentItem.folders) {
             const filesAndFolders = fileUtils
@@ -181,8 +188,8 @@ const Navigation = ({
                     ...resource,
                     value: resource.name,
                 }));
-            return contactOptions.length > 0
-                ? [...filesAndFolders, separator, ...contactOptions]
+            return contactOptions.length > 0 && contactSearchResult
+                ? [...contactOptions, ...filesAndFolders]
                 : filesAndFolders;
         } else {
             return contactOptions;

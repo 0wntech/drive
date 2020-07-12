@@ -21,43 +21,44 @@ export default function ToolbarButtons({
     onMore,
 }) {
     const { width } = useWindowDimension();
+    const buttons = [
+        <SvgDownload className={styles.toolbarIcon} onClick={onDownload} />,
+        width > screenM ? (
+            <FileUpload className={styles.toolbarIcon} onChange={onFileUpload}>
+                <UploadFile />
+            </FileUpload>
+        ) : (
+            <FileUpload className={styles.toolbarIcon} onChange={onFileUpload}>
+                <Upload />
+            </FileUpload>
+        ),
+        width > screenM ? (
+            <FileUpload
+                className={styles.toolbarIcon}
+                onChange={onFolderUpload}
+                folder
+            >
+                <UploadFolder />
+            </FileUpload>
+        ) : (
+            false
+        ),
+        <FolderPlus className={styles.toolbarIcon} onClick={onCreateFolder} />,
+        <SvgTrash className={styles.toolbarIcon} onClick={onDelete} />,
+        <MoreVertical
+            className={classNames(styles.toolbarIcon, styles.more)}
+            onClick={onMore}
+        />,
+    ];
     return (
         <div className={styles.container}>
             {/* <SvgShare className={styles.toolbarIcon} /> */}
-            <SvgDownload className={styles.toolbarIcon} onClick={onDownload} />
-            {width > screenM ? (
-                <>
-                    <FileUpload
-                        className={styles.toolbarIcon}
-                        onChange={onFileUpload}
-                    >
-                        <UploadFile />
-                    </FileUpload>
-                    <FileUpload
-                        className={styles.toolbarIcon}
-                        onChange={onFolderUpload}
-                        folder
-                    >
-                        <UploadFolder />
-                    </FileUpload>
-                </>
-            ) : (
-                <FileUpload
-                    className={styles.toolbarIcon}
-                    onChange={onFileUpload}
-                >
-                    <Upload />
-                </FileUpload>
+            {buttons.map(
+                (button) =>
+                    button && (
+                        <div className={styles.buttonWrapper}>{button}</div>
+                    )
             )}
-            <FolderPlus
-                className={styles.toolbarIcon}
-                onClick={onCreateFolder}
-            />
-            <SvgTrash className={styles.toolbarIcon} onClick={onDelete} />
-            <MoreVertical
-                className={classNames(styles.toolbarIcon, styles.more)}
-                onClick={onMore}
-            />
             {/* <SvgInfo className={styles.toolbarIcon} /> */}
         </div>
     );

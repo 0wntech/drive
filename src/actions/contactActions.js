@@ -21,8 +21,9 @@ import {
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
+import { compareTwoStrings } from 'string-similarity';
 import idps from '../constants/idps.json';
-import { getWebIdFromRoot } from '../utils/url';
+import { getWebIdFromRoot, getUsernameFromWebId } from '../utils/url';
 
 export const setCurrentContact = (profile) => {
     return { type: SET_CURRENT_CONTACT, payload: profile };
@@ -140,7 +141,7 @@ export const fetchDetailContacts = (contacts) => {
     return Promise.all(requests);
 };
 
-export const searchContact = (query) => {
+export const searchContact = (query, contacts) => {
     return (dispatch) => {
         dispatch({ type: SEARCH_CONTACT });
         const lookups = idps.map((idp) => {
@@ -148,7 +149,7 @@ export const searchContact = (query) => {
             return auth
                 .fetch(url)
                 .then((res) => {
-                    if (res.status === 200) {
+                    if (res.status !== 404) {
                         return url;
                     } else {
                         return null;
@@ -169,6 +170,24 @@ export const searchContact = (query) => {
                 });
                 Promise.all(result)
                     .then((results) => {
+                        results = [...results, ...contacts].sort((a, b) =>
+                            compareTwoStrings(
+                                query,
+                                getUsernameFromWebId(a.webId)
+                            ) *
+                                0.5 +
+                            a.name
+                                ? compareTwoStrings(query, a.name) * 0.5
+                                : 0 -
+                                  (compareTwoStrings(
+                                      query,
+                                      getUsernameFromWebId(b.webId)
+                                  ) *
+                                      0.5 +
+                                  a.name
+                                      ? compareTwoStrings(query, b.name) * 0.5
+                                      : 0)
+                        );
                         dispatch({
                             type: SEARCH_CONTACT_SUCCESS,
                             payload: results,

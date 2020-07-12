@@ -112,7 +112,7 @@
 
 @media (max-width: $screen_m) {
     .container {
-        width: 80%;
+        width: calc(50% - 16px);
     }
 
     .keyLabel {
@@ -122,5 +122,11 @@
 
     .value.active + .value.active {
         margin-top: 1em;
+    }
+}
+
+@media (max-width: $screen_s) {
+    .container {
+        width: calc(100% - 16px);
     }
 }

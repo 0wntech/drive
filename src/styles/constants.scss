@@ -2,7 +2,7 @@
 
 //src https://www.mediaevent.de/css/breakpoints.html
 //breakpoints min width
-$screen-xs: 0px;
+$screen-xs: 320px;
 $screen-s: 567px;
 $screen-m: 768px;
 $screen-l: 992px;
@@ -12,11 +12,11 @@ $light-black: #666666;
 $dark-black: #333333;
 $light-grey: #f4f4f4;
 $dark-grey: #e2e2e6;
-$light-blue: #DEEBFF;
+$light-blue: #deebff;
 $standard-blue: #24b0ff;
 $danger-red: #bd0000;
 $dark-green: #36a510;
-$light-green: #41C811;
+$light-green: #41c811;
 
 // for js import (example see ProfilePage.js)
 :export {

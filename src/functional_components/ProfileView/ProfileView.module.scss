@@ -174,6 +174,7 @@ svg:hover {
 }
 
 .addButton {
+    border: solid $light_green 5px;
     color: #fff;
     width: 100%;
     background-color: $light_green;
@@ -206,7 +207,7 @@ svg:hover {
     }
 
     .headContainer {
-        width: 80%;
+        width: calc(100% - 16px);
     }
 
     .nameLabel {
