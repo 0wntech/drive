@@ -87,9 +87,9 @@ export const ProfilePage = ({
                     color="blue"
                 >
                     <EditIcon
-                        viewBox="3 2 30 30"
-                        width="20"
-                        height="20"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
                         onClick={() => setEditState(!editState)}
                         className={styles.iconWhite}
                         data-test-id="edit"
