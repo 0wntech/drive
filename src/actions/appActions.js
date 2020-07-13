@@ -1,4 +1,7 @@
 import {
+    DEEP_FETCH_CURRENT_ITEM,
+    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
+    DEEP_FETCH_CURRENT_ITEM_FAIL,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
     FETCH_CURRENT_ITEM_FAIL,
@@ -123,6 +126,24 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                     payload: error,
                 })
             );
+    };
+};
+
+export const deepFetchCurrentItem = (folderUrl) => {
+    return (dispatch) => {
+        dispatch({ type: DEEP_FETCH_CURRENT_ITEM });
+        const fileClient = new PodClient({ url: folderUrl });
+        fileClient
+            .deepRead(folderUrl)
+            .then((deepFolder) => {
+                dispatch({
+                    type: DEEP_FETCH_CURRENT_ITEM_SUCCESS,
+                    payload: deepFolder,
+                });
+            })
+            .catch((err) => {
+                dispatch({ type: DEEP_FETCH_CURRENT_ITEM_FAIL, payload: err });
+            });
     };
 };
 

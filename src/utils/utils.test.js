@@ -173,10 +173,10 @@ describe('Testing util functions', () => {
             });
 
             test('convertFilesAndFoldersToArray() should return arrayOfObjects', () => {
-                const converted = fileUtils.convertFilesAndFoldersToArray(
+                const converted = fileUtils.convertFilesAndFoldersToArray({
                     files,
-                    folders
-                );
+                    folders,
+                });
                 expect(converted.length).toBe(5);
                 expect(converted).toContainObject({
                     name: 'test.lol',

@@ -116,25 +116,53 @@ function uploadFile(file, currPath) {
     });
 }
 
+function getFileOrFolderName(url) {
+    const itemFragments = url.split('/');
+    return itemFragments[itemFragments.length - 1] === ''
+        ? itemFragments[itemFragments.length - 2]
+        : itemFragments[itemFragments.length - 1];
+}
+
 // input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
 // returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
-function convertFilesAndFoldersToArray(files, folders) {
-    const fileObjects = files.map((file) => {
-        return {
-            name: file.name ? file.name : file,
-            type: 'file',
-            fileType: getFileType(file),
-        };
-    });
+function convertFilesAndFoldersToArray({ files, folders, items }) {
+    if (items) {
+        const fileObjects = [];
+        const folderObjects = [];
+        items.forEach((item) => {
+            if (item.endsWith('/')) {
+                folderObjects.push({
+                    name: getFileOrFolderName(item),
+                    type: 'folder',
+                    path: item,
+                });
+            } else {
+                fileObjects.push({
+                    name: getFileOrFolderName(item),
+                    type: 'file',
+                    fileType: getFileType(getFileOrFolderName(item)),
+                    path: item,
+                });
+            }
+        });
+        return [...fileObjects, ...folderObjects];
+    } else {
+        const fileObjects = files.map((file) => {
+            return {
+                name: file.name ? file.name : file,
+                type: 'file',
+                fileType: getFileType(file),
+            };
+        });
 
-    const folderObjects = folders.map((folderName) => {
-        return {
-            name: folderName,
-            type: 'folder',
-        };
-    });
-
-    return [...fileObjects, ...folderObjects];
+        const folderObjects = folders.map((folderName) => {
+            return {
+                name: folderName,
+                type: 'folder',
+            };
+        });
+        return [...fileObjects, ...folderObjects];
+    }
 }
 
 // input "fav.ico" returns "ico"
@@ -150,14 +178,6 @@ function getFileType(file) {
     return splittedFile[splittedFile.length - 1];
 }
 
-function isFolder(url) {
-    if (url[url.length - 1] === '/') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 function getFolderUrl(folder) {
     const folderFile = folder.split('/');
     folderFile.pop();
@@ -170,53 +190,6 @@ function deleteItems(items) {
         return deleteRecursively(item);
     });
     return Promise.all(items);
-}
-
-function hasArray(fileList) {
-    for (let i = 0; i < fileList.length; i++) {
-        if (Array.isArray(fileList[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function getFolderTree(folderUrl) {
-    return getFolderContents(folderUrl)
-        .then((folder) => {
-            const fileList = [];
-            for (let i = 0; i < folder.length; i++) {
-                if (isFolder(folder[i])) {
-                    fileList.push(Promise.resolve(getFolderTree(folder[i])));
-                } else {
-                    fileList.push(
-                        new Promise(function (resolve) {
-                            resolve(folder[i]);
-                        })
-                    );
-                }
-            }
-
-            fileList.push(
-                new Promise(function (resolve) {
-                    resolve(folderUrl);
-                })
-            );
-            return Promise.all(fileList);
-        })
-        .then(function (results) {
-            while (hasArray(results)) {
-                const nextResult = results.shift();
-                if (Array.isArray(nextResult)) {
-                    nextResult.forEach((result) => {
-                        results.push(result);
-                    });
-                } else {
-                    results.push(nextResult);
-                }
-            }
-            return results.sort(sortByDepth).reverse();
-        });
 }
 
 function deleteRecursively(url) {
@@ -246,13 +219,6 @@ function deleteRecursively(url) {
             });
         });
     });
-}
-
-function sortByDepth(fileA, fileB) {
-    const depthA = fileA.split('/').length;
-    const depthB = fileB.split('/').length;
-
-    return depthA - depthB;
 }
 
 function getFolderFiles(path) {
@@ -393,13 +359,11 @@ export default {
     getFolderUrl: getFolderUrl,
     getContentType: getContentType,
     getFolderContents: getFolderContents,
-    getFolderTree: getFolderTree,
     uploadFile: uploadFile,
     deleteItems: deleteItems,
     changeAccess: changeAccess,
     getInfo: getInfo,
     renameFile: renameFile,
-    hasArray: hasArray,
     getFolderFiles: getFolderFiles,
     deleteRecursively: deleteRecursively,
     getNotificationFiles: getNotificationFiles,

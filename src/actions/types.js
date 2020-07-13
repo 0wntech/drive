@@ -20,6 +20,11 @@ export const FETCH_CURRENT_ITEM = 'fetch_current_item';
 export const FETCH_CURRENT_ITEM_SUCCESS = 'fetch_current_item_success';
 export const FETCH_CURRENT_ITEM_FAIL = 'fetch_current_item_fail';
 
+export const DEEP_FETCH_CURRENT_ITEM = 'deep_fetch_current_item';
+export const DEEP_FETCH_CURRENT_ITEM_SUCCESS =
+    'deep_fetch_current_item_success';
+export const DEEP_FETCH_CURRENT_ITEM_FAIL = 'deep_fetch_current_item_fail';
+
 export const GET_SESSION = 'get_session';
 export const GET_SESSION_SUCCESS = 'get_session_success';
 export const GET_SESSION_FAIL = 'get_session_fail';

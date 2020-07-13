@@ -110,6 +110,7 @@ const Navigation = ({
     setCurrentPath,
     history,
     currentItem,
+    fileHierarchy,
     contacts,
     currentPath,
     setCurrentContact,
@@ -131,14 +132,10 @@ const Navigation = ({
     const handleChange = (selected) => {
         resetError();
         if (selected.type === 'folder') {
-            setCurrentPath(`${currentPath}${selected.name}/`);
+            setCurrentPath(selected.path + '/');
             navigate('/home', history, dispatch);
         } else if (selected.type === 'file') {
-            navigate(
-                `/file?f=${currentPath + selected.value}`,
-                history,
-                dispatch
-            );
+            navigate(`/file?f=${selected.path}`, history, dispatch);
         } else if (selected.type === 'contact') {
             const { contact } = selected;
             setCurrentContact(contact);
@@ -150,7 +147,6 @@ const Navigation = ({
         clearTimeout(typingTimer);
         if (searchText !== '') {
             searchText = searchText.toLowerCase();
-            console.log(contacts, 'kaka');
             setTypingTimer(
                 setTimeout(
                     () =>
@@ -178,19 +174,38 @@ const Navigation = ({
             contact,
         }));
 
-        if (currentItem && currentItem.files && currentItem.folders) {
-            const filesAndFolders = fileUtils
-                .convertFilesAndFoldersToArray(
-                    currentItem.files,
-                    currentItem.folders
-                )
-                .map((resource) => ({
-                    ...resource,
-                    value: resource.name,
-                }));
-            return contactOptions.length > 0 && contactSearchResult
-                ? [...contactOptions, ...filesAndFolders]
-                : filesAndFolders;
+        if (
+            (currentItem && currentItem.files && currentItem.folders) ||
+            fileHierarchy
+        ) {
+            if (fileHierarchy) {
+                const filesAndFolders = fileUtils
+                    .convertFilesAndFoldersToArray({
+                        items: fileHierarchy,
+                    })
+                    .map((resource) => ({
+                        ...resource,
+                        value: resource.name,
+                        path: resource.path,
+                    }));
+                return contactOptions.length > 0 || contactSearchResult
+                    ? [...contactOptions, ...filesAndFolders]
+                    : filesAndFolders;
+            } else {
+                const filesAndFolders = fileUtils
+                    .convertFilesAndFoldersToArray({
+                        files: currentItem.files,
+                        folders: currentItem.folders,
+                    })
+                    .map((resource) => ({
+                        ...resource,
+                        value: resource.name,
+                        path: currentPath + resource.name,
+                    }));
+                return contactOptions.length > 0 || contactSearchResult
+                    ? [...contactOptions, ...filesAndFolders]
+                    : filesAndFolders;
+            }
         } else {
             return contactOptions;
         }
@@ -253,6 +268,7 @@ const mapStateToProps = (state) => ({
     contactSearchResult: state.contact.contactSearchResult,
     isSearchBarExpanded: state.app.isSearchBarExpanded,
     loadContacts: state.contact.loadContacts,
+    fileHierarchy: state.app.fileHierarchy,
 });
 
 export default connect(mapStateToProps, (dispatch) => ({

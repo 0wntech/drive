@@ -7,6 +7,8 @@ import { ErrorBoundary } from './stateful_components/ErrorBoundary';
 import { login, fetchUser, setWebId, logout } from './actions/userActions';
 import styles from './App.module.scss';
 import NotificationsPage from './stateful_components/NotificationsPage';
+import { deepFetchCurrentItem } from './actions/appActions';
+import { getRootFromWebId } from './utils/url';
 const LoginScreen = lazy(() => import('./functional_components/LoginScreen'));
 const Drive = lazy(() => import('./functional_components/Drive'));
 const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
@@ -30,11 +32,17 @@ export const App = ({
     loadLogin,
     loadUser,
     logout,
+    deepFetchCurrentItem,
 }) => {
     const [errorKey, setError] = useState(0);
     useEffect(() => {
-        login();
-    }, []);
+        if (!session) {
+            login();
+        } else {
+            console.log(getRootFromWebId(session.webId), 'deep');
+            deepFetchCurrentItem(getRootFromWebId(session.webId));
+        }
+    }, [session]);
 
     const resetError = () => {
         setError(errorKey + 1);
@@ -149,5 +157,6 @@ export default withRouter(
         login,
         fetchUser,
         setWebId,
+        deepFetchCurrentItem,
     })(App)
 );

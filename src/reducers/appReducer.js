@@ -1,6 +1,9 @@
 import idps from '../constants/idps';
 
 import {
+    DEEP_FETCH_CURRENT_ITEM,
+    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
+    DEEP_FETCH_CURRENT_ITEM_FAIL,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
     FETCH_CURRENT_ITEM_FAIL,
@@ -71,6 +74,7 @@ const INITIAL_STATE = {
     },
     currentPath: null,
     currentItem: null,
+    fileHierarchy: [],
     notifications: null,
     selectedItems: [],
     selectionMode: false,
@@ -106,6 +110,35 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, selectedItems: [...payload] };
         case TOGGLE_SELECTION_MODE:
             return { ...state, selectionMode: !state.selectionMode };
+        case DEEP_FETCH_CURRENT_ITEM:
+            return {
+                ...state,
+                deepFetchCurrentItem: true,
+                error: {
+                    ...state.error,
+
+                    DEEP_FETCH_CURRENT_ITEM: false,
+                },
+            };
+        case DEEP_FETCH_CURRENT_ITEM_SUCCESS:
+            return {
+                ...state,
+                fileHierarchy: payload,
+                deepFetchCurrentItem: false,
+                error: {
+                    ...state.error,
+                    FETCH_CURRENT_ITEM: false,
+                },
+            };
+        case DEEP_FETCH_CURRENT_ITEM_FAIL:
+            return {
+                ...state,
+                deepFetchCurrentItem: false,
+                error: {
+                    ...state.error,
+                    DEEP_FETCH_CURRENT_ITEM: false,
+                },
+            };
         case FETCH_CURRENT_ITEM:
             return {
                 ...state,
