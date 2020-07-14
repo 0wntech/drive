@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import styles from './FileEditor.module.css';
+import styles from './FileEditor.module.scss';
 
 export const FileEditor = ({ value, onChange, placeholder, edit }) => {
     return (

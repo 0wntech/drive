@@ -94,6 +94,10 @@
 }
 
 @media (max-width: $screen_m) {
+    .search__control:hover {
+        border: initial;
+        box-sizing: initial;
+    }
     .search__option {
         height: 56px !important;
 

@@ -5,7 +5,7 @@ import mime from 'mime';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.scss';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import Breadcrumbs from '../Breadcrumbs';
 import { ItemList } from '../ItemList';
 import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
@@ -24,14 +24,14 @@ import {
     downloadFile,
     uploadFileOrFolder,
 } from '../../actions/appActions';
-import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
+import ToolbarButtons from '../ToolbarButtons';
 import { handleError } from '../../utils/helper';
 import { getParentFolderUrl } from '../../utils/url';
-import Windows from '../Windows/Windows';
-import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
-import BackButton from '../BackButton/BackButton';
-import DriveMenu from '../DriveMenu/DriveMenu';
-import SelectModeButton from '../SelectModeButton/SelectModeButton';
+import Windows from '../Windows';
+import DriveContextMenu from '../DriveContextMenu';
+import BackButton from '../BackButton';
+import DriveMenu from '../DriveMenu';
+import SelectModeButton from '../SelectModeButton';
 
 const Drive = ({
     selectedItems,

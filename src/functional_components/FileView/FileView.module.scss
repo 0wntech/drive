@@ -1,6 +1,8 @@
+@import '../../styles/constants.scss';
+
 .container {
     height: calc(100% - 100px);
-    padding: 1em 6.3%;
+    padding: 1em 10%;
 }
 
 .spinner {
@@ -31,7 +33,12 @@
 }
 
 .file {
+    user-select: text;
+    margin: initial;
     padding: 1em;
+    padding-top: initial;
+    font-family: inherit;
+    white-space: pre-wrap;
 }
 
 .image {
@@ -44,4 +51,23 @@
 
 .editButtons .icon {
     margin-left: 1em;
+}
+
+@media (max-width: $screen_m) {
+    .container {
+        padding: initial;
+        height: calc(100% - 4em);
+        border-radius: initial;
+    }
+
+    .file {
+        width: calc(100% - 2em);
+        margin: initial;
+        overflow-wrap: break-word;
+    }
+
+    .editIconWrapper {
+        width: initial;
+        padding-right: 1em;
+    }
 }

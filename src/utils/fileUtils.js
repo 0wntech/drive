@@ -22,30 +22,6 @@ export const isImageType = (fileType) => {
     return fileType ? fileType.indexOf('image') !== -1 : false;
 };
 
-function getContentType(file) {
-    const mimeTypes = {
-        py: 'application/x-python-code',
-        jpeg: 'image',
-        jpg: 'image',
-        png: 'image',
-        ico: 'image',
-        mp3: 'audio',
-        html: 'text/html',
-        xml: 'text/xml',
-        ttl: 'text/turtle',
-        css: 'text/css',
-        txt: 'text/plain',
-    };
-
-    if (file.split('.').length > 1) {
-        const fileFragments = file.split('.');
-        const fileSuffix = fileFragments[fileFragments.length - 1];
-        return fileSuffix in mimeTypes ? mimeTypes[fileSuffix] : 'unknown';
-    } else {
-        return 'folder';
-    }
-}
-
 const addForDelete = (item, selectedItems) => {
     const newSelection = [...selectedItems];
     if (item && url.parse(item).path !== '/' && !selectedItems.includes(item)) {
@@ -95,7 +71,7 @@ function uploadFile(file, currPath) {
             const filePath = file.webkitRelativePath
                 ? encodeURIComponent(file.webkitRelativePath)
                 : `${file.name}`;
-            const contentType = getContentType(file.name);
+            const contentType = mime.getType(file.name);
             const fileUrl = currPath + filePath;
             console.log(fileUrl, file, 'lala');
             return fetcher
@@ -236,6 +212,17 @@ function getFolderFiles(path) {
     });
 }
 
+function syntaxCheckRdf(input, contentType, url) {
+    contentType = contentType ? contentType : 'text/turtle';
+    const rdfContentTypes = ['application/ld+json', 'text/turtle'];
+    if (contentType && rdfContentTypes.indexOf(contentType) !== -1) {
+        rdf.parse(input, rdf.graph(), url, contentType);
+        return true;
+    } else {
+        return true;
+    }
+}
+
 function getFolderContents(folderUrl) {
     const store = rdf.graph();
 
@@ -357,7 +344,6 @@ function renameFile(item) {
 
 export default {
     getFolderUrl: getFolderUrl,
-    getContentType: getContentType,
     getFolderContents: getFolderContents,
     uploadFile: uploadFile,
     deleteItems: deleteItems,
@@ -375,4 +361,5 @@ export default {
     addForDelete: addForDelete,
     allowFileName: allowFileName,
     isImageType: isImageType,
+    syntaxCheckRdf: syntaxCheckRdf,
 };

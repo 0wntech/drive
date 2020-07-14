@@ -4,20 +4,26 @@ import { withRouter } from 'react-router';
 import classNames from 'classnames';
 import mime from 'mime';
 import { Layout } from '../Layout';
-import styles from './FileView.module.css';
-import { setCurrentPath, updateFile } from '../../actions/appActions';
+import styles from './FileView.module.scss';
+import {
+    setCurrentPath,
+    updateFile,
+    toggleErrorWindow,
+} from '../../actions/appActions';
 import {
     getBreadcrumbsFromUrl,
     getParamsFromUrl,
     convertFileUrlToName,
 } from '../../utils/url';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import fileUtils from '../../utils/fileUtils';
+import Breadcrumbs from '../Breadcrumbs';
 import Edit from '../../assets/svgIcons/Edit';
 import SvgCheck from '../../assets/svgIcons/Check';
 import SvgX from '../../assets/svgIcons/X';
-import { FileEditor } from '../FileEditor/FileEditor';
+import { FileEditor } from '../FileEditor';
 import { isImageType } from '../../utils/fileUtils';
-import BackButton from '../BackButton/BackButton';
+import BackButton from '../BackButton';
+import ErrorWindow from '../ErrorWindow';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -41,6 +47,9 @@ export const FileView = ({
     updatingFile,
     history,
     error,
+    isErrorWindowVisible,
+    errorWindowError,
+    toggleErrorWindow,
 }) => {
     useEffect(() => {
         const fileParam = getParamsFromUrl(window.location.href).f;
@@ -76,8 +85,22 @@ export const FileView = ({
     };
 
     const onSubmit = () => {
-        if (currentItem.body !== newBody) updateFile(currentItem.url, newBody);
-        setEditable(false);
+        let correctSyntax = false;
+        try {
+            correctSyntax = fileUtils.syntaxCheckRdf(
+                newBody,
+                mime.getType(currentItem.url),
+                currentItem.url
+            );
+        } catch (err) {
+            toggleErrorWindow({ action: 'Update', error: err });
+        }
+        if (currentItem.body !== newBody && correctSyntax) {
+            updateFile(currentItem.url, newBody);
+            setEditable(false);
+        } else if (currentItem.body === newBody) {
+            setEditable(false);
+        }
     };
 
     const toolbarLeft = (
@@ -114,7 +137,7 @@ export const FileView = ({
                 </div>
             ) : (
                 <Edit
-                    viewBox="0 0 32 32"
+                    viewBox="0 0 24 24"
                     width="100%"
                     className={styles.icon}
                     onClick={() => setEditable(!isEditable)}
@@ -160,16 +183,13 @@ export const FileView = ({
                             placeholder={getPlaceholder(currentItem.body)}
                         />
                     ) : (
-                        <pre
+                        <div
                             className={classNames(styles.file, {
                                 [styles.enabled]: isEditable,
                             })}
-                            onClick={() => {
-                                setEditable(true);
-                            }}
                         >
                             {newBody === '' ? currentItem.body : newBody}
-                        </pre>
+                        </div>
                     )
                 ) : (
                     <img
@@ -180,6 +200,14 @@ export const FileView = ({
                 )
             ) : null}
             <BackButton />
+            <ErrorWindow
+                visible={isErrorWindowVisible}
+                onClose={toggleErrorWindow}
+                windowName={
+                    errorWindowError && errorWindowError.action + ' Failed'
+                }
+                error={errorWindowError && errorWindowError.error}
+            />
         </Layout>
     );
 };
@@ -192,9 +220,13 @@ const mapStateToProps = (state) => {
         webId: state.user.webId,
         updatingFile: state.app.updatingFile,
         error: state.app.error,
+        isErrorWindowVisible: state.app.isErrorWindowVisible,
+        errorWindowError: state.app.errorWindowError,
     };
 };
 
 export default withRouter(
-    connect(mapStateToProps, { setCurrentPath, updateFile })(FileView)
+    connect(mapStateToProps, { setCurrentPath, updateFile, toggleErrorWindow })(
+        FileView
+    )
 );

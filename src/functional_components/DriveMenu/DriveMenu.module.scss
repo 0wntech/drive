@@ -4,9 +4,12 @@
     display: flex;
     justify-content: center;
     background: rgba($color: #000, $alpha: 0.2);
-    grid-area: main;
     z-index: 4;
-    max-height: calc(100vh - 220px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
     .container {
         padding: 10px 0;

@@ -9,11 +9,13 @@
     cursor: pointer;
     height: 32px;
     width: 32px;
+    border-radius: 50%;
+    transition-property: background;
+    transition-duration: 300ms;
 }
 
 .buttonWrapper:hover {
     background: #e6e6e6;
-    border-radius: 50%;
 }
 
 .toolbarIcon + .toolbarIcon {

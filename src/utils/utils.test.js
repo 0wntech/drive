@@ -138,28 +138,8 @@ describe('Testing util functions', () => {
             });
         });
         describe('Testing file utils', () => {
-            const types = [
-                { file: 'file.py', mimeType: 'application/x-python-code' },
-                { file: 'test.jpeg', mimeType: 'image' },
-                { file: 'test.jpg', mimeType: 'image' },
-                { file: 'filewithNumber.ico', mimeType: 'image' },
-                { file: 'file.mp3', mimeType: 'audio' },
-                { file: 'file.html', mimeType: 'text/html' },
-                { file: 'file.xml', mimeType: 'text/xml' },
-                { file: 'file.ttl', mimeType: 'text/turtle' },
-                { file: 'file.css', mimeType: 'text/css' },
-                { file: 'file.txt', mimeType: 'text/plain' },
-                { file: 'foldername', mimeType: 'folder' },
-            ];
             const files = ['test.lol', 'broken.', 'noDot'];
             const folders = ['doge', 'muchTest'];
-            it('getContentType() returns the correct mime type', () => {
-                types.map((test) => {
-                    expect(fileUtils.getContentType(test.file)).toEqual(
-                        test.mimeType
-                    );
-                });
-            });
 
             test('getFileType(regularFileName) should return file type', () => {
                 expect(fileUtils.getFileType('fav.ico')).toBe('ico');
@@ -201,12 +181,6 @@ describe('Testing util functions', () => {
                     name: 'muchTest',
                     type: 'folder',
                 });
-            });
-
-            it('getContentType() handles multiple dots', () => {
-                expect(fileUtils.getContentType('test.exe.png')).toEqual(
-                    'image'
-                );
             });
 
             test('namingConflict() should return false if the there is no conflict', () => {

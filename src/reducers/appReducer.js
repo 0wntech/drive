@@ -53,6 +53,7 @@ import {
     SET_CURRENT_PATH,
     TOGGLE_SELECTION_MODE,
     LOGIN_SUCCESS,
+    TOGGLE_ERROR_WINDOW,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
@@ -90,6 +91,8 @@ const INITIAL_STATE = {
     creatingFolder: false,
     isSearchBarExpanded: false,
     isDriveMenuVisible: false,
+    isErrorWindowVisible: false,
+    errorWindowError: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -360,6 +363,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isSearchBarExpanded: !state.isSearchBarExpanded,
+            };
+        case TOGGLE_ERROR_WINDOW:
+            return {
+                ...state,
+                isErrorWindowVisible: !state.isErrorWindowVisible,
+                errorWindowError: payload,
             };
         default:
             return state;

@@ -138,3 +138,5 @@ export const REMOVE_APP_FAILURE = 'remove_app_failure';
 export const CLEAR_ERROR = 'clear_error';
 
 export const TOGGLE_SEARCHBAR = 'toggle_searchbar';
+
+export const TOGGLE_ERROR_WINDOW = 'toggle_error_window';

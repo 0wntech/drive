@@ -49,6 +49,7 @@ import {
     CREATE_FOLDER_FAILURE,
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
+    TOGGLE_ERROR_WINDOW,
     UPLOAD_FILE,
     UPLOAD_FILE_FAILURE,
     UPLOAD_FILE_SUCCESS,
@@ -74,6 +75,10 @@ export const setCurrentPath = (newPath, options = {}) => {
             return dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
         }
     };
+};
+
+export const toggleErrorWindow = (error) => {
+    return { type: TOGGLE_ERROR_WINDOW, payload: error };
 };
 
 export const fetchCurrentItem = (itemUrl, folder = false) => {

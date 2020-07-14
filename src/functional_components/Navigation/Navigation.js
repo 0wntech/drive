@@ -33,7 +33,10 @@ const customFilter = (option, searchText) => {
     }
     if (option.data.type === 'contact') {
         if (
-            option.value.toLowerCase().includes(searchText.toLowerCase()) ||
+            (option.data.contact.webId &&
+                option.data.contact.webId
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())) ||
             (option.data.contact.name &&
                 option.data.contact.name
                     .toLowerCase()
@@ -132,7 +135,7 @@ const Navigation = ({
     const handleChange = (selected) => {
         resetError();
         if (selected.type === 'folder') {
-            setCurrentPath(selected.path + '/');
+            setCurrentPath(selected.path);
             navigate('/home', history, dispatch);
         } else if (selected.type === 'file') {
             navigate(`/file?f=${selected.path}`, history, dispatch);
@@ -163,16 +166,24 @@ const Navigation = ({
         const contactSearchDropdownItems = contactSearchResult
             ? contactSearchResult
             : [];
-        const contactsDropdownItems =
-            !contactSearchResult && contacts ? contacts : [];
+        const contactsDropdownItems = contacts ? contacts : [];
         const contactOptions = [
             ...contactSearchDropdownItems,
             ...contactsDropdownItems,
-        ].map((contact) => ({
-            value: getUsernameFromWebId(contact.webId),
-            type: 'contact',
-            contact,
-        }));
+        ]
+            .filter((contact, pos, options) => {
+                return (
+                    options.findIndex(
+                        (possibleDuplicate) =>
+                            contact.webId === possibleDuplicate.webId
+                    ) === pos
+                );
+            })
+            .map((contact) => ({
+                value: getUsernameFromWebId(contact.webId),
+                type: 'contact',
+                contact,
+            }));
 
         if (
             (currentItem && currentItem.files && currentItem.folders) ||

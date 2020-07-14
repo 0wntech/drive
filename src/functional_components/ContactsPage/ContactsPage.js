@@ -51,7 +51,6 @@ const ContactsPage = ({
             hideToolbar={width < screenM}
         >
             <div className={styles.contactsContainer}>
-                <div className={styles.sectionLabel}>Your Contacts:</div>
                 <ContactList
                     onItemClick={(contact) => {
                         setCurrentContact(contact);
@@ -66,7 +65,7 @@ const ContactsPage = ({
                 {contactRecommendations ? (
                     <>
                         <div className={styles.sectionLabel}>
-                            People you might know:
+                            People you might know
                         </div>
                         <ContactList
                             onItemClick={(contact) => {

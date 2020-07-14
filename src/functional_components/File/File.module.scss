@@ -35,11 +35,19 @@
     width: 100%;
     border: solid transparent 2px;
     box-sizing: border-box;
+    border-radius: 20px;
+    transition-property: background-color;
+    transition-duration: 300ms;
+}
+
+.gridCell:hover {
+    background-color: $light_grey;
 }
 
 .selected {
     border: solid 2px #24b0ff;
-    border-radius: 20px;
+    transition-property: border;
+    transition-duration: 300ms;
 }
 
 .labelContainer {
