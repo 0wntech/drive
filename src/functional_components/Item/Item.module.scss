@@ -8,7 +8,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1;
 }
 
 .gridCell {
@@ -40,20 +39,20 @@
 
 .labelContainer {
     width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .label {
+    z-index: 1;
     font-size: 16px;
     line-height: 21px;
-    z-index: 1;
+    padding: 4px 0;
     color: #000000;
     white-space: nowrap;
     text-align: center;
-    overflow: hidden;
     text-overflow: ellipsis;
-    padding: 2px 5px;
+    direction: ltr;
+    transition-property: width;
+    transition-duration: 500ms;
 }
 
 .icon {
@@ -86,6 +85,21 @@
 
 .itemLabel {
     z-index: 3;
+}
+
+@media (min-width: $screen_m) {
+    .label:hover {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 0 4px;
+        position: relative;
+        text-overflow: initial;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min-content;
+        box-sizing: border-box;
+        border: solid $light_grey 4px;
+    }
 }
 
 @media (max-width: $screen_m) {

@@ -6,7 +6,6 @@
 
 .description {
     color: #666;
-    font-size: 0.8rem;
 }
 
 .warning {
@@ -15,7 +14,7 @@
 
 .button {
     cursor: pointer;
-    margin-left: 5px;
+    margin-left: 8px;
 }
 
 .disabled:hover {
@@ -24,7 +23,11 @@
 
 .buttonBar {
     margin-top: 15px;
-    width: 100%;
+    width: calc(100% - 2em);
+    padding: 1em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     display: flex;
     justify-content: flex-end;
 }

@@ -1,6 +1,6 @@
 .container {
     border-radius: 20px;
-    color: #000;
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,7 +28,7 @@
 }
 
 .white:hover {
-    color: #333;
+    color: #666;
 }
 
 .blue:hover {

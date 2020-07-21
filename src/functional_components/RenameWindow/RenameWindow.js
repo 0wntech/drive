@@ -72,7 +72,7 @@ export default function RenameWindow({
                     }}
                     className={styles.button}
                     disabled={!allow}
-                    color="green"
+                    color="blue"
                     size="lg"
                     label="Rename"
                 />
