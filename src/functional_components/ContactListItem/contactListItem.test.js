@@ -3,14 +3,14 @@ import TestRenderer from 'react-test-renderer';
 import ContactListItem from './ContactListItem';
 import { contacts } from '../../../test/fixtures/contacts';
 import { shallow } from 'enzyme';
-import Delete from '../../assets/svgIcons/Delete';
+import Add from '../../assets/svgIcons/Add';
 
 describe('ContactListItem', () => {
     test('should render correctly', () => {
         const contact = contacts[0];
         const webId = 'https://bejow.solid.community/profile/card#me';
         const className = 'test';
-        const removeContact = jest.fn();
+        const addContact = jest.fn();
         const onClick = jest.fn();
 
         const tree = TestRenderer.create(
@@ -18,18 +18,18 @@ describe('ContactListItem', () => {
                 contact={contact}
                 webId={webId}
                 className={className}
-                removeContact={removeContact}
+                addContact={addContact}
                 onClick={onClick}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test('should call removeContact', () => {
+    test('should call addContact', () => {
         const contact = contacts[0];
         const webId = 'https://bejow.solid.community/profile/card#me';
         const className = 'test';
-        const removeContact = jest.fn();
+        const addContact = jest.fn();
         const onClick = jest.fn();
 
         const wrapper = shallow(
@@ -37,19 +37,19 @@ describe('ContactListItem', () => {
                 contact={contact}
                 webId={webId}
                 className={className}
-                removeContact={removeContact}
+                addContact={addContact}
                 onClick={onClick}
             />
         );
-        wrapper.find(Delete).simulate('click', { stopPropagation: () => {} });
-        expect(removeContact.mock.calls.length).toEqual(1);
+        wrapper.find(Add).simulate('click', { stopPropagation: () => {} });
+        expect(addContact.mock.calls.length).toEqual(1);
     });
 
-    test('should not call onClick when clicking on removeContact', () => {
+    test('should not call onClick when clicking on addContact', () => {
         const contact = contacts[0];
         const webId = 'https://bejow.solid.community/profile/card#me';
         const className = 'test';
-        const removeContact = jest.fn();
+        const addContact = jest.fn();
         const onClick = jest.fn();
 
         const wrapper = shallow(
@@ -57,11 +57,11 @@ describe('ContactListItem', () => {
                 contact={contact}
                 webId={webId}
                 className={className}
-                removeContact={removeContact}
+                addContact={addContact}
                 onClick={onClick}
             />
         );
-        wrapper.find(Delete).simulate('click', { stopPropagation: () => {} });
+        wrapper.find(Add).simulate('click', { stopPropagation: () => {} });
         expect(onClick.mock.calls.length).toEqual(0);
     });
 
@@ -69,7 +69,7 @@ describe('ContactListItem', () => {
         const contact = contacts[0];
         const webId = 'https://bejow.solid.community/profile/card#me';
         const className = 'test';
-        const removeContact = jest.fn();
+        const addContact = jest.fn();
         const onClick = jest.fn();
 
         const wrapper = shallow(
@@ -77,11 +77,11 @@ describe('ContactListItem', () => {
                 contact={contact}
                 webId={webId}
                 className={className}
-                removeContact={removeContact}
+                addContact={addContact}
                 onClick={onClick}
             />
         );
-        wrapper.simulate('click');
+        wrapper.find('[data-test-id="contact-picture"]').simulate('click');
         expect(onClick.mock.calls.length).toEqual(1);
     });
 });

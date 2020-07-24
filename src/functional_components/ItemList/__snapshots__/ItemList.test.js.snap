@@ -29,23 +29,16 @@ exports[`ItemList ItemList Snapshot matches the snapshot for folders 1`] = `
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
       ]
     }
-    label="hehe"
+    currentPath="https://example.com/"
+    item="hehe"
     onClick={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
   />
   <MyItem
     contextMenuOptions={
@@ -72,23 +65,16 @@ exports[`ItemList ItemList Snapshot matches the snapshot for folders 1`] = `
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
       ]
     }
-    label="hihi"
+    currentPath="https://example.com/"
+    item="hihi"
     onClick={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
   />
 </div>
 `;
@@ -122,23 +108,16 @@ exports[`ItemList ItemList Snapshot matches the snapshot for items 1`] = `
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
       ]
     }
-    label="haha.jpg"
+    currentPath="https://example.com/"
+    item="haha.jpg"
     onClick={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
   />
 </div>
 `;
@@ -172,23 +151,16 @@ exports[`ItemList ItemList Snapshot matches the snapshot for selected folders 1`
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
       ]
     }
-    label="hehe"
+    currentPath="https://example.com/"
+    item="hehe"
     onClick={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
   />
   <MyItem
     contextMenuOptions={
@@ -215,23 +187,16 @@ exports[`ItemList ItemList Snapshot matches the snapshot for selected folders 1`
         },
         Object {
           "disabled": false,
-          "label": "Manage Access",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": true,
-          "label": "Share*",
-          "onClick": [Function],
-        },
-        Object {
-          "disabled": false,
           "label": "Delete",
           "onClick": [Function],
         },
       ]
     }
-    label="hihi"
+    currentPath="https://example.com/"
+    item="hihi"
     onClick={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
   />
 </div>
 `;

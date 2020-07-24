@@ -38,7 +38,6 @@ const AppOverviewPage = ({
     webId,
     removeApp,
     loadApps,
-    logout,
     error,
 }) => {
     useEffect(() => {
@@ -55,11 +54,7 @@ const AppOverviewPage = ({
     };
 
     return (
-        <Layout
-            label="App Overview"
-            className={styles.grid}
-            isLoading={loadApps}
-        >
+        <Layout label="Apps" className={styles.grid} isLoading={loadApps}>
             <Window
                 visible={dangerWindow}
                 onClose={() => setDangerWindow(false)}

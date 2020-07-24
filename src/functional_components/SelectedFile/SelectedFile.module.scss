@@ -1,0 +1,30 @@
+@import '../../styles/constants.scss';
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px 4px 4px 0;
+    padding: 4px 20px;
+    border: solid $standard_blue 4px;
+    box-sizing: border-box;
+    border-radius: 20px;
+}
+
+.listing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.listing > img {
+    max-width: 24px;
+    height: 20px;
+    margin: 0 10px 0 5px;
+}
+
+.labelText {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

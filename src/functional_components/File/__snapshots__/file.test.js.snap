@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`File should render correctly (image) 1`] = `
-<div
+<UNDEFINED
   className="gridCell"
-  onContextMenu={[Function]}
+  item={
+    Object {
+      "name": "Test.png",
+      "type": "image/png",
+    }
+  }
 >
   <div
     className="container"
@@ -21,26 +26,49 @@ exports[`File should render correctly (image) 1`] = `
           className="thumbnail"
           src="https://bejow.solid.community/1234/Test.png"
         />
-        <img
+        <div
           alt="file"
           className="icon"
-          src="https://owntech.de/favicon.ico"
-        />
+          style={
+            Object {
+              "backgroundImage": "url(https://owntech.de/favicon.ico)",
+            }
+          }
+        >
+          <img
+            className="icon"
+            src="https://owntech.de/favicon.ico"
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }
+          />
+        </div>
       </div>
     </div>
     <div
-      className="label"
+      className="labelContainer"
     >
-      Test.png
+      <div
+        className="label"
+      >
+        Test.png
+      </div>
     </div>
   </div>
-</div>
+</UNDEFINED>
 `;
 
 exports[`File should render correctly (no image) 1`] = `
-<div
+<UNDEFINED
   className="gridCell"
-  onContextMenu={[Function]}
+  item={
+    Object {
+      "name": "Test.png",
+      "type": "image/png",
+    }
+  }
 >
   <div
     className="container"
@@ -58,18 +86,36 @@ exports[`File should render correctly (no image) 1`] = `
           className="thumbnail"
           src="https://bejow.solid.community/1234/Test.png"
         />
-        <img
+        <div
           alt="file"
           className="icon"
-          src="https://owntech.de/favicon.ico"
-        />
+          style={
+            Object {
+              "backgroundImage": "url(https://owntech.de/favicon.ico)",
+            }
+          }
+        >
+          <img
+            className="icon"
+            src="https://owntech.de/favicon.ico"
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }
+          />
+        </div>
       </div>
     </div>
     <div
-      className="label"
+      className="labelContainer"
     >
-      Test.png
+      <div
+        className="label"
+      >
+        Test.png
+      </div>
     </div>
   </div>
-</div>
+</UNDEFINED>
 `;

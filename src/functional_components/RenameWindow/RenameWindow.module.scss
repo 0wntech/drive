@@ -1,0 +1,52 @@
+@import '../../../styles/constants.scss';
+
+.prompt {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #666;
+}
+
+.warning {
+    color: #f00;
+}
+
+.button {
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.disabled:hover {
+    transform: initial;
+}
+
+.buttonBar {
+    margin-top: 15px;
+    width: calc(100% - 2em);
+    padding: 1em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 20px;
+    text-overflow: ellipsis;
+    border: initial;
+    border-radius: initial;
+    border-bottom: 4px solid black;
+    outline: none;
+}
+
+@media (max-width: $screen_m) {
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}

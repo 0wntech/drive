@@ -19,18 +19,19 @@ export const getBreadcrumbsFromUrl = (url) => {
     return newBreadcrumbs;
 };
 
-export const getFileParamsFromUrl = (url) => {
-    const params = urlUtils
-        .parse(url)
-        .search.replace('?', '')
-        .split('&');
+export const getParamsFromUrl = (url) => {
+    const params = urlUtils.parse(url).search.replace('?', '').split('&');
     const paramObj = {};
     params.forEach((param) => {
         const paramName = param.split('=')[0];
         const paramVal = param.split('=')[1];
-        paramObj[paramName] = paramVal;
+        paramObj[paramName] = decodeURIComponent(paramVal);
     });
     return paramObj;
+};
+
+export const getContactRoute = (contact) => {
+    return `/contact?u=${encodeURIComponent(contact.webId)}`;
 };
 
 export const getPreviousPath = (url) => {
@@ -99,8 +100,17 @@ export const sortContainments = (urls) => {
 // converts https://ludwigschubert.solid.community/profile/card#me
 // into ludwigschubert
 export const getUsernameFromWebId = (webId) => {
-    if (isValidUrl(webId)) {
+    if (webId && isValidUrl(webId)) {
         return webId.substring(webId.indexOf('://') + 3, webId.indexOf('.'));
+    }
+};
+
+export const getIdpFromWebId = (webId) => {
+    if (webId && isValidUrl(webId)) {
+        return webId
+            .replace('https://', '')
+            .substr(0, webId.replace('https://', '').indexOf('/'))
+            .replace(getUsernameFromWebId(webId) + '.', '');
     }
 };
 

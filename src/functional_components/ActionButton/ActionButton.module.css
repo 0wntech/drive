@@ -1,11 +1,11 @@
 .container {
     border-radius: 20px;
-    color: #000;
+    color: #333;
     display: flex;
+    justify-content: center;
     align-items: center;
-    font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
-        'Lucida Grande', sans-serif;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .blue {
@@ -23,12 +23,12 @@
 }
 
 .white {
+    font-weight: 400 !important;
     background: #fff;
 }
 
 .white:hover {
-    color: #333;
-    background-color: #ddd;
+    color: #666;
 }
 
 .blue:hover {
@@ -47,21 +47,20 @@
 }
 
 .sm {
-    font-size: 1em;
-    padding: 0.2em 1.5em;
-    font-weight: 500;
+    font-size: 12px;
+    padding: 4px 10px;
 }
 
 .md {
-    font-size: 0.75em;
-    padding: 0.1em 1.5em 0.15em 1.5em;
-    font-weight: 500;
+    font-size: 16px;
+    padding: 8px 24px;
 }
 
 .lg {
-    font-size: 1em;
-    padding: 0.2em 1.5em;
-    font-weight: 400;
+    font-size: 20px;
+    padding: 8px 24px;
+    line-height: 24px;
+    box-sizing: border-box;
 }
 
 .disabled {

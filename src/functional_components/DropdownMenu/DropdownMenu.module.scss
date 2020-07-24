@@ -9,37 +9,58 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
+    padding: 7px;
     cursor: pointer;
 }
 
 .dropdownWrapper {
     display: flex;
-    align-items: center;
     width: 100%;
     height: 100%;
     position: relative;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconWrapper {
+    transition-property: rotate;
+    transition-duration: 200ms;
     display: flex;
     justify-content: center;
     width: 30px;
 }
 
+.container:hover {
+    border: solid $dark_grey 5px;
+    border-radius: 20px;
+    padding: initial;
+}
+
 .container {
     position: absolute;
-    top: 7px;
-    width: 100%;
+    top: 8px;
+    padding: 5px;
+    width: calc(100% - 20px);
     justify-content: center;
     display: flex;
     flex-direction: column;
 }
 
+.active:hover {
+    border-color: $light_black;
+}
+
 .active {
+    padding: initial;
     background: #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+    border: solid $light_black 5px;
     border-radius: 20px;
+    top: 8px;
+    padding: initial;
+
+    .iconWrapper {
+        rotate: 180deg;
+    }
 }
 
 .icon {
@@ -52,31 +73,40 @@
 
 .option {
     padding: 5px 15px;
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
-    font-weight: 300;
     font-size: 16px;
     line-height: 21px;
-    letter-spacing: 0.05em;
 
     cursor: pointer;
 }
 
 .option:last-child {
     color: red;
-    border-radius: 0px 0px 20px 20px;
     padding-bottom: 5px;
-    border-bottom: 0.5px solid #c4c4c4;
 }
 
 .option:hover {
-    background-color: #f2f2f2;
+    background-color: $light_blue;
+}
+
+.option:hover:last-child {
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
 }
 
 @media (max-width: $screen_m) {
     .container {
         top: 0px;
         position: initial;
+        padding: initial;
+        width: 100%;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    .container:hover {
+        border: initial;
+        border-radius: initial;
     }
 
     .iconWrapper {
@@ -92,7 +122,7 @@
     }
 
     .dropdownWrapper {
-        width: initial;
+        width: 100%;
         position: initial;
     }
 }

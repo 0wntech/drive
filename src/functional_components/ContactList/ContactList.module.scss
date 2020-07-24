@@ -1,0 +1,36 @@
+@import '../../../styles/constants.scss';
+
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    width: 100%;
+    min-height: 380px;
+}
+
+.empty {
+    justify-content: center;
+}
+
+.emptyMessage {
+    align-self: center;
+    text-align: center;
+    font-size: 2em;
+    width: 50%;
+}
+
+.itemContainer {
+    width: calc(20% - 10px);
+    margin: 0 0 10px 10px;
+}
+
+@media (max-width: $screen_m) {
+    .itemContainer {
+        width: 100%;
+        margin: initial;
+    }
+
+    .itemContainer + .itemContainer {
+        margin-top: 10px;
+    }
+}

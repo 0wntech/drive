@@ -45,32 +45,36 @@
 }
 
 .keyLabel {
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
     width: calc(150px + 1em);
+    margin-bottom: 8px;
 }
 
 .addLabel {
-    font-family: 'Helvetica Neue Light';
     font-style: normal;
-    font-weight: 300;
     font-size: 18px;
 }
 
 .value {
     width: 100%;
-    /* text-underline-position: under; */
-    font-family: 'Helvetica Neue Light';
-    font-style: normal;
     box-sizing: border-box;
-    font-weight: 300;
-    font-size: 18px;
-    border: none;
-    border-bottom: 2px solid transparent;
+    font-family: inherit;
+    font-size: 1.2em;
+    border: initial;
+    margin-bottom: 2px;
     outline: none;
     resize: none;
+    max-width: 100%;
+}
+
+.value + .value {
+    margin-top: 1em;
+}
+
+.value.active + .value.active {
+    margin-top: 1em;
 }
 
 .value.active::placeholder {
@@ -79,7 +83,9 @@
 }
 
 .value.active {
-    border-bottom: 2px solid black;
+    border-radius: initial;
+    border-bottom: 4px solid $dark_black;
+    margin-bottom: initial;
     /* text-decoration: underline; */
 }
 
@@ -88,9 +94,7 @@
 }
 
 .value.active:focus {
-    outline: none;
-    border-color: #6db7db;
-    caret-color: #6db7db;
+    outline: initial;
     /* text-decoration-color: #6db7db; */
 }
 
@@ -108,7 +112,7 @@
 
 @media (max-width: $screen_m) {
     .container {
-        width: 80%;
+        width: calc(50% - 16px);
     }
 
     .keyLabel {
@@ -116,7 +120,13 @@
         font-size: 16px;
     }
 
-    .value {
-        font-size: 16px;
+    .value.active + .value.active {
+        margin-top: 1em;
+    }
+}
+
+@media (max-width: $screen_s) {
+    .container {
+        width: calc(100% - 16px);
     }
 }

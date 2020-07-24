@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
@@ -8,20 +8,26 @@ import { setCurrentPath } from '../../actions/appActions';
 import { getRootFromWebId, getPreviousPath } from '../../utils/url';
 
 export const BackButton = ({ setCurrentPath, currentPath, webId, history }) => {
-    const previousPath = getPreviousPath(currentPath);
+    const [previousPath, setPreviousPath] = useState(currentPath);
+    useEffect(() => {
+        setPreviousPath(getPreviousPath(currentPath));
+    }, [currentPath]);
+
     return (
-        <div
-            className={classNames(styles.container, {
-                [styles.hidden]:
-                    currentPath && getRootFromWebId(webId) === currentPath,
-            })}
-            onClick={() => {
-                setCurrentPath(previousPath);
-                history.push('/home');
-            }}
-        >
-            Back
-        </div>
+        currentPath && (
+            <div
+                className={classNames(styles.container, {
+                    [styles.hidden]:
+                        currentPath && getRootFromWebId(webId) === currentPath,
+                })}
+                onClick={() => {
+                    setCurrentPath(previousPath);
+                    history.push('/home');
+                }}
+            >
+                Back
+            </div>
+        )
     );
 };
 

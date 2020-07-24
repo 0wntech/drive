@@ -1,0 +1,39 @@
+.fileMarkup li {
+    list-style: none;
+}
+
+.toolbar {
+    grid-template-rows: 5fr;
+}
+
+.toolbarHeader {
+    font-size: 18px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    align-self: center;
+}
+
+.mainArea {
+    grid-area: main;
+    height: 100%;
+    padding: 0 6.3%;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: 40px 23fr;
+    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-areas: 'toolbar toolbar toolbar' 'main main main';
+}
+
+.breadcrumbsContainer {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+.itemList {
+    height: 100%;
+    overflow-y: auto;
+}

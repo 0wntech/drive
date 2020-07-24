@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
-import Drive from './functional_components/Drive';
-import LoginScreen from './stateful_components/LoginScreen';
 import { ErrorBoundary } from './stateful_components/ErrorBoundary';
 import { login, fetchUser, setWebId, logout } from './actions/userActions';
-import PrivateRoute from './functional_components/PrivateRoute';
 import styles from './App.module.scss';
 import NotificationsPage from './stateful_components/NotificationsPage';
-import LandingPage from './functional_components/LandingPage';
-import { ProfilePage } from './functional_components/ProfilePage';
-import { ContactsPage } from './functional_components/ContactsPage';
-import { ContactProfilePage } from './functional_components/ContactProfilePage';
-import AppOverviewPage from './functional_components/AppOverviewPage';
-import FileView from './functional_components/FileView/FileView';
-import SettingsPage from './functional_components/SettingsPage';
+import { deepFetchCurrentItem } from './actions/appActions';
+import { getRootFromWebId } from './utils/url';
+const LoginScreen = lazy(() => import('./functional_components/LoginScreen'));
+const Drive = lazy(() => import('./functional_components/Drive'));
+const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
+const LandingPage = lazy(() => import('./functional_components/LandingPage'));
+const ProfilePage = lazy(() => import('./functional_components/ProfilePage'));
+const ContactsPage = lazy(() => import('./functional_components/ContactsPage'));
+const ContactProfilePage = lazy(() =>
+    import('./functional_components/ContactProfilePage')
+);
+const AppOverviewPage = lazy(() =>
+    import('./functional_components/AppOverviewPage')
+);
+const FileView = lazy(() => import('./functional_components/FileView'));
+const SettingsPage = lazy(() => import('./functional_components/SettingsPage'));
 
 export const App = ({
     login,
@@ -26,27 +32,34 @@ export const App = ({
     loadLogin,
     loadUser,
     logout,
-    history,
+    deepFetchCurrentItem,
 }) => {
     const [errorKey, setError] = useState(0);
     useEffect(() => {
-        login();
-    }, []);
+        if (!session) {
+            login();
+        } else {
+            console.log(getRootFromWebId(session.webId), 'deep');
+            deepFetchCurrentItem(getRootFromWebId(session.webId));
+        }
+    }, [session]);
 
     const resetError = () => {
         setError(errorKey + 1);
     };
 
+    const suspenseView = (
+        <div className={styles.spinner}>
+            <ClassicSpinner
+                size={30}
+                color="#686769"
+                loading={loadLogin || loadUser}
+            />
+        </div>
+    );
+
     if (loadLogin || loadUser) {
-        return (
-            <div className={styles.spinner}>
-                <ClassicSpinner
-                    size={30}
-                    color="#686769"
-                    loading={loadLogin || loadUser}
-                />
-            </div>
-        );
+        return suspenseView;
     } else {
         return (
             <div className={styles.grid}>
@@ -62,59 +75,63 @@ export const App = ({
                 </div>
                 <div className={styles.mainArea}>
                     <ErrorBoundary key={errorKey}>
-                        <Switch>
-                            <Route path="/" exact component={LandingPage} />
-                            <PrivateRoute
-                                session={session}
-                                path="/home"
-                                component={<Drive />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/settings"
-                                component={<SettingsPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/apps"
-                                component={<AppOverviewPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/profile"
-                                component={<ProfilePage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/contacts"
-                                component={<ContactsPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/contact"
-                                component={<ContactProfilePage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/notifications"
-                                component={<NotificationsPage />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/drive"
-                                component={<Drive webId={webId} />}
-                            />
-                            <PrivateRoute
-                                session={session}
-                                path="/file"
-                                component={<FileView />}
-                            />
-                            <Route
-                                session={session}
-                                path="/login"
-                                component={() => <LoginScreen webId={webId} />}
-                            />
-                        </Switch>
+                        <Suspense fallback={suspenseView}>
+                            <Switch>
+                                <Route path="/" exact component={LandingPage} />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/home"
+                                    component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/settings"
+                                    component={<SettingsPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/apps"
+                                    component={<AppOverviewPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/profile"
+                                    component={<ProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/contacts"
+                                    component={<ContactsPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/contact"
+                                    component={<ContactProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/notifications"
+                                    component={<NotificationsPage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/drive"
+                                    component={<Drive webId={webId} />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/file"
+                                    component={<FileView />}
+                                />
+                                <Route
+                                    session={session}
+                                    path="/login"
+                                    component={() => (
+                                        <LoginScreen webId={webId} />
+                                    )}
+                                />
+                            </Switch>
+                        </Suspense>
                     </ErrorBoundary>
                 </div>
             </div>
@@ -140,5 +157,6 @@ export default withRouter(
         login,
         fetchUser,
         setWebId,
+        deepFetchCurrentItem,
     })(App)
 );

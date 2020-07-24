@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Window } from '../Window';
-import styles from './RenameWindow.module.css';
+import styles from './RenameWindow.module.scss';
 import utils from '../../utils/fileUtils';
 import ActionButton from '../ActionButton/ActionButton';
 
@@ -31,19 +31,21 @@ export default function RenameWindow({
                 setNewName('');
                 onClose();
             }}
-            className={className}
+            className={styles.window}
         >
-            <p className={styles.prompt}>Enter a new name:</p>
-            <p className={styles.description}>
-                Please only use valid characters (A-z, 0-9)
-            </p>
-            <input
-                autoFocus
-                className={styles.input}
-                value={newName}
-                onChange={(event) => setNewName(event.target.value)}
-                placeholder={cleanPlaceholder}
-            ></input>
+            <div>
+                <p className={styles.prompt}>Enter a new name:</p>
+                <p className={styles.description}>
+                    Please only use valid characters (A-z, 0-9)
+                </p>
+                <input
+                    autoFocus
+                    className={styles.input}
+                    value={newName}
+                    onChange={(event) => setNewName(event.target.value)}
+                    placeholder={cleanPlaceholder}
+                ></input>
+            </div>
             <div className={styles.buttonBar}>
                 <ActionButton
                     onClick={() => {
@@ -70,7 +72,7 @@ export default function RenameWindow({
                     }}
                     className={styles.button}
                     disabled={!allow}
-                    color="green"
+                    color="blue"
                     size="lg"
                     label="Rename"
                 />

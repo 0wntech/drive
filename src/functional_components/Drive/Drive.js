@@ -5,9 +5,8 @@ import mime from 'mime';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.scss';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import Breadcrumbs from '../Breadcrumbs';
 import { ItemList } from '../ItemList';
-import fileUtils from '../../utils/fileUtils';
 import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
@@ -20,29 +19,39 @@ import {
     openConsentWindow,
     toggleSearchbar,
     toggleDriveMenu,
+    openCreateFolderWindow,
+    toggleSelectionMode,
+    downloadFile,
+    uploadFileOrFolder,
 } from '../../actions/appActions';
-import ToolbarButtons from '../ToolbarButtons/ToolbarButtons';
-import { isCmdPressed, handleError } from '../../utils/helper';
+import ToolbarButtons from '../ToolbarButtons';
+import { handleError } from '../../utils/helper';
 import { getParentFolderUrl } from '../../utils/url';
-import Windows from '../Windows/Windows';
-import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
-import BackButton from '../BackButton/BackButton';
-import DriveMenu from '../DriveMenu/DriveMenu';
+import Windows from '../Windows';
+import DriveContextMenu from '../DriveContextMenu';
+import BackButton from '../BackButton';
+import DriveMenu from '../DriveMenu';
+import SelectModeButton from '../SelectModeButton';
 
 const Drive = ({
     selectedItems,
+    selectionMode,
+    setSelection,
+    toggleSelectionMode,
     currentItem,
     currentPath,
     loadCurrentItem,
     openConsentWindow,
+    openCreateFolderWindow,
     toggleDriveMenu,
     isDriveMenuVisible,
     webId,
     setCurrentPath,
-    setSelection,
     fetchCurrentItem,
     history,
     downloadFile,
+    uploadFileOrFolder,
+    uploadingFiles,
     error,
     loadDeletion,
     loadPaste,
@@ -52,15 +61,12 @@ const Drive = ({
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
         if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
-            if (!currentPath) {
-                currentPath =
-                    appState && appState.currentPath
-                        ? appState.currentPath
-                        : getRootFromWebId(webId);
-                setCurrentPath(currentPath);
+            if (!currentPath && appState && appState.currentPath) {
+                setCurrentPath(appState.currentPath);
+            } else if (!currentPath && webId) {
+                setCurrentPath(getRootFromWebId(webId));
             } else {
-                currentPath = getParentFolderUrl(currentPath);
-                setCurrentPath(currentPath);
+                setCurrentPath(getParentFolderUrl(currentPath));
             }
         }
         return () => {
@@ -72,18 +78,17 @@ const Drive = ({
                 })
             );
         };
-    }, []);
+    }, [currentPath]);
     handleError(error);
     // Event Handlers
-    const loadFile = (url, event = {}) => {
+    const loadFile = (url) => {
         if (url.endsWith('/')) {
             url = url.substr(0, url.lastIndexOf('/'));
         }
-        if (isCmdPressed(event) && selectedItems.includes(url) === false) {
-            const newSelection = [...selectedItems];
-            newSelection.push(url);
+        if (selectionMode && !selectedItems.includes(url)) {
+            const newSelection = [...selectedItems, url];
             setSelection(newSelection);
-        } else if (isCmdPressed(event) && selectedItems.includes(url)) {
+        } else if (selectionMode && selectedItems.includes(url)) {
             const newSelection = selectedItems.filter((item) => item !== url);
             setSelection(newSelection);
         } else {
@@ -91,13 +96,12 @@ const Drive = ({
         }
     };
 
-    const loadFolder = (path, event = {}) => {
-        if (loadCurrentItem) return;
-        if (isCmdPressed(event) && selectedItems.includes(path)) {
-            const newSelection = selectedItems.filter((item) => item !== path);
-            setSelection(newSelection);
-        } else if (isCmdPressed(event) && !selectedItems.includes(path)) {
+    const loadFolder = (path) => {
+        if (selectionMode && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];
+            setSelection(newSelection);
+        } else if (selectionMode && selectedItems.includes(path)) {
+            const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else {
             setCurrentPath(path);
@@ -105,43 +109,25 @@ const Drive = ({
         }
     };
 
-    const uploadFile = (e) => {
-        const filePath =
-            e.target.files && e.target.files.length ? e.target.files[0] : null;
-        if (filePath) {
-            fileUtils.uploadFile(filePath, currentPath, () => {
-                fetchCurrentItem(currentPath);
-            });
-        }
-    };
-
     const clearSelection = (e) => {
         if (
             typeof e.target.className === 'string' &&
-            !e.target.className.includes('Item_') &&
-            !e.target.className.includes('File_') &&
-            e.target.className !== ''
+            (e.target.className.includes('Drive_') ||
+                e.target.className.includes('Layout_') ||
+                e.target.className.includes('ItemList_'))
         ) {
             console.log('Emptying selection');
             setSelection([]);
+            if (selectionMode) toggleSelectionMode();
         }
     };
 
     const handleClick = (e) => {
-        if (isSearchBarExpanded) {
-            toggleSearchbar();
-            e.stopPropagation();
-        } else {
-            clearSelection(e);
-        }
+        clearSelection(e);
     };
 
     const downloadItems = () => {
         selectedItems.forEach((item) => {
-            const download =
-                webId.replace('profile/card#me', 'download?path=') +
-                url.parse(item).pathname;
-            window.open(download.replace(/\/+$/, ''));
             const file = mime.getType(item);
             if (file) {
                 downloadFile(item);
@@ -154,34 +140,18 @@ const Drive = ({
         });
     };
 
-    const uploadCurrentItem = (e) => {
-        const files = e.target.files;
-        if (files && files.length) {
-            Promise.all(
-                files.map((file) => {
-                    return fileUtils.uploadCurrentItemOrFile(
-                        files[file],
-                        currentPath +
-                            encodeURIComponent(files[file].webkitRelativePath)
-                    );
-                })
-            ).then((response) => {
-                fetchCurrentItem(currentPath);
-            });
-        }
-    };
-
     // toolbar fragments
     const toolbarRight = (
         <ToolbarButtons
-            onFolderUpload={uploadCurrentItem}
+            onFolderUpload={uploadFileOrFolder}
             onDownload={downloadItems}
-            uploadFile={uploadFile}
+            onFileUpload={uploadFileOrFolder}
             onDelete={() => {
                 if (selectedItems.length !== 0) {
                     openConsentWindow(selectedItems);
                 }
             }}
+            onCreateFolder={openCreateFolderWindow}
             onMore={toggleDriveMenu}
         />
     );
@@ -213,7 +183,9 @@ const Drive = ({
             })}
             label="Drive"
             onClick={handleClick}
-            isLoading={loadDeletion || loadPaste || loadCurrentItem}
+            isLoading={
+                loadDeletion || loadPaste || loadCurrentItem || uploadingFiles
+            }
         >
             <DriveMenu
                 isDriveMenuVisible={isDriveMenuVisible}
@@ -226,7 +198,8 @@ const Drive = ({
             >
                 <div className={styles.container}>
                     <Windows />
-                    {currentItem &&
+                    {currentPath &&
+                    currentItem &&
                     currentItem.folders &&
                     currentItem.files &&
                     !noFilesAndFolders() ? (
@@ -261,6 +234,7 @@ const Drive = ({
                         </p>
                     )}
                     <BackButton />
+                    <SelectModeButton />
                 </div>
             </DriveContextMenu>
         </Layout>
@@ -272,6 +246,7 @@ const mapStateToProps = (state) => {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         selectedItems: state.app.selectedItems,
+        selectionMode: state.app.selectionMode,
         webId: state.user.webId,
         clipboard: state.app.clipboard,
         error: state.app.error,
@@ -280,17 +255,22 @@ const mapStateToProps = (state) => {
         loadCurrentItem: state.app.loadCurrentItem,
         isSearchBarExpanded: state.app.isSearchBarExpanded,
         isDriveMenuVisible: state.app.isDriveMenuVisible,
+        uploadingFiles: state.app.uploadingFiles,
     };
 };
 
 export default withRouter(
     connect(mapStateToProps, {
         openConsentWindow,
+        openCreateFolderWindow,
         toggleDriveMenu,
         setCurrentPath,
         sendNotification,
         fetchCurrentItem,
         setSelection,
+        toggleSelectionMode,
         toggleSearchbar,
+        downloadFile,
+        uploadFileOrFolder,
     })(Drive)
 );

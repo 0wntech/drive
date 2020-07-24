@@ -1,0 +1,98 @@
+@import '../../../styles/constants.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    border: 4px solid $dark_grey;
+    box-sizing: border-box;
+    border-radius: 20px;
+    height: 180px;
+    padding: 1em;
+    position: relative;
+}
+
+.imageContainer {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+}
+
+.iconContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.iconContainer:hover ellipse {
+    fill: $danger_red;
+}
+
+.iconContainer ellipse {
+    fill: $light_grey;
+}
+
+.iconContainer.added:hover ellipse {
+    fill: #36a510;
+}
+
+.iconContainer.added ellipse {
+    fill: #36c510;
+}
+
+.image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+.nameContainer {
+    white-space: pre-wrap;
+    word-break: keep-all;
+    text-align: center;
+    margin-top: 0.5em;
+    max-width: 80%;
+    cursor: pointer;
+}
+
+@media (max-width: $screen_m) {
+    .container {
+        flex-direction: row;
+        justify-content: flex-start;
+        height: 80px;
+    }
+
+    .imageContainer {
+        width: 40px;
+        height: 40px;
+    }
+
+    .image {
+        width: 40px;
+        height: 40px;
+    }
+
+    .iconContainer {
+        top: initial;
+        display: flex;
+        align-items: center;
+    }
+
+    .defaultIcon {
+        height: 40px;
+        width: 40px;
+        font-size: 1em;
+        line-height: 30px;
+    }
+
+    .nameContainer {
+        margin-top: initial;
+        margin-left: 1em;
+        text-align: left;
+    }
+}

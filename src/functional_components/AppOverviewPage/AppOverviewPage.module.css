@@ -4,14 +4,16 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 2fr 8fr 2fr;
-    grid-template-areas: '. applist .';
+    grid-template-areas: 'applist applist applist';
+    padding: 16px;
 }
 
 .windowButtonContainer {
     display: flex;
     width: 100%;
     justify-content: flex-end;
+    position: relative;
+    bottom: 1em;
 }
 
 .button {

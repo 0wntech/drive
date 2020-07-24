@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import TextareaAutosize from 'react-textarea-autosize';
 import styles from './KeyValuePair.module.scss';
 
 const SingleValue = ({
@@ -16,15 +16,22 @@ const SingleValue = ({
     const [fallbackValue, setFallbackValue] = useState(value);
 
     const onFocusOut = (e) => {
-        // restore default if no change is made
-        if (value === '' && editable) {
-            setValue(fallbackValue);
-        }
         // set new fallback value
-        if (value !== '') {
-            setFallbackValue(e.target.value);
-        }
+        setFallbackValue(e.target.value);
     };
+
+    if ((!value || value === '') && !editable) {
+        return null;
+    } else if (!editable) {
+        return (
+            <div
+                className={classNames(styles.value, className)}
+                data-test-id={`${dataKey}`}
+            >
+                {value}
+            </div>
+        );
+    }
 
     return maxInput ? (
         <TextareaAutosize
@@ -51,9 +58,7 @@ const SingleValue = ({
             value={value}
             placeholder={fallbackValue ? fallbackValue : placeholder}
             onBlur={onFocusOut}
-            onChange={(e) => {
-                if (e.target.value.length < 256) setValue(e.target.value);
-            }}
+            onChange={(e) => setValue(e.target.value)}
         />
     );
 };

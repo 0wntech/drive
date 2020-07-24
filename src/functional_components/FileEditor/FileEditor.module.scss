@@ -1,0 +1,23 @@
+@import '../../styles/constants.scss';
+
+.editor {
+    padding: 1em;
+    padding-top: initial;
+    font-family: inherit;
+    font-size: 1em;
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 96%;
+    overflow: auto;
+    resize: none;
+    margin: initial;
+}
+
+@media (max-width: $screen_m) {
+    .editor {
+        width: calc(100% - 2em);
+        margin: initial;
+        overflow-wrap: break-word;
+    }
+}

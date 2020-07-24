@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../SelectedFile/SelectedFile.module.css';
-import fileIcon from '../../assets/icons/File.png';
-import folderIcon from '../../assets/icons/Folder.png';
+import styles from '../SelectedFile/SelectedFile.module.scss';
+import fileIcon from '../../assets/icons/FileIconSm.png';
+import folderIcon from '../../assets/icons/FolderSm.png';
 
 export default function SelectedFile({ item }) {
     const fileFragments = item.split('/');

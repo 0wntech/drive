@@ -8,8 +8,7 @@
 
 body {
     margin: 0;
-    font-family: 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
-        'Lucida Grande', sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -29,11 +28,6 @@ body {
     background-color: #e2e2e6;
 }
 
-p,
-div {
-    font-family: 'Helvetica Neue Light';
-}
-
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
@@ -47,8 +41,20 @@ body,
 html,
 #root {
     height: 100%;
+    overflow: hidden;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 }
 
 #root {
     background-color: #f4f4f4;
+}
+
+@media (max-width: 768px) {
+    #root {
+        background-color: #ffffff;
+    }
 }

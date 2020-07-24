@@ -1,4 +1,4 @@
-@import '../../styles/constants.scss';
+@import '../../../styles/constants.scss';
 
 .fileMarkup li {
     list-style: none;
@@ -9,7 +9,6 @@
 }
 
 .toolbarHeader {
-    letter-spacing: 0.05em;
     font-size: 18px;
     position: absolute;
     width: 100%;
@@ -20,7 +19,7 @@
 .mainArea {
     grid-area: main;
     height: 100%;
-    padding: 40px 6.3%;
+    padding: 0 16px;
 }
 
 .emptyMessage {
@@ -31,13 +30,14 @@
 
 .grid {
     display: grid;
-    grid-template-rows: 1fr;
+    grid-template-rows: 23fr;
     grid-template-columns: 1fr 10fr 1fr;
     grid-template-areas: 'main main main';
 }
 
-.noScroll {
-    overflow: hidden !important;
+.container {
+    overflow-y: auto;
+    padding-top: 1em;
 }
 
 .breadcrumbsContainer {
@@ -46,20 +46,21 @@
     align-items: center;
 }
 
-.itemList {
-    height: 100%;
-    overflow-y: auto;
-}
-
 @media (max-width: $screen_m) {
     .mainArea {
+        overflow-y: auto;
         padding: 0 16px;
-        overflow: auto;
     }
 
     .grid {
         grid-template-rows: 1fr;
         grid-template-columns: 12fr;
         grid-template-areas: 'main';
+    }
+
+    .container {
+        overflow-y: initial;
+        padding-top: initial;
+        padding-bottom: 1em;
     }
 }

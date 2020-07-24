@@ -20,6 +20,11 @@ export const FETCH_CURRENT_ITEM = 'fetch_current_item';
 export const FETCH_CURRENT_ITEM_SUCCESS = 'fetch_current_item_success';
 export const FETCH_CURRENT_ITEM_FAIL = 'fetch_current_item_fail';
 
+export const DEEP_FETCH_CURRENT_ITEM = 'deep_fetch_current_item';
+export const DEEP_FETCH_CURRENT_ITEM_SUCCESS =
+    'deep_fetch_current_item_success';
+export const DEEP_FETCH_CURRENT_ITEM_FAIL = 'deep_fetch_current_item_fail';
+
 export const GET_SESSION = 'get_session';
 export const GET_SESSION_SUCCESS = 'get_session_success';
 export const GET_SESSION_FAIL = 'get_session_fail';
@@ -29,6 +34,7 @@ export const FETCH_NOTIFICATIONS_SUCCESS = 'fetch_notifications_success';
 export const FETCH_NOTIFICATIONS_FAILURE = 'fetch_notifications_failure';
 
 export const SET_SELECTION = 'set_selection';
+export const TOGGLE_SELECTION_MODE = 'toggle_selection_mode';
 
 export const SEND_NOTIFICATION = 'send_notification';
 export const SEND_NOTIFICATION_SUCCESS = 'send_notification_success';
@@ -113,9 +119,17 @@ export const FETCH_CONTACT_RECOMMENDATIONS_SUCCESS =
 export const FETCH_CONTACT_RECOMMENDATIONS_FAILURE =
     'fetch_contact_recommendations_failure';
 
+export const FETCH_CONTACT = 'fetch_contact';
+export const FETCH_CONTACT_SUCCESS = 'fetch_contact_success';
+export const FETCH_CONTACT_FAILURE = 'fetch_contact_failure';
+
 export const DOWNLOAD_FILE = 'download_file';
 export const DOWNLOAD_FILE_SUCCESS = 'download_file_success';
 export const DOWNLOAD_FILE_FAILURE = 'download_file_failure';
+
+export const UPLOAD_FILE = 'upload_file';
+export const UPLOAD_FILE_SUCCESS = 'upload_file_success';
+export const UPLOAD_FILE_FAILURE = 'upload_file_failure';
 
 export const REMOVE_APP = 'remove_app';
 export const REMOVE_APP_SUCCESS = 'remove_app_success';
@@ -124,3 +138,5 @@ export const REMOVE_APP_FAILURE = 'remove_app_failure';
 export const CLEAR_ERROR = 'clear_error';
 
 export const TOGGLE_SEARCHBAR = 'toggle_searchbar';
+
+export const TOGGLE_ERROR_WINDOW = 'toggle_error_window';

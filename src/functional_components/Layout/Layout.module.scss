@@ -1,4 +1,4 @@
-@import '../../styles/constants.scss';
+@import '../../../styles/constants.scss';
 
 .spinner {
     position: absolute;
@@ -20,18 +20,19 @@
 .grid.hideToolbar {
     grid-template-areas: 'content';
     grid-template-rows: 1fr;
+    grid-template-columns: 100%;
+    width: 100%;
 }
 
 .toolbarArea {
     display: grid;
     grid-area: toolbar;
-    background-color: #e2e2e6;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     width: 100%;
     height: 40px;
-    grid-template-columns: 5fr 2fr 4fr 1fr;
-    grid-template-areas: 'left label right .';
+    grid-template-columns: 16px 4fr 4fr 4fr 16px;
+    grid-template-areas: '. left label right .';
     align-items: center;
 }
 
@@ -49,7 +50,6 @@
 }
 
 .header {
-    letter-spacing: 0.05em;
     font-size: 18px;
     width: 100%;
     grid-area: label;
@@ -70,7 +70,6 @@
     .grid {
         grid-template-rows: 56px 1fr;
         border-radius: initial;
-        overflow-y: auto;
     }
 
     .toolbarArea {
@@ -78,6 +77,8 @@
         border-top-left-radius: initial;
         border-top-right-radius: initial;
         height: 100%;
+        display: flex;
+        justify-content: space-between;
     }
 
     .toolbarLeft {
@@ -85,7 +86,7 @@
     }
 
     .toolbarRight {
-        grid-area: label;
+        width: 100%;
     }
 
     .header {

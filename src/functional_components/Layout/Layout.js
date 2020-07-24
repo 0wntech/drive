@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Helmet } from 'react-helmet';
 import styles from './Layout.module.scss';
 import { ClassicSpinner } from 'react-spinners-kit';
 
@@ -16,39 +17,48 @@ export const Layout = ({
     isLoading,
 }) => {
     return (
-        <div
-            className={classNames(styles.grid, {
-                [styles.hideToolbar]: hideToolbar,
-            })}
-        >
-            <div className={classNames(styles.toolbarArea, toolbarClassName)}>
-                <div className={styles.toolbarLeft}>{toolbarChildrenLeft}</div>
-                {label && (
-                    <div className={styles.header} data-test-id="header">
-                        {label}
+        <>
+            <Helmet>
+                <title>{label ? `${label} - owndrive` : 'owndrive'}</title>
+            </Helmet>
+            <div
+                className={classNames(styles.grid, {
+                    [styles.hideToolbar]: hideToolbar,
+                })}
+            >
+                <div
+                    className={classNames(styles.toolbarArea, toolbarClassName)}
+                >
+                    <div className={styles.toolbarLeft}>
+                        {toolbarChildrenLeft}
                     </div>
-                )}
-                <div className={styles.toolbarRight}>
-                    {toolbarChildrenRight}
+                    {label && (
+                        <div className={styles.header} data-test-id="header">
+                            {label}
+                        </div>
+                    )}
+                    <div className={styles.toolbarRight}>
+                        {toolbarChildrenRight}
+                    </div>
+                </div>
+                <div
+                    onClick={onClick}
+                    className={classNames(styles.content, className)}
+                >
+                    {isLoading ? (
+                        <div className={styles.spinner}>
+                            <ClassicSpinner
+                                size={30}
+                                color="#686769"
+                                loading={isLoading}
+                            />
+                        </div>
+                    ) : (
+                        children
+                    )}
                 </div>
             </div>
-            <div
-                onClick={onClick}
-                className={classNames(styles.content, className)}
-            >
-                {isLoading ? (
-                    <div className={styles.spinner}>
-                        <ClassicSpinner
-                            size={30}
-                            color="#686769"
-                            loading={isLoading}
-                        />
-                    </div>
-                ) : (
-                    children
-                )}
-            </div>
-        </div>
+        </>
     );
 };
 

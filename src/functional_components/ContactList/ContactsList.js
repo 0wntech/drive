@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './ContactList.module.css';
+import classNames from 'classnames';
+import styles from './ContactList.module.scss';
 import { ContactListItem } from '../ContactListItem';
-import { RecommendationItem } from '../RecommendationItem';
 
 const ContactList = ({
     contacts,
@@ -10,41 +10,42 @@ const ContactList = ({
     webId,
     removeContact,
     addContact,
+    alreadyContacts,
     recommended,
 }) => {
     const renderContact = (contact) => {
-        if (recommended) {
-            return (
-                <RecommendationItem
-                    addContact={() => addContact(webId, contact.webId)}
-                    onClick={(contact) => {
-                        onItemClick(contact);
-                    }}
-                    contact={contact}
-                />
-            );
-        } else {
-            return (
-                <ContactListItem
-                    removeContact={() => removeContact(webId, contact.webId)}
-                    onClick={(contact) => {
-                        onItemClick(contact);
-                    }}
-                    contact={contact}
-                />
-            );
-        }
+        return (
+            <ContactListItem
+                addContact={() => addContact(webId, contact)}
+                onClick={(contact) => {
+                    onItemClick(contact);
+                }}
+                contact={contact}
+                removeContact={() => removeContact(webId, contact)}
+                isContact={alreadyContacts}
+            />
+        );
     };
 
     return (
-        <div className={styles.container}>
-            {contacts
-                ? contacts.map((contact) => (
-                      <div key={contact.webId} className={styles.itemContainer}>
-                          {renderContact(contact)}
-                      </div>
-                  ))
-                : null}
+        <div
+            className={classNames(styles.container, {
+                [styles.empty]: !contacts || contacts.length === 0,
+            })}
+        >
+            {contacts ? (
+                contacts.map((contact) => (
+                    <div key={contact.webId} className={styles.itemContainer}>
+                        {renderContact(contact)}
+                    </div>
+                ))
+            ) : (
+                <div className={styles.emptyMessage}>
+                    You don't have any{' '}
+                    {recommended ? 'contact recommendations' : 'contacts'} yet.
+                    Try searching for a contact through the search bar.
+                </div>
+            )}
         </div>
     );
 };

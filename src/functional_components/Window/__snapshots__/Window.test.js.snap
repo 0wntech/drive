@@ -2,7 +2,8 @@
 
 exports[`Window should render correctly 1`] = `
 <div
-  className="chicken"
+  className="wrapper"
+  onClick={[Function]}
 >
   <div
     className="container"
@@ -31,7 +32,7 @@ exports[`Window should render correctly 1`] = `
       </svg>
     </div>
     <div
-      className="body"
+      className="body chicken"
     >
       <div>
         I'm a child
@@ -41,9 +42,5 @@ exports[`Window should render correctly 1`] = `
       </button>
     </div>
   </div>
-  <div
-    className="opacity"
-    onClick={[MockFunction]}
-  />
 </div>
 `;

@@ -10,7 +10,11 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
                   // breadcrumb in the middle
                   let currentUrl = root;
                   for (let i = 0; i < currentIndex; i++) {
-                      currentUrl += breadcrumbs[i + 1];
+                      currentUrl +=
+                          '/' +
+                          encodeURIComponent(
+                              breadcrumbs[i + 1].replace('/', '')
+                          );
                   }
                   const currentLabel = currentBreadcrumb.replace('/', '');
                   if (currentIndex + 1 === breadcrumbs.length) {

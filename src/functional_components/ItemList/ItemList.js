@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import fileUtils from '../../utils/fileUtils';
 import { getRootFromWebId } from '../../utils/url';
@@ -13,6 +13,7 @@ import {
     openCreateFileWindow,
     openCreateFolderWindow,
     openRenameWindow,
+    toggleSelectionMode,
 } from '../../actions/appActions';
 
 const ItemList = ({
@@ -20,10 +21,11 @@ const ItemList = ({
     clipboard,
     currentPath,
     selectedItems,
+    selectionMode,
+    toggleSelectionMode,
     items,
     image,
     onItemClick,
-    currPath,
     isFile = false,
     setSelection,
     copyItems,
@@ -31,6 +33,28 @@ const ItemList = ({
     openConsentWindow,
     openRenameWindow,
 }) => {
+    const [mouseHoldTimer, setMouseHoldTimer] = useState(null);
+    const [longPressed, setLongPressed] = useState(false);
+
+    // Event Handlers
+    const handleMouseDown = (item) => {
+        if (!selectionMode) {
+            setMouseHoldTimer(
+                setTimeout(() => {
+                    if (!selectedItems.includes(item)) {
+                        setSelection([...selectedItems, item]);
+                        setLongPressed(true);
+                        toggleSelectionMode();
+                    }
+                }, 1000)
+            );
+        }
+    };
+
+    const handleMouseUp = () => {
+        clearTimeout(mouseHoldTimer);
+    };
+
     const CONTEXTMENU_OPTIONS = [
         {
             label: 'Info',
@@ -60,16 +84,16 @@ const ItemList = ({
             onClick: (item) => openRenameWindow(item),
             disabled: false,
         },
-        {
-            label: 'Manage Access',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: false,
-        },
-        {
-            label: 'Share*',
-            onClick: (item) => fileUtils.changeAccess(item),
-            disabled: true,
-        },
+        // {
+        //     label: 'Manage Access',
+        //     onClick: (item) => fileUtils.changeAccess(item),
+        //     disabled: false,
+        // },
+        // {
+        //     label: 'Share*',
+        //     onClick: (item) => fileUtils.changeAccess(item),
+        //     disabled: true,
+        // },
         {
             label: 'Delete',
             onClick: (item) => {
@@ -85,37 +109,52 @@ const ItemList = ({
 
     const itemComponents = items
         ? items.map((item, index) => {
+              const itemPath =
+                  currentPath + (item.name ? item.name : item + '/');
+
               return isFile ? (
                   <File
                       selectedItem={
-                          selectedItems.includes(currPath + item.name)
+                          selectedItems.includes(currentPath + item.name)
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
-                      onClick={(event) => {
-                          onItemClick(currPath + item.name, event);
-                      }}
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
                       file={item}
-                      currPath={currPath}
+                      currentPath={currentPath}
+                      onClick={(e) => {
+                          if (!longPressed) {
+                              onItemClick(itemPath, e);
+                          } else {
+                              setLongPressed(false);
+                          }
+                      }}
+                      onMouseUp={(e) => handleMouseUp(itemPath, e)}
+                      onMouseDown={() => handleMouseDown(itemPath)}
                   />
               ) : (
                   <Item
                       selectedItem={
-                          selectedItems.includes(currPath + item + '/')
+                          selectedItems.includes(currentPath + item + '/')
                               ? true
                               : undefined
                       }
                       key={item + index}
                       image={image}
-                      onClick={(event) =>
-                          onItemClick(currPath + item + '/', event)
-                      }
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
-                      currPath={currPath}
-                      label={decodeURIComponent(item)}
+                      currentPath={currentPath}
+                      item={item}
+                      onClick={(e) => {
+                          if (!longPressed) {
+                              onItemClick(itemPath, e);
+                          } else {
+                              setLongPressed(false);
+                          }
+                      }}
+                      onMouseUp={(e) => handleMouseUp(itemPath, e)}
+                      onMouseDown={() => handleMouseDown(itemPath)}
                   />
               );
           })
@@ -130,6 +169,7 @@ const mapStateToProps = (state) => {
         clipboard: state.app.clipboard,
         currentPath: state.app.currentPath,
         selectedItems: state.app.selectedItems,
+        selectionMode: state.app.selectionMode,
     };
 };
 
@@ -141,4 +181,5 @@ export default connect(mapStateToProps, {
     openConsentWindow,
     openCreateFileWindow,
     openCreateFolderWindow,
+    toggleSelectionMode,
 })(ItemList);

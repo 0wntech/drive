@@ -23,7 +23,6 @@
 
 .slogan {
     font-size: 2em;
-    font-weight: 400;
     color: #000;
     text-align: center;
 }
@@ -34,6 +33,10 @@
     align-items: center;
     margin-top: 1em;
     font-size: 2rem;
+}
+
+.registerButton {
+    margin-left: 0.5em;
 }
 
 .buttons p {

@@ -3,21 +3,16 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import defaultIcon from '../../assets/icons/defaultUserPic.png';
 import styles from './NavbarMenu.module.scss';
-import ActionButton from '../ActionButton/ActionButton';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { setCurrentPath } from '../../actions/appActions';
 import { logout } from '../../actions/userActions';
 import { getRootFromWebId } from '../../utils/url';
-import { navigate } from '../../utils/helper';
+import { navigate, getInitialsFromUser } from '../../utils/helper';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
 import SvgSettings from '../../assets/svgIcons/Settings';
-
-const onRegister = () => {
-    window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
-};
+import DefaultIcon from '../DefaultIcon/DefaultIcon';
 
 export const NavbarMenu = ({
     className,
@@ -64,13 +59,14 @@ export const NavbarMenu = ({
                 <div
                     className={styles.settings}
                     onClick={(e) => {
+                        e.stopPropagation();
                         setDropdownExpanded(false);
                         navigate('/settings', history, dispatch, resetError);
                     }}
                 >
                     <SvgSettings />
                 </div>
-            ) : (
+            ) : user && user.picture ? (
                 <div
                     data-test-id="navigation-profile-picture"
                     onClick={(e) => {
@@ -80,10 +76,18 @@ export const NavbarMenu = ({
                     }}
                     className={styles.profileIcon}
                     style={{
-                        backgroundImage: `url('${
-                            user.picture ? user.picture : defaultIcon
-                        }')`,
+                        backgroundImage: `url('${user.picture}')`,
                     }}
+                />
+            ) : (
+                <DefaultIcon
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setDropdownExpanded(false);
+                        navigate('/profile', history, dispatch, resetError);
+                    }}
+                    className={styles.defaultProfileIcon}
+                    initials={getInitialsFromUser(user)}
                 />
             )}
 
@@ -102,14 +106,7 @@ export const NavbarMenu = ({
                     isExpanded={isDropdownExpanded}
                     setExpanded={setDropdownExpanded}
                 />
-            ) : (
-                <ActionButton
-                    size="sm"
-                    label="Register"
-                    color="green"
-                    onClick={onRegister}
-                />
-            )}
+            ) : null}
         </div>
     );
 };

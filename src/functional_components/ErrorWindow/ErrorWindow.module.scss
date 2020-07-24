@@ -1,0 +1,22 @@
+@import '../../../styles/constants.scss';
+
+.window {
+    color: $danger_red;
+}
+
+.container {
+    border: solid $danger_red 5px;
+}
+
+@media (max-width: $screen_m) {
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(50vh - 50px);
+    }
+
+    .container {
+        border: initial;
+    }
+}

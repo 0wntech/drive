@@ -1,10 +1,12 @@
 import idps from '../constants/idps';
 
 import {
+    DEEP_FETCH_CURRENT_ITEM,
+    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
+    DEEP_FETCH_CURRENT_ITEM_FAIL,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
     FETCH_CURRENT_ITEM_FAIL,
-    SET_CURRENT_PATH,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
@@ -36,6 +38,9 @@ import {
     DOWNLOAD_FILE,
     DOWNLOAD_FILE_SUCCESS,
     DOWNLOAD_FILE_FAILURE,
+    UPLOAD_FILE,
+    UPLOAD_FILE_SUCCESS,
+    UPLOAD_FILE_FAILURE,
     OPEN_CREATE_FOLDER_WINDOW,
     CLOSE_CREATE_FOLDER_WINDOW,
     CREATE_FOLDER,
@@ -44,14 +49,22 @@ import {
     CLEAR_ERROR,
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
+    SET_CURRENT_CONTACT,
+    SET_CURRENT_PATH,
+    TOGGLE_SELECTION_MODE,
+    LOGIN_SUCCESS,
+    TOGGLE_ERROR_WINDOW,
 } from '../actions/types';
+import { getRootFromWebId } from '../utils/url';
 
 const INITIAL_STATE = {
     loadNotifications: false,
     loadcurrentItem: false,
     loadDeletion: false,
     updatingFile: false,
+    uploadingFiles: false,
     error: {
+        UPLOAD_FILES: false,
         DOWNLOAD_FILE: false,
         CREATE_FILE: false,
         UPDATE_FILE: false,
@@ -62,8 +75,10 @@ const INITIAL_STATE = {
     },
     currentPath: null,
     currentItem: null,
+    fileHierarchy: [],
     notifications: null,
     selectedItems: [],
+    selectionMode: false,
     clipboard: [],
     loadPaste: false,
     idps: idps,
@@ -76,6 +91,8 @@ const INITIAL_STATE = {
     creatingFolder: false,
     isSearchBarExpanded: false,
     isDriveMenuVisible: false,
+    isErrorWindowVisible: false,
+    errorWindowError: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -84,12 +101,47 @@ export default (state = INITIAL_STATE, action) => {
     console.log(state);
 
     switch (type) {
+        case LOGIN_SUCCESS:
+            return { ...state, currentPath: getRootFromWebId(payload.webId) };
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
+        case SET_CURRENT_CONTACT:
+            return { ...state, isSearchBarExpanded: false };
         case SET_CURRENT_PATH:
-            return { ...state, currentPath: payload, selectedItem: [] };
+            return { ...state, currentPath: payload };
         case SET_SELECTION:
             return { ...state, selectedItems: [...payload] };
+        case TOGGLE_SELECTION_MODE:
+            return { ...state, selectionMode: !state.selectionMode };
+        case DEEP_FETCH_CURRENT_ITEM:
+            return {
+                ...state,
+                deepFetchCurrentItem: true,
+                error: {
+                    ...state.error,
+
+                    DEEP_FETCH_CURRENT_ITEM: false,
+                },
+            };
+        case DEEP_FETCH_CURRENT_ITEM_SUCCESS:
+            return {
+                ...state,
+                fileHierarchy: payload,
+                deepFetchCurrentItem: false,
+                error: {
+                    ...state.error,
+                    FETCH_CURRENT_ITEM: false,
+                },
+            };
+        case DEEP_FETCH_CURRENT_ITEM_FAIL:
+            return {
+                ...state,
+                deepFetchCurrentItem: false,
+                error: {
+                    ...state.error,
+                    DEEP_FETCH_CURRENT_ITEM: false,
+                },
+            };
         case FETCH_CURRENT_ITEM:
             return {
                 ...state,
@@ -279,6 +331,24 @@ export default (state = INITIAL_STATE, action) => {
                 downloadingFile: false,
                 error: { ...state.error, DOWNLOAD_FILE: payload },
             };
+        case UPLOAD_FILE:
+            return {
+                ...state,
+                uploadingFiles: true,
+                error: { ...state.error, UPLOAD_FILES: false },
+            };
+        case UPLOAD_FILE_SUCCESS:
+            return {
+                ...state,
+                uploadingFiles: false,
+                error: { ...state.error, UPLOAD_FILES: false },
+            };
+        case UPLOAD_FILE_FAILURE:
+            return {
+                ...state,
+                uploadingFiles: false,
+                error: { ...state.error, UPLOAD_FILES: payload },
+            };
         case OPEN_CREATE_FOLDER_WINDOW:
             return { ...state, isCreateFolderVisible: true };
         case CLOSE_CREATE_FOLDER_WINDOW:
@@ -293,6 +363,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isSearchBarExpanded: !state.isSearchBarExpanded,
+            };
+        case TOGGLE_ERROR_WINDOW:
+            return {
+                ...state,
+                isErrorWindowVisible: !state.isErrorWindowVisible,
+                errorWindowError: payload,
             };
         default:
             return state;

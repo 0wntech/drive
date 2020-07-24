@@ -1,0 +1,37 @@
+@import '../../../styles/constants.scss';
+
+.button {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.buttonBar {
+    width: calc(100% - 2em);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 1em;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.input {
+    width: 100%;
+    font-style: normal;
+    box-sizing: border-box;
+    font-size: 20px;
+    text-overflow: ellipsis;
+    border: initial;
+    border-radius: initial;
+    border-bottom: 4px solid black;
+    outline: none;
+}
+
+@media (max-width: $screen_m) {
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(50vh - 50px);
+    }
+}

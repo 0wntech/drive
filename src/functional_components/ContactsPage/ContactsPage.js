@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './ContactsPage.module.css';
+import styles from './ContactsPage.module.scss';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {
@@ -9,10 +9,12 @@ import {
     fetchContactRecommendations,
     fetchContacts,
 } from '../../actions/contactActions';
-
 import ContactList from '../ContactList/ContactsList';
+import useWindowDimension from '../../hooks/useWindowDimension';
+import { screen_m as screenM } from '../../styles/constants.scss';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
+import { getContactRoute } from '../../utils/url';
 
 const ContactsPage = ({
     contacts,
@@ -32,43 +34,49 @@ const ContactsPage = ({
         if (!contactRecommendations) fetchContactRecommendations(webId);
     }, []);
 
+    const { width } = useWindowDimension();
+
     handleError(error);
 
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay =
         contactRecommendations &&
-        contactRecommendations.slice(0, displayedRows * 3);
+        contactRecommendations.slice(0, displayedRows * 5);
 
     return (
         <Layout
             label="Contacts"
             className={styles.grid}
             isLoading={loadContacts}
+            hideToolbar={width < screenM}
         >
             <div className={styles.contactsContainer}>
                 <ContactList
                     onItemClick={(contact) => {
                         setCurrentContact(contact);
-                        history.push('/contact');
+                        history.push(getContactRoute(contact));
                     }}
                     contacts={contacts}
                     webId={webId}
+                    addContact={addContact}
                     removeContact={removeContact}
+                    alreadyContacts
                 />
                 {contactRecommendations ? (
                     <>
-                        <div className={styles.recommendLabel}>
-                            People you might know:
+                        <div className={styles.sectionLabel}>
+                            People you might know
                         </div>
                         <ContactList
                             onItemClick={(contact) => {
                                 setCurrentContact(contact);
-                                history.push('/contact');
+                                history.push(getContactRoute(contact));
                             }}
                             contacts={contactRecommendationsToDisplay}
                             webId={webId}
                             addContact={addContact}
                             recommended
+                            removeContact={removeContact}
                         />
                         {displayedRows * 3 < contactRecommendations.length ? (
                             <div

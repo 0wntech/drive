@@ -1,9 +1,13 @@
 import {
+    DEEP_FETCH_CURRENT_ITEM,
+    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
+    DEEP_FETCH_CURRENT_ITEM_FAIL,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
     FETCH_CURRENT_ITEM_FAIL,
     SET_CURRENT_PATH,
     SET_SELECTION,
+    TOGGLE_SELECTION_MODE,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
     FETCH_NOTIFICATIONS_FAILURE,
@@ -45,6 +49,10 @@ import {
     CREATE_FOLDER_FAILURE,
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
+    TOGGLE_ERROR_WINDOW,
+    UPLOAD_FILE,
+    UPLOAD_FILE_FAILURE,
+    UPLOAD_FILE_SUCCESS,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
@@ -69,6 +77,10 @@ export const setCurrentPath = (newPath, options = {}) => {
     };
 };
 
+export const toggleErrorWindow = (error) => {
+    return { type: TOGGLE_ERROR_WINDOW, payload: error };
+};
+
 export const fetchCurrentItem = (itemUrl, folder = false) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CURRENT_ITEM });
@@ -86,7 +98,6 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
             .then((item) => {
                 if (item && item.folders) {
                     const files = item.files.map((file) => {
-                        console.log(file);
                         return {
                             name: convertFileUrlToName(file.name),
                             type: file.type,
@@ -120,6 +131,24 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                     payload: error,
                 })
             );
+    };
+};
+
+export const deepFetchCurrentItem = (folderUrl) => {
+    return (dispatch) => {
+        dispatch({ type: DEEP_FETCH_CURRENT_ITEM });
+        const fileClient = new PodClient({ url: folderUrl });
+        fileClient
+            .deepRead(folderUrl)
+            .then((deepFolder) => {
+                dispatch({
+                    type: DEEP_FETCH_CURRENT_ITEM_SUCCESS,
+                    payload: deepFolder,
+                });
+            })
+            .catch((err) => {
+                dispatch({ type: DEEP_FETCH_CURRENT_ITEM_FAIL, payload: err });
+            });
     };
 };
 
@@ -221,6 +250,10 @@ export const setSelection = (selection) => {
     return { type: SET_SELECTION, payload: selection };
 };
 
+export const toggleSelectionMode = () => {
+    return { type: TOGGLE_SELECTION_MODE };
+};
+
 export const fetchIdps = () => {
     return (dispatch) => {
         dispatch({ type: FETCH_IDPS });
@@ -240,8 +273,9 @@ export const fetchIdps = () => {
 export const deleteItems = (items, currentPath = '/') => {
     return (dispatch) => {
         dispatch({ type: DELETE_ITEMS });
-        fileUtils
-            .deleteItems(items)
+        const fileClient = new PodClient();
+        fileClient
+            .delete(items)
             .then(() => {
                 // To avoid reloading when not everything has been deleted
                 setTimeout(() => {
@@ -262,6 +296,7 @@ export const copyItems = (items) => {
 };
 
 export const pasteItems = (items, location) => {
+    console.log(location, items, 'lala');
     return (dispatch) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()
@@ -296,7 +331,7 @@ export const pasteItems = (items, location) => {
     };
 };
 
-export const createFile = function(name, path) {
+export const createFile = function (name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FILE });
         const contentType = mime.getType(name) || 'text/plain';
@@ -315,7 +350,7 @@ export const createFile = function(name, path) {
     };
 };
 
-export const renameItem = function(renamedItem, value) {
+export const renameItem = function (renamedItem, value) {
     return (dispatch) => {
         dispatch({ type: RENAME_ITEM });
         auth.currentSession().then((session) => {
@@ -363,61 +398,90 @@ export const renameItem = function(renamedItem, value) {
     };
 };
 
-export const openCreateFileWindow = function() {
+export const uploadFileOrFolder = ({ target }, currentPath) => {
+    return (dispatch) => {
+        dispatch({ type: UPLOAD_FILE });
+        try {
+            const files = target.files;
+            if (files && files.length) {
+                const uploads = [];
+                for (const file of files) {
+                    uploads.push(fileUtils.uploadFile(file, currentPath));
+                }
+                Promise.all(uploads)
+                    .then(() => {
+                        dispatch({ type: UPLOAD_FILE_SUCCESS });
+                        dispatch(fetchCurrentItem(currentPath, true));
+                    })
+                    .catch((error) => {
+                        dispatch({
+                            type: UPLOAD_FILE_FAILURE,
+                            payload: error,
+                        });
+                    });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: UPLOAD_FILE_FAILURE, payload: error });
+        }
+    };
+};
+
+export const openCreateFileWindow = function () {
     return (dispatch) => {
         dispatch({ type: OPEN_CREATE_FILE_WINDOW });
     };
 };
 
-export const closeCreateFileWindow = function() {
+export const closeCreateFileWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_CREATE_FILE_WINDOW });
     };
 };
 
-export const openCreateFolderWindow = function() {
+export const openCreateFolderWindow = function () {
     return (dispatch) => {
         dispatch({ type: OPEN_CREATE_FOLDER_WINDOW });
     };
 };
 
-export const closeCreateFolderWindow = function() {
+export const closeCreateFolderWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_CREATE_FOLDER_WINDOW });
     };
 };
 
-export const openConsentWindow = function() {
+export const openConsentWindow = function () {
     return (dispatch) => {
         dispatch({ type: OPEN_CONSENT_WINDOW });
     };
 };
 
-export const closeConsentWindow = function() {
+export const closeConsentWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_CONSENT_WINDOW });
     };
 };
 
-export const openRenameWindow = function(item) {
+export const openRenameWindow = function (item) {
     return (dispatch) => {
         dispatch({ type: OPEN_RENAME_WINDOW, payload: item });
     };
 };
 
-export const closeRenameWindow = function() {
+export const closeRenameWindow = function () {
     return (dispatch) => {
         dispatch({ type: CLOSE_RENAME_WINDOW });
     };
 };
 
-export const toggleDriveMenu = function() {
+export const toggleDriveMenu = function () {
     return (dispatch) => {
         dispatch({ type: TOGGLE_DRIVE_MENU });
     };
 };
 
-export const createFolder = function(name, path) {
+export const createFolder = function (name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FOLDER });
         const fileClient = new PodClient();

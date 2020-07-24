@@ -70,41 +70,32 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
         <div
           className="valueWrapper"
         >
-          <input
+          <div
             className="value"
-            data-test-id="testKey-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            placeholder="multiple"
-            readOnly={true}
-            value="multiple"
-          />
+            data-test-id="testKey"
+          >
+            multiple
+          </div>
         </div>
         <div
           className="valueWrapper"
         >
-          <input
+          <div
             className="value"
-            data-test-id="testKey-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            placeholder="values"
-            readOnly={true}
-            value="values"
-          />
+            data-test-id="testKey"
+          >
+            values
+          </div>
         </div>
         <div
           className="valueWrapper"
         >
-          <input
+          <div
             className="value"
-            data-test-id="testKey-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            placeholder="test"
-            readOnly={true}
-            value="test"
-          />
+            data-test-id="testKey"
+          >
+            test
+          </div>
         </div>
       </div>
     </div>
@@ -147,15 +138,12 @@ exports[`KeyValuePair should render unexpanded 1`] = `
     <div
       className="valueContainer"
     >
-      <input
+      <div
         className="value"
-        data-test-id="testKey-input"
-        onBlur={[Function]}
-        onChange={[Function]}
-        placeholder="testValue"
-        readOnly={true}
-        value="testValue"
-      />
+        data-test-id="testKey"
+      >
+        testValue
+      </div>
     </div>
   </div>
   <div

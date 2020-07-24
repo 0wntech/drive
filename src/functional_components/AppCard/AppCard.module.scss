@@ -1,0 +1,61 @@
+@import '../../styles/constants.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 4px solid $dark_grey;
+    border-radius: 20px;
+    width: 180px;
+    height: 200px;
+    position: relative;
+    margin: 0 0 10px 10px;
+}
+
+.deleteButton {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: $light_grey;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background-color: $danger_red;
+}
+
+.deleteButton:hover path {
+    fill: $light_grey;
+}
+
+.xIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.appIcon {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 24px;
+}
+
+.name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    margin: 27px 0 24px 0;
+    width: 100%;
+    text-align: center;
+}

@@ -12,14 +12,14 @@
     min-height: 0;
     display: grid;
     height: 100%;
-    margin: 0 15% 0 15%;
+    margin: 0 10% 0 10%;
     grid-template-areas:
         '.'
         'nav'
         '.'
         'main'
         '.';
-    grid-template-rows: 40px 80px 20px 1fr 40px;
+    grid-template-rows: 1em 80px 10px 1fr 1em;
 }
 
 .navArea {
@@ -32,7 +32,8 @@
 .mainArea {
     grid-area: main;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 @media (max-width: $screen_m) {

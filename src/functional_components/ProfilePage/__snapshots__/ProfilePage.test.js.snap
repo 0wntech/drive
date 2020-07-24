@@ -1,105 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
-<Layout
-  className="grid"
-  hideToolbar={false}
-  isLoading={false}
+<ProfileView
+  editState={false}
   label="Profile"
->
-  <div
-    className="profileContainer"
-  >
-    <div
-      className="headContainer"
-    >
-      <div
-        className="profileImage"
-        style={
-          Object {
-            "backgroundImage": "url('https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png')",
-          }
-        }
-      />
-      <div
-        className="headDataContainer"
-      >
-        <div>
-          <SingleValue
-            className="nameLabel"
-            dataKey="name"
-            editable={false}
-            placholder="Enter Name.."
-            setValue={[Function]}
-            value="Ben"
-          />
-          <div
-            className="webIdLabel"
-          >
-            https://bejow.owntech.de
-          </div>
-        </div>
-        <SingleValue
-          className="bioLabel"
-          editable={false}
-          maxInput={256}
-          placeholder="Add bio.."
-          setValue={[Function]}
-          value="This is bens Bio!"
-        />
-      </div>
-      <div
-        className="editWrapper"
-      >
-        <ActionButton
-          color="blue"
-          onClick={[Function]}
-          size="lg"
-        >
-          <SvgEdit
-            className="iconWhite"
-            data-test-id="edit"
-            height="20"
-            onClick={[Function]}
-            viewBox="3 2 30 30"
-            width="20"
-          />
-          Edit Profile
-        </ActionButton>
-      </div>
-    </div>
-    <KeyValuePair
-      dataKey="job"
-      editable={false}
-      label="Job:"
-      placeholder="Software Engineer"
-      setValue={[Function]}
-      value="Software Engineer"
-    />
-    <KeyValuePair
-      dataKey="emails"
-      editable={false}
-      label="Email:"
-      placeholder={
-        Array [
-          "ben.test@owntech.de",
-        ]
-      }
-      setValue={[Function]}
-      value="ben.test@owntech.de"
-    />
-    <KeyValuePair
-      dataKey="telephones"
-      editable={false}
-      label="Phone:"
-      placeholder={
-        Array [
-          "0177313131",
-        ]
-      }
-      setValue={[Function]}
-      value="0177313131"
-    />
-  </div>
-</Layout>
+  onPhotoChange={[Function]}
+  renderButtons={[Function]}
+  updateUserData={[Function]}
+  updatingProfile={false}
+  user={
+    Object {
+      "bio": "This is bens Bio!",
+      "emails": Array [
+        "ben.test@owntech.de",
+      ],
+      "job": "Software Engineer",
+      "name": "Ben",
+      "picture": "https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png",
+      "telephones": Array [
+        "0177313131",
+      ],
+      "webId": "https://bejow.owntech.de/profile/card#me",
+    }
+  }
+  userData={
+    Object {
+      "bio": "This is bens Bio!",
+      "emails": "ben.test@owntech.de",
+      "job": "Software Engineer",
+      "name": "Ben",
+      "picture": "https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png",
+      "telephones": "0177313131",
+      "webId": "https://bejow.owntech.de/profile/card#me",
+    }
+  }
+/>
 `;

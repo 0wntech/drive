@@ -1,6 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const FileUpload = ({ folder, children, onChange, className }) => {
+export const FileUpload = ({
+    folder,
+    children,
+    onChange,
+    className,
+    currentPath,
+}) => {
     return (
         <label
             className={className}
@@ -12,16 +19,14 @@ const FileUpload = ({ folder, children, onChange, className }) => {
                 type="file"
                 onChange={(e) => {
                     if (e.target.files) {
-                        console.log(e);
-                        onChange(e);
+                        onChange(e, currentPath);
                     }
                 }}
-                webkitdirectory={folder ? 'true' : undefined}
-                mozdirectory={folder ? 'true' : undefined}
-                msdirectory={folder ? 'true' : undefined}
-                odirectory={folder ? 'true' : undefined}
-                directory={folder ? 'true' : undefined}
-                multiple={folder ? true : false}
+                {...{
+                    webkitdirectory: folder ? 'true' : false,
+                    directory: folder ? 'true' : false,
+                    multiple: folder ? 'true' : false,
+                }}
                 style={{ display: 'none' }}
                 id={folder ? 'folderUpload' : 'fileUpload'}
                 accept="*/*"
@@ -30,4 +35,10 @@ const FileUpload = ({ folder, children, onChange, className }) => {
     );
 };
 
-export default FileUpload;
+const mapStateToProps = (state) => {
+    return {
+        currentPath: state.app.currentPath,
+    };
+};
+
+export default connect(mapStateToProps, {})(FileUpload);
