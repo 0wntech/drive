@@ -3,16 +3,19 @@ import idps from '../constants/idps';
 import {
     DEEP_FETCH_CURRENT_ITEM,
     DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-    DEEP_FETCH_CURRENT_ITEM_FAIL,
+    DEEP_FETCH_CURRENT_ITEM_FAILURE,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
-    FETCH_CURRENT_ITEM_FAIL,
+    FETCH_CURRENT_ITEM_FAILURE,
+    FETCH_CURRENT_ACCESS_CONTROL,
+    FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
-    FETCH_IDPS_FAILED,
+    FETCH_IDPS_FAILURE,
     OPEN_CONSENT_WINDOW,
     CLOSE_CONSENT_WINDOW,
     DELETE_ITEMS,
@@ -59,7 +62,9 @@ import { getRootFromWebId } from '../utils/url';
 
 const INITIAL_STATE = {
     loadNotifications: false,
-    loadcurrentItem: false,
+    loadCurrentItem: false,
+    loadCurrentAccessControl: false,
+    currentAccessControl: null,
     loadDeletion: false,
     updatingFile: false,
     uploadingFiles: false,
@@ -72,6 +77,7 @@ const INITIAL_STATE = {
         DELETE_ITEMS: false,
         FETCH_IDPS: false,
         FETCH_CURRENT_ITEM: false,
+        FETCH_CURRENT_ACCESS_CONTROL: false,
     },
     currentPath: null,
     currentItem: null,
@@ -133,7 +139,7 @@ export default (state = INITIAL_STATE, action) => {
                     FETCH_CURRENT_ITEM: false,
                 },
             };
-        case DEEP_FETCH_CURRENT_ITEM_FAIL:
+        case DEEP_FETCH_CURRENT_ITEM_FAILURE:
             return {
                 ...state,
                 deepFetchCurrentItem: false,
@@ -158,11 +164,36 @@ export default (state = INITIAL_STATE, action) => {
                     FETCH_CURRENT_ITEM: false,
                 },
             };
-        case FETCH_CURRENT_ITEM_FAIL:
+        case FETCH_CURRENT_ITEM_FAILURE:
             return {
                 ...state,
                 loadCurrentItem: false,
                 error: { ...state.error, FETCH_CURRENT_ITEM: payload },
+            };
+        case FETCH_CURRENT_ACCESS_CONTROL:
+            return {
+                ...state,
+                loadCurrentAccessControl: true,
+                error: { ...state.error, FETCH_CURRENT_ACCESS_CONTROL: false },
+            };
+        case FETCH_CURRENT_ACCESS_CONTROL_SUCCESS:
+            return {
+                ...state,
+                loadCurrentAccessControl: false,
+                currentAccessControl: payload,
+                error: {
+                    ...state.error,
+                    FETCH_CURRENT_ACCESS_CONTROL: false,
+                },
+            };
+        case FETCH_CURRENT_ACCESS_CONTROL_FAILURE:
+            return {
+                ...state,
+                loadCurrentAccessControl: false,
+                error: {
+                    ...state.error,
+                    FETCH_CURRENT_ACCESS_CONTROL: payload,
+                },
             };
         case FETCH_NOTIFICATIONS:
             return {
@@ -188,7 +219,7 @@ export default (state = INITIAL_STATE, action) => {
                 loadIdps: false,
                 error: { ...state.error, FETCH_IDPS: false },
             };
-        case FETCH_IDPS_FAILED:
+        case FETCH_IDPS_FAILURE:
             return {
                 ...state,
                 loadIdps: false,

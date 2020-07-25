@@ -4,7 +4,7 @@ import {
     LOGIN_FAIL,
     FETCH_USER,
     FETCH_USER_SUCCESS,
-    FETCH_USER_FAIL,
+    FETCH_USER_FAILURE,
     SET_WEBID,
     UPDATE_PROFILE,
     UPDATE_PROFILE_FAILURE,
@@ -66,7 +66,7 @@ export const fetchUser = (webId) => {
                 dispatch({ type: FETCH_USER_SUCCESS, payload: profile });
             })
             .catch((error) =>
-                dispatch({ type: FETCH_USER_FAIL, payload: error })
+                dispatch({ type: FETCH_USER_FAILURE, payload: error })
             );
     };
 };

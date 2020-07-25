@@ -24,6 +24,7 @@ import { FileEditor } from '../FileEditor';
 import { isImageType } from '../../utils/fileUtils';
 import BackButton from '../BackButton';
 import ErrorWindow from '../ErrorWindow';
+import MarkdownView from 'react-showdown';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -182,6 +183,8 @@ export const FileView = ({
                             }}
                             placeholder={getPlaceholder(currentItem.body)}
                         />
+                    ) : mime.getExtension(fileType) === 'markdown' ? (
+                        <MarkdownView markdown={currentItem.body} />
                     ) : (
                         <div
                             className={classNames(styles.file, {

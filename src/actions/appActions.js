@@ -1,10 +1,10 @@
 import {
     DEEP_FETCH_CURRENT_ITEM,
     DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-    DEEP_FETCH_CURRENT_ITEM_FAIL,
+    DEEP_FETCH_CURRENT_ITEM_FAILURE,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
-    FETCH_CURRENT_ITEM_FAIL,
+    FETCH_CURRENT_ITEM_FAILURE,
     SET_CURRENT_PATH,
     SET_SELECTION,
     TOGGLE_SELECTION_MODE,
@@ -16,7 +16,7 @@ import {
     SEND_NOTIFICATION_FAILURE,
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
-    FETCH_IDPS_FAILED,
+    FETCH_IDPS_FAILURE,
     OPEN_CONSENT_WINDOW,
     CLOSE_CONSENT_WINDOW,
     DELETE_ITEMS,
@@ -53,10 +53,14 @@ import {
     UPLOAD_FILE,
     UPLOAD_FILE_FAILURE,
     UPLOAD_FILE_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL,
+    FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
 } from './types';
 import auth from 'solid-auth-client';
 import fileUtils from '../utils/fileUtils';
 import PodClient from 'ownfiles';
+import AclClient from 'ownacl';
 import mime from 'mime';
 import url from 'url';
 import FileSaver from 'file-saver';
@@ -67,13 +71,36 @@ export const setCurrentPath = (newPath, options = {}) => {
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
         if (options.noFetch) {
-            return dispatch({
+            dispatch({
                 type: FETCH_CURRENT_ITEM_SUCCESS,
                 payload: { body: '', url: newPath },
             });
         } else {
-            return dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+            dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
         }
+        return dispatch(fetchCurrentAccessControl(newPath));
+    };
+};
+
+export const fetchCurrentAccessControl = (file) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CURRENT_ACCESS_CONTROL });
+        const aclClient = new AclClient(file);
+        return aclClient
+            .readAccessControl()
+            .then((accessControl) => {
+                console.log(accessControl, 'lala');
+                dispatch({
+                    type: FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
+                    payload: accessControl,
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
+                    payload: err,
+                });
+            });
     };
 };
 
@@ -120,14 +147,14 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                     });
                 } else {
                     dispatch({
-                        type: FETCH_CURRENT_ITEM_FAIL,
+                        type: FETCH_CURRENT_ITEM_FAILURE,
                         payload: { message: 'File not supported' },
                     });
                 }
             })
             .catch((error) =>
                 dispatch({
-                    type: FETCH_CURRENT_ITEM_FAIL,
+                    type: FETCH_CURRENT_ITEM_FAILURE,
                     payload: error,
                 })
             );
@@ -147,7 +174,10 @@ export const deepFetchCurrentItem = (folderUrl) => {
                 });
             })
             .catch((err) => {
-                dispatch({ type: DEEP_FETCH_CURRENT_ITEM_FAIL, payload: err });
+                dispatch({
+                    type: DEEP_FETCH_CURRENT_ITEM_FAILURE,
+                    payload: err,
+                });
             });
     };
 };
@@ -265,7 +295,7 @@ export const fetchIdps = () => {
                 });
             })
             .catch((err) => {
-                dispatch({ type: FETCH_IDPS_FAILED, payload: err });
+                dispatch({ type: FETCH_IDPS_FAILURE, payload: err });
             });
     };
 };

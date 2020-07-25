@@ -1,6 +1,6 @@
 import React from 'react';
 import ShallowRenderer from 'react-test-renderer/shallow';
-import { ItemList } from './index.js';
+import ItemList from './ItemList';
 
 describe('ItemList', () => {
     const currentItem = {

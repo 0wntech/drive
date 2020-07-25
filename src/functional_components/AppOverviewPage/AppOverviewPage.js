@@ -60,13 +60,17 @@ const AppOverviewPage = ({
                 onClose={() => setDangerWindow(false)}
                 windowName={apptoDelete}
             >
-                <p>Are you sure that you want revoke access for this app?</p>
-                {isDriveApp(apptoDelete) ? (
-                    <p className={styles.dangerText}>
-                        Warning: If you delete this app you can't use Owntech
-                        Drive anymore. You will be automatically logged out.
+                <div>
+                    <p>
+                        Are you sure that you want revoke access for this app?
                     </p>
-                ) : null}
+                    {isDriveApp(apptoDelete) ? (
+                        <p className={styles.dangerText}>
+                            Warning: If you delete this app you will be
+                            automatically logged out.
+                        </p>
+                    ) : null}
+                </div>
 
                 <div className={styles.windowButtonContainer}>
                     <ActionButton
@@ -76,7 +80,7 @@ const AppOverviewPage = ({
                     />
                     <ActionButton
                         className={styles.button}
-                        color="blue"
+                        color="red"
                         label="Revoke Access"
                         onClick={() => {
                             removeApp(apptoDelete, isDriveApp(apptoDelete));

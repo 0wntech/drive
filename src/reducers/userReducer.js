@@ -4,7 +4,7 @@ import {
     LOGIN_FAIL,
     FETCH_USER,
     FETCH_USER_SUCCESS,
-    FETCH_USER_FAIL,
+    FETCH_USER_FAILURE,
     SET_WEBID,
     UPDATE_PROFILE,
     UPDATE_PROFILE_SUCCESS,
@@ -70,7 +70,7 @@ export default (state = INITIAL_STATE, action) => {
                 user: payload,
                 error: { ...state.error, FETCH_USER: false },
             };
-        case FETCH_USER_FAIL:
+        case FETCH_USER_FAILURE:
             return {
                 ...state,
                 loadUser: false,

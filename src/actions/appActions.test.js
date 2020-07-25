@@ -4,6 +4,8 @@ import {
     SET_CURRENT_PATH,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL,
+    FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
 } from './types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -64,8 +66,17 @@ describe('App Actions', () => {
                     type: FETCH_CURRENT_ITEM,
                 },
                 {
+                    type: FETCH_CURRENT_ACCESS_CONTROL,
+                },
+                {
                     type: FETCH_CURRENT_ITEM_SUCCESS,
                     payload: folderFiles,
+                },
+                {
+                    payload: Error(
+                        'Reading https://bejow.inrupt.net/.well-known/.acl - Bad Request or Unauthenticated'
+                    ),
+                    type: FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
                 },
             ];
 
@@ -87,6 +98,9 @@ describe('App Actions', () => {
                         url: 'https://bejow.owntech.de/favicon.ico',
                     },
                     type: FETCH_CURRENT_ITEM_SUCCESS,
+                },
+                {
+                    type: FETCH_CURRENT_ACCESS_CONTROL,
                 },
             ];
 
