@@ -1,7 +1,6 @@
 @import '../../styles/constants.scss';
 
 .container {
-    z-index: 1;
     cursor: pointer;
     position: relative;
     width: 80px;
@@ -52,21 +51,20 @@
 
 .labelContainer {
     width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-top: 2px;
 }
 
 .label {
+    z-index: 1;
     font-style: normal;
     font-size: 16px;
     color: #000000;
     line-height: 21px;
-    z-index: 1;
+    padding: 4px 0;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    direction: rtl;
 }
 
 .contextMenu {
@@ -151,6 +149,21 @@
     transform: translateX(-50%);
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+@media (min-width: $screen_m) {
+    .label:hover {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 0 4px;
+        position: relative;
+        text-overflow: initial;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min-content;
+        box-sizing: border-box;
+        border: solid $light_grey 4px;
+    }
 }
 
 @media (max-width: $screen_m) {

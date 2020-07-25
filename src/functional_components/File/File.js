@@ -88,12 +88,12 @@ export default function File({
         >
             <div
                 className={styles.container}
+                data-test-id={`file-${file.name}`}
                 onClick={onClick}
                 onMouseUp={onMouseUp}
                 onMouseDown={onMouseDown}
                 onTouchEnd={onMouseUp}
                 onTouchStart={onMouseDown}
-                data-test-id={`file-${file.name}`}
             >
                 {renderFile()}
                 <div className={styles.labelContainer}>
