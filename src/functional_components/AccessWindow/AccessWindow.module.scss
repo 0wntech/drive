@@ -1,35 +1,13 @@
 @import '../../styles/constants.scss';
 
-.prompt {
-    margin-bottom: 8px;
+.search {
 }
 
-.description {
-    color: #666;
-}
-
-.selectedFiles {
+.entities {
     max-height: calc(50vh - 50px - 72px - 72px);
     overflow-y: auto;
     display: flex;
-    flex-flow: row wrap;
-}
-
-.button {
-    cursor: pointer;
-    margin-left: 8px;
-}
-
-.buttonBar {
-    display: flex;
-    justify-content: flex-end;
-    background-color: #ffffff;
-    width: calc(100% - 2em);
-    position: absolute;
-    bottom: 0;
-    padding: 1em 1em;
-    right: 0;
-    border-radius: 20px;
+    flex-direction: column;
 }
 
 .input {

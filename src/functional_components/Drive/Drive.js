@@ -32,6 +32,7 @@ import DriveContextMenu from '../DriveContextMenu';
 import BackButton from '../BackButton';
 import DriveMenu from '../DriveMenu';
 import SelectModeButton from '../SelectModeButton';
+import AccessDisplay from '../AccessDisplay/AccessDisplay';
 
 const Drive = ({
     selectedItems,
@@ -204,29 +205,33 @@ const Drive = ({
                     currentItem.files &&
                     !noFilesAndFolders() ? (
                         <div>
-                            <ItemList
-                                selectedItems={selectedItems}
-                                items={currentItem.folders}
-                                currPath={currentPath}
-                                image={folder}
-                                onItemClick={
-                                    isSearchBarExpanded
-                                        ? toggleSearchbar
-                                        : loadFolder
-                                }
-                            />
-                            <ItemList
-                                selectedItems={selectedItems}
-                                isFile
-                                items={currentItem.files}
-                                currPath={currentPath}
-                                image={fileIcon}
-                                onItemClick={
-                                    isSearchBarExpanded
-                                        ? toggleSearchbar
-                                        : loadFile
-                                }
-                            />
+                            {currentItem.folders.length > 0 && (
+                                <ItemList
+                                    selectedItems={selectedItems}
+                                    items={currentItem.folders}
+                                    currPath={currentPath}
+                                    image={folder}
+                                    onItemClick={
+                                        isSearchBarExpanded
+                                            ? toggleSearchbar
+                                            : loadFolder
+                                    }
+                                />
+                            )}
+                            {currentItem.files.length > 0 && (
+                                <ItemList
+                                    selectedItems={selectedItems}
+                                    isFile
+                                    items={currentItem.files}
+                                    currPath={currentPath}
+                                    image={fileIcon}
+                                    onItemClick={
+                                        isSearchBarExpanded
+                                            ? toggleSearchbar
+                                            : loadFile
+                                    }
+                                />
+                            )}
                         </div>
                     ) : (
                         <p className={styles.emptyMessage}>
@@ -235,6 +240,7 @@ const Drive = ({
                     )}
                     <BackButton />
                     <SelectModeButton />
+                    <AccessDisplay />
                 </div>
             </DriveContextMenu>
         </Layout>

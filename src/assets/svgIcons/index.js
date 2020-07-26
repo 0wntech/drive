@@ -1,4 +1,6 @@
 export { default as Dropdown } from './Dropdown';
+export { default as PublicIcon } from './PublicIcon';
+export { default as Subtract } from './Subtract';
 export { default as UploadFile } from './UploadFile';
 export { default as UploadFolder } from './UploadFolder';
 export { default as Add } from './Add';

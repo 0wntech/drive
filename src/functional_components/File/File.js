@@ -56,7 +56,6 @@ export default function File({
                             />
                         ) : (
                             <p className={styles.fileType}>
-                                .
                                 {mime.getExtension(file.type) === 'markdown'
                                     ? 'md'
                                     : mime.getExtension(file.type)}

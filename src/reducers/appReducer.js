@@ -57,6 +57,10 @@ import {
     TOGGLE_SELECTION_MODE,
     LOGIN_SUCCESS,
     TOGGLE_ERROR_WINDOW,
+    TOGGLE_ACCESS_WINDOW,
+    TOGGLE_ACCESS_MODE,
+    TOGGLE_ACCESS_MODE_SUCCESS,
+    TOGGLE_ACCESS_MODE_FAILURE,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
@@ -78,6 +82,7 @@ const INITIAL_STATE = {
         FETCH_IDPS: false,
         FETCH_CURRENT_ITEM: false,
         FETCH_CURRENT_ACCESS_CONTROL: false,
+        TOGGLE_ACCESS_MODE: false,
     },
     currentPath: null,
     currentItem: null,
@@ -98,7 +103,10 @@ const INITIAL_STATE = {
     isSearchBarExpanded: false,
     isDriveMenuVisible: false,
     isErrorWindowVisible: false,
+    isAccessWindowVisible: false,
     errorWindowError: null,
+    managingAccess: false,
+    managingAccessFor: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -190,10 +198,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loadCurrentAccessControl: false,
-                error: {
-                    ...state.error,
-                    FETCH_CURRENT_ACCESS_CONTROL: payload,
-                },
+                currentAccessControl: null,
             };
         case FETCH_NOTIFICATIONS:
             return {
@@ -390,6 +395,21 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, creatingFolder: false };
         case CREATE_FOLDER_FAILURE:
             return { ...state, creatingFolder: false };
+        case TOGGLE_ACCESS_MODE:
+            return {
+                ...state,
+                managingAccess: true,
+                managingAccessFor: payload,
+            };
+        case TOGGLE_ACCESS_MODE_SUCCESS:
+            return { ...state, managingAccess: false, managingAccessFor: null };
+        case TOGGLE_ACCESS_MODE_FAILURE:
+            return {
+                ...state,
+                managingAccess: false,
+                managingAccessFor: null,
+                error: { ...state.error, TOGGLE_ACCESS_MODE: payload },
+            };
         case TOGGLE_SEARCHBAR:
             return {
                 ...state,
@@ -400,6 +420,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isErrorWindowVisible: !state.isErrorWindowVisible,
                 errorWindowError: payload,
+            };
+        case TOGGLE_ACCESS_WINDOW:
+            return {
+                ...state,
+                isAccessWindowVisible: !state.isAccessWindowVisible,
             };
         default:
             return state;

@@ -1,3 +1,11 @@
+import auth from 'solid-auth-client';
+import PodClient from 'ownfiles';
+import AclClient from 'ownacl';
+import User from 'ownuser';
+import mime from 'mime';
+import url from 'url';
+import FileSaver from 'file-saver';
+
 import {
     DEEP_FETCH_CURRENT_ITEM,
     DEEP_FETCH_CURRENT_ITEM_SUCCESS,
@@ -50,20 +58,19 @@ import {
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
     TOGGLE_ERROR_WINDOW,
+    TOGGLE_ACCESS_WINDOW,
     UPLOAD_FILE,
     UPLOAD_FILE_FAILURE,
     UPLOAD_FILE_SUCCESS,
     FETCH_CURRENT_ACCESS_CONTROL,
     FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
     FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
+    TOGGLE_ACCESS_MODE,
+    TOGGLE_ACCESS_MODE_SUCCESS,
+    TOGGLE_ACCESS_MODE_FAILURE,
 } from './types';
-import auth from 'solid-auth-client';
+
 import fileUtils from '../utils/fileUtils';
-import PodClient from 'ownfiles';
-import AclClient from 'ownacl';
-import mime from 'mime';
-import url from 'url';
-import FileSaver from 'file-saver';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
 export const setCurrentPath = (newPath, options = {}) => {
@@ -89,17 +96,56 @@ export const fetchCurrentAccessControl = (file) => {
         return aclClient
             .readAccessControl()
             .then((accessControl) => {
-                console.log(accessControl, 'lala');
-                dispatch({
-                    type: FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
-                    payload: accessControl,
+                Promise.all(
+                    accessControl.map(async (entity) => ({
+                        ...entity,
+                        ...(entity.type === 'Agent'
+                            ? await new User(entity.name).getProfile()
+                            : {}),
+                    }))
+                ).then((result) => {
+                    dispatch({
+                        type: FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
+                        payload: result,
+                    });
                 });
             })
             .catch((err) => {
                 dispatch({
                     type: FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
-                    payload: err,
                 });
+            });
+    };
+};
+
+export const toggleAccessMode = (item, entity, mode) => {
+    return (dispatch) => {
+        console.log('lalas');
+        dispatch({ type: TOGGLE_ACCESS_MODE, payload: entity.name });
+        const aclClient = new AclClient(item);
+        entity.access = entity.access.includes(mode)
+            ? entity.access.filter((access) => access !== mode)
+            : [...entity.access, mode];
+
+        let update;
+        if (entity.type === 'Agent') {
+            update = aclClient.addAgent({
+                name: entity.name,
+                access: entity.access,
+            });
+        } else if (entity.type === 'AgentGroup') {
+            update = aclClient.addAgentGroup({
+                name: entity.name,
+                access: entity.access,
+            });
+        }
+        return Promise.resolve(update)
+            .then(() => {
+                dispatch({ type: TOGGLE_ACCESS_MODE_SUCCESS });
+                dispatch(fetchCurrentAccessControl(item));
+            })
+            .catch((err) => {
+                dispatch({ type: TOGGLE_ACCESS_MODE_FAILURE, payload: err });
             });
     };
 };
@@ -530,5 +576,11 @@ export const createFolder = function (name, path) {
 export const toggleSearchbar = () => {
     return (dispatch) => {
         dispatch({ type: TOGGLE_SEARCHBAR });
+    };
+};
+
+export const toggleAccessWindow = () => {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_ACCESS_WINDOW });
     };
 };

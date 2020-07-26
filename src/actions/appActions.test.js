@@ -73,9 +73,6 @@ describe('App Actions', () => {
                     payload: folderFiles,
                 },
                 {
-                    payload: Error(
-                        'Reading https://bejow.inrupt.net/.well-known/.acl - Bad Request or Unauthenticated'
-                    ),
                     type: FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
                 },
             ];

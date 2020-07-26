@@ -1,0 +1,33 @@
+@import '../../styles/constants.scss';
+
+.container {
+    bottom: calc(2em);
+    right: calc(10% + 1em);
+    position: absolute;
+    border-radius: 20px;
+    z-index: 3;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+.agentIcon {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.agentIcon + .agentIcon {
+  margin-left: -10px;
+}
+
+@media (max-width: $screen_m) {
+    .container {
+        bottom: 1em;
+        right: 1em;
+    }
+}

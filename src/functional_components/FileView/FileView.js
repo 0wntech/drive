@@ -25,6 +25,8 @@ import { isImageType } from '../../utils/fileUtils';
 import BackButton from '../BackButton';
 import ErrorWindow from '../ErrorWindow';
 import MarkdownView from 'react-showdown';
+import AccessDisplay from '../AccessDisplay/AccessDisplay';
+import AccessWindow from '../AccessWindow';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -202,7 +204,9 @@ export const FileView = ({
                     />
                 )
             ) : null}
+            <AccessDisplay />
             <BackButton />
+            <AccessWindow />
             <ErrorWindow
                 visible={isErrorWindowVisible}
                 onClose={toggleErrorWindow}

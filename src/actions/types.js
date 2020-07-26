@@ -137,3 +137,9 @@ export const CLEAR_ERROR = 'clear_error';
 export const TOGGLE_SEARCHBAR = 'toggle_searchbar';
 
 export const TOGGLE_ERROR_WINDOW = 'toggle_error_window';
+
+export const TOGGLE_ACCESS_WINDOW = 'toggle_access_window';
+
+export const TOGGLE_ACCESS_MODE = 'toggle_access_mode';
+export const TOGGLE_ACCESS_MODE_SUCCESS = 'toggle_access_mode_success';
+export const TOGGLE_ACCESS_MODE_FAILURE = 'toggle_access_mode_failure';

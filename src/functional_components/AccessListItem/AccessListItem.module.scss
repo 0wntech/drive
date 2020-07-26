@@ -1,0 +1,46 @@
+@import '../../styles/constants.scss';
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border: solid $light_grey 5px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 16px;
+}
+
+.container + .container {
+    margin-top: 6px;
+}
+
+.image {
+    width: 64px;
+    height: 64px;
+    background-size: cover;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.name {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.access {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 8px;
+}
+
+.spinner {
+    align-self: center;
+    margin-left: 8px;
+}
