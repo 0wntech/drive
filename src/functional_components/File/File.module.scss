@@ -35,8 +35,6 @@
     border: solid transparent 2px;
     box-sizing: border-box;
     border-radius: 20px;
-    transition-property: background-color;
-    transition-duration: 300ms;
 }
 
 .gridCell:hover {
@@ -55,15 +53,16 @@
 
 .label {
     z-index: 1;
-    font-style: normal;
     font-size: 16px;
-    color: #000000;
     line-height: 21px;
     padding: 4px 0;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
     direction: rtl;
 }
 
@@ -117,28 +116,8 @@
     transform: translateX(-50%) translateY(-75%);
 }
 
-.tooltip {
-    position: absolute;
-    z-index: 2;
-    width: 200%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-110%);
-    top: 0%;
-    border: solid #ddd 2px;
-    border-radius: 10px;
-    display: none;
-}
-
 .active {
     display: initial;
-}
-
-.tooltip p {
-    font-size: 10px;
-    text-align: center;
-    margin: initial;
-    color: #666;
-    padding: 0.2em;
 }
 
 .icon {
@@ -156,14 +135,10 @@
         background: #ffffff;
         border-radius: 10px;
         padding: 0 4px;
-        position: relative;
         text-overflow: initial;
-        left: 50%;
-        transform: translateX(-50%);
         width: min-content;
         box-sizing: border-box;
         border: solid $light_grey 4px;
-        top: -1px;
     }
 }
 
