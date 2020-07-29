@@ -116,6 +116,8 @@
     }
 
     .search__input {
+        height: 100%;
+        width: 100%;
         font-size: 18px;
     }
 
@@ -156,6 +158,11 @@
 
         .search__control {
             box-shadow: initial !important;
+        }
+
+        .search__input {
+            height: initial;
+            width: 80%;
         }
     }
 }

@@ -48,7 +48,7 @@
 
 @media (max-width: $screen_m) {
     .mainArea {
-        overflow-y: auto;
+        height: calc(100% + 90px);
         padding: 0 16px;
     }
 

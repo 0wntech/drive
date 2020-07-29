@@ -16,21 +16,21 @@
     justify-content: center;
     height: 142px;
     width: 100%;
-    border: solid transparent 2px;
+    border: solid transparent 4px;
     box-sizing: border-box;
     border-radius: 20px;
     transition-property: background-color;
     transition-duration: 300ms;
 }
 
-.gridCell:hover {
-    background-color: $light_grey;
-}
-
 .selected {
-    border: solid 2px #24b0ff;
+    border: solid 4px $light_blue;
     transition-property: border;
     transition-duration: 300ms;
+}
+
+.selected.gridCell:hover {
+    background-color: initial;
 }
 
 .innerContainer {
@@ -101,6 +101,10 @@
         width: min-content;
         box-sizing: border-box;
         border: solid $light_grey 4px;
+    }
+
+    .gridCell:hover {
+        background-color: $light_grey;
     }
 }
 

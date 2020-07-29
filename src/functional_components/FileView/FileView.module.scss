@@ -35,18 +35,28 @@
 .file {
     user-select: text;
     margin: initial;
-    padding: 1em;
+    padding: calc(72px + 4em) 1em;
     padding-top: initial;
     font-family: inherit;
     white-space: pre-wrap;
 }
 
 .image {
-    max-width: 50vw;
+    max-width: 75vw;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    display: inline-block;
+    overflow: hidden;
+}
+
+.image:hover  {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
 }
 
 .editButtons .icon {
@@ -56,8 +66,8 @@
 @media (max-width: $screen_m) {
     .container {
         padding: initial;
-        height: calc(100% - 4em);
         border-radius: initial;
+        height: calc(100vh - 198px);
     }
 
     .file {

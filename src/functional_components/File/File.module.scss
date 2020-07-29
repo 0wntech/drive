@@ -13,6 +13,8 @@
 
 .innerContainer {
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .fileType {
@@ -32,19 +34,19 @@
     justify-content: center;
     height: 142px;
     width: 100%;
-    border: solid transparent 2px;
+    border: solid transparent 4px;
     box-sizing: border-box;
     border-radius: 20px;
 }
 
-.gridCell:hover {
-    background-color: $light_grey;
-}
-
 .selected {
-    border: solid 2px #24b0ff;
+    border: solid 4px $light_blue;
     transition-property: border;
     transition-duration: 300ms;
+}
+
+.selected.gridCell:hover {
+    background-color: initial;
 }
 
 .labelContainer {
@@ -98,7 +100,7 @@
 }
 
 .thumbnail {
-    max-width: 50%;
+    max-width: 75%;
     height: auto;
     position: absolute;
     top: 50%;
@@ -121,7 +123,7 @@
 }
 
 .icon {
-    height: auto;
+    height: 100px;
     max-width: 100%;
     position: relative;
     left: 50%;
@@ -139,6 +141,10 @@
         width: min-content;
         box-sizing: border-box;
         border: solid $light_grey 4px;
+    }
+
+    .gridCell:hover {
+        background-color: $light_grey;
     }
 }
 
@@ -176,9 +182,5 @@
         position: initial;
         left: initial;
         transform: initial;
-    }
-
-    .linkedFile {
-        top: 40%;
     }
 }

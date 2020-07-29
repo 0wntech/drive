@@ -27,6 +27,7 @@ import ErrorWindow from '../ErrorWindow';
 import MarkdownView from 'react-showdown';
 import AccessDisplay from '../AccessDisplay/AccessDisplay';
 import AccessWindow from '../AccessWindow';
+import BottomOverlay from '../BottomOverlay/BottomOverlay';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -204,9 +205,11 @@ export const FileView = ({
                     />
                 )
             ) : null}
-            <AccessDisplay />
-            <BackButton />
-            <AccessWindow />
+            <BottomOverlay>
+                <AccessDisplay />
+                <BackButton />
+                <AccessWindow />
+            </BottomOverlay>
             <ErrorWindow
                 visible={isErrorWindowVisible}
                 onClose={toggleErrorWindow}

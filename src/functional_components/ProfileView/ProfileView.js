@@ -40,33 +40,33 @@ export const ProfileView = ({
             >
                 <div className={styles.profileContainer}>
                     <div className={styles.headContainer}>
-                        {editState ? (
-                            <div className={styles.editPhoto}>
-                                <input
-                                    type="file"
-                                    onChange={onPhotoChange}
-                                    style={{ display: 'none' }}
-                                    id="pictureUpload"
-                                    accept="*/*"
-                                />
-                                <label htmlFor="pictureUpload">
+                        <label htmlFor="pictureUpload">
+                            {editState ? (
+                                <div className={styles.editPhoto}>
+                                    <input
+                                        type="file"
+                                        onChange={onPhotoChange}
+                                        style={{ display: 'none' }}
+                                        id="pictureUpload"
+                                        accept="image/*"
+                                    />
                                     <Camera />
-                                </label>
-                            </div>
-                        ) : null}
-                        {user && user.picture ? (
-                            <div
-                                className={styles.profileImage}
-                                style={{
-                                    backgroundImage: `url('${user.picture}')`,
-                                }}
-                            />
-                        ) : (
-                            <DefaultIcon
-                                className={styles.defaultProfileImage}
-                                initials={getInitialsFromUser(user)}
-                            />
-                        )}
+                                </div>
+                            ) : null}
+                            {user && user.picture ? (
+                                <div
+                                    className={styles.profileImage}
+                                    style={{
+                                        backgroundImage: `url('${user.picture}')`,
+                                    }}
+                                />
+                            ) : (
+                                <DefaultIcon
+                                    className={styles.defaultProfileImage}
+                                    initials={getInitialsFromUser(user)}
+                                />
+                            )}
+                        </label>
                         <div className={styles.headDataContainer}>
                             <SingleValue
                                 editable={editState}

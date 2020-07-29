@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './SearchDropdown.module.scss';
 import './SearchDropdown.scss';
 import classNames from 'classnames';
@@ -22,6 +22,7 @@ export default function SearchDropdown({
     isSearchBarExpanded,
 }) {
     const dropdownWrapper = useRef(null);
+    const [menuRef, setMenuRef] = useState(null);
     useClickOutside(dropdownWrapper, () => {
         if (isSearchBarExpanded) toggleSearchbar();
     });
@@ -57,6 +58,8 @@ export default function SearchDropdown({
         // --> prevent unneccessary state updates
         if (!isSearchBarExpanded) {
             toggleSearchbar();
+            menuRef.focus();
+            console.log(menuRef, 'kaka');
         }
     };
 
@@ -77,6 +80,9 @@ export default function SearchDropdown({
             filterOption={filterOption}
             openMenuOnClick={true}
             onMenuOpen={handleMenuOpen}
+            ref={(ref) => {
+                setMenuRef(ref);
+            }}
             noOptionsMessage={() =>
                 loading ? 'Loading results...' : 'No search results'
             }

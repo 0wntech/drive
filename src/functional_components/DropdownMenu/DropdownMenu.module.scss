@@ -30,12 +30,6 @@
     width: 30px;
 }
 
-.container:hover {
-    border: solid $dark_grey 5px;
-    border-radius: 20px;
-    padding: initial;
-}
-
 .container {
     position: absolute;
     top: 8px;
@@ -92,6 +86,14 @@
 .option:hover:last-child {
     border-bottom-left-radius: 14px;
     border-bottom-right-radius: 14px;
+}
+
+@media (max-width: $screen_m) {
+    .container:hover {
+        border: solid $dark_grey 5px;
+        border-radius: 20px;
+        padding: initial;
+    }
 }
 
 @media (max-width: $screen_m) {

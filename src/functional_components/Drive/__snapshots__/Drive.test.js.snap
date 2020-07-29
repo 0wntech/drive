@@ -47,9 +47,11 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
           onItemClick={[Function]}
         />
       </div>
-      <withRouter(Connect(BackButton)) />
-      <withRouter(Connect(SelectModeButton)) />
-      <withRouter(Connect(AccessDisplay)) />
+      <BottomOverlay>
+        <withRouter(Connect(BackButton)) />
+        <withRouter(Connect(SelectModeButton)) />
+        <withRouter(Connect(AccessDisplay)) />
+      </BottomOverlay>
     </div>
   </UNDEFINED>
 </Layout>

@@ -33,6 +33,7 @@ import BackButton from '../BackButton';
 import DriveMenu from '../DriveMenu';
 import SelectModeButton from '../SelectModeButton';
 import AccessDisplay from '../AccessDisplay/AccessDisplay';
+import BottomOverlay from '../BottomOverlay/BottomOverlay';
 
 const Drive = ({
     selectedItems,
@@ -238,9 +239,11 @@ const Drive = ({
                             This folder is empty
                         </p>
                     )}
-                    <BackButton />
-                    <SelectModeButton />
-                    <AccessDisplay />
+                    <BottomOverlay>
+                        <BackButton />
+                        <SelectModeButton />
+                        <AccessDisplay />
+                    </BottomOverlay>
                 </div>
             </DriveContextMenu>
         </Layout>

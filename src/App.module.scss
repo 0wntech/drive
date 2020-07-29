@@ -37,6 +37,11 @@
 }
 
 @media (max-width: $screen_m) {
+    .mainArea {
+        overflow-y: initial;
+        overflow-x: initial;
+    }
+    
     .grid {
         margin: initial;
         grid-template-rows: 70px 1fr;

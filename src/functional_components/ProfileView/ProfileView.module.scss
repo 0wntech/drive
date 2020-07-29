@@ -1,7 +1,6 @@
 @import '../../styles/mixins.scss';
 @import '../../styles/constants.scss';
 .grid {
-    height: 100%;
     display: grid;
     grid-template-columns: 2fr 6fr 2fr;
     grid-template-areas: '. profile .';
@@ -32,6 +31,7 @@ svg:hover {
 }
 
 .profileContainer {
+    height: calc(100% - 70px);
     grid-area: profile;
     display: flex;
     flex-direction: column;
@@ -200,9 +200,12 @@ svg:hover {
         grid-template-areas: 'profile profile profile';
         grid-template-rows: 1fr;
         width: 100%;
+        --webkit-overflow-scrolling: touch;
+        overflow-y: auto;
     }
 
     .profileContainer {
+        justify-content: flex-start;
         margin-top: 26px;
     }
 
