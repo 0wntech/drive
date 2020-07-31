@@ -18,32 +18,14 @@
     background: #cd0000;
 }
 
-.red:hover {
-    background: #bd0000;
-}
-
 .white {
     font-weight: 400 !important;
     background: #fff;
 }
 
-.white:hover {
-    color: #666;
-}
-
-.blue:hover {
-    cursor: pointer;
-    background-color: #2771ff;
-}
-
 .green {
     background: #36c510;
     color: #fff;
-}
-
-.green:hover {
-    cursor: pointer;
-    background: #36a510;
 }
 
 .sm {
@@ -66,4 +48,24 @@
 .disabled {
     opacity: 0.5;
     cursor: initial;
+}
+
+@media (min-width: $screen_m) {
+    .white:hover {
+        color: #666;
+    }
+
+    .red:hover {
+        background: #bd0000;
+    }
+
+    .blue:hover {
+        cursor: pointer;
+        background-color: #2771ff;
+    }
+
+    .green:hover {
+        cursor: pointer;
+        background: #36a510;
+    }
 }

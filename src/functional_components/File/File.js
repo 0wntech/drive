@@ -27,6 +27,7 @@ export default function File({
                             alt="file"
                             className={styles.thumbnail}
                             src={currentPath + file.name}
+                            loading="lazy"
                         />
                         <div
                             alt="file"

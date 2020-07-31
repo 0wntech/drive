@@ -151,7 +151,7 @@
 @media (max-width: $screen_m) {
     .gridCell {
         height: 128px;
-        width: 100px;
+        width: 108px;
         justify-self: center;
     }
 
@@ -182,5 +182,11 @@
         position: initial;
         left: initial;
         transform: initial;
+    }
+}
+
+@media (max-width: $screen_xs) {
+    .gridCell {
+        width: 100px;
     }
 }

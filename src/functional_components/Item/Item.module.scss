@@ -141,3 +141,9 @@
         height: 60px;
     }
 }
+
+@media (max-width: $screen_xs) {
+    .gridCell {
+        width: 100px;
+    }
+}

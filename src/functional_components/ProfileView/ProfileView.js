@@ -104,6 +104,7 @@ export const ProfileView = ({
                                 contactStatus ? (
                                     <ActionButton
                                         label="Remove"
+                                        color="white"
                                         onClick={() => {
                                             removeContact(webId, user);
                                             setContactStatus(false);
@@ -116,6 +117,7 @@ export const ProfileView = ({
                                 ) : (
                                     <ActionButton
                                         label="Add"
+                                        color="green"
                                         className={classNames(
                                             styles.addButton,
                                             styles.actionButton

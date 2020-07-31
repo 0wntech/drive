@@ -3,6 +3,8 @@
 .container {
     height: calc(100% - 100px);
     padding: 1em 10%;
+    display: flex;
+    justify-content: center;
 }
 
 .spinner {
@@ -35,20 +37,18 @@
 .file {
     user-select: text;
     margin: initial;
-    padding: calc(72px + 4em) 1em;
+    padding: calc(72px + 4em) 0;
     padding-top: initial;
     font-family: inherit;
     white-space: pre-wrap;
+    width: 100%;
 }
 
 .image {
     max-width: 75vw;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
     display: inline-block;
     overflow: hidden;
+    align-self: center;
 }
 
 .image:hover  {
