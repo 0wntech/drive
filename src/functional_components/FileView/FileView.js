@@ -208,8 +208,8 @@ export const FileView = ({
             <BottomOverlay>
                 <AccessDisplay />
                 <BackButton />
-                <AccessWindow />
             </BottomOverlay>
+            <AccessWindow />
             <ErrorWindow
                 visible={isErrorWindowVisible}
                 onClose={toggleErrorWindow}
