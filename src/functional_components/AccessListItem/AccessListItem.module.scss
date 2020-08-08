@@ -44,3 +44,25 @@
     align-self: center;
     margin-left: 8px;
 }
+
+@media (max-width: $screen_m) {
+    .container {
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .info {
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 16px;
+    }
+
+    .access {
+        margin-top: 16px;
+    }
+
+    .name {
+        text-align: center;
+    }
+}
