@@ -7,7 +7,7 @@ import styles from './NavbarMenu.module.scss';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { setCurrentPath } from '../../actions/appActions';
 import { logout } from '../../actions/userActions';
-import { getRootFromWebId } from '../../utils/url';
+import { getRootFromWebId, getUsernameFromWebId } from '../../utils/url';
 import { navigate, getInitialsFromUser } from '../../utils/helper';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
@@ -92,7 +92,7 @@ export const NavbarMenu = ({
             )}
 
             <div data-test-id="navbar-username" className={styles.username}>
-                {user.name}
+                {user.name ? user.name : getUsernameFromWebId(user.webId)}
             </div>
         </div>
     );
