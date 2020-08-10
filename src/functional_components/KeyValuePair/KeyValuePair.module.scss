@@ -90,9 +90,8 @@
 
 @media (max-width: $screen_l) {
     .container {
-        width: calc(50% - 16px);
+        width: calc(100% - 64px);
     }
-
     .keyLabel {
         width: calc(70px + 1em);
         font-size: 16px;
@@ -103,7 +102,7 @@
     }
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_xs) {
     .container {
         width: calc(100% - 16px);
     }

@@ -25,6 +25,9 @@
     z-index: 3;
 }
 
+.overlay {
+}
+
 .error {
     margin-top: 10px;
     color: #f41818;
@@ -68,12 +71,14 @@
     .container {
         padding: initial;
         border-radius: initial;
-        height: calc(100vh - 198px);
+        height: calc(100vh - 214px);
     }
 
     .file {
+        padding-bottom: initial;
+        overflow-y: auto;
+        height: calc(100vh - 72px - 236px);
         width: calc(100% - 2em);
-        margin: initial;
         overflow-wrap: break-word;
     }
 

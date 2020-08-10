@@ -6,7 +6,7 @@ import LoginForm from '../LoginForm';
 import { Layout } from '../Layout';
 import { fetchIdps } from '../../actions/appActions';
 import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_l as screenM } from '../../styles/constants.scss';
+import { screen_l as screenL } from '../../styles/constants.scss';
 
 const getIdpStyles = (title) => {
     const idp = {};
@@ -73,7 +73,7 @@ const LoginScreen = ({
     console.log(idps, 'lala');
 
     return (
-        <Layout label="Login" hideToolbar={width < screenM}>
+        <Layout label="Login" hideToolbar={width < screenL}>
             <LoginForm
                 idps={idps}
                 onLogin={auth.login}

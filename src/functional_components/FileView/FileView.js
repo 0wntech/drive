@@ -200,7 +200,7 @@ export const FileView = ({
                     />
                 )
             ) : null}
-            <BottomOverlay>
+            <BottomOverlay className={styles.overlay}>
                 <AccessDisplay />
                 <BackButton />
             </BottomOverlay>

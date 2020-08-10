@@ -24,7 +24,7 @@ import {
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import Search from '../../assets/svgIcons/Search';
 import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_l as screenM } from '../../styles/constants.scss';
+import { screen_l as screenL } from '../../styles/constants.scss';
 import FileIcon from '../../assets/icons/FileIconMd.png';
 import FolderIcon from '../../assets/icons/FolderMd.png';
 import FileIconSm from '../../assets/icons/FileIconSm.png';
@@ -139,8 +139,8 @@ const Navigation = ({
             <Search
                 {...{
                     viewBox: '0 0 24 24',
-                    width: width < screenM ? 24 : 30,
-                    height: width < screenM ? 24 : 30,
+                    width: width < screenL ? 24 : 30,
+                    height: width < screenL ? 24 : 30,
                 }}
             />
         );

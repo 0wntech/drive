@@ -124,22 +124,23 @@ export const AccessWindow = ({
                     }}
                     formatOptionLabel={formatOptionLabel}
                 />
-                <div className={styles.entities}>
-                    {currentAccessControl &&
-                        currentAccessControl.map((entity) => (
-                            <AccessListItem entity={entity} />
-                        ))}
+                <div className={styles.entityWrapper}>
+                    <div className={styles.entities}>
+                        {currentAccessControl &&
+                            currentAccessControl.map((entity) => (
+                                <AccessListItem entity={entity} />
+                            ))}
+                    </div>
                 </div>
-                <BottomOverlay className={styles.buttonOverlay}>
-                    {url.parse(currentPath).pathname !== '/' &&
-                        defaultAclResource && (
-                            <ActionButton
-                                color="white"
-                                label="Revert to default"
-                                className={styles.resetButton}
-                            />
-                        )}
-                </BottomOverlay>
+                {url.parse(currentPath).pathname !== '/' && defaultAclResource && (
+                    <BottomOverlay className={styles.buttonOverlay}>
+                        <ActionButton
+                            color="white"
+                            label="Revert to default"
+                            className={styles.resetButton}
+                        />
+                    </BottomOverlay>
+                )}
             </div>
         </Window>
     );
