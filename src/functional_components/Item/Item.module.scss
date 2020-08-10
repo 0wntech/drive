@@ -89,18 +89,39 @@
     z-index: 3;
 }
 
-@media (min-width: $screen_m) {
+@media (min-width: $screen_l) {
     .label:hover {
         background: #ffffff;
         border-radius: 10px;
         padding: 0 4px;
         position: relative;
+        top: 0;
         left: 50%;
         transform: translateX(-50%);
         text-overflow: initial;
         width: min-content;
         box-sizing: border-box;
         border: solid $light_grey 4px;
+        z-index: 3;
+    }
+
+    .gridCell:first-child {
+        .label:hover {
+            min-width: 100px;
+            top: 1px;
+            left: 0;
+            transform: initial;
+        }
+    }
+
+    .gridCell:nth-child(9) {
+        .label:hover {
+            min-width: 100px;
+            top: 1px;
+            right: 8px;
+            left: initial;
+            transform: initial;
+        }
     }
 
     .gridCell:hover {
@@ -108,7 +129,7 @@
     }
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .gridCell {
         height: 128px;
         width: 100px;

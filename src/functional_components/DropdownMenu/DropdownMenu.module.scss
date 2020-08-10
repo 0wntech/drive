@@ -88,7 +88,7 @@
     border-bottom-right-radius: 14px;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .container:hover {
         border: solid $dark_grey 5px;
         border-radius: 20px;
@@ -96,7 +96,7 @@
     }
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .container {
         top: 0px;
         position: initial;

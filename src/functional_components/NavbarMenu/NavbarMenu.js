@@ -54,7 +54,7 @@ export const NavbarMenu = ({
 
     const getMenuHead = () => (
         <div className={styles.profileSection}>
-            {width < styleConstants.screen_m &&
+            {width < styleConstants.screen_l &&
             history.location.pathname === '/profile' ? (
                 <div
                     className={styles.settings}

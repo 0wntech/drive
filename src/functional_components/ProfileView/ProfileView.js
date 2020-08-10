@@ -36,7 +36,7 @@ export const ProfileView = ({
                 isLoading={updatingProfile || !user}
                 className={styles.grid}
                 label={label}
-                hideToolbar={width < styleConstants.screen_m ? true : false}
+                hideToolbar={width < styleConstants.screen_l ? true : false}
             >
                 <div className={styles.profileContainer}>
                     <div className={styles.headContainer}>

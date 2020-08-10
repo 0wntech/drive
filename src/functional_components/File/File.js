@@ -97,7 +97,9 @@ export default function File({
             >
                 {renderFile()}
                 <div className={styles.labelContainer}>
-                    <div className={styles.label}>{file.name}</div>
+                    <div className={styles.label}>
+                        {decodeURIComponent(file.name)}
+                    </div>
                 </div>
             </div>
         </DriveContextMenu>

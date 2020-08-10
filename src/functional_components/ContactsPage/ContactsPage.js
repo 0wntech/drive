@@ -11,7 +11,7 @@ import {
 } from '../../actions/contactActions';
 import ContactList from '../ContactList/ContactsList';
 import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_m as screenM } from '../../styles/constants.scss';
+import { screen_l as screenM } from '../../styles/constants.scss';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
 import { getContactRoute } from '../../utils/url';

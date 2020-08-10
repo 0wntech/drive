@@ -87,11 +87,11 @@ export const sortContainments = (urls) => {
         if (url.value[url.value.length - 1] === '/') {
             const urlFragments = url.value.split('/');
             const folderUrl = urlFragments[urlFragments.length - 2];
-            folders.push(decodeURIComponent(folderUrl));
+            folders.push(folderUrl);
         } else {
             const urlFragments = url.value.split('/');
             const fileUrl = urlFragments[urlFragments.length - 1];
-            files.push(decodeURIComponent(fileUrl));
+            files.push(fileUrl);
         }
     });
     return [files, folders];

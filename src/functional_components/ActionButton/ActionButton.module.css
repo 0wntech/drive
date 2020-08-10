@@ -50,7 +50,7 @@
     cursor: initial;
 }
 
-@media (min-width: $screen_m) {
+@media (min-width: $screen_l) {
     .white:hover {
         color: #666;
     }

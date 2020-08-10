@@ -4,12 +4,12 @@
     display: flex;
     justify-content: center;
     background: rgba($color: #000, $alpha: 0.2);
-    z-index: 5;
+    z-index: 10;
     position: absolute;
-    bottom: 0;
-    right: 0;
     top: 0;
     left: 0;
+    height: 100vh;
+    width: 100vw;
 
     .container {
         padding: 10px 0;
@@ -48,10 +48,6 @@
             }
         }
 
-        .option:hover {
-            background: $standard_blue;
-        }
-
         .disabled {
             color: #8c8c8c;
             cursor: default;
@@ -63,11 +59,14 @@
     }
 }
 
-@media (max-width: $screen_m) {
+@media (min-width: $screen_l) {
+    .option:hover {
+        background: $standard_blue;
+    }
+}
+
+@media (max-width: $screen_l) {
     .wrapper {
-        position: absolute;
-        height: 100vh;
-        width: 100vw;
         justify-content: flex-end;
         align-self: flex-end;
         max-height: initial;
@@ -75,11 +74,12 @@
         .container {
             border: none;
             height: initial;
-            max-height: 80%;
+            height: 80%;
             width: 100%;
             justify-self: flex-end;
             align-self: flex-end;
             border-radius: 20px 20px 0 0;
+            position: absolute;
         }
     }
 }

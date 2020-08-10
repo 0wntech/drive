@@ -3,10 +3,9 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
-import { ErrorBoundary } from './stateful_components/ErrorBoundary';
+import { ErrorBoundary } from './ErrorBoundary';
 import { login, fetchUser, setWebId, logout } from './actions/userActions';
 import styles from './App.module.scss';
-import NotificationsPage from './stateful_components/NotificationsPage';
 import { deepFetchCurrentItem } from './actions/appActions';
 import { getRootFromWebId } from './utils/url';
 const LoginScreen = lazy(() => import('./functional_components/LoginScreen'));
@@ -107,11 +106,6 @@ export const App = ({
                                     session={session}
                                     path="/contact"
                                     component={<ContactProfilePage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/notifications"
-                                    component={<NotificationsPage />}
                                 />
                                 <PrivateRoute
                                     session={session}

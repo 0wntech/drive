@@ -25,6 +25,8 @@
     transform: translateX(-50%) translateY(-50%);
     font-size: 1.5em;
     color: #666;
+    text-align: center;
+    width: 100%;
 }
 
 .gridCell {
@@ -125,14 +127,11 @@
 .icon {
     height: 100px;
     max-width: 100%;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
     background-size: contain;
     background-repeat: no-repeat;
 }
 
-@media (min-width: $screen_m) {
+@media (min-width: $screen_l) {
     .label:hover {
         background: #ffffff;
         border-radius: 10px;
@@ -141,6 +140,25 @@
         width: min-content;
         box-sizing: border-box;
         border: solid $light_grey 4px;
+        min-width: 100px;
+        z-index: 3;
+    }
+
+    .gridCell:first-child {
+        .label:hover {
+            top: 1px;
+            left: 0;
+            transform: initial;
+        }
+    }
+
+    .gridCell:nth-child(9) {
+        .label:hover {
+            top: 1px;
+            right: 8px;
+            left: initial;
+            transform: initial;
+        }
     }
 
     .gridCell:hover {
@@ -148,7 +166,7 @@
     }
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .gridCell {
         height: 128px;
         width: 108px;

@@ -68,7 +68,7 @@
     border-bottom-right-radius: 20px;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .content {
         height: calc(100vh - 126px - 72px);
     }

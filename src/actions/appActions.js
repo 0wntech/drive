@@ -68,6 +68,12 @@ import {
     TOGGLE_ACCESS_MODE,
     TOGGLE_ACCESS_MODE_SUCCESS,
     TOGGLE_ACCESS_MODE_FAILURE,
+    ADD_ACCESS,
+    ADD_ACCESS_FAILURE,
+    ADD_ACCESS_SUCCESS,
+    DELETE_ACCESS,
+    DELETE_ACCESS_FAILURE,
+    DELETE_ACCESS_SUCCESS,
 } from './types';
 
 import fileUtils from '../utils/fileUtils';
@@ -75,6 +81,7 @@ import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
 export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
+        newPath = encodeURI(newPath);
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
         if (options.noFetch) {
@@ -106,7 +113,10 @@ export const fetchCurrentAccessControl = (file) => {
                 ).then((result) => {
                     dispatch({
                         type: FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
-                        payload: result,
+                        payload: {
+                            accessControl: result,
+                            aclResource: aclClient.aclResource,
+                        },
                     });
                 });
             })
@@ -118,9 +128,44 @@ export const fetchCurrentAccessControl = (file) => {
     };
 };
 
+export const addAccess = (agent, file) => {
+    return (dispatch) => {
+        dispatch({ type: ADD_ACCESS });
+        const aclClient = new AclClient(file);
+        return aclClient
+            .addAgent({ name: agent, access: [] })
+            .then(() => {
+                dispatch({ type: ADD_ACCESS_SUCCESS });
+                dispatch(fetchCurrentAccessControl(file));
+            })
+            .catch((err) => {
+                dispatch({ type: ADD_ACCESS_FAILURE });
+            });
+    };
+};
+
+export const deleteAccess = (agent, file) => {
+    return (dispatch) => {
+        dispatch({ type: DELETE_ACCESS });
+        const aclClient = new AclClient(file);
+        const agents = Array.isArray(agent) ? agent : [agent];
+        return Promise.all(
+            agents.map((agent) =>
+                aclClient.deleteAgent({ name: agent, access: [] })
+            )
+        )
+            .then(() => {
+                dispatch({ type: DELETE_ACCESS_SUCCESS });
+                dispatch(fetchCurrentAccessControl(file));
+            })
+            .catch((err) => {
+                dispatch({ type: DELETE_ACCESS_FAILURE });
+            });
+    };
+};
+
 export const toggleAccessMode = (item, entity, mode) => {
     return (dispatch) => {
-        console.log('lalas');
         dispatch({ type: TOGGLE_ACCESS_MODE, payload: entity.name });
         const aclClient = new AclClient(item);
         entity.access = entity.access.includes(mode)
@@ -130,7 +175,7 @@ export const toggleAccessMode = (item, entity, mode) => {
         let update;
         if (entity.type === 'Agent') {
             update = aclClient.addAgent({
-                name: entity.name,
+                name: entity.webId,
                 access: entity.access,
             });
         } else if (entity.type === 'AgentGroup') {
@@ -237,7 +282,6 @@ export const downloadFile = (file) => {
             .then((result) => {
                 const fileType = mime.getType(file);
                 if (fileType.includes('image')) {
-                    console.log('saving as image');
                     FileSaver.saveAs(file, convertFileUrlToName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });
                 } else {
@@ -331,13 +375,29 @@ export const toggleSelectionMode = () => {
 };
 
 export const fetchIdps = () => {
+    console.log('fetchIdps');
     return (dispatch) => {
         dispatch({ type: FETCH_IDPS });
         const request = { method: 'GET' };
         fetch('https://solid.github.io/solid-idp-list/services.json', request)
             .then((response) => {
-                response.json().then((idps) => {
-                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: idps.idps });
+                response.json().then((body) => {
+                    body.idps = [
+                        {
+                            url: 'https://owntech.de/',
+                            icon: 'https://owntech.de/favicon.ico',
+                            icon_bg: '#fff',
+                            title: 'owntech.de',
+                            title_color: '#000',
+                            policyURL: 'https://owntech.de',
+                            description:
+                                'Owntech is a german identity provider, dedicated to Data Ownership',
+                            btn_bg: '#fff',
+                            btn_color: '#000',
+                        },
+                        ...body.idps,
+                    ];
+                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: body.idps });
                 });
             })
             .catch((err) => {
@@ -372,7 +432,6 @@ export const copyItems = (items) => {
 };
 
 export const pasteItems = (items, location) => {
-    console.log(location, items, 'lala');
     return (dispatch) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()
@@ -497,7 +556,6 @@ export const uploadFileOrFolder = ({ target }, currentPath) => {
                     });
             }
         } catch (error) {
-            console.log(error);
             dispatch({ type: UPLOAD_FILE_FAILURE, payload: error });
         }
     };

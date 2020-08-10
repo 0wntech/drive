@@ -1,11 +1,14 @@
 import React from 'react';
+import auth from 'solid-auth-client';
 import { connect } from 'react-redux';
 import styles from './LandingPage.module.css';
 import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 
 const onRegister = () => {
-    window.location.href = `https://owntech.de/register?returnToUrl=${window.location.href}login`;
+    auth.login(
+        `https://owntech.de/register?returnToUrl=${window.location.href}login`
+    );
 };
 
 const LandingPage = ({ webId, history }) => {

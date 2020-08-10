@@ -27,7 +27,7 @@
     outline: none;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .window {
         display: flex;
         flex-direction: column;

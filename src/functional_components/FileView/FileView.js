@@ -158,18 +158,12 @@ export const FileView = ({
             label={
                 currentItem &&
                 currentItem.url &&
-                convertFileUrlToName(currentItem.url)
+                decodeURIComponent(convertFileUrlToName(currentItem.url))
             }
             isLoading={updatingFile || loadCurrentItem}
-            label={
-                currentItem &&
-                currentItem.url &&
-                convertFileUrlToName(currentItem.url)
-            }
         >
             {error.FETCH_CURRENT_ITEM ? (
                 <>
-                    {console.log('error:', error)}
                     <div>Sorry, we cannot load this file.</div>
                     <p className={styles.error}>
                         Error: {error.FETCH_CURRENT_ITEM.message}
@@ -202,6 +196,7 @@ export const FileView = ({
                         src={currentItem.url}
                         alt="file"
                         className={styles.image}
+                        onClick={() => window.open(currentItem.url)}
                     />
                 )
             ) : null}

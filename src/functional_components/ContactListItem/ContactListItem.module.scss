@@ -60,7 +60,7 @@
     cursor: pointer;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .container {
         flex-direction: row;
         justify-content: flex-start;

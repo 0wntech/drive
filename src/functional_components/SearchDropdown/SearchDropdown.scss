@@ -93,7 +93,7 @@
     justify-content: center;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .search__control:hover {
         border: initial;
         box-sizing: initial;

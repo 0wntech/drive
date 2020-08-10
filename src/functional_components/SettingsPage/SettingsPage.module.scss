@@ -19,7 +19,7 @@
     grid-row-gap: 1em;
 }
 
-@media(max-width: $screen_m){
+@media(max-width: $screen_l){
     .container {
         grid-column-start: 2;
         grid-column-end: span 10;

@@ -187,7 +187,7 @@ svg:hover {
     width: 100%;
 }
 
-@media (min-width: $screen_m) {
+@media (min-width: $screen_l) {
     .addButton:hover {
         background-color: $dark_green;
     }
@@ -197,7 +197,7 @@ svg:hover {
     }
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .grid {
         grid-template-areas: 'profile profile profile';
         grid-template-rows: 1fr;

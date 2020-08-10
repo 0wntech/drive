@@ -10,7 +10,7 @@ import FileUpload from '../FileUpload/FileUpload';
 import MoreVertical from '../../assets/svgIcons/MoreVertical';
 import FolderPlus from '../../assets/svgIcons/FolderPlus';
 import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_m as screenM } from '../../styles/constants.scss';
+import { screen_l as screenM } from '../../styles/constants.scss';
 
 export default function ToolbarButtons({
     onFolderUpload,

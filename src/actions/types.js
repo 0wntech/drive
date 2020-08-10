@@ -58,6 +58,14 @@ export const ADD_CONTACT = 'add_contact';
 export const ADD_CONTACT_SUCCESS = 'add_contact_success';
 export const ADD_CONTACT_FAILURE = 'add_contact_failure';
 
+export const ADD_ACCESS = 'add_access';
+export const ADD_ACCESS_SUCCESS = 'add_access_success';
+export const ADD_ACCESS_FAILURE = 'add_access_failure';
+
+export const DELETE_ACCESS = 'delete_access';
+export const DELETE_ACCESS_SUCCESS = 'delete_access_success';
+export const DELETE_ACCESS_FAILURE = 'delete_access_failure';
+
 export const REMOVE_CONTACT = 'remove_contact';
 export const REMOVE_CONTACT_SUCCESS = 'remove_contact_success';
 export const REMOVE_CONTACT_FAILURE = 'remove_contact_failure';

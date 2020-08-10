@@ -23,12 +23,9 @@
   margin-left: 8px;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
   .accessToggle {
     padding: 4px 8px;
-  }
-
-  .disabled {
     font-size: 14px;
   }
 }

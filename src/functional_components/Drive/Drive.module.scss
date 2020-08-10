@@ -40,13 +40,17 @@
     padding: 1em 0;
 }
 
+.noScroll {
+    overflow-y: hidden;
+}
+
 .breadcrumbsContainer {
     z-index: 1;
     display: flex;
     align-items: center;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .mainArea {
         height: calc(100% + 90px);
         padding: 0 16px;

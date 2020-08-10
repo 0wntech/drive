@@ -22,6 +22,15 @@
     margin-right: 8px;
 }
 
+.defaultContactIcon {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+    min-height: 64px !important;
+    line-height: 56px !important;
+    font-size: 1.5em;
+}
+
 .info {
     display: flex;
     flex-direction: column;
@@ -45,7 +54,7 @@
     margin-left: 8px;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .container {
         flex-direction: column;
         justify-content: flex-end;

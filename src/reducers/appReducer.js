@@ -1,5 +1,3 @@
-import idps from '../constants/idps';
-
 import {
     DEEP_FETCH_CURRENT_ITEM,
     DEEP_FETCH_CURRENT_ITEM_SUCCESS,
@@ -69,6 +67,7 @@ const INITIAL_STATE = {
     loadCurrentItem: false,
     loadCurrentAccessControl: false,
     currentAccessControl: null,
+    defaultAclResource: null,
     loadDeletion: false,
     updatingFile: false,
     uploadingFiles: false,
@@ -92,7 +91,7 @@ const INITIAL_STATE = {
     selectionMode: false,
     clipboard: [],
     loadPaste: false,
-    idps: idps,
+    idps: null,
     isRenameWindowVisible: false,
     renamedItem: null,
     isCreateFileVisible: false,
@@ -188,7 +187,8 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loadCurrentAccessControl: false,
-                currentAccessControl: payload,
+                currentAccessControl: payload.accessControl,
+                defaultAclResource: payload.defaultAclResource,
                 error: {
                     ...state.error,
                     FETCH_CURRENT_ACCESS_CONTROL: false,

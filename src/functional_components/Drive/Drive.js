@@ -59,6 +59,7 @@ const Drive = ({
     loadPaste,
     toggleSearchbar,
     isSearchBarExpanded,
+    isAccessWindowVisible,
 }) => {
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
@@ -97,7 +98,6 @@ const Drive = ({
             history.push(`/file?f=${url}`);
         }
     };
-
     const loadFolder = (path) => {
         if (selectionMode && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];
@@ -181,7 +181,7 @@ const Drive = ({
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={toolbarRight}
             className={classNames(styles.grid, {
-                [styles.noScroll]: isDriveMenuVisible,
+                [styles.noScroll]: isDriveMenuVisible || isAccessWindowVisible,
             })}
             label="Drive"
             onClick={handleClick}
@@ -264,6 +264,7 @@ const mapStateToProps = (state) => {
         loadCurrentItem: state.app.loadCurrentItem,
         isSearchBarExpanded: state.app.isSearchBarExpanded,
         isDriveMenuVisible: state.app.isDriveMenuVisible,
+        isAccessWindowVisible: state.app.isAccessWindowVisible,
         uploadingFiles: state.app.uploadingFiles,
     };
 };

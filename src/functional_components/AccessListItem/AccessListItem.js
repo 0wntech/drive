@@ -7,6 +7,9 @@ import styles from './AccessListItem.module.scss';
 import AccessToggle from '../AccessToggle/AccessToggle.js';
 import { toggleAccessMode } from '../../actions/appActions.js';
 import { ClassicSpinner } from 'react-spinners-kit';
+import { isValidUrl } from '../../utils/url.js';
+import { getInitialsFromUser } from '../../utils/helper.js';
+import DefaultIcon from '../DefaultIcon/DefaultIcon.js';
 
 export const AccessListItem = ({
     entity,
@@ -28,11 +31,16 @@ export const AccessListItem = ({
                     height={64}
                     viewBox="0 0 40 40"
                 />
-            ) : (
+            ) : entity.picture && isValidUrl(entity.picture) ? (
                 <div
                     className={styles.image}
                     style={{ backgroundImage: `url(${entity.picture})` }}
                 ></div>
+            ) : (
+                <DefaultIcon
+                    className={styles.defaultContactIcon}
+                    initials={getInitialsFromUser(entity)}
+                />
             )}
             <div className={styles.info}>
                 {isPublicEntity ? (
