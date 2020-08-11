@@ -160,6 +160,7 @@ export const FileView = ({
                 currentItem.url &&
                 decodeURIComponent(convertFileUrlToName(currentItem.url))
             }
+            showLabel
             isLoading={updatingFile || loadCurrentItem}
         >
             {error.FETCH_CURRENT_ITEM ? (
@@ -181,7 +182,15 @@ export const FileView = ({
                             placeholder={getPlaceholder(currentItem.body)}
                         />
                     ) : mime.getExtension(fileType) === 'markdown' ? (
-                        <MarkdownView markdown={currentItem.body} />
+                        <MarkdownView
+                            style={{
+                                textAlign: 'left',
+                                width: 'calc(100% - 2em)',
+                                height: 'max-content',
+                                paddingBottom: '8em',
+                            }}
+                            markdown={currentItem.body}
+                        />
                     ) : (
                         <div
                             className={classNames(styles.file, {

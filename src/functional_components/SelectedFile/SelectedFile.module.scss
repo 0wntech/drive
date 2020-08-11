@@ -9,21 +9,24 @@
     border: solid $light_blue 4px;
     box-sizing: border-box;
     border-radius: 20px;
+    max-width: 100%;
 }
 
 .listing {
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 100%;
 }
 
 .listing > img {
     max-width: 24px;
     height: 20px;
-    margin: 0 10px 0 5px;
+    margin-right: 8px;
 }
 
 .labelText {
+    max-width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

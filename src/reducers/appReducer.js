@@ -123,7 +123,14 @@ export default (state = INITIAL_STATE, action) => {
         case SET_CURRENT_PATH:
             return { ...state, currentPath: payload };
         case SET_SELECTION:
-            return { ...state, selectedItems: [...payload] };
+            return {
+                ...state,
+                selectedItems: payload,
+                selectionMode:
+                    payload && payload.length === 0
+                        ? false
+                        : state.selectionMode,
+            };
         case TOGGLE_SELECTION_MODE:
             return { ...state, selectionMode: !state.selectionMode };
         case DEEP_FETCH_CURRENT_ITEM:

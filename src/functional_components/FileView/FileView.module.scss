@@ -25,9 +25,6 @@
     z-index: 3;
 }
 
-.overlay {
-}
-
 .error {
     margin-top: 10px;
     color: #f41818;
@@ -71,7 +68,7 @@
     .container {
         padding: initial;
         border-radius: initial;
-        height: calc(100vh - 214px);
+        height: calc(100vh - 198px);
     }
 
     .file {

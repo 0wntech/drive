@@ -19,6 +19,7 @@ export const SettingsSection = ({ label, options }) => {
                             label={button.label}
                             onClick={button.onClick}
                             color={button.color}
+                            type={button.type}
                         />
                     </div>
                 );
@@ -35,6 +36,7 @@ SettingsSection.propTypes = {
             label: PropTypes.string,
             onClick: PropTypes.func,
             color: PropTypes.oneOf(['red', 'green', 'blue', 'white']),
+            type: PropTypes.oneOf(['primary', 'secondary']),
         })
     ),
 };
