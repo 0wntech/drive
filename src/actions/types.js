@@ -90,6 +90,7 @@ export const FETCH_APPS_FAILURE = 'fetch_apps_failure';
 
 export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
+export const SEARCH_CONTACT_COMPLETED = 'search_contact_completed';
 export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
 
 export const OPEN_CONSENT_WINDOW = 'open_consent_window';

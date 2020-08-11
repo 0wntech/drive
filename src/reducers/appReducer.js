@@ -121,7 +121,11 @@ export default (state = INITIAL_STATE, action) => {
         case SET_CURRENT_CONTACT:
             return { ...state, isSearchBarExpanded: false };
         case SET_CURRENT_PATH:
-            return { ...state, currentPath: payload };
+            return {
+                ...state,
+                currentPath: payload,
+                isSearchBarExpanded: false,
+            };
         case SET_SELECTION:
             return {
                 ...state,

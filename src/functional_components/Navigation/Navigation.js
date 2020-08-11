@@ -95,6 +95,7 @@ const Navigation = ({
     webId,
     setCurrentPath,
     history,
+    location,
     currentItem,
     fileHierarchy,
     contacts,
@@ -113,17 +114,28 @@ const Navigation = ({
         if (!contacts && !loadContacts) fetchContacts(webId);
     }, []);
 
+    console.log(searchingContacts, 'lala');
+
     const handleChange = (selected) => {
         resetError();
-        if (selected.type === 'folder') {
+        if (selected.type === 'folder' && location.pathname === '/home') {
             setCurrentPath(selected.path);
-            navigate('/home', history, dispatch);
+        } else if (
+            selected.type === 'file' &&
+            location.pathname.startsWith('/file')
+        ) {
+            setCurrentPath(selected.path);
+        } else if (selected.type === 'folder') {
+            navigate('/home', history, dispatch, () =>
+                setCurrentPath(selected.path)
+            );
         } else if (selected.type === 'file') {
             navigate(`/file?f=${selected.path}`, history, dispatch);
         } else if (selected.type === 'contact') {
             const { contact } = selected;
-            setCurrentContact(contact);
-            navigate(getContactRoute(contact), history, dispatch);
+            navigate(getContactRoute(contact), history, dispatch, () =>
+                setCurrentContact(contact)
+            );
         }
     };
     const { width } = useWindowDimension();

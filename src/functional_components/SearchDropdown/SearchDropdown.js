@@ -58,8 +58,8 @@ export function SearchDropdown({
                 setTimeout(
                     () =>
                         contacts
-                            ? searchContact(searchText, contacts)
-                            : searchContact(searchText, []),
+                            ? searchContact(searchText)
+                            : searchContact(searchText),
                     1000
                 )
             );

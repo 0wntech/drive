@@ -101,5 +101,10 @@
 
     .showLabel {
         display: initial;
+        text-align: left;
+        padding: 0 16px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
