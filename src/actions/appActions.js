@@ -390,8 +390,7 @@ export const fetchIdps = () => {
                             title: 'owntech.de',
                             title_color: '#000',
                             policyURL: 'https://owntech.de',
-                            description:
-                                'Owntech is a german identity provider, dedicated to Data Ownership',
+                            description: `Owntech is a german identity provider, dedicated to Data Ownership`,
                             btn_bg: '#fff',
                             btn_color: '#000',
                         },

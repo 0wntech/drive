@@ -114,8 +114,6 @@ const Navigation = ({
         if (!contacts && !loadContacts) fetchContacts(webId);
     }, []);
 
-    console.log(searchingContacts, 'lala');
-
     const handleChange = (selected) => {
         resetError();
         if (selected.type === 'folder' && location.pathname === '/home') {

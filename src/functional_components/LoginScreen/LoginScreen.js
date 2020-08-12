@@ -70,7 +70,6 @@ const LoginScreen = ({
             }
         }
     });
-    console.log(idps, 'lala');
 
     return (
         <Layout label="Login" hideToolbar={width < screenL}>

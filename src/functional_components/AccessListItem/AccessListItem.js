@@ -7,7 +7,7 @@ import styles from './AccessListItem.module.scss';
 import AccessToggle from '../AccessToggle/AccessToggle.js';
 import { toggleAccessMode } from '../../actions/appActions.js';
 import { ClassicSpinner } from 'react-spinners-kit';
-import { isValidUrl } from '../../utils/url.js';
+import { isValidUrl, getUsernameFromWebId } from '../../utils/url.js';
 import { getInitialsFromUser } from '../../utils/helper.js';
 import DefaultIcon from '../DefaultIcon/DefaultIcon.js';
 
@@ -47,8 +47,12 @@ export const AccessListItem = ({
                     <div className={styles.name}>Any Authenticated User</div>
                 ) : isCurrentUser ? (
                     <div className={styles.name}>Me</div>
-                ) : (
+                ) : entity.name ? (
                     <div className={styles.name}>{entity.name}</div>
+                ) : (
+                    <div className={styles.name}>
+                        {getUsernameFromWebId(entity.webId)}
+                    </div>
                 )}
                 <div className={styles.access}>
                     <AccessToggle

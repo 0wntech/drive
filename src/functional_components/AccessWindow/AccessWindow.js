@@ -22,7 +22,8 @@ import { getInitialsFromUser } from '../../utils/helper';
 
 const formatOptionLabel = ({ contact }) => {
     return (
-        contact && (
+        contact &&
+        contact.webId && (
             <div className={styles.optionContainer}>
                 <div className={styles.iconContainer}>
                     {contact.picture && isValidUrl(contact.picture) ? (
