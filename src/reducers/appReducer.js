@@ -131,7 +131,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 selectedItems: payload,
                 selectionMode:
-                    payload && payload.length === 0
+                    !payload || (payload && payload.length === 0)
                         ? false
                         : state.selectionMode,
             };

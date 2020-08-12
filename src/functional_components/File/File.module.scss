@@ -144,22 +144,22 @@
         z-index: 3;
     }
 
-    .gridCell:first-child {
-        .label:hover {
-            top: 1px;
-            left: 0;
-            transform: initial;
-        }
-    }
+    // .gridCell:first-child {
+    //     .label:hover {
+    //         top: 1px;
+    //         left: 0;
+    //         transform: initial;
+    //     }
+    // }
 
-    .gridCell:nth-child(9) {
-        .label:hover {
-            top: 1px;
-            right: 8px;
-            left: initial;
-            transform: initial;
-        }
-    }
+    // .gridCell:nth-child(9) {
+    //     .label:hover {
+    //         top: 1px;
+    //         right: 8px;
+    //         left: initial;
+    //         transform: initial;
+    //     }
+    // }
 
     .gridCell:hover {
         background-color: $light_grey;

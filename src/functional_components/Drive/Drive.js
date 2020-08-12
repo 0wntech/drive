@@ -120,7 +120,6 @@ const Drive = ({
         ) {
             console.log('Emptying selection');
             setSelection([]);
-            if (selectionMode) toggleSelectionMode();
         }
     };
 

@@ -3,7 +3,7 @@
 .container {
     display: flex;
     flex-flow: row wrap;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     min-height: 380px;
 }
