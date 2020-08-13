@@ -31,6 +31,8 @@ svg:hover {
 }
 
 .profileContainer {
+    justify-self: center;
+    width: 50%;
     height: calc(100% - 70px);
     grid-area: profile;
     display: flex;
@@ -101,7 +103,8 @@ svg:hover {
 }
 
 .headContainer {
-    width: 50%;
+    width: 100%;
+    min-width: 50%;
     max-height: 100%;
     display: flex;
     position: relative;
@@ -191,7 +194,7 @@ svg:hover {
     .addButton:hover {
         background-color: $dark_green;
     }
-    
+
     .removeButton:hover {
         cursor: pointer;
     }
@@ -209,6 +212,7 @@ svg:hover {
     }
 
     .profileContainer {
+        width: 100%;
         justify-content: flex-start;
         margin-top: 1em;
         padding-bottom: 4em;

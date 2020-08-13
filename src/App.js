@@ -38,7 +38,6 @@ export const App = ({
         if (!session) {
             login();
         } else {
-            console.log(getRootFromWebId(session.webId), 'deep');
             deepFetchCurrentItem(getRootFromWebId(session.webId));
         }
     }, [session]);

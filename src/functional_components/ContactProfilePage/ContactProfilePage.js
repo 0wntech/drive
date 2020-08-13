@@ -6,11 +6,13 @@ import {
     removeContact,
     fetchContact,
     setCurrentContact,
+    fetchContacts,
 } from '../../actions/contactActions';
 import { isContact } from '../../reducers/contactReducer';
 import { handleError } from '../../utils/helper';
 import { getParamsFromUrl, getUsernameFromWebId } from '../../utils/url';
 import ProfileView from '../ProfileView/ProfileView';
+import { withRouter } from 'react-router-dom';
 
 const ContactProfilePage = ({
     currentContact,
@@ -20,7 +22,10 @@ const ContactProfilePage = ({
     setCurrentContact,
     webId,
     isContact,
+    fetchContacts,
     contacts,
+    currentContacts,
+    history,
     error,
 }) => {
     handleError(error);
@@ -37,7 +42,8 @@ const ContactProfilePage = ({
         ) {
             fetchContact(currentUser);
         }
-    }, []);
+        if (!currentContacts) fetchContacts(currentUser);
+    }, [currentContacts]);
 
     return currentContact ? (
         <ProfileView
@@ -56,6 +62,11 @@ const ContactProfilePage = ({
             addContact={addContact}
             removeContact={removeContact}
             webId={webId}
+            contacts={currentContacts}
+            navigateToContact={(contact) => {
+                setCurrentContact(contact);
+                history.push(`/contact?u=${encodeURIComponent(contact.webId)}`);
+            }}
         />
     ) : null;
 };
@@ -67,11 +78,16 @@ ContactProfilePage.propTypes = {
 const mapStateToProps = (state) => ({
     error: state.contact.error,
     currentContact: state.contact.currentContact,
+    loadContacts: state.contact.loadContacts,
     contacts: state.contact.contacts,
+    currentContacts: state.contact.currentContacts,
     webId: state.user.webId,
     isContact:
         state.contact.contacts && state.contact.currentContact
-            ? isContact(state.contact, state.contact.currentContact.webId)
+            ? isContact(
+                  state.contact.contacts,
+                  state.contact.currentContact.webId
+              )
             : undefined,
 });
 
@@ -80,4 +96,5 @@ export default connect(mapStateToProps, {
     removeContact,
     setCurrentContact,
     fetchContact,
-})(ContactProfilePage);
+    fetchContacts,
+})(withRouter(ContactProfilePage));

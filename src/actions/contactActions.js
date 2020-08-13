@@ -19,6 +19,7 @@ import {
     FETCH_CONTACT_SUCCESS,
     FETCH_CONTACT_FAILURE,
     SEARCH_CONTACT_COMPLETED,
+    FETCH_CURRENT_CONTACTS_SUCCESS,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
@@ -79,14 +80,24 @@ export const fetchContacts = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
         const user = new User(webId);
-        user.getContacts()
+        return user
+            .getContacts()
             .then((contacts) => {
                 fetchDetailContacts(contacts)
-                    .then((detailContacts) => {
-                        dispatch({
-                            type: FETCH_CONTACTS_SUCCESS,
-                            payload: detailContacts,
-                        });
+                    .then(async (detailContacts) => {
+                        const loggedInUser = (await auth.currentSession())
+                            .webId;
+                        if (loggedInUser === webId) {
+                            dispatch({
+                                type: FETCH_CONTACTS_SUCCESS,
+                                payload: detailContacts,
+                            });
+                        } else {
+                            dispatch({
+                                type: FETCH_CURRENT_CONTACTS_SUCCESS,
+                                payload: detailContacts,
+                            });
+                        }
                     })
                     .catch((error) => {
                         dispatch({

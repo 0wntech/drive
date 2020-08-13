@@ -7,14 +7,14 @@ describe('AppReducer', () => {
                 contacts,
             };
             const webId = 'https://bejow.solid.community/profile/card#me';
-            expect(isContact(state, webId)).toBe(true);
+            expect(isContact(state.contacts, webId)).toBe(true);
         });
         test('Return false if webId is not a contact', () => {
             const state = {
                 contacts,
             };
             const webId = 'https://notacontact.solid.community/profile/card#me';
-            expect(isContact(state, webId)).toBe(false);
+            expect(isContact(state.contacts, webId)).toBe(false);
         });
     });
 });

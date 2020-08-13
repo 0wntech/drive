@@ -24,14 +24,16 @@ const ContactsPage = ({
     webId,
     setCurrentContact,
     contactRecommendations,
+    loadContactRecommendations,
     removeContact,
     history,
     fetchContactRecommendations,
     error,
 }) => {
     useEffect(() => {
-        if (!contacts) fetchContacts(webId);
-        if (!contactRecommendations) fetchContactRecommendations(webId);
+        if (!contacts && !loadContacts && webId) fetchContacts(webId);
+        if (!contactRecommendations && !loadContactRecommendations)
+            fetchContactRecommendations(webId);
     }, []);
 
     const { width } = useWindowDimension();
@@ -105,6 +107,7 @@ const mapStateToProps = (state) => ({
     webId: state.user.webId,
     loadContacts: state.contact.loadContacts,
     contactRecommendations: state.contact.contactRecommendations,
+    loadContactRecommendations: state.contact.loadContactRecommendations,
     error: state.contact.error,
 });
 

@@ -20,7 +20,6 @@ import {
     toggleSearchbar,
     toggleDriveMenu,
     openCreateFolderWindow,
-    toggleSelectionMode,
     downloadFile,
     uploadFileOrFolder,
 } from '../../actions/appActions';
@@ -39,7 +38,6 @@ const Drive = ({
     selectedItems,
     selectionMode,
     setSelection,
-    toggleSelectionMode,
     currentItem,
     currentPath,
     loadCurrentItem,
@@ -277,7 +275,6 @@ export default withRouter(
         sendNotification,
         fetchCurrentItem,
         setSelection,
-        toggleSelectionMode,
         toggleSearchbar,
         downloadFile,
         uploadFileOrFolder,

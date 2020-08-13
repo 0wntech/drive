@@ -11,6 +11,7 @@ import useWindowDimension from '../../hooks/useWindowDimension';
 import ActionButton from '../ActionButton/ActionButton';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 import { getInitialsFromUser } from '../../utils/helper';
+import ContactCarousel from '../ContactCarousel/ContactCarousel';
 
 export const ProfileView = ({
     user,
@@ -25,6 +26,8 @@ export const ProfileView = ({
     removeContact,
     webId,
     label,
+    contacts,
+    navigateToContact,
 }) => {
     // eslint-disable-next-line no-unused-vars
     const { _, width } = useWindowDimension();
@@ -159,6 +162,12 @@ export const ProfileView = ({
                             userData.telephones ? userData.telephones : ``
                         }
                     />
+                    {contacts && (
+                        <ContactCarousel
+                            contacts={contacts}
+                            onClick={navigateToContact}
+                        />
+                    )}
                 </div>
             </Layout>
         );

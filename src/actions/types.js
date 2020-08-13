@@ -52,6 +52,7 @@ export const PASTE_ITEMS_FAILURE = 'paste_items_failure';
 
 export const FETCH_CONTACTS = 'fetch_contacts';
 export const FETCH_CONTACTS_SUCCESS = 'fetch_contacts_success';
+export const FETCH_CURRENT_CONTACTS_SUCCESS = 'fetch_current_contacts_success';
 export const FETCH_CONTACTS_FAILURE = 'fetch_contacts_failure';
 
 export const ADD_CONTACT = 'add_contact';
