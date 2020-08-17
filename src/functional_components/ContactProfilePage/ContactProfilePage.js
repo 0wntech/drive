@@ -24,6 +24,7 @@ const ContactProfilePage = ({
     isContact,
     fetchContacts,
     contacts,
+    loadContacts,
     currentContacts,
     history,
     error,
@@ -55,14 +56,16 @@ const ContactProfilePage = ({
             user={currentContact}
             userData={{
                 ...currentContact,
-                emails: currentContact.emails[0],
-                telephones: currentContact.telephones[0],
+                emails: currentContact.emails && currentContact.emails[0],
+                telephones:
+                    currentContact.telephones && currentContact.telephones[0],
             }}
             isContact={isContact}
             addContact={addContact}
             removeContact={removeContact}
             webId={webId}
             contacts={currentContacts}
+            loadingContacts={loadContacts || !currentContacts}
             navigateToContact={(contact) => {
                 setCurrentContact(contact);
                 history.push(`/contact?u=${encodeURIComponent(contact.webId)}`);

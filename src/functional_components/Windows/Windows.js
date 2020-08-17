@@ -16,13 +16,13 @@ import {
 } from '../../actions/appActions';
 import { connect } from 'react-redux';
 import AccessWindow from '../AccessWindow';
+import InfoWindow from '../InfoWindow/InfoWindow';
 
 export const Windows = ({
     isConsentWindowVisible,
     isCreateFileVisible,
     isCreateFolderVisible,
     isRenameWindowVisible,
-    isAccessWindowVisible,
     renamedItem,
     selectedItems,
     currentItem,
@@ -77,6 +77,7 @@ export const Windows = ({
                 onClose={closeRenameWindow}
             />
             <AccessWindow />
+            <InfoWindow />
         </Fragment>
     );
 };
@@ -87,7 +88,6 @@ const mapStateToProps = (state) => {
         isCreateFileVisible: state.app.isCreateFileVisible,
         isCreateFolderVisible: state.app.isCreateFolderVisible,
         isConsentWindowVisible: state.app.isConsentWindowVisible,
-        isAccessWindowVisible: state.app.isAccessWindowVisible,
         selectedItems: state.app.selectedItems,
         currentPath: state.app.currentPath,
         currentItem: state.app.currentItem,

@@ -2,83 +2,18 @@ import React from 'react';
 import styles from './File.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import mime from 'mime';
-import { isImageType } from '../../utils/fileUtils';
-import linkedFileImage from '../../assets/icons/shared_file.png';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
+import { FileImage } from '../FileImage/FileImage';
 
 export default function File({
-    currentPath,
     onClick,
     onMouseUp,
     onMouseDown,
-    image,
     file,
+    currentPath,
+    image,
     selectedItem,
 }) {
-    const isImage = isImageType(file.type);
-
-    const renderFile = () => {
-        if (isImage) {
-            return (
-                <div className={styles.innerContainer}>
-                    <div className={styles.iconContainer}>
-                        <img
-                            alt="file"
-                            className={styles.thumbnail}
-                            src={currentPath + file.name}
-                            loading="lazy"
-                        />
-                        <div
-                            alt="file"
-                            className={styles.icon}
-                            style={{ backgroundImage: `url(${image})` }}
-                        >
-                            <img
-                                src={image}
-                                style={{ visibility: 'hidden' }}
-                                className={styles.icon}
-                            />
-                        </div>
-                    </div>
-                </div>
-            );
-        } else {
-            return (
-                <div
-                    className={styles.innerContainer}
-                    data-test-id={`file-${file.name}`}
-                >
-                    {file.type ? (
-                        file.type === 'rdf' ? (
-                            <img
-                                src={linkedFileImage}
-                                className={styles.linkedFile}
-                            />
-                        ) : (
-                            <p className={styles.fileType}>
-                                {mime.getExtension(file.type) === 'markdown'
-                                    ? 'md'
-                                    : mime.getExtension(file.type)}
-                            </p>
-                        )
-                    ) : null}
-                    <div
-                        alt="file"
-                        className={styles.icon}
-                        style={{ backgroundImage: `url(${image})` }}
-                    >
-                        <img
-                            src={image}
-                            style={{ visibility: 'hidden' }}
-                            className={styles.icon}
-                        />
-                    </div>
-                </div>
-            );
-        }
-    };
-
     return (
         <DriveContextMenu
             className={classNames(styles.gridCell, {
@@ -95,7 +30,11 @@ export default function File({
                 onTouchEnd={onMouseUp}
                 onTouchStart={onMouseDown}
             >
-                {renderFile()}
+                <FileImage
+                    currentPath={currentPath}
+                    image={image}
+                    file={file}
+                />
                 <div className={styles.labelContainer}>
                     <div className={styles.label}>
                         {decodeURIComponent(file.name)}

@@ -10,6 +10,8 @@ import {
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+jest.setTimeout(20000);
+
 const folderFiles = {
     files: [
         { name: 'favicon.ico', type: 'image/vnd.microsoft.icon' },
@@ -50,9 +52,12 @@ describe('App Actions', () => {
         });
     });
     describe('setCurrentPath', () => {
-        it('should create actions to set current path, empty selection, fetch items', () => {
+        it('should create actions to set current path, empty selection, fetch items', async () => {
             const path = 'https://bejow.inrupt.net/.well-known/';
-            const store = mockStore({ currentPath: null });
+            const store = mockStore({
+                currentPath: null,
+                currentAccessControl: null,
+            });
             const expectedActions = [
                 {
                     type: SET_CURRENT_PATH,
@@ -77,9 +82,8 @@ describe('App Actions', () => {
                 },
             ];
 
-            return store.dispatch(setCurrentPath(path)).then(() => {
-                expect(store.getActions()).toEqual(expectedActions);
-            });
+            await store.dispatch(setCurrentPath(path));
+            expect(store.getActions()).toEqual(expectedActions);
         });
         it('should set the path and currentItem without fetching when receiving an image path', () => {
             const path = 'https://bejow.owntech.de/favicon.ico';

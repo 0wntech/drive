@@ -11,24 +11,6 @@
     align-items: center;
 }
 
-.innerContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.fileType {
-    z-index: 2;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    font-size: 1.5em;
-    color: #666;
-    text-align: center;
-    width: 100%;
-}
-
 .gridCell {
     display: flex;
     flex-direction: column;
@@ -39,6 +21,8 @@
     border: solid transparent 4px;
     box-sizing: border-box;
     border-radius: 20px;
+    transition-property: background-color;
+    transition-duration: 0.3s;
 }
 
 .selected {
@@ -97,38 +81,8 @@
     color: #000;
 }
 
-.iconContainer {
-    position: relative;
-}
-
-.thumbnail {
-    max-width: 75%;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 1;
-    transform: translateX(-50%) translateY(-40%);
-}
-
-.linkedFile {
-    width: 40%;
-    position: absolute;
-    z-index: 2;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-75%);
-}
-
 .active {
     display: initial;
-}
-
-.icon {
-    height: 100px;
-    max-width: 100%;
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 
 @media (min-width: $screen_l) {

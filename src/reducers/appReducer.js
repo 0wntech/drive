@@ -59,6 +59,7 @@ import {
     TOGGLE_ACCESS_MODE,
     TOGGLE_ACCESS_MODE_SUCCESS,
     TOGGLE_ACCESS_MODE_FAILURE,
+    TOGGLE_INFO_WINDOW,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
@@ -103,6 +104,7 @@ const INITIAL_STATE = {
     isDriveMenuVisible: false,
     isErrorWindowVisible: false,
     isAccessWindowVisible: false,
+    isInfoWindowVisible: false,
     errorWindowError: null,
     managingAccess: false,
     managingAccessFor: null,
@@ -436,6 +438,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isAccessWindowVisible: !state.isAccessWindowVisible,
+            };
+        case TOGGLE_INFO_WINDOW:
+            return {
+                ...state,
+                isInfoWindowVisible: !state.isInfoWindowVisible,
             };
         default:
             return state;

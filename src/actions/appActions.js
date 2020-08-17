@@ -74,6 +74,7 @@ import {
     DELETE_ACCESS,
     DELETE_ACCESS_FAILURE,
     DELETE_ACCESS_SUCCESS,
+    TOGGLE_INFO_WINDOW,
 } from './types';
 
 import fileUtils from '../utils/fileUtils';
@@ -368,6 +369,10 @@ export const sendNotification = (to, notification) => {
 
 export const setSelection = (selection) => {
     return { type: SET_SELECTION, payload: selection };
+};
+
+export const toggleInfoWindow = () => {
+    return { type: TOGGLE_INFO_WINDOW };
 };
 
 export const toggleSelectionMode = () => {

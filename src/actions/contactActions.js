@@ -135,16 +135,16 @@ export const fetchContactRecommendations = (webId) => {
 };
 
 export const fetchDetailContacts = (contacts) => {
-    const requests = contacts.map((webid) => {
+    const requests = contacts.map((webId) => {
         const request = new Promise((resolve, reject) => {
-            const contact = new User(webid);
+            const contact = new User(webId);
             contact
                 .getProfile()
                 .then((profileData) => {
                     resolve(profileData);
                 })
                 .catch((error) => {
-                    reject(error);
+                    resolve({ webId: webId });
                 });
         });
         return request;

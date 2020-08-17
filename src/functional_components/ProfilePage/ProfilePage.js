@@ -119,6 +119,11 @@ export const ProfilePage = ({
             updateUserData={updateUserData}
             editState={editState}
             userData={userData}
+            loadingContacts={loadContacts}
+            navigateToContact={(contact) => {
+                setCurrentContact(contact);
+                history.push(`/contact?u=${encodeURIComponent(contact.webId)}`);
+            }}
         ></ProfileView>
     );
 };

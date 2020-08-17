@@ -4,6 +4,7 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
 <ProfileView
   editState={false}
   label="Profile"
+  navigateToContact={[Function]}
   onPhotoChange={[Function]}
   renderButtons={[Function]}
   updateUserData={[Function]}
