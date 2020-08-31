@@ -35,12 +35,6 @@ const getPlaceholder = (body) => {
     return 'Empty';
 };
 
-const getValue = (newBody, body) => {
-    if (newBody === '' && body && body !== '') return body;
-
-    return newBody;
-};
-
 export const FileView = ({
     loadCurrentItem,
     currentItem,
@@ -77,11 +71,18 @@ export const FileView = ({
         }
     }, []);
 
+    useEffect(() => {
+        if (currentItem && typeof currentItem.body === 'string')
+            setNewBody(currentItem.body);
+    }, [currentItem]);
+
     const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
     const isImage = isImageType(fileType);
 
     const [isEditable, setEditable] = useState(false);
-    const [newBody, setNewBody] = useState('');
+    const [newBody, setNewBody] = useState(
+        currentItem && currentItem.body ? currentItem.body : ''
+    );
 
     const onCancel = () => {
         setNewBody(currentItem.body);
@@ -152,7 +153,9 @@ export const FileView = ({
 
     return (
         <Layout
-            className={styles.container}
+            className={classNames(styles.container, {
+                [styles.editable]: isEditable,
+            })}
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
             label={
@@ -175,7 +178,7 @@ export const FileView = ({
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
-                            value={getValue(newBody, currentItem.body)}
+                            value={newBody}
                             onChange={(e) => {
                                 setNewBody(e.target.value);
                             }}
@@ -197,7 +200,7 @@ export const FileView = ({
                                 [styles.enabled]: isEditable,
                             })}
                         >
-                            {newBody === '' ? currentItem.body : newBody}
+                            {newBody ? newBody : 'Empty'}
                         </div>
                     )
                 ) : (

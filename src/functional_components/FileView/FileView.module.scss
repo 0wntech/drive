@@ -5,6 +5,13 @@
     padding: 1em 10%;
     display: flex;
     justify-content: center;
+    border-radius: initial;
+}
+
+.editable {
+    height: calc(100% - 80px);
+    padding: initial;
+    overflow-y: hidden;
 }
 
 .spinner {
@@ -37,8 +44,7 @@
 .file {
     user-select: text;
     margin: initial;
-    padding: calc(72px + 4em) 0;
-    padding-top: initial;
+    padding-bottom: calc(72px + 4em);
     font-family: inherit;
     white-space: pre-wrap;
     width: 100%;
@@ -72,7 +78,7 @@
     }
 
     .file {
-        padding-bottom: initial;
+        padding-bottom: 96px;
         overflow-y: auto;
         height: calc(100vh - 72px - 236px);
         width: calc(100% - 2em);

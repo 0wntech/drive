@@ -324,27 +324,20 @@ export const updateFile = (file, body) => {
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(file).host + '/',
         });
-        if (body !== '') {
-            fileClient
-                .update(file, body)
-                .then(() => {
-                    dispatch({
-                        type: UPDATE_FILE_SUCCESS,
-                        payload: { url: file, body: body },
-                    });
-                })
-                .catch((err) => {
-                    dispatch({
-                        type: UPDATE_FILE_FAILURE,
-                        payload: err,
-                    });
+        fileClient
+            .update(file, body)
+            .then(() => {
+                dispatch({
+                    type: UPDATE_FILE_SUCCESS,
+                    payload: { url: file, body: body },
                 });
-        } else {
-            dispatch({
-                type: UPDATE_FILE_FAILURE,
-                payload: "File can't be set to empty",
+            })
+            .catch((err) => {
+                dispatch({
+                    type: UPDATE_FILE_FAILURE,
+                    payload: err,
+                });
             });
-        }
     };
 };
 

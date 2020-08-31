@@ -17,6 +17,7 @@ export const Layout = ({
     isLoading,
     showLabel,
 }) => {
+    console.log(className, 'lala');
     return (
         <>
             <Helmet>
