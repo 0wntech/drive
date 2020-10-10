@@ -61,6 +61,9 @@ export const AccessWindow = ({
     currentPath,
     addAccess,
     deleteAccess,
+    loadUser,
+    loadCurrentItem,
+    loadCurrentAccessControl,
 }) => {
     const [searchbar, setSetSearchbar] = useState(false);
     const getSearchDropdownOptions = () => {
@@ -110,6 +113,7 @@ export const AccessWindow = ({
             }}
             visible={isAccessWindowVisible}
             className={styles.window}
+            loading={loadUser || loadCurrentAccessControl || loadCurrentItem}
         >
             <div className={styles.body}>
                 <SearchDropdown
@@ -133,15 +137,17 @@ export const AccessWindow = ({
                             ))}
                     </div>
                 </div>
-                {url.parse(currentPath).pathname !== '/' && defaultAclResource && (
-                    <BottomOverlay className={styles.buttonOverlay}>
-                        <ActionButton
-                            color="white"
-                            label="Revert to default"
-                            className={styles.resetButton}
-                        />
-                    </BottomOverlay>
-                )}
+                {currentPath &&
+                    url.parse(currentPath).pathname !== '/' &&
+                    defaultAclResource && (
+                        <BottomOverlay className={styles.buttonOverlay}>
+                            <ActionButton
+                                color="white"
+                                label="Revert to default"
+                                className={styles.resetButton}
+                            />
+                        </BottomOverlay>
+                    )}
             </div>
         </Window>
     );
@@ -155,6 +161,9 @@ const mapStateToProps = (state) => ({
     currentAccessControl: state.app.currentAccessControl,
     defaultAclResource: state.app.defaultAclResource,
     currentPath: state.app.currentPath,
+    loadUser: state.user.loadUser,
+    loadCurrentAccessControl: state.app.loadCurrentAccessControl,
+    loadCurrentItem: state.app.loadCurrentItem,
 });
 
 export default connect(mapStateToProps, {

@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
 import { ErrorBoundary } from './ErrorBoundary';
-import { login, fetchUser, setWebId, logout } from './actions/userActions';
+import { login, fetchUser, logout } from './actions/userActions';
 import styles from './App.module.scss';
 import { deepFetchCurrentItem } from './actions/appActions';
-import { getRootFromWebId } from './utils/url';
 const LoginScreen = lazy(() => import('./functional_components/LoginScreen'));
 const Drive = lazy(() => import('./functional_components/Drive'));
 const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
@@ -37,10 +36,10 @@ export const App = ({
     useEffect(() => {
         if (!session) {
             login();
-        } else {
-            deepFetchCurrentItem(getRootFromWebId(session.webId));
+        } else if (user) {
+            deepFetchCurrentItem(user.storage);
         }
-    }, [session]);
+    }, [session, user]);
 
     const resetError = () => {
         setError(errorKey + 1);
@@ -48,11 +47,8 @@ export const App = ({
 
     const suspenseView = (
         <div className={styles.spinner}>
-            <ClassicSpinner
-                size={30}
-                color="#686769"
-                loading={loadLogin || loadUser}
-            />
+            <ClassicSpinner size={30} color="#686769" />
+            {/* <div className={styles.loadingMessage}>Indexing Files...</div> */}
         </div>
     );
 
@@ -149,7 +145,6 @@ export default withRouter(
         logout,
         login,
         fetchUser,
-        setWebId,
         deepFetchCurrentItem,
     })(App)
 );

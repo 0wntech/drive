@@ -185,7 +185,8 @@ export const ProfileView = ({
                             loading={true}
                         />
                     ) : (
-                        contacts && (
+                        contacts &&
+                        !editState && (
                             <ContactCarousel
                                 contacts={contacts}
                                 onClick={navigateToContact}

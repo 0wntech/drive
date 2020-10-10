@@ -5,7 +5,21 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
   className="grid"
   label="Drive"
   onClick={[Function]}
-  toolbarChildrenLeft={null}
+  toolbarChildrenLeft={
+    <div
+      className="breadcrumbsContainer"
+    >
+      <Breadcrumbs
+        breadcrumbs={
+          Array [
+            "/",
+          ]
+        }
+        onClick={[Function]}
+        rootUrl="https://tester.owntech.de/"
+      />
+    </div>
+  }
   toolbarChildrenRight={
     <ToolbarButtons
       onDelete={[Function]}

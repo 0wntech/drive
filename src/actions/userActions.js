@@ -6,6 +6,9 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAILURE,
     SET_WEBID,
+    SET_STORAGE_URL,
+    SET_STORAGE_URL_SUCCESS,
+    SET_STORAGE_URL_FAILURE,
     UPDATE_PROFILE,
     UPDATE_PROFILE_FAILURE,
     UPDATE_PROFILE_SUCCESS,
@@ -45,6 +48,7 @@ export const logout = () => {
 };
 
 const setSessionInfo = (session) => {
+    console.log(session);
     return (dispatch) => {
         dispatch({ type: LOGIN_SUCCESS, payload: session });
         dispatch({ type: SET_WEBID, payload: session.webId });
@@ -54,6 +58,20 @@ const setSessionInfo = (session) => {
 
 export const setWebId = (webId) => {
     return { type: SET_WEBID, payload: webId };
+};
+
+export const setStorageUrl = (url, webId) => {
+    return (dispatch) => {
+        dispatch({ type: SET_STORAGE_URL });
+        const user = new User(webId);
+        user.setStorage(url)
+            .then(() => {
+                dispatch({ type: SET_STORAGE_URL_SUCCESS, payload: url });
+            })
+            .catch((err) => {
+                dispatch({ type: SET_STORAGE_URL_FAILURE, payload: err });
+            });
+    };
 };
 
 export const fetchUser = (webId) => {

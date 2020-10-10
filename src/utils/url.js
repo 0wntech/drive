@@ -8,8 +8,8 @@ export const getBreadcrumbsFromUrl = (url) => {
         );
     }
     url = decodeURIComponent(url);
-    const breadcrumbs = url.replace('https://', '').split('/');
-    breadcrumbs.shift();
+    url = urlUtils.parse(url);
+    const breadcrumbs = url.pathname.split('/');
     const newBreadcrumbs = ['/'];
     breadcrumbs.forEach((breadcrumb) => {
         if (breadcrumb !== '') {

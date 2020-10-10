@@ -97,6 +97,7 @@ const Navigation = ({
     history,
     location,
     currentItem,
+    rootUrl,
     fileHierarchy,
     contacts,
     currentPath,
@@ -229,9 +230,7 @@ const Navigation = ({
                     onClick={() => {
                         resetError();
                         if (webId) {
-                            setCurrentPath(
-                                webId.replace('profile/card#me', '')
-                            );
+                            setCurrentPath(rootUrl);
                             navigate('/home', history, dispatch);
                         } else {
                             history.push('/');
@@ -268,6 +267,7 @@ const mapStateToProps = (state) => ({
     webId: state.user.webId,
     currentPath: state.app.currentPath,
     currentItem: state.app.currentItem,
+    rootUrl: state.app.rootUrl,
     contacts: state.contact.contacts,
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,

@@ -232,6 +232,12 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                             folders: folderNames,
                         },
                     });
+                    localStorage.setItem(
+                        'appState',
+                        JSON.stringify({
+                            currentPath: itemUrl,
+                        })
+                    );
                 } else if (item !== undefined && typeof item === 'string') {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
@@ -240,7 +246,7 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                 } else {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_FAILURE,
-                        payload: { message: 'File not supported' },
+                        payload: new Error('File not found'),
                     });
                 }
             })
@@ -382,12 +388,12 @@ export const fetchIdps = () => {
                 response.json().then((body) => {
                     body.idps = [
                         {
-                            url: 'https://owntech.de/',
-                            icon: 'https://owntech.de/favicon.ico',
+                            url: 'https://aws.owntech.de/',
+                            icon: 'https://aws.owntech.de/favicon.ico',
                             icon_bg: '#fff',
-                            title: 'owntech.de',
+                            title: 'aws.owntech.de',
                             title_color: '#000',
-                            policyURL: 'https://owntech.de',
+                            policyURL: 'https://aws.owntech.de',
                             description: `Owntech is a german identity provider, dedicated to Data Ownership`,
                             btn_bg: '#fff',
                             btn_color: '#000',

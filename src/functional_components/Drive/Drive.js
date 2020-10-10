@@ -23,6 +23,7 @@ import {
     downloadFile,
     uploadFileOrFolder,
 } from '../../actions/appActions';
+import { setStorageUrl, fetchUser } from '../../actions/userActions';
 import ToolbarButtons from '../ToolbarButtons';
 import { handleError } from '../../utils/helper';
 import { getParentFolderUrl } from '../../utils/url';
@@ -40,13 +41,17 @@ const Drive = ({
     setSelection,
     currentItem,
     currentPath,
+    rootUrl,
     loadCurrentItem,
     openConsentWindow,
     openCreateFolderWindow,
     toggleDriveMenu,
     isDriveMenuVisible,
+    user,
     webId,
+    loadUser,
     setCurrentPath,
+    setStorageUrl,
     fetchCurrentItem,
     history,
     downloadFile,
@@ -61,25 +66,31 @@ const Drive = ({
 }) => {
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
-        if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
-            if (!currentPath && appState && appState.currentPath) {
+        if (!loadUser && !user) {
+            fetchUser(webId);
+        }
+        if (
+            !loadCurrentItem &&
+            !loadUser &&
+            (!currentItem || !currentItem.files)
+        ) {
+            if (
+                !currentPath &&
+                appState &&
+                appState.currentPath &&
+                url.parse(webId).host === url.parse(appState.currentPath).host
+            ) {
                 setCurrentPath(appState.currentPath);
-            } else if (!currentPath && webId) {
-                setCurrentPath(getRootFromWebId(webId));
+            } else if (!currentPath && user.storage) {
+                setCurrentPath(user.storage);
+            } else if (!currentPath && !user.storage && user.webId) {
+                setStorageUrl(getRootFromWebId(user.webId), user.webId);
+                setCurrentPath(getRootFromWebId(user.webId));
             } else {
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
         }
-        return () => {
-            localStorage.setItem(
-                'appState',
-                JSON.stringify({
-                    ...appState,
-                    currentPath: currentPath,
-                })
-            );
-        };
-    }, [currentPath]);
+    }, [currentPath, user]);
     handleError(error);
     // Event Handlers
     const loadFile = (url) => {
@@ -132,7 +143,7 @@ const Drive = ({
                 downloadFile(item);
             } else {
                 const download =
-                    webId.replace('profile/card#me', 'download?path=') +
+                    user.webId.replace('profile/card#me', 'download?path=') +
                     url.parse(item).pathname;
                 window.open(download.replace(/\/+$/, ''));
             }
@@ -155,19 +166,21 @@ const Drive = ({
         />
     );
 
-    const toolbarLeft = webId ? (
+    const toolbarLeft = currentPath && rootUrl && (
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
                     setCurrentPath(path);
                 }}
                 breadcrumbs={
-                    currentPath ? getBreadcrumbsFromUrl(currentPath) : null
+                    currentPath
+                        ? getBreadcrumbsFromUrl(currentPath, rootUrl)
+                        : null
                 }
-                webId={webId}
+                rootUrl={rootUrl}
             />
         </div>
-    ) : null;
+    );
 
     const noFilesAndFolders = () => {
         return currentItem.folders.length < 1 && currentItem.files.length < 1;
@@ -183,7 +196,11 @@ const Drive = ({
             label="Drive"
             onClick={handleClick}
             isLoading={
-                loadDeletion || loadPaste || loadCurrentItem || uploadingFiles
+                loadDeletion ||
+                loadPaste ||
+                loadCurrentItem ||
+                uploadingFiles ||
+                loadUser
             }
         >
             <DriveMenu
@@ -251,9 +268,12 @@ const mapStateToProps = (state) => {
     return {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
+        rootUrl: state.app.rootUrl,
         selectedItems: state.app.selectedItems,
         selectionMode: state.app.selectionMode,
+        user: state.user.user,
         webId: state.user.webId,
+        loadUser: state.user.loadUser,
         clipboard: state.app.clipboard,
         error: state.app.error,
         loadDeletion: state.app.loadDeletion,
@@ -278,5 +298,6 @@ export default withRouter(
         toggleSearchbar,
         downloadFile,
         uploadFileOrFolder,
+        setStorageUrl,
     })(Drive)
 );

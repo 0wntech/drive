@@ -11,6 +11,10 @@ export const SET_CURRENT_PATH = 'set_current_path';
 
 export const SET_CURRENT_ITEMS = 'set_current_items';
 
+export const SET_STORAGE_URL = 'set_storage_url';
+export const SET_STORAGE_URL_SUCCESS = 'set_storage_url_success';
+export const SET_STORAGE_URL_FAILURE = 'set_storage_url_failure';
+
 export const FETCH_CURRENT_ACCESS_CONTROL = 'fetch_current_access_control';
 export const FETCH_CURRENT_ACCESS_CONTROL_SUCCESS =
     'fetch_current_access_control_success';
