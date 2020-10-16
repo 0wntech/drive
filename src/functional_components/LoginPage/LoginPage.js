@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
-import LoginForm from '../LoginForm';
+import LoginForm from '../LoginForm/LoginForm';
 import { Layout } from '../Layout';
 import { fetchIdps } from '../../actions/appActions';
 import useWindowDimension from '../../hooks/useWindowDimension';
@@ -30,14 +30,7 @@ const getIdpStyles = (title) => {
     return idp;
 };
 
-const LoginScreen = ({
-    webId,
-    loadIdps,
-    idps,
-    fetchIdps,
-    history,
-    location,
-}) => {
+const LoginPage = ({ webId, loadIdps, idps, fetchIdps, history, location }) => {
     const { width } = useWindowDimension();
     useEffect(() => {
         if (!loadIdps && !idps) fetchIdps();
@@ -90,4 +83,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { fetchIdps })(withRouter(LoginScreen));
+export default connect(mapStateToProps, { fetchIdps })(withRouter(LoginPage));

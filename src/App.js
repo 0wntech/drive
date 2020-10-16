@@ -8,7 +8,7 @@ import { login, fetchUser, setWebId, logout } from './actions/userActions';
 import styles from './App.module.scss';
 import { deepFetchCurrentItem } from './actions/appActions';
 import { getRootFromWebId } from './utils/url';
-const LoginScreen = lazy(() => import('./functional_components/LoginScreen'));
+const LoginPage = lazy(() => import('./functional_components/LoginPage'));
 const Drive = lazy(() => import('./functional_components/Drive'));
 const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
 const LandingPage = lazy(() => import('./functional_components/LandingPage'));
@@ -120,7 +120,7 @@ export const App = ({
                                     session={session}
                                     path="/login"
                                     component={() => (
-                                        <LoginScreen webId={webId} />
+                                        <LoginPage webId={webId} />
                                     )}
                                 />
                             </Switch>
