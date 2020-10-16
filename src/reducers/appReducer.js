@@ -53,13 +53,14 @@ import {
     SET_CURRENT_CONTACT,
     SET_CURRENT_PATH,
     TOGGLE_SELECTION_MODE,
-    LOGIN_SUCCESS,
     TOGGLE_ERROR_WINDOW,
     TOGGLE_ACCESS_WINDOW,
     TOGGLE_ACCESS_MODE,
     TOGGLE_ACCESS_MODE_SUCCESS,
     TOGGLE_ACCESS_MODE_FAILURE,
     TOGGLE_INFO_WINDOW,
+    FETCH_USER_SUCCESS,
+    SET_STORAGE_URL_SUCCESS,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
@@ -85,6 +86,7 @@ const INITIAL_STATE = {
         TOGGLE_ACCESS_MODE: false,
     },
     currentPath: null,
+    rootUrl: null,
     currentItem: null,
     fileHierarchy: [],
     notifications: null,
@@ -116,12 +118,19 @@ export default (state = INITIAL_STATE, action) => {
     console.log(state);
 
     switch (type) {
-        case LOGIN_SUCCESS:
-            return { ...state, currentPath: getRootFromWebId(payload.webId) };
+        case FETCH_USER_SUCCESS:
+            return {
+                ...state,
+                rootUrl: payload.storage
+                    ? payload.storage
+                    : getRootFromWebId(payload.webId),
+            };
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
         case SET_CURRENT_CONTACT:
             return { ...state, isSearchBarExpanded: false };
+        case SET_STORAGE_URL_SUCCESS:
+            return { ...state, rootUrl: payload };
         case SET_CURRENT_PATH:
             return {
                 ...state,
@@ -337,7 +346,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 updatingFile: false,
-                error: payload,
                 error: { ...state.error, UPDATE_FILE: payload },
             };
         case OPEN_CREATE_FILE_WINDOW:

@@ -1,0 +1,42 @@
+@import '../../styles/constants.scss';
+
+.container {
+    display: flex;
+}
+
+.optionContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-weight: 600;
+    font-size: 2em;
+    margin-top: auto;
+}
+
+.input {
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1.2em;
+    border: initial;
+    outline: none;
+    resize: none;
+    width: 50%;
+    border-radius: initial;
+    border-bottom: 4px solid $dark_black;
+    margin-bottom: initial;
+}
+
+@media (max-width: $screen_l) {
+    .inputContainer {
+        align-items: flex-start;
+        flex-direction: column;
+
+        .input {
+            margin-top: 8px;
+            width: 100%;
+        }
+    }
+}

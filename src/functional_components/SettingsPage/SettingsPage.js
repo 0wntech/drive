@@ -4,10 +4,22 @@ import { Layout } from '../Layout/Layout';
 import styles from './SettingsPage.module.scss';
 import { SettingsSection } from '../SettingsSection/SettingsSection';
 import { idp } from '../../selectors/userSelectors';
-import { logout } from '../../actions/userActions';
+import { logout, setStorageUrl } from '../../actions/userActions';
+import { isValidUrl } from '../../utils/url';
 
-export const SettingsPage = ({ idp, logout }) => {
+export const SettingsPage = ({ idp, logout, user, setStorageUrl }) => {
     const accountSettings = [
+        {
+            description: 'Root storage url',
+            initialValue: user.storage,
+            onSubmit: (value) => {
+                if (isValidUrl(value))
+                    setStorageUrl(
+                        value.endsWith('/') ? value : value + '/',
+                        user.webId
+                    );
+            },
+        },
         {
             description: 'Delete my account',
             label: 'Delete',
@@ -33,7 +45,9 @@ export const SettingsPage = ({ idp, logout }) => {
 };
 
 const mapStateToProps = (state) => {
-    return { idp: idp(state) };
+    return { idp: idp(state), user: state.user.user };
 };
 
-export default connect(mapStateToProps, { logout })(SettingsPage);
+export default connect(mapStateToProps, { logout, setStorageUrl })(
+    SettingsPage
+);

@@ -232,6 +232,12 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                             folders: folderNames,
                         },
                     });
+                    localStorage.setItem(
+                        'appState',
+                        JSON.stringify({
+                            currentPath: itemUrl,
+                        })
+                    );
                 } else if (item !== undefined && typeof item === 'string') {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
@@ -240,7 +246,7 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                 } else {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_FAILURE,
-                        payload: { message: 'File not supported' },
+                        payload: new Error('File not found'),
                     });
                 }
             })

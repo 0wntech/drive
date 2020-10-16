@@ -31,6 +31,7 @@ describe('Drive', () => {
             const result = new ShallowRenderer().render(
                 <Drive.WrappedComponent
                     currentItem={currentItem}
+                    rootUrl={'https://tester.owntech.de/'}
                     currentPath={'https://tester.owntech.de/'}
                 />
             );
