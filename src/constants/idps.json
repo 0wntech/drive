@@ -22,13 +22,13 @@
         "btn_color": "#fff"
     },
     {
-        "url": "https://solid.community/",
+        "url": "https://solidcommunity.net/",
         "icon": "https://solid.inrupt.com/themes/custom/solid/logo.svg",
         "icon_bg": "#333748",
-        "title": "solid.community",
+        "title": "solidcommunity.net",
         "title_color": "#fff",
-        "policyURL": "https://solid.community",
-        "description": "solid.community is a public server for early adopters of Solid.",
+        "policyURL": "https://solidcommunity.net",
+        "description": "solidcommunity.net is a public server for early adopters of Solid.",
         "btn_bg": "#43C47A",
         "btn_color": "#fff"
     },

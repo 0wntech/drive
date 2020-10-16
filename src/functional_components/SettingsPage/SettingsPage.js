@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Layout } from '../Layout/Layout';
 import styles from './SettingsPage.module.scss';
 import { SettingsSection } from '../SettingsSection/SettingsSection';
 import { idp } from '../../selectors/userSelectors';
-import { logout, setStorageUrl } from '../../actions/userActions';
-import { isValidUrl } from '../../utils/url';
+import { fetchUser, logout, setStorageUrl } from '../../actions/userActions';
+import { getRootFromWebId, isValidUrl } from '../../utils/url';
 
-export const SettingsPage = ({ idp, logout, user, setStorageUrl }) => {
+export const SettingsPage = ({
+    idp,
+    logout,
+    user,
+    webId,
+    fetchUser,
+    setStorageUrl,
+}) => {
+    useEffect(() => {
+        if (!user) {
+            fetchUser(webId);
+        } else if (!user.storage) {
+            setStorageUrl(getRootFromWebId(webId), webId);
+        }
+    }, []);
     const accountSettings = [
         {
             description: 'Root storage url',
@@ -45,9 +59,9 @@ export const SettingsPage = ({ idp, logout, user, setStorageUrl }) => {
 };
 
 const mapStateToProps = (state) => {
-    return { idp: idp(state), user: state.user.user };
+    return { idp: idp(state), user: state.user.user, webId: state.user.webId };
 };
 
-export default connect(mapStateToProps, { logout, setStorageUrl })(
+export default connect(mapStateToProps, { logout, setStorageUrl, fetchUser })(
     SettingsPage
 );

@@ -36,7 +36,7 @@ export const App = ({
     useEffect(() => {
         if (!session) {
             login();
-        } else if (user) {
+        } else if (user && user.storage) {
             deepFetchCurrentItem(user.storage);
         }
     }, [session, user]);
