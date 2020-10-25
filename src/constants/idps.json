@@ -1,9 +1,9 @@
 [
     {
-        "url": "https://owntech.de/",
-        "icon": "https://owntech.de/favicon.ico",
+        "url": "https://aws.owntech.de/",
+        "icon": "https://aws.owntech.de/favicon.ico",
         "icon_bg": "#fff",
-        "title": "owntech.de",
+        "title": "aws.owntech.de",
         "title_color": "#000",
         "policyURL": "https://owntech.de",
         "description": "Owntech is a german identity provider, dedicated to Data Ownership",

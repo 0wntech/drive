@@ -99,7 +99,7 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/contact"
+                                    path="/contact/:id"
                                     component={<ContactProfilePage />}
                                 />
                                 <PrivateRoute
@@ -109,7 +109,7 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/file"
+                                    path="/file/:id"
                                     component={<FileView />}
                                 />
                                 <Route

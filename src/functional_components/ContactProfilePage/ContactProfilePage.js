@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import url from 'url';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -10,7 +11,11 @@ import {
 } from '../../actions/contactActions';
 import { isContact } from '../../reducers/contactReducer';
 import { handleError } from '../../utils/helper';
-import { getParamsFromUrl, getUsernameFromWebId } from '../../utils/url';
+import {
+    useParamsFromUrl,
+    getUsernameFromWebId,
+    getWebIdFromRoot,
+} from '../../utils/url';
 import ProfileView from '../ProfileView/ProfileView';
 import { withRouter } from 'react-router-dom';
 
@@ -30,21 +35,28 @@ const ContactProfilePage = ({
     error,
 }) => {
     handleError(error);
+    const { id: currentContactHost } = useParamsFromUrl();
+    const currentContactWebId = getWebIdFromRoot(
+        url.format({
+            protocol: 'https',
+            host: currentContactHost,
+        })
+    );
+
     useEffect(() => {
-        const currentUser = getParamsFromUrl(window.location.href).u;
         if (!currentContact && contacts) {
             const contactFromContacts = contacts.find(
-                (contact) => contact.webId == currentUser
+                (contact) => contact.webId == currentContactWebId
             );
             if (contactFromContacts) setCurrentContact(contactFromContacts);
         } else if (
             !currentContact ||
-            (currentContact && currentContact.webId !== currentUser)
+            (currentContact && currentContact.webId !== currentContactWebId)
         ) {
-            fetchContact(currentUser);
+            fetchContact(currentContactWebId);
         }
-        if (!currentContacts) fetchContacts(currentUser);
-    }, [currentContacts]);
+        if (!currentContacts) fetchContacts(currentContactWebId);
+    }, [currentContactHost, currentContacts]);
 
     return currentContact ? (
         <ProfileView
@@ -67,8 +79,12 @@ const ContactProfilePage = ({
             contacts={currentContacts}
             loadingContacts={loadContacts || !currentContacts}
             navigateToContact={(contact) => {
+                history.push(
+                    `/contact/${encodeURIComponent(
+                        url.parse(contact.webId).host
+                    )}`
+                );
                 setCurrentContact(contact);
-                history.push(`/contact?u=${encodeURIComponent(contact.webId)}`);
             }}
         />
     ) : null;

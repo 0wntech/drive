@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import url from 'url';
 import styles from './ProfilePage.module.scss';
 import {
     updateProfile,
@@ -122,7 +123,7 @@ export const ProfilePage = ({
             loadingContacts={loadContacts}
             navigateToContact={(contact) => {
                 setCurrentContact(contact);
-                history.push(`/contact?u=${encodeURIComponent(contact.webId)}`);
+                history.push(`/contact/${url.parse(contact.webId).host}`);
             }}
         ></ProfileView>
     );

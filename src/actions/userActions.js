@@ -48,7 +48,6 @@ export const logout = () => {
 };
 
 const setSessionInfo = (session) => {
-    console.log(session);
     return (dispatch) => {
         dispatch({ type: LOGIN_SUCCESS, payload: session });
         dispatch({ type: SET_WEBID, payload: session.webId });

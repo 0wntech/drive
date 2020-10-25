@@ -6,9 +6,10 @@ import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 
 const onRegister = () => {
-    auth.login(
-        `https://owntech.de/register?returnToUrl=${window.location.href}login`
-    );
+    auth.login('https://aws.owntech.de/', {
+        popupUri: 'https://aws.owntech.de/register',
+        callbackUri: window.location.href + 'login',
+    });
 };
 
 const LandingPage = ({ webId, history }) => {

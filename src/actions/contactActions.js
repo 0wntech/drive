@@ -146,6 +146,9 @@ export const fetchDetailContacts = (contacts) => {
                 .catch((error) => {
                     resolve({ webId: webId });
                 });
+            setTimeout(() => {
+                resolve({ webId: webId });
+            }, 3000);
         });
         return request;
     });

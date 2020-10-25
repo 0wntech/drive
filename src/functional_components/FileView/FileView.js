@@ -12,7 +12,7 @@ import {
 } from '../../actions/appActions';
 import {
     getBreadcrumbsFromUrl,
-    getParamsFromUrl,
+    useParamsFromUrl,
     convertFileUrlToName,
 } from '../../utils/url';
 import fileUtils from '../../utils/fileUtils';
@@ -49,9 +49,9 @@ export const FileView = ({
     errorWindowError,
     toggleErrorWindow,
 }) => {
+    const { id: currentFile } = useParamsFromUrl();
     useEffect(() => {
-        const fileParam = getParamsFromUrl(window.location.href).f;
-        if (fileParam) {
+        if (currentFile) {
             if (
                 !currentItem ||
                 typeof currentItem.body !== 'string' ||
@@ -59,12 +59,12 @@ export const FileView = ({
             ) {
                 let options = {};
                 if (
-                    mime.getType(fileParam) &&
-                    isImageType(mime.getType(fileParam))
+                    mime.getType(currentFile) &&
+                    isImageType(mime.getType(currentFile))
                 ) {
                     options = { noFetch: true };
                 }
-                setCurrentPath(fileParam, options);
+                setCurrentPath(currentFile, options);
             } else if (currentItem.files || currentItem.folders) {
                 history.push('/home');
             }
