@@ -129,7 +129,11 @@ const Navigation = ({
                 setCurrentPath(selected.path)
             );
         } else if (selected.type === 'file') {
-            navigate(`/file?f=${selected.path}`, history, dispatch);
+            navigate(
+                `/file/${encodeURIComponent(selected.path)}`,
+                history,
+                dispatch
+            );
         } else if (selected.type === 'contact') {
             const { contact } = selected;
             navigate(getContactRoute(contact), history, dispatch, () =>

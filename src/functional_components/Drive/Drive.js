@@ -93,18 +93,22 @@ const Drive = ({
     }, [currentPath, user]);
     handleError(error);
     // Event Handlers
-    const loadFile = (url) => {
-        if (url.endsWith('/')) {
-            url = url.substr(0, url.lastIndexOf('/'));
+    const loadFile = (fileUrl) => {
+        if (fileUrl.endsWith('/')) {
+            fileUrl = fileUrl.substr(0, fileUrl.lastIndexOf('/'));
         }
-        if (selectionMode && !selectedItems.includes(url)) {
-            const newSelection = [...selectedItems, url];
+        if (selectionMode && !selectedItems.includes(fileUrl)) {
+            const newSelection = [...selectedItems, fileUrl];
             setSelection(newSelection);
-        } else if (selectionMode && selectedItems.includes(url)) {
-            const newSelection = selectedItems.filter((item) => item !== url);
+        } else if (selectionMode && selectedItems.includes(fileUrl)) {
+            const newSelection = selectedItems.filter(
+                (item) => item !== fileUrl
+            );
             setSelection(newSelection);
         } else {
-            history.push(`/file?f=${url}`);
+            history.push(
+                `/file/${encodeURIComponent(url.parse(fileUrl).pathname)}`
+            );
         }
     };
     const loadFolder = (path) => {

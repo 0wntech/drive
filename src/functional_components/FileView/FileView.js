@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
 import mime from 'mime';
+import url from 'url';
+
 import { Layout } from '../Layout';
 import styles from './FileView.module.scss';
 import {
@@ -14,6 +16,7 @@ import {
     getBreadcrumbsFromUrl,
     useParamsFromUrl,
     convertFileUrlToName,
+    getRootFromWebId,
 } from '../../utils/url';
 import fileUtils from '../../utils/fileUtils';
 import Breadcrumbs from '../Breadcrumbs';
@@ -49,9 +52,13 @@ export const FileView = ({
     errorWindowError,
     toggleErrorWindow,
 }) => {
-    const { id: currentFile } = useParamsFromUrl();
+    const { id: currentFilePath } = useParamsFromUrl();
+    const currentFileUrl = url.resolve(
+        getRootFromWebId(webId),
+        currentFilePath
+    );
     useEffect(() => {
-        if (currentFile) {
+        if (currentFileUrl) {
             if (
                 !currentItem ||
                 typeof currentItem.body !== 'string' ||
@@ -59,12 +66,12 @@ export const FileView = ({
             ) {
                 let options = {};
                 if (
-                    mime.getType(currentFile) &&
-                    isImageType(mime.getType(currentFile))
+                    mime.getType(currentFileUrl) &&
+                    isImageType(mime.getType(currentFileUrl))
                 ) {
                     options = { noFetch: true };
                 }
-                setCurrentPath(currentFile, options);
+                setCurrentPath(currentFileUrl, options);
             } else if (currentItem.files || currentItem.folders) {
                 history.push('/home');
             }
