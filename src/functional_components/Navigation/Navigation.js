@@ -1,25 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classNames from 'classnames';
+import url from 'url';
 import { ClassicSpinner } from 'react-spinners-kit';
 
 import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
-import {
-    searchContact,
-    setCurrentContact,
-    fetchContacts,
-} from '../../actions/contactActions';
+import { searchContact, setCurrentContact } from '../../actions/contactActions';
 import { navigate, getInitialsFromUser } from '../../utils/helper';
 import logo from '../../assets/icons/owndrive-logo.png';
 import {
     getUsernameFromWebId,
     getContactRoute,
     getIdpFromWebId,
+    getHomeRoute,
+    getFileRoute,
 } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import Search from '../../assets/svgIcons/Search';
@@ -31,7 +30,7 @@ import FileIconSm from '../../assets/icons/FileIconSm.png';
 import FolderIconSm from '../../assets/icons/FolderSm.png';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 
-const formatOptionLabel = ({ label, name, type, contact }) => {
+const formatOptionLabel = ({ label, name, path, type, contact }) => {
     if (type === 'contact') {
         return (
             <div className={styles.optionContainer}>
@@ -84,7 +83,19 @@ const formatOptionLabel = ({ label, name, type, contact }) => {
                     `}
                     />
                 </div>
-                <span>{name}</span>
+                <div style={{ display: 'flex' }}>
+                    <div>{name}</div>
+                    {url.parse(path).pathname !== '/' && (
+                        <div className={styles.fullPath}>
+                            {url
+                                .parse(path)
+                                .pathname.replace(
+                                    path.endsWith('/') ? name + '/' : name,
+                                    ''
+                                )}
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
@@ -103,37 +114,36 @@ const Navigation = ({
     currentPath,
     setCurrentContact,
     contactSearchResult,
-    fetchContacts,
-    loadContacts,
     dispatch,
     isSearchBarExpanded,
     searchingContacts,
     toggleSearchbar,
     isAccessWindowVisible,
 }) => {
+    const [dropdownOptions, setDropdownOptions] = useState([]);
     useEffect(() => {
-        if (!contacts && !loadContacts) fetchContacts(webId);
-    }, []);
+        setDropdownOptions(
+            getSearchDropdownOptions(
+                contactSearchResult,
+                contacts,
+                fileHierarchy
+            )
+        );
+    }, [fileHierarchy?.length, contacts?.length, contactSearchResult?.length]);
 
     const handleChange = (selected) => {
         resetError();
         if (selected.type === 'folder' && location.pathname === '/home') {
-            setCurrentPath(selected.path);
+            history.push(getHomeRoute(selected.path));
         } else if (
             selected.type === 'file' &&
             location.pathname.startsWith('/file')
         ) {
-            setCurrentPath(selected.path);
+            navigate(getFileRoute(selected.path), history, dispatch);
         } else if (selected.type === 'folder') {
-            navigate('/home', history, dispatch, () =>
-                setCurrentPath(selected.path)
-            );
+            history.push(getHomeRoute(selected.path));
         } else if (selected.type === 'file') {
-            navigate(
-                `/file/${encodeURIComponent(selected.path)}`,
-                history,
-                dispatch
-            );
+            navigate(getFileRoute(selected.path), history, dispatch);
         } else if (selected.type === 'contact') {
             const { contact } = selected;
             navigate(getContactRoute(contact), history, dispatch, () =>
@@ -160,7 +170,11 @@ const Navigation = ({
             />
         );
 
-    const getSearchDropdownOptions = () => {
+    const getSearchDropdownOptions = (
+        contactSearchResult,
+        contacts,
+        fileHierarchy
+    ) => {
         const contactSearchDropdownItems = contactSearchResult
             ? contactSearchResult
             : [];
@@ -245,18 +259,16 @@ const Navigation = ({
                 />
             </div>
             <div className={styles.search}>
-                {currentItem || contacts ? (
-                    <SearchDropdown
-                        className={styles.searchDropdown}
-                        onChange={handleChange}
-                        placeholder="Search..."
-                        items={getSearchDropdownOptions()}
-                        isSearchBarExpanded={isSearchBarExpanded}
-                        toggleSearchbar={toggleSearchbar}
-                        indicator={dropdownIndicator}
-                        formatOptionLabel={formatOptionLabel}
-                    />
-                ) : null}
+                <SearchDropdown
+                    className={styles.searchDropdown}
+                    onChange={handleChange}
+                    placeholder="Search..."
+                    items={dropdownOptions}
+                    isSearchBarExpanded={isSearchBarExpanded}
+                    toggleSearchbar={toggleSearchbar}
+                    indicator={dropdownIndicator}
+                    formatOptionLabel={formatOptionLabel}
+                />
             </div>
             <NavbarMenu
                 resetError={resetError}
@@ -276,7 +288,7 @@ const mapStateToProps = (state) => ({
     searchingContacts: state.contact.searchingContacts,
     contactSearchResult: state.contact.contactSearchResult,
     isSearchBarExpanded: state.app.isSearchBarExpanded,
-    loadContacts: state.contact.loadContacts,
+    loadCurrentItem: state.app.loadCurrentItem,
     fileHierarchy: state.app.fileHierarchy,
     isAccessWindowVisible: state.app.isAccessWindowVisible,
 });
@@ -287,7 +299,6 @@ export default connect(mapStateToProps, (dispatch) => ({
             setCurrentPath,
             setCurrentContact,
             searchContact,
-            fetchContacts,
             toggleSearchbar,
         },
         dispatch

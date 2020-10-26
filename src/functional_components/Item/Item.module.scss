@@ -14,7 +14,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 142px;
+    height: max-content;
+    padding: 8px 0;
     width: 100%;
     border: solid transparent 4px;
     box-sizing: border-box;

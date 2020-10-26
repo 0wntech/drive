@@ -11,7 +11,7 @@ import EditIcon from '../../assets/svgIcons/Edit';
 import ActionButton from '../ActionButton/ActionButton';
 import { handleError } from '../../utils/helper';
 import ProfileView from '../ProfileView/ProfileView';
-import { fetchContacts, setCurrentContact } from '../../actions/contactActions';
+import { fetchContactProfiles, setCurrentContact } from '../../actions/contactActions';
 import { withRouter } from 'react-router-dom';
 
 export const ProfilePage = ({
@@ -24,7 +24,7 @@ export const ProfilePage = ({
     loadUser,
     contacts,
     loadContacts,
-    fetchContacts,
+    fetchContactProfiles,
     setCurrentContact,
     history,
 }) => {
@@ -32,8 +32,8 @@ export const ProfilePage = ({
     useEffect(() => {
         if (!user && !loadUser && webId) {
             fetchUser(webId);
-        } else if (!contacts && !loadContacts) {
-            fetchContacts(webId);
+        } else if (!contacts && !loadContacts && !user) {
+            fetchContactProfiles(user.contacts, webId);
         }
     }, []);
 
@@ -143,6 +143,6 @@ export default connect(mapStateToProps, {
     updateProfile,
     changeProfilePhoto,
     fetchUser,
-    fetchContacts,
+    fetchContactProfiles,
     setCurrentContact,
 })(withRouter(ProfilePage));

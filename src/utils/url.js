@@ -32,6 +32,14 @@ export const getContactRoute = (contact) => {
     return `/contact/${urlUtils.parse(contact.webId).host}`;
 };
 
+export const getFileRoute = (path) => {
+    return `/file/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
+};
+
+export const getHomeRoute = (path) => {
+    return `/home/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
+};
+
 export const getPreviousPath = (url) => {
     if (!url) return undefined;
     const urlObject = urlUtils.parse(url);

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
+import url from 'url';
 
 import styles from './Backbutton.module.scss';
 import { setCurrentPath } from '../../actions/appActions';
 import { getPreviousPath } from '../../utils/url';
 
 export const BackButton = ({
-    setCurrentPath,
     currentPath,
     rootUrl,
     history,
@@ -18,6 +18,8 @@ export const BackButton = ({
         setPreviousPath(getPreviousPath(currentPath));
     }, [currentPath]);
 
+    console.log(previousPath)
+
     return (
         currentPath && (
             <div
@@ -25,8 +27,11 @@ export const BackButton = ({
                     [styles.hidden]: currentPath && rootUrl === currentPath,
                 })}
                 onClick={() => {
-                    setCurrentPath(previousPath);
-                    history.push('/home');
+                    history.push(
+                        `/home/${encodeURIComponent(
+                            url.parse(previousPath).pathname
+                        )}`
+                    );
                 }}
             >
                 Back

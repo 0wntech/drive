@@ -7,7 +7,7 @@ import {
     addContact,
     removeContact,
     fetchContactRecommendations,
-    fetchContacts,
+    fetchContactProfiles,
 } from '../../actions/contactActions';
 import ContactList from '../ContactList/ContactsList';
 import useWindowDimension from '../../hooks/useWindowDimension';
@@ -20,8 +20,9 @@ const ContactsPage = ({
     contacts,
     addContact,
     loadContacts,
-    fetchContacts,
+    fetchContactProfiles,
     webId,
+    user,
     setCurrentContact,
     contactRecommendations,
     loadContactRecommendations,
@@ -31,7 +32,7 @@ const ContactsPage = ({
     error,
 }) => {
     useEffect(() => {
-        if (!contacts && !loadContacts && webId) fetchContacts(webId);
+        if (!contacts && !loadContacts && user.contacts) fetchContactProfiles(user.contacts);
         if (!contactRecommendations && !loadContactRecommendations)
             fetchContactRecommendations(webId);
     }, []);
@@ -105,6 +106,7 @@ ContactsPage.propTypes = {};
 const mapStateToProps = (state) => ({
     contacts: state.contact.contacts,
     webId: state.user.webId,
+    user: state.user.user,
     loadContacts: state.contact.loadContacts,
     contactRecommendations: state.contact.contactRecommendations,
     loadContactRecommendations: state.contact.loadContactRecommendations,
@@ -115,6 +117,6 @@ export default connect(mapStateToProps, {
     setCurrentContact,
     addContact,
     removeContact,
-    fetchContacts,
+    fetchContactProfiles,
     fetchContactRecommendations,
 })(withRouter(ContactsPage));

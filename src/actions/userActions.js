@@ -19,6 +19,7 @@ import {
 import User from 'ownuser';
 import auth from 'solid-auth-client';
 import * as rdf from 'rdflib';
+import { fetchContactProfiles } from './contactActions';
 
 export const login = () => {
     return (dispatch) => {
@@ -81,6 +82,9 @@ export const fetchUser = (webId) => {
             .getProfile()
             .then((profile) => {
                 dispatch({ type: FETCH_USER_SUCCESS, payload: profile });
+                return currUser.getContacts().then((contacts) => {
+                    dispatch(fetchContactProfiles(contacts, webId));
+                });
             })
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAILURE, payload: error })

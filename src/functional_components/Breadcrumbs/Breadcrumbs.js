@@ -1,4 +1,5 @@
 import React from 'react';
+import url from 'url';
 import styles from './Breadcrumbs.module.css';
 import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
 import PropTypes from 'prop-types';
@@ -11,11 +12,10 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick, rootUrl }) => {
                   // breadcrumb in the middle
                   let currentUrl = root;
                   for (let i = 0; i < currentIndex; i++) {
-                      currentUrl +=
-                          '/' +
-                          encodeURIComponent(
-                              breadcrumbs[i + 1].replace('/', '')
-                          );
+                      currentUrl = url.resolve(
+                          currentUrl,
+                          breadcrumbs[i + 1].replace('/', '') + '/'
+                      );
                   }
                   const currentLabel = currentBreadcrumb.replace('/', '');
                   if (currentIndex + 1 === breadcrumbs.length) {
@@ -24,7 +24,7 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick, rootUrl }) => {
                               key={currentIndex}
                               label={currentLabel}
                               onClick={() => {
-                                  onClick(currentUrl + '/');
+                                  onClick(currentUrl);
                               }}
                           />
                       );
@@ -35,7 +35,7 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick, rootUrl }) => {
                               key={currentIndex}
                               label={currentLabel}
                               onClick={() => {
-                                  onClick(currentUrl + '/');
+                                  onClick(currentUrl);
                               }}
                           />
                       );

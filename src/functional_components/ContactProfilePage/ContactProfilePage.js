@@ -7,7 +7,7 @@ import {
     removeContact,
     fetchContact,
     setCurrentContact,
-    fetchContacts,
+    fetchContactProfiles,
 } from '../../actions/contactActions';
 import { isContact } from '../../reducers/contactReducer';
 import { handleError } from '../../utils/helper';
@@ -27,7 +27,7 @@ const ContactProfilePage = ({
     setCurrentContact,
     webId,
     isContact,
-    fetchContacts,
+    fetchContactProfiles,
     contacts,
     loadContacts,
     currentContacts,
@@ -55,7 +55,8 @@ const ContactProfilePage = ({
         ) {
             fetchContact(currentContactWebId);
         }
-        if (!currentContacts) fetchContacts(currentContactWebId);
+        if (!currentContacts && currentContact)
+            fetchContactProfiles(currentContact.contacts);
     }, [currentContactHost, currentContacts]);
 
     return currentContact ? (
@@ -115,5 +116,5 @@ export default connect(mapStateToProps, {
     removeContact,
     setCurrentContact,
     fetchContact,
-    fetchContacts,
+    fetchContactProfiles,
 })(withRouter(ContactProfilePage));

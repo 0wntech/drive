@@ -13,18 +13,18 @@ export const InfoWindow = ({
     currentPath,
     currentItem,
 }) => {
-    const items = currentItem
-        ? (selectedItems.length > 0
-              ? selectedItems
-              : [currentPath]
-          ).map((item) =>
-              [...currentItem.folders, ...currentItem.files].find(
-                  (item) => item === item || item === item.name
+    const items =
+        currentItem && currentItem.files && currentItem.folders
+            ? (selectedItems.length > 0
+                  ? selectedItems
+                  : [currentPath]
+              ).map((item) =>
+                  [...currentItem.folders, ...currentItem.files].find(
+                      (item) => item === item || item === item.name
+                  )
               )
-          )
-        : [];
+            : [];
 
-    console.log(items);
     return (
         <Window
             windowName="Info"
@@ -33,7 +33,7 @@ export const InfoWindow = ({
         >
             <div className={styles.container}>
                 {items.map((item) => (
-                    <InfoListItem item={item} />
+                    <InfoListItem key={item} item={item} />
                 ))}
             </div>
         </Window>

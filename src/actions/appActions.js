@@ -7,9 +7,9 @@ import url from 'url';
 import FileSaver from 'file-saver';
 
 import {
-    DEEP_FETCH_CURRENT_ITEM,
-    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-    DEEP_FETCH_CURRENT_ITEM_FAILURE,
+    INDEX_STORAGE,
+    INDEX_STORAGE_SUCCESS,
+    INDEX_STORAGE_FAILURE,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
     FETCH_CURRENT_ITEM_FAILURE,
@@ -75,6 +75,7 @@ import {
     DELETE_ACCESS_FAILURE,
     DELETE_ACCESS_SUCCESS,
     TOGGLE_INFO_WINDOW,
+    INDEX_STORAGE_PROGRESS,
 } from './types';
 
 import fileUtils from '../utils/fileUtils';
@@ -200,18 +201,19 @@ export const toggleErrorWindow = (error) => {
     return { type: TOGGLE_ERROR_WINDOW, payload: error };
 };
 
-export const fetchCurrentItem = (itemUrl, folder = false) => {
+export const fetchCurrentItem = (itemUrl) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CURRENT_ITEM });
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(itemUrl).host + '/',
         });
-        const options = {};
-        if (folder) {
-            options.auth = auth;
-            options.headers = { Accept: 'text/turtle' };
-            options.verbose = true;
-        }
+        const options = {
+            verbose: true,
+            headers: {
+                Accept: mime.getType(itemUrl) ?? 'text/turtle',
+            },
+        };
+
         return fileClient
             .read(itemUrl, options)
             .then((item) => {
@@ -238,10 +240,14 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                             currentPath: itemUrl,
                         })
                     );
-                } else if (item !== undefined && typeof item === 'string') {
+                } else if (item !== undefined) {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
-                        payload: { body: item, url: itemUrl },
+                        payload: {
+                            body: item.body,
+                            url: itemUrl,
+                            type: item.type,
+                        },
                     });
                 } else {
                     dispatch({
@@ -259,24 +265,61 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
     };
 };
 
-export const deepFetchCurrentItem = (folderUrl) => {
-    return (dispatch) => {
-        dispatch({ type: DEEP_FETCH_CURRENT_ITEM });
-        const fileClient = new PodClient({ url: folderUrl });
-        fileClient
-            .deepRead(folderUrl)
-            .then((deepFolder) => {
-                dispatch({
-                    type: DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-                    payload: deepFolder,
-                });
-            })
-            .catch((err) => {
-                dispatch({
-                    type: DEEP_FETCH_CURRENT_ITEM_FAILURE,
-                    payload: err,
-                });
+export const indexStorage = (folderUrl) => {
+    return async (dispatch) => {
+        dispatch({ type: INDEX_STORAGE });
+        const fileClient = new PodClient();
+        const index =
+            (await fileClient.readIndex(folderUrl).catch(() => {})) ?? [];
+        if (!index || index.length === 0) {
+            dispatch({
+                type: INDEX_STORAGE_PROGRESS,
+                payload: 1,
             });
+            return fileClient
+                .deepRead(folderUrl, { verbose: true })
+                .then(async (deepFolder) => {
+                    const urlObject = url.parse(folderUrl);
+                    await fileClient.createIfNotExist(
+                        `${urlObject.protocol}//${urlObject.host}/` +
+                            fileClient.indexPath
+                    );
+                    return await new Promise((resolve) => {
+                        deepFolder.forEach((item, index, array) => {
+                            fileClient.addToIndex(item, {
+                                force: true,
+                            });
+                            dispatch({
+                                type: INDEX_STORAGE_PROGRESS,
+                                payload:
+                                    Math.floor(
+                                        ((index / array.length) * 100) / 5
+                                    ) * 5,
+                            });
+                            if (index === array.length - 1) {
+                                resolve(fileClient.readIndex(folderUrl));
+                            }
+                        });
+                    });
+                })
+                .then((index) => {
+                    dispatch({
+                        type: INDEX_STORAGE_SUCCESS,
+                        payload: index.map((indexItem) => indexItem.url),
+                    });
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: INDEX_STORAGE_FAILURE,
+                        payload: err,
+                    });
+                });
+        } else {
+            dispatch({
+                type: INDEX_STORAGE_SUCCESS,
+                payload: index.map((indexItem) => indexItem.url),
+            });
+        }
     };
 };
 

@@ -25,14 +25,19 @@ export const AccessDisplay = ({
                 {currentAccessControl.map((entity) =>
                     entity.type === 'Agent' ? (
                         <div
+                            key={entity.identifier}
                             className={styles.agentIcon}
                             style={{
                                 backgroundImage: `url(${entity.picture})`,
                             }}
                         />
                     ) : (
-                        entity.type === 'AgentGroup' && (
-                            <PublicIcon className={styles.agentIcon} />
+                        entity.type === 'AgentGroup' &&
+                        entity.name === 'http://xmlns.com/foaf/0.1/Agent' && (
+                            <PublicIcon
+                                key={entity.identifier}
+                                className={styles.agentIcon}
+                            />
                         )
                     )
                 )}

@@ -25,10 +25,11 @@ export const FETCH_CURRENT_ITEM = 'fetch_current_item';
 export const FETCH_CURRENT_ITEM_SUCCESS = 'fetch_current_item_success';
 export const FETCH_CURRENT_ITEM_FAILURE = 'fetch_current_item_fail';
 
-export const DEEP_FETCH_CURRENT_ITEM = 'deep_fetch_current_item';
-export const DEEP_FETCH_CURRENT_ITEM_SUCCESS =
-    'deep_fetch_current_item_success';
-export const DEEP_FETCH_CURRENT_ITEM_FAILURE = 'deep_fetch_current_item_fail';
+export const INDEX_STORAGE = 'index_storage';
+export const INDEX_STORAGE_PROGRESS = 'index_storage_progress';
+export const INDEX_STORAGE_SUCCESS =
+    'index_storage_success';
+export const INDEX_STORAGE_FAILURE = 'index_storage_fail';
 
 export const FETCH_NOTIFICATIONS = 'fetch_notifications';
 export const FETCH_NOTIFICATIONS_SUCCESS = 'fetch_notifications_success';

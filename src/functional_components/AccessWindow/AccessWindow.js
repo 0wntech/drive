@@ -120,7 +120,7 @@ export const AccessWindow = ({
                     indicator={dropdownIndicator}
                     className={styles.search}
                     items={getSearchDropdownOptions()}
-                    placeholder="Add a user or group"
+                    placeholder="Add a user"
                     classNamePrefix="access-search"
                     toggleSearchbar={setSetSearchbar}
                     isSearchBarExpanded={searchbar}
@@ -133,7 +133,7 @@ export const AccessWindow = ({
                     <div className={styles.entities}>
                         {currentAccessControl &&
                             currentAccessControl.map((entity) => (
-                                <AccessListItem entity={entity} />
+                                <AccessListItem key={entity.identifier} entity={entity} />
                             ))}
                     </div>
                 </div>

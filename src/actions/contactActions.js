@@ -76,39 +76,30 @@ export const fetchContact = (webId) => {
     };
 };
 
-export const fetchContacts = (webId) => {
+export const fetchContactProfiles = (contacts, webId = '') => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
-        const user = new User(webId);
-        return user
-            .getContacts()
-            .then((contacts) => {
-                fetchDetailContacts(contacts)
-                    .then(async (detailContacts) => {
-                        const loggedInUser = (await auth.currentSession())
-                            .webId;
-                        if (loggedInUser === webId) {
-                            dispatch({
-                                type: FETCH_CONTACTS_SUCCESS,
-                                payload: detailContacts,
-                            });
-                        } else {
-                            dispatch({
-                                type: FETCH_CURRENT_CONTACTS_SUCCESS,
-                                payload: detailContacts,
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        dispatch({
-                            type: FETCH_CONTACTS_FAILURE,
-                            payload: error,
-                        });
+        return fetchDetailContacts(contacts)
+            .then(async (detailContacts) => {
+                const loggedInUser = (await auth.currentSession()).webId;
+                if (loggedInUser === webId) {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: detailContacts,
                     });
+                } else {
+                    dispatch({
+                        type: FETCH_CURRENT_CONTACTS_SUCCESS,
+                        payload: detailContacts,
+                    });
+                }
             })
-            .catch((error) =>
-                dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
-            );
+            .catch((error) => {
+                dispatch({
+                    type: FETCH_CONTACTS_FAILURE,
+                    payload: error,
+                });
+            });
     };
 };
 
@@ -161,7 +152,7 @@ export const searchContact = (query) => {
         const lookups = idps.map((idp) => {
             const url = idp.url.replace(idp.title, query + '.' + idp.title);
             return auth
-                .fetch(url)
+                .fetch(url, { method: 'HEAD' })
                 .then((res) => {
                     if (res.status !== 404) {
                         return url;
@@ -178,12 +169,21 @@ export const searchContact = (query) => {
             const url = await Promise.resolve(lookup);
             if (url) {
                 const user = new User(getWebIdFromRoot(url));
-                const contactProfile = await user.getProfile();
-                foundSomething = true;
-                dispatch({
-                    type: SEARCH_CONTACT_SUCCESS,
-                    payload: contactProfile,
-                });
+                await user
+                    .getProfile()
+                    .then((contactProfile) => {
+                        foundSomething = true;
+                        dispatch({
+                            type: SEARCH_CONTACT_SUCCESS,
+                            payload: contactProfile,
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch({
+                            type: SEARCH_CONTACT_SUCCESS,
+                            payload: { webId: url },
+                        });
+                    });
             }
             if (!foundSomething && index === lookups.length - 1) {
                 dispatch({ type: SEARCH_CONTACT_FAILURE });

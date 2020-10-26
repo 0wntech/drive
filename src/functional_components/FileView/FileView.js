@@ -17,6 +17,7 @@ import {
     useParamsFromUrl,
     convertFileUrlToName,
     getRootFromWebId,
+    getHomeRoute,
 } from '../../utils/url';
 import fileUtils from '../../utils/fileUtils';
 import Breadcrumbs from '../Breadcrumbs';
@@ -43,6 +44,7 @@ export const FileView = ({
     currentItem,
     currentPath,
     webId,
+    rootUrl,
     setCurrentPath,
     updateFile,
     updatingFile,
@@ -52,7 +54,7 @@ export const FileView = ({
     errorWindowError,
     toggleErrorWindow,
 }) => {
-    const { id: currentFilePath } = useParamsFromUrl();
+    const { path: currentFilePath } = useParamsFromUrl();
     const currentFileUrl = url.resolve(
         getRootFromWebId(webId),
         currentFilePath
@@ -73,7 +75,7 @@ export const FileView = ({
                 }
                 setCurrentPath(currentFileUrl, options);
             } else if (currentItem.files || currentItem.folders) {
-                history.push('/home');
+                history.push(getHomeRoute(currentPath));
             }
         }
     }, []);
@@ -119,15 +121,13 @@ export const FileView = ({
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    if (path !== currentPath && path !== currentPath + '/') {
-                        setCurrentPath(path);
-                        history.push('/home');
-                    }
+                    console.log(path);
+                    history.push(getHomeRoute(path));
                 }}
                 breadcrumbs={
                     currentPath ? getBreadcrumbsFromUrl(currentPath) : null
                 }
-                webId={webId}
+                rootUrl={rootUrl}
             />
         </div>
     );
@@ -242,6 +242,7 @@ const mapStateToProps = (state) => {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         webId: state.user.webId,
+        rootUrl: state.app.rootUrl,
         updatingFile: state.app.updatingFile,
         error: state.app.error,
         isErrorWindowVisible: state.app.isErrorWindowVisible,

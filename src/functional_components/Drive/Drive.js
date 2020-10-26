@@ -7,7 +7,13 @@ import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.scss';
 import Breadcrumbs from '../Breadcrumbs';
 import ItemList from '../ItemList';
-import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
+import {
+    getBreadcrumbsFromUrl,
+    getFileRoute,
+    getHomeRoute,
+    getRootFromWebId,
+    useParamsFromUrl,
+} from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { Layout } from '../Layout';
@@ -40,7 +46,6 @@ const Drive = ({
     selectionMode,
     setSelection,
     currentItem,
-    currentPath,
     rootUrl,
     loadCurrentItem,
     openConsentWindow,
@@ -51,8 +56,8 @@ const Drive = ({
     webId,
     loadUser,
     setCurrentPath,
+    currentPath,
     setStorageUrl,
-    fetchCurrentItem,
     history,
     downloadFile,
     uploadFileOrFolder,
@@ -64,12 +69,21 @@ const Drive = ({
     isSearchBarExpanded,
     isAccessWindowVisible,
 }) => {
+    const { path } = useParamsFromUrl();
+    const routeUrl = url.resolve(getRootFromWebId(webId), path ?? '');
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
         if (!loadUser && !user) {
             fetchUser(webId);
         }
-        if (
+
+        if (currentPath !== routeUrl && !loadCurrentItem) {
+            if (mime.getType(routeUrl)) {
+                history.push(getFileRoute(routeUrl));
+            } else {
+                setCurrentPath(routeUrl);
+            }
+        } else if (
             !loadCurrentItem &&
             !loadUser &&
             (!currentItem || !currentItem.files)
@@ -90,7 +104,7 @@ const Drive = ({
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
         }
-    }, [currentPath, user]);
+    }, [currentPath, routeUrl, user]);
     handleError(error);
     // Event Handlers
     const loadFile = (fileUrl) => {
@@ -119,8 +133,9 @@ const Drive = ({
             const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else {
-            setCurrentPath(path);
-            fetchCurrentItem(path, true);
+            history.push(
+                `/home/${encodeURIComponent(url.parse(path).pathname)}`
+            );
         }
     };
 
@@ -173,7 +188,7 @@ const Drive = ({
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    setCurrentPath(path);
+                    history.push(getHomeRoute(path));
                 }}
                 breadcrumbs={
                     currentPath

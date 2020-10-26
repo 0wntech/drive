@@ -38,7 +38,7 @@ export const FileImage = ({ currentPath, file, image }) => {
                 data-test-id={`file-${file.name}`}
             >
                 {file.type ? (
-                    file.type === 'rdf' ? (
+                    file.type === 'text/turtle' ? (
                         <img
                             src={linkedFileImage}
                             className={styles.linkedFile}

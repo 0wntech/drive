@@ -1,7 +1,8 @@
 import {
-    DEEP_FETCH_CURRENT_ITEM,
-    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-    DEEP_FETCH_CURRENT_ITEM_FAILURE,
+    INDEX_STORAGE,
+    INDEX_STORAGE_PROGRESS,
+    INDEX_STORAGE_SUCCESS,
+    INDEX_STORAGE_FAILURE,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
     FETCH_CURRENT_ITEM_FAILURE,
@@ -73,6 +74,8 @@ const INITIAL_STATE = {
     loadDeletion: false,
     updatingFile: false,
     uploadingFiles: false,
+    indexingStorage: true,
+    indexingProgress: 0,
     error: {
         UPLOAD_FILES: false,
         DOWNLOAD_FILE: false,
@@ -148,33 +151,41 @@ export default (state = INITIAL_STATE, action) => {
             };
         case TOGGLE_SELECTION_MODE:
             return { ...state, selectionMode: !state.selectionMode };
-        case DEEP_FETCH_CURRENT_ITEM:
+        case INDEX_STORAGE:
             return {
                 ...state,
-                deepFetchCurrentItem: true,
+                indexingStorage: true,
+                indexingProgress: 0,
                 error: {
                     ...state.error,
-
-                    DEEP_FETCH_CURRENT_ITEM: false,
+                    INDEX_STORAGE: false,
                 },
             };
-        case DEEP_FETCH_CURRENT_ITEM_SUCCESS:
+        case INDEX_STORAGE_PROGRESS:
+            return {
+                ...state,
+                indexingStorage: true,
+                indexingProgress: payload,
+            };
+        case INDEX_STORAGE_SUCCESS:
             return {
                 ...state,
                 fileHierarchy: payload,
-                deepFetchCurrentItem: false,
+                indexingStorage: false,
+                indexingProgress: false,
                 error: {
                     ...state.error,
-                    FETCH_CURRENT_ITEM: false,
+                    INDEX_STORAGE: false,
                 },
             };
-        case DEEP_FETCH_CURRENT_ITEM_FAILURE:
+        case INDEX_STORAGE_FAILURE:
             return {
                 ...state,
-                deepFetchCurrentItem: false,
+                indexingStorage: false,
+                indexingProgress: false,
                 error: {
                     ...state.error,
-                    DEEP_FETCH_CURRENT_ITEM: false,
+                    INDEX_STORAGE: false,
                 },
             };
         case FETCH_CURRENT_ITEM:

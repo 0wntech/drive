@@ -6,7 +6,7 @@ import Navigation from './functional_components/Navigation';
 import { ErrorBoundary } from './ErrorBoundary';
 import { login, fetchUser, logout } from './actions/userActions';
 import styles from './App.module.scss';
-import { deepFetchCurrentItem } from './actions/appActions';
+import { indexStorage } from './actions/appActions';
 const LoginPage = lazy(() => import('./functional_components/LoginPage'));
 const Drive = lazy(() => import('./functional_components/Drive'));
 const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
@@ -29,15 +29,18 @@ export const App = ({
     session,
     loadLogin,
     loadUser,
+    loadContacts,
     logout,
-    deepFetchCurrentItem,
+    indexStorage,
+    indexingProgress,
+    indexingStorage,
 }) => {
     const [errorKey, setError] = useState(0);
     useEffect(() => {
         if (!session) {
             login();
         } else if (user && user.storage) {
-            deepFetchCurrentItem(user.storage);
+            indexStorage(user.storage);
         }
     }, [session, user]);
 
@@ -48,33 +51,57 @@ export const App = ({
     const suspenseView = (
         <div className={styles.spinner}>
             <ClassicSpinner size={30} color="#686769" />
-            {/* <div className={styles.loadingMessage}>Indexing Files...</div> */}
+            <div className={styles.loadingMessage}>
+                {indexingProgress
+                    ? indexingProgress <= 1
+                        ? 'Index not found. Creating Index... '
+                        : `Updating index... ${indexingProgress}% Done`
+                    : typeof indexingProgress === 'number'
+                    ? 'Loading Index...'
+                    : loadContacts
+                    ? 'Loading Contacts...'
+                    : loadUser
+                    ? 'Loading User...'
+                    : 'Loading App...'}
+            </div>
         </div>
     );
 
-    if (loadLogin || loadUser) {
+    if (
+        loadLogin ||
+        loadUser ||
+        indexingStorage ||
+        indexingProgress ||
+        (!user?.contacts && loadContacts)
+    ) {
         return suspenseView;
     } else {
         return (
             <div className={styles.grid}>
-                <div className={styles.navArea}>
-                    <Navigation
-                        resetError={resetError}
-                        onLogout={logout}
-                        onLogin={login}
-                        webId={webId}
-                        picture={user ? user.picture : undefined}
-                        username={user ? user.name : undefined}
-                    />
-                </div>
-                <div className={styles.mainArea}>
-                    <ErrorBoundary key={errorKey}>
-                        <Suspense fallback={suspenseView}>
+                <Suspense fallback={<></>}>
+                    <div className={styles.navArea}>
+                        <Navigation
+                            resetError={resetError}
+                            onLogout={logout}
+                            onLogin={login}
+                            webId={webId}
+                            picture={user ? user.picture : undefined}
+                            username={user ? user.name : undefined}
+                        />
+                    </div>
+                    <div className={styles.mainArea}>
+                        <ErrorBoundary key={errorKey}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />
                                 <PrivateRoute
                                     session={session}
                                     path="/home"
+                                    exact
+                                    component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/home/:path"
                                     component={<Drive />}
                                 />
                                 <PrivateRoute
@@ -109,7 +136,7 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/file/:id"
+                                    path="/file/:path"
                                     component={<FileView />}
                                 />
                                 <Route
@@ -120,9 +147,9 @@ export const App = ({
                                     )}
                                 />
                             </Switch>
-                        </Suspense>
-                    </ErrorBoundary>
-                </div>
+                        </ErrorBoundary>
+                    </div>
+                </Suspense>
             </div>
         );
     }
@@ -135,8 +162,11 @@ const mapStateToProps = (state) => {
         session: state.user.session,
         loadLogin: state.user.loadLogin,
         loadUser: state.user.loadUser,
+        loadContacts: state.contact.loadContacts,
         currentFolderTree: state.app.currentFolderTree,
         currentPath: state.app.currentPath,
+        indexingStorage: state.app.indexingStorage,
+        indexingProgress: state.app.indexingProgress,
     };
 };
 
@@ -145,6 +175,6 @@ export default withRouter(
         logout,
         login,
         fetchUser,
-        deepFetchCurrentItem,
+        indexStorage,
     })(App)
 );
