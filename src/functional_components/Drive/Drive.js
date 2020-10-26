@@ -70,7 +70,7 @@ const Drive = ({
     isAccessWindowVisible,
 }) => {
     const { path } = useParamsFromUrl();
-    const routeUrl = url.resolve(getRootFromWebId(webId), path ?? '');
+    const routeUrl = url.resolve(rootUrl, path ?? '');
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
         if (!loadUser && !user) {

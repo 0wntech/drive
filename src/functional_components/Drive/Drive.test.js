@@ -1,3 +1,8 @@
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn().mockReturnValue({}),
+}));
+
 import React from 'react';
 import Drive from './Drive.js';
 import ShallowRenderer from 'react-test-renderer/shallow';
@@ -33,6 +38,7 @@ describe('Drive', () => {
                     currentItem={currentItem}
                     rootUrl={'https://tester.owntech.de/'}
                     currentPath={'https://tester.owntech.de/'}
+                    webId={'https://tester.owntech.de/profile/card#me'}
                 />
             );
             expect(result).toMatchSnapshot();

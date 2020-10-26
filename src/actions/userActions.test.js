@@ -8,6 +8,7 @@ import {
     FETCH_USER,
     FETCH_USER_SUCCESS,
     FETCH_USER_FAILURE,
+    FETCH_CONTACTS,
 } from './types';
 import { fetchUser, setWebId } from './userActions';
 
@@ -22,6 +23,11 @@ const getProfileSuccess = {
     getProfile: () => {
         return new Promise((resolve, reject) => {
             resolve(card.data);
+        });
+    },
+    getContacts: () => {
+        return new Promise((resolve, reject) => {
+            resolve(card.contacts);
         });
     },
 };
@@ -55,6 +61,7 @@ describe('redux actions', () => {
                 const expextedActions = [
                     { type: FETCH_USER },
                     { type: FETCH_USER_SUCCESS, payload: card.data },
+                    { type: FETCH_CONTACTS },
                 ];
                 const store = mockStore({ user: null });
                 return store.dispatch(fetchUser(webId)).then(() => {
