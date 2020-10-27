@@ -56,7 +56,7 @@ export const App = ({
                     ? indexingProgress <= 1
                         ? 'Index not found. Creating Index... '
                         : `Updating index... ${indexingProgress}% Done`
-                    : typeof indexingProgress === 'number'
+                    : indexingStorage
                     ? 'Loading Index...'
                     : loadContacts
                     ? 'Loading Contacts...'
@@ -70,7 +70,7 @@ export const App = ({
     if (
         webId &&
         (loadLogin ||
-            loadUser ||
+            (!user && loadUser) ||
             indexingStorage ||
             indexingProgress ||
             (!user?.contacts && loadContacts))
