@@ -212,6 +212,7 @@ const Drive = ({
                 [styles.noScroll]: isDriveMenuVisible || isAccessWindowVisible,
             })}
             onClick={handleClick}
+            label="Drive"
             isLoading={
                 loadDeletion ||
                 loadPaste ||
