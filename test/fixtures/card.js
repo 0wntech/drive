@@ -46,4 +46,5 @@ export const card = {
         bio: 'ASD',
         telephones: ['0176322291'],
     },
+    contacts: ['https://ludwigschubert.solid.community/profile/card#me'],
 };

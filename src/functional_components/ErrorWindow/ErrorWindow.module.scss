@@ -1,4 +1,4 @@
-@import '../../../styles/constants.scss';
+@import '../../styles/constants.scss';
 
 .window {
     color: $danger_red;
@@ -8,7 +8,7 @@
     border: solid $danger_red 5px;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .window {
         display: flex;
         flex-direction: column;

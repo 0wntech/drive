@@ -4,7 +4,7 @@ import {
     LOGIN_FAIL,
     FETCH_USER,
     FETCH_USER_SUCCESS,
-    FETCH_USER_FAIL,
+    FETCH_USER_FAILURE,
     SET_WEBID,
     UPDATE_PROFILE,
     UPDATE_PROFILE_SUCCESS,
@@ -13,6 +13,8 @@ import {
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
     CLEAR_ERROR,
+    SET_STORAGE_URL_SUCCESS,
+    SET_STORAGE_URL_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -28,6 +30,7 @@ const INITIAL_STATE = {
         FETCH_USER: false,
         UPDATE_PROFILE: false,
         CHANGE_PROFILE_PHOTO: false,
+        SET_STORAGE_URL: false,
     },
 };
 
@@ -70,7 +73,7 @@ export default (state = INITIAL_STATE, action) => {
                 user: payload,
                 error: { ...state.error, FETCH_USER: false },
             };
-        case FETCH_USER_FAIL:
+        case FETCH_USER_FAILURE:
             return {
                 ...state,
                 loadUser: false,
@@ -104,6 +107,10 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, updatingProfilePic: false };
         case CHANGE_PROFILE_PHOTO_FAILURE:
             return { ...state, updatingProfilePic: false, error: payload };
+        case SET_STORAGE_URL_SUCCESS:
+            return { ...state, user: { ...state.user, storage: payload } };
+        case SET_STORAGE_URL_FAILURE:
+            return { ...state, error: { SET_STORAGE_URL: payload } };
         default:
             return state;
     }

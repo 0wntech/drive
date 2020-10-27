@@ -1,0 +1,20 @@
+@import '../../styles/constants.scss';
+
+.overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 72px;
+    width: 100vw;
+    z-index: 10 !important;
+}
+
+.hide {
+    background: initial;
+}
+
+@media (max-width: $screen_l) {
+    .overlay {
+        background: #ffffff;
+    }
+}

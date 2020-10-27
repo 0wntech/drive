@@ -1,0 +1,77 @@
+@import '../../styles/constants.scss';
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border: solid $light_grey 5px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 16px;
+}
+
+.container + .container {
+    margin-top: 6px;
+}
+
+.image {
+    width: 64px;
+    height: 64px;
+    background-size: cover;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.defaultContactIcon {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+    min-height: 64px !important;
+    line-height: 56px !important;
+    font-size: 1.5em;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.name {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.access {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 8px;
+}
+
+.spinner {
+    align-self: center;
+    margin-left: 8px;
+}
+
+@media (max-width: $screen_l) {
+    .container {
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .info {
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 16px;
+    }
+
+    .access {
+        margin-top: 16px;
+    }
+
+    .name {
+        text-align: center;
+    }
+}

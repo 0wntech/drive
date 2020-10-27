@@ -1,0 +1,47 @@
+.innerContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.iconContainer {
+    position: relative;
+}
+
+.thumbnail {
+    max-width: 75%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translateX(-50%) translateY(-40%);
+}
+
+.icon {
+    height: 100px;
+    max-width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.linkedFile {
+    width: 40%;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-75%);
+}
+
+.fileType {
+    z-index: 2;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 1.5em;
+    color: #666;
+    text-align: center;
+    width: 100%;
+}

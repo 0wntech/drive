@@ -12,8 +12,11 @@ import {
     closeRenameWindow,
     createFile,
     createFolder,
+    toggleAccessWindow,
 } from '../../actions/appActions';
 import { connect } from 'react-redux';
+import AccessWindow from '../AccessWindow';
+import InfoWindow from '../InfoWindow/InfoWindow';
 
 export const Windows = ({
     isConsentWindowVisible,
@@ -47,7 +50,9 @@ export const Windows = ({
                 windowName="Create Folder"
                 info=""
                 visible={isCreateFolderVisible}
-                onSubmit={(value) => createFolder(value, currentPath)}
+                onSubmit={(value) => {
+                    createFolder(value, currentPath);
+                }}
                 onClose={closeCreateFolderWindow}
                 placeholder={'Untitled'}
                 currentItem={currentItem}
@@ -73,6 +78,8 @@ export const Windows = ({
                 visible={isRenameWindowVisible}
                 onClose={closeRenameWindow}
             />
+            <AccessWindow />
+            <InfoWindow />
         </Fragment>
     );
 };
@@ -99,4 +106,5 @@ export default connect(mapStateToProps, {
     closeRenameWindow,
     createFile,
     createFolder,
+    toggleAccessWindow,
 })(Windows);

@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import auth from 'solid-auth-client';
-import LoginForm from '../LoginForm';
+import LoginForm from '../LoginForm/LoginForm';
 import { Layout } from '../Layout';
 import { fetchIdps } from '../../actions/appActions';
 import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_m as screenM } from '../../styles/constants.scss';
+import { screen_l as screenL } from '../../styles/constants.scss';
 
 const getIdpStyles = (title) => {
     const idp = {};
@@ -30,14 +30,7 @@ const getIdpStyles = (title) => {
     return idp;
 };
 
-const LoginScreen = ({
-    webId,
-    loadIdps,
-    idps,
-    fetchIdps,
-    history,
-    location,
-}) => {
+const LoginPage = ({ webId, loadIdps, idps, fetchIdps, history, location }) => {
     const { width } = useWindowDimension();
     useEffect(() => {
         if (!loadIdps && !idps) fetchIdps();
@@ -72,7 +65,7 @@ const LoginScreen = ({
     });
 
     return (
-        <Layout label="Login" hideToolbar={width < screenM}>
+        <Layout label="Login" hideToolbar={width < screenL}>
             <LoginForm
                 idps={idps}
                 onLogin={auth.login}
@@ -90,4 +83,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { fetchIdps })(withRouter(LoginScreen));
+export default connect(mapStateToProps, { fetchIdps })(withRouter(LoginPage));

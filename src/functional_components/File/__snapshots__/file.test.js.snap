@@ -15,38 +15,16 @@ exports[`File should render correctly (image) 1`] = `
     data-test-id="file-Test.png"
     onClick={[MockFunction]}
   >
-    <div
-      className="innerContainer"
-    >
-      <div
-        className="iconContainer"
-      >
-        <img
-          alt="file"
-          className="thumbnail"
-          src="https://bejow.solid.community/1234/Test.png"
-        />
-        <div
-          alt="file"
-          className="icon"
-          style={
-            Object {
-              "backgroundImage": "url(https://owntech.de/favicon.ico)",
-            }
-          }
-        >
-          <img
-            className="icon"
-            src="https://owntech.de/favicon.ico"
-            style={
-              Object {
-                "visibility": "hidden",
-              }
-            }
-          />
-        </div>
-      </div>
-    </div>
+    <FileImage
+      currentPath="https://bejow.solid.community/1234/"
+      file={
+        Object {
+          "name": "Test.png",
+          "type": "image/png",
+        }
+      }
+      image="https://owntech.de/favicon.ico"
+    />
     <div
       className="labelContainer"
     >
@@ -75,38 +53,16 @@ exports[`File should render correctly (no image) 1`] = `
     data-test-id="file-Test.png"
     onClick={[MockFunction]}
   >
-    <div
-      className="innerContainer"
-    >
-      <div
-        className="iconContainer"
-      >
-        <img
-          alt="file"
-          className="thumbnail"
-          src="https://bejow.solid.community/1234/Test.png"
-        />
-        <div
-          alt="file"
-          className="icon"
-          style={
-            Object {
-              "backgroundImage": "url(https://owntech.de/favicon.ico)",
-            }
-          }
-        >
-          <img
-            className="icon"
-            src="https://owntech.de/favicon.ico"
-            style={
-              Object {
-                "visibility": "hidden",
-              }
-            }
-          />
-        </div>
-      </div>
-    </div>
+    <FileImage
+      currentPath="https://bejow.solid.community/1234/"
+      file={
+        Object {
+          "name": "Test.png",
+          "type": "image/png",
+        }
+      }
+      image="https://owntech.de/favicon.ico"
+    />
     <div
       className="labelContainer"
     >

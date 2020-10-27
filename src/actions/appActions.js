@@ -1,10 +1,18 @@
+import auth from 'solid-auth-client';
+import PodClient from 'ownfiles';
+import AclClient from 'ownacl';
+import User from 'ownuser';
+import mime from 'mime';
+import url from 'url';
+import FileSaver from 'file-saver';
+
 import {
-    DEEP_FETCH_CURRENT_ITEM,
-    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-    DEEP_FETCH_CURRENT_ITEM_FAIL,
+    INDEX_STORAGE,
+    INDEX_STORAGE_SUCCESS,
+    INDEX_STORAGE_FAILURE,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
-    FETCH_CURRENT_ITEM_FAIL,
+    FETCH_CURRENT_ITEM_FAILURE,
     SET_CURRENT_PATH,
     SET_SELECTION,
     TOGGLE_SELECTION_MODE,
@@ -16,7 +24,7 @@ import {
     SEND_NOTIFICATION_FAILURE,
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
-    FETCH_IDPS_FAILED,
+    FETCH_IDPS_FAILURE,
     OPEN_CONSENT_WINDOW,
     CLOSE_CONSENT_WINDOW,
     DELETE_ITEMS,
@@ -50,30 +58,142 @@ import {
     TOGGLE_SEARCHBAR,
     TOGGLE_DRIVE_MENU,
     TOGGLE_ERROR_WINDOW,
+    TOGGLE_ACCESS_WINDOW,
     UPLOAD_FILE,
     UPLOAD_FILE_FAILURE,
     UPLOAD_FILE_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL,
+    FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
+    TOGGLE_ACCESS_MODE,
+    TOGGLE_ACCESS_MODE_SUCCESS,
+    TOGGLE_ACCESS_MODE_FAILURE,
+    ADD_ACCESS,
+    ADD_ACCESS_FAILURE,
+    ADD_ACCESS_SUCCESS,
+    DELETE_ACCESS,
+    DELETE_ACCESS_FAILURE,
+    DELETE_ACCESS_SUCCESS,
+    TOGGLE_INFO_WINDOW,
+    INDEX_STORAGE_PROGRESS,
 } from './types';
-import auth from 'solid-auth-client';
+
 import fileUtils from '../utils/fileUtils';
-import PodClient from 'ownfiles';
-import mime from 'mime';
-import url from 'url';
-import FileSaver from 'file-saver';
 import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
 
 export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
+        newPath = encodeURI(newPath);
         dispatch({ type: SET_CURRENT_PATH, payload: newPath });
         dispatch({ type: SET_SELECTION, payload: [] });
         if (options.noFetch) {
-            return dispatch({
+            dispatch({
                 type: FETCH_CURRENT_ITEM_SUCCESS,
                 payload: { body: '', url: newPath },
             });
         } else {
-            return dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
+            dispatch(fetchCurrentItem(newPath, newPath.endsWith('/')));
         }
+        return dispatch(fetchCurrentAccessControl(newPath));
+    };
+};
+
+export const fetchCurrentAccessControl = (file) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_CURRENT_ACCESS_CONTROL });
+        const aclClient = new AclClient(file);
+        return aclClient
+            .readAccessControl()
+            .then((accessControl) => {
+                Promise.all(
+                    accessControl.map(async (entity) => ({
+                        ...entity,
+                        ...(entity.type === 'Agent'
+                            ? await new User(entity.name).getProfile()
+                            : {}),
+                    }))
+                ).then((result) => {
+                    dispatch({
+                        type: FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
+                        payload: {
+                            accessControl: result,
+                            aclResource: aclClient.aclResource,
+                        },
+                    });
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
+                });
+            });
+    };
+};
+
+export const addAccess = (agent, file) => {
+    return (dispatch) => {
+        dispatch({ type: ADD_ACCESS });
+        const aclClient = new AclClient(file);
+        return aclClient
+            .addAgent({ name: agent, access: [] })
+            .then(() => {
+                dispatch({ type: ADD_ACCESS_SUCCESS });
+                dispatch(fetchCurrentAccessControl(file));
+            })
+            .catch((err) => {
+                dispatch({ type: ADD_ACCESS_FAILURE });
+            });
+    };
+};
+
+export const deleteAccess = (agent, file) => {
+    return (dispatch) => {
+        dispatch({ type: DELETE_ACCESS });
+        const aclClient = new AclClient(file);
+        const agents = Array.isArray(agent) ? agent : [agent];
+        return Promise.all(
+            agents.map((agent) =>
+                aclClient.deleteAgent({ name: agent, access: [] })
+            )
+        )
+            .then(() => {
+                dispatch({ type: DELETE_ACCESS_SUCCESS });
+                dispatch(fetchCurrentAccessControl(file));
+            })
+            .catch((err) => {
+                dispatch({ type: DELETE_ACCESS_FAILURE });
+            });
+    };
+};
+
+export const toggleAccessMode = (item, entity, mode) => {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_ACCESS_MODE, payload: entity.name });
+        const aclClient = new AclClient(item);
+        entity.access = entity.access.includes(mode)
+            ? entity.access.filter((access) => access !== mode)
+            : [...entity.access, mode];
+
+        let update;
+        if (entity.type === 'Agent') {
+            update = aclClient.addAgent({
+                name: entity.webId,
+                access: entity.access,
+            });
+        } else if (entity.type === 'AgentGroup') {
+            update = aclClient.addAgentGroup({
+                name: entity.name,
+                access: entity.access,
+            });
+        }
+        return Promise.resolve(update)
+            .then(() => {
+                dispatch({ type: TOGGLE_ACCESS_MODE_SUCCESS });
+                dispatch(fetchCurrentAccessControl(item));
+            })
+            .catch((err) => {
+                dispatch({ type: TOGGLE_ACCESS_MODE_FAILURE, payload: err });
+            });
     };
 };
 
@@ -81,18 +201,19 @@ export const toggleErrorWindow = (error) => {
     return { type: TOGGLE_ERROR_WINDOW, payload: error };
 };
 
-export const fetchCurrentItem = (itemUrl, folder = false) => {
+export const fetchCurrentItem = (itemUrl) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CURRENT_ITEM });
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(itemUrl).host + '/',
         });
-        const options = {};
-        if (folder) {
-            options.auth = auth;
-            options.headers = { Accept: 'text/turtle' };
-            options.verbose = true;
-        }
+        const options = {
+            verbose: true,
+            headers: {
+                Accept: mime.getType(itemUrl) ?? 'text/turtle',
+            },
+        };
+
         return fileClient
             .read(itemUrl, options)
             .then((item) => {
@@ -113,42 +234,100 @@ export const fetchCurrentItem = (itemUrl, folder = false) => {
                             folders: folderNames,
                         },
                     });
-                } else if (item !== undefined && typeof item === 'string') {
+                    localStorage.setItem(
+                        'appState',
+                        JSON.stringify({
+                            currentPath: itemUrl,
+                        })
+                    );
+                } else if (item !== undefined) {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
-                        payload: { body: item, url: itemUrl },
+                        payload: {
+                            body: item.body,
+                            url: itemUrl,
+                            type: item.type,
+                        },
                     });
                 } else {
                     dispatch({
-                        type: FETCH_CURRENT_ITEM_FAIL,
-                        payload: { message: 'File not supported' },
+                        type: FETCH_CURRENT_ITEM_FAILURE,
+                        payload: new Error('File not found'),
                     });
                 }
             })
             .catch((error) =>
                 dispatch({
-                    type: FETCH_CURRENT_ITEM_FAIL,
+                    type: FETCH_CURRENT_ITEM_FAILURE,
                     payload: error,
                 })
             );
     };
 };
 
-export const deepFetchCurrentItem = (folderUrl) => {
-    return (dispatch) => {
-        dispatch({ type: DEEP_FETCH_CURRENT_ITEM });
-        const fileClient = new PodClient({ url: folderUrl });
-        fileClient
-            .deepRead(folderUrl)
-            .then((deepFolder) => {
-                dispatch({
-                    type: DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-                    payload: deepFolder,
-                });
-            })
-            .catch((err) => {
-                dispatch({ type: DEEP_FETCH_CURRENT_ITEM_FAIL, payload: err });
+export const indexStorage = (folderUrl) => {
+    return async (dispatch) => {
+        dispatch({ type: INDEX_STORAGE });
+        const fileClient = new PodClient();
+        const index =
+            (await fileClient.readIndex(folderUrl).catch(() => {})) ?? [];
+        if (!index || index.length === 0) {
+            dispatch({
+                type: INDEX_STORAGE_PROGRESS,
+                payload: 1,
             });
+            return fileClient
+                .deepRead(folderUrl, { verbose: true })
+                .then(async (deepFolder) => {
+                    const urlObject = url.parse(folderUrl);
+                    await fileClient.createIfNotExist(
+                        `${urlObject.protocol}//${urlObject.host}/` +
+                            fileClient.indexPath
+                    );
+                    return await new Promise((resolve) => {
+                        deepFolder.forEach(async (item, index, array) => {
+                            await fileClient.addToIndex(item, {
+                                force: true,
+                                updateCallback: (_, ok) => {
+                                    if (ok) {
+                                        dispatch({
+                                            type: INDEX_STORAGE_PROGRESS,
+                                            payload:
+                                                Math.floor(
+                                                    ((index / array.length) *
+                                                        100) /
+                                                        5
+                                                ) * 5,
+                                        });
+                                        if (index === array.length - 1) {
+                                            resolve(
+                                                fileClient.readIndex(folderUrl)
+                                            );
+                                        }
+                                    }
+                                },
+                            });
+                        });
+                    });
+                })
+                .then((index) => {
+                    dispatch({
+                        type: INDEX_STORAGE_SUCCESS,
+                        payload: index.map((indexItem) => indexItem.url),
+                    });
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: INDEX_STORAGE_FAILURE,
+                        payload: err,
+                    });
+                });
+        } else {
+            dispatch({
+                type: INDEX_STORAGE_SUCCESS,
+                payload: index.map((indexItem) => indexItem.url),
+            });
+        }
     };
 };
 
@@ -161,7 +340,6 @@ export const downloadFile = (file) => {
             .then((result) => {
                 const fileType = mime.getType(file);
                 if (fileType.includes('image')) {
-                    console.log('saving as image');
                     FileSaver.saveAs(file, convertFileUrlToName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });
                 } else {
@@ -203,27 +381,20 @@ export const updateFile = (file, body) => {
         const fileClient = new PodClient({
             podUrl: 'https://' + url.parse(file).host + '/',
         });
-        if (body !== '') {
-            fileClient
-                .update(file, body)
-                .then(() => {
-                    dispatch({
-                        type: UPDATE_FILE_SUCCESS,
-                        payload: { url: file, body: body },
-                    });
-                })
-                .catch((err) => {
-                    dispatch({
-                        type: UPDATE_FILE_FAILURE,
-                        payload: err,
-                    });
+        fileClient
+            .update(file, body)
+            .then(() => {
+                dispatch({
+                    type: UPDATE_FILE_SUCCESS,
+                    payload: { url: file, body: body },
                 });
-        } else {
-            dispatch({
-                type: UPDATE_FILE_FAILURE,
-                payload: "File can't be set to empty",
+            })
+            .catch((err) => {
+                dispatch({
+                    type: UPDATE_FILE_FAILURE,
+                    payload: err,
+                });
             });
-        }
     };
 };
 
@@ -250,6 +421,10 @@ export const setSelection = (selection) => {
     return { type: SET_SELECTION, payload: selection };
 };
 
+export const toggleInfoWindow = () => {
+    return { type: TOGGLE_INFO_WINDOW };
+};
+
 export const toggleSelectionMode = () => {
     return { type: TOGGLE_SELECTION_MODE };
 };
@@ -260,12 +435,32 @@ export const fetchIdps = () => {
         const request = { method: 'GET' };
         fetch('https://solid.github.io/solid-idp-list/services.json', request)
             .then((response) => {
-                response.json().then((idps) => {
-                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: idps.idps });
+                response.json().then((body) => {
+                    body.idps = [
+                        {
+                            url: 'https://aws.owntech.de/',
+                            icon: 'https://aws.owntech.de/favicon.ico',
+                            icon_bg: '#fff',
+                            title: 'aws.owntech.de',
+                            title_color: '#000',
+                            policyURL: 'https://aws.owntech.de',
+                            description: `Owntech is a german identity provider, dedicated to Data Ownership`,
+                            btn_bg: '#fff',
+                            btn_color: '#000',
+                        },
+                        ...body.idps,
+                    ];
+                    if (body.idps)
+                        body.idps.find((idp) => {
+                            if (idp.title === 'solid.community') {
+                                idp.url = 'https://solidcommunity.net/';
+                            }
+                        });
+                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: body.idps });
                 });
             })
             .catch((err) => {
-                dispatch({ type: FETCH_IDPS_FAILED, payload: err });
+                dispatch({ type: FETCH_IDPS_FAILURE, payload: err });
             });
     };
 };
@@ -296,7 +491,6 @@ export const copyItems = (items) => {
 };
 
 export const pasteItems = (items, location) => {
-    console.log(location, items, 'lala');
     return (dispatch) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()
@@ -335,9 +529,7 @@ export const createFile = function (name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FILE });
         const contentType = mime.getType(name) || 'text/plain';
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(name).host + '/',
-        });
+        const fileClient = new PodClient();
         return fileClient
             .create(path + name, { contentType: contentType })
             .then(() => {
@@ -421,7 +613,6 @@ export const uploadFileOrFolder = ({ target }, currentPath) => {
                     });
             }
         } catch (error) {
-            console.log(error);
             dispatch({ type: UPLOAD_FILE_FAILURE, payload: error });
         }
     };
@@ -500,5 +691,11 @@ export const createFolder = function (name, path) {
 export const toggleSearchbar = () => {
     return (dispatch) => {
         dispatch({ type: TOGGLE_SEARCHBAR });
+    };
+};
+
+export const toggleAccessWindow = () => {
+    return (dispatch) => {
+        dispatch({ type: TOGGLE_ACCESS_WINDOW });
     };
 };

@@ -1,4 +1,4 @@
-@import '../../../styles/constants.scss';
+@import '../../styles/constants.scss';
 
 .spinner {
     position: absolute;
@@ -61,12 +61,18 @@
 
 .content {
     grid-area: content;
+    -webkit-overflow-scrolling: touch;
     overflow-y: auto;
+    overflow-x: hidden;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
+    .content {
+        height: calc(100vh - 126px - 72px);
+    }
+
     .grid {
         grid-template-rows: 56px 1fr;
         border-radius: initial;
@@ -91,5 +97,14 @@
 
     .header {
         display: none;
+    }
+
+    .showLabel {
+        display: initial;
+        text-align: left;
+        padding: 0 16px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

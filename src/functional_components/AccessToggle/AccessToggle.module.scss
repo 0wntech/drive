@@ -1,0 +1,31 @@
+@import '../../styles/constants.scss';
+
+.accessToggle {
+  color: $light_blue;
+  border: solid $light_blue 4px;
+  padding: 4px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.active {
+  color: #ffffff;
+  background-color: $light_blue;
+}
+
+.disabled {
+  border-color: $light_black;
+  background-color: $light_black;
+  cursor: initial;
+}
+
+.accessToggle + .accessToggle {
+  margin-left: 8px;
+}
+
+@media (max-width: $screen_l) {
+  .accessToggle {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+}

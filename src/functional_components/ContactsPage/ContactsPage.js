@@ -7,11 +7,11 @@ import {
     addContact,
     removeContact,
     fetchContactRecommendations,
-    fetchContacts,
+    fetchContactProfiles,
 } from '../../actions/contactActions';
 import ContactList from '../ContactList/ContactsList';
 import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_m as screenM } from '../../styles/constants.scss';
+import { screen_l as screenL } from '../../styles/constants.scss';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
 import { getContactRoute } from '../../utils/url';
@@ -20,18 +20,22 @@ const ContactsPage = ({
     contacts,
     addContact,
     loadContacts,
-    fetchContacts,
+    fetchContactProfiles,
     webId,
+    user,
     setCurrentContact,
     contactRecommendations,
+    loadContactRecommendations,
     removeContact,
     history,
     fetchContactRecommendations,
     error,
 }) => {
     useEffect(() => {
-        if (!contacts) fetchContacts(webId);
-        if (!contactRecommendations) fetchContactRecommendations(webId);
+        if (!contacts && !loadContacts && user.contacts)
+            fetchContactProfiles(user.contacts);
+        if (!contactRecommendations && !loadContactRecommendations)
+            fetchContactRecommendations(webId);
     }, []);
 
     const { width } = useWindowDimension();
@@ -48,7 +52,7 @@ const ContactsPage = ({
             label="Contacts"
             className={styles.grid}
             isLoading={loadContacts}
-            hideToolbar={width < screenM}
+            hideToolbar={width < screenL}
         >
             <div className={styles.contactsContainer}>
                 <ContactList
@@ -103,8 +107,10 @@ ContactsPage.propTypes = {};
 const mapStateToProps = (state) => ({
     contacts: state.contact.contacts,
     webId: state.user.webId,
+    user: state.user.user,
     loadContacts: state.contact.loadContacts,
     contactRecommendations: state.contact.contactRecommendations,
+    loadContactRecommendations: state.contact.loadContactRecommendations,
     error: state.contact.error,
 });
 
@@ -112,6 +118,6 @@ export default connect(mapStateToProps, {
     setCurrentContact,
     addContact,
     removeContact,
-    fetchContacts,
+    fetchContactProfiles,
     fetchContactRecommendations,
 })(withRouter(ContactsPage));

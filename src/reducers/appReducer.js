@@ -1,18 +1,20 @@
-import idps from '../constants/idps';
-
 import {
-    DEEP_FETCH_CURRENT_ITEM,
-    DEEP_FETCH_CURRENT_ITEM_SUCCESS,
-    DEEP_FETCH_CURRENT_ITEM_FAIL,
+    INDEX_STORAGE,
+    INDEX_STORAGE_PROGRESS,
+    INDEX_STORAGE_SUCCESS,
+    INDEX_STORAGE_FAILURE,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
-    FETCH_CURRENT_ITEM_FAIL,
+    FETCH_CURRENT_ITEM_FAILURE,
+    FETCH_CURRENT_ACCESS_CONTROL,
+    FETCH_CURRENT_ACCESS_CONTROL_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
     SET_SELECTION,
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
-    FETCH_IDPS_FAILED,
+    FETCH_IDPS_FAILURE,
     OPEN_CONSENT_WINDOW,
     CLOSE_CONSENT_WINDOW,
     DELETE_ITEMS,
@@ -52,17 +54,28 @@ import {
     SET_CURRENT_CONTACT,
     SET_CURRENT_PATH,
     TOGGLE_SELECTION_MODE,
-    LOGIN_SUCCESS,
     TOGGLE_ERROR_WINDOW,
+    TOGGLE_ACCESS_WINDOW,
+    TOGGLE_ACCESS_MODE,
+    TOGGLE_ACCESS_MODE_SUCCESS,
+    TOGGLE_ACCESS_MODE_FAILURE,
+    TOGGLE_INFO_WINDOW,
+    FETCH_USER_SUCCESS,
+    SET_STORAGE_URL_SUCCESS,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
 const INITIAL_STATE = {
     loadNotifications: false,
-    loadcurrentItem: false,
+    loadCurrentItem: false,
+    loadCurrentAccessControl: false,
+    currentAccessControl: null,
+    defaultAclResource: null,
     loadDeletion: false,
     updatingFile: false,
     uploadingFiles: false,
+    indexingStorage: true,
+    indexingProgress: 0,
     error: {
         UPLOAD_FILES: false,
         DOWNLOAD_FILE: false,
@@ -72,8 +85,11 @@ const INITIAL_STATE = {
         DELETE_ITEMS: false,
         FETCH_IDPS: false,
         FETCH_CURRENT_ITEM: false,
+        FETCH_CURRENT_ACCESS_CONTROL: false,
+        TOGGLE_ACCESS_MODE: false,
     },
     currentPath: null,
+    rootUrl: null,
     currentItem: null,
     fileHierarchy: [],
     notifications: null,
@@ -81,7 +97,7 @@ const INITIAL_STATE = {
     selectionMode: false,
     clipboard: [],
     loadPaste: false,
-    idps: idps,
+    idps: null,
     isRenameWindowVisible: false,
     renamedItem: null,
     isCreateFileVisible: false,
@@ -92,7 +108,11 @@ const INITIAL_STATE = {
     isSearchBarExpanded: false,
     isDriveMenuVisible: false,
     isErrorWindowVisible: false,
+    isAccessWindowVisible: false,
+    isInfoWindowVisible: false,
     errorWindowError: null,
+    managingAccess: false,
+    managingAccessFor: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -101,45 +121,74 @@ export default (state = INITIAL_STATE, action) => {
     console.log(state);
 
     switch (type) {
-        case LOGIN_SUCCESS:
-            return { ...state, currentPath: getRootFromWebId(payload.webId) };
+        case FETCH_USER_SUCCESS:
+            return {
+                ...state,
+                rootUrl: payload.storage
+                    ? payload.storage
+                    : getRootFromWebId(payload.webId),
+            };
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
         case SET_CURRENT_CONTACT:
             return { ...state, isSearchBarExpanded: false };
+        case SET_STORAGE_URL_SUCCESS:
+            return { ...state, rootUrl: payload };
         case SET_CURRENT_PATH:
-            return { ...state, currentPath: payload };
-        case SET_SELECTION:
-            return { ...state, selectedItems: [...payload] };
-        case TOGGLE_SELECTION_MODE:
-            return { ...state, selectionMode: !state.selectionMode };
-        case DEEP_FETCH_CURRENT_ITEM:
             return {
                 ...state,
-                deepFetchCurrentItem: true,
+                currentPath: payload,
+                isSearchBarExpanded: false,
+            };
+        case SET_SELECTION:
+            return {
+                ...state,
+                selectedItems: payload,
+                selectionMode:
+                    !payload || (payload && payload.length === 0)
+                        ? false
+                        : state.selectionMode,
+            };
+        case TOGGLE_SELECTION_MODE:
+            return { ...state, selectionMode: !state.selectionMode };
+        case INDEX_STORAGE:
+            return {
+                ...state,
+                indexingStorage: true,
+                indexingProgress: 0,
                 error: {
                     ...state.error,
-
-                    DEEP_FETCH_CURRENT_ITEM: false,
+                    INDEX_STORAGE: false,
                 },
             };
-        case DEEP_FETCH_CURRENT_ITEM_SUCCESS:
+        case INDEX_STORAGE_PROGRESS:
+            return {
+                ...state,
+                indexingProgress: Number(
+                    state.indexingStorage &&
+                        payload > state.indexingProgress &&
+                        payload
+                ),
+            };
+        case INDEX_STORAGE_SUCCESS:
             return {
                 ...state,
                 fileHierarchy: payload,
-                deepFetchCurrentItem: false,
+                indexingStorage: false,
+                indexingProgress: false,
                 error: {
                     ...state.error,
-                    FETCH_CURRENT_ITEM: false,
+                    INDEX_STORAGE: false,
                 },
             };
-        case DEEP_FETCH_CURRENT_ITEM_FAIL:
+        case INDEX_STORAGE_FAILURE:
             return {
                 ...state,
-                deepFetchCurrentItem: false,
+                indexingStorage: false,
+                indexingProgress: false,
                 error: {
                     ...state.error,
-                    DEEP_FETCH_CURRENT_ITEM: false,
+                    INDEX_STORAGE: false,
                 },
             };
         case FETCH_CURRENT_ITEM:
@@ -158,11 +207,34 @@ export default (state = INITIAL_STATE, action) => {
                     FETCH_CURRENT_ITEM: false,
                 },
             };
-        case FETCH_CURRENT_ITEM_FAIL:
+        case FETCH_CURRENT_ITEM_FAILURE:
             return {
                 ...state,
                 loadCurrentItem: false,
                 error: { ...state.error, FETCH_CURRENT_ITEM: payload },
+            };
+        case FETCH_CURRENT_ACCESS_CONTROL:
+            return {
+                ...state,
+                loadCurrentAccessControl: true,
+                error: { ...state.error, FETCH_CURRENT_ACCESS_CONTROL: false },
+            };
+        case FETCH_CURRENT_ACCESS_CONTROL_SUCCESS:
+            return {
+                ...state,
+                loadCurrentAccessControl: false,
+                currentAccessControl: payload.accessControl,
+                defaultAclResource: payload.defaultAclResource,
+                error: {
+                    ...state.error,
+                    FETCH_CURRENT_ACCESS_CONTROL: false,
+                },
+            };
+        case FETCH_CURRENT_ACCESS_CONTROL_FAILURE:
+            return {
+                ...state,
+                loadCurrentAccessControl: false,
+                currentAccessControl: null,
             };
         case FETCH_NOTIFICATIONS:
             return {
@@ -188,7 +260,7 @@ export default (state = INITIAL_STATE, action) => {
                 loadIdps: false,
                 error: { ...state.error, FETCH_IDPS: false },
             };
-        case FETCH_IDPS_FAILED:
+        case FETCH_IDPS_FAILURE:
             return {
                 ...state,
                 loadIdps: false,
@@ -288,7 +360,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 updatingFile: false,
-                error: payload,
                 error: { ...state.error, UPDATE_FILE: payload },
             };
         case OPEN_CREATE_FILE_WINDOW:
@@ -359,6 +430,21 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, creatingFolder: false };
         case CREATE_FOLDER_FAILURE:
             return { ...state, creatingFolder: false };
+        case TOGGLE_ACCESS_MODE:
+            return {
+                ...state,
+                managingAccess: true,
+                managingAccessFor: payload,
+            };
+        case TOGGLE_ACCESS_MODE_SUCCESS:
+            return { ...state, managingAccess: false, managingAccessFor: null };
+        case TOGGLE_ACCESS_MODE_FAILURE:
+            return {
+                ...state,
+                managingAccess: false,
+                managingAccessFor: null,
+                error: { ...state.error, TOGGLE_ACCESS_MODE: payload },
+            };
         case TOGGLE_SEARCHBAR:
             return {
                 ...state,
@@ -369,6 +455,16 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isErrorWindowVisible: !state.isErrorWindowVisible,
                 errorWindowError: payload,
+            };
+        case TOGGLE_ACCESS_WINDOW:
+            return {
+                ...state,
+                isAccessWindowVisible: !state.isAccessWindowVisible,
+            };
+        case TOGGLE_INFO_WINDOW:
+            return {
+                ...state,
+                isInfoWindowVisible: !state.isInfoWindowVisible,
             };
         default:
             return state;

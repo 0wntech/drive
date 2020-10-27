@@ -19,7 +19,9 @@ const getInitialsFromUser = (user) => {
         : [getUsernameFromWebId(user.webId)];
     return names.length > 1
         ? names[0][0] + names[1][0].toLowerCase()
-        : names[0][0] + names[0][1].toLowerCase();
+        : names[0].length > 1
+        ? names[0][0].toUpperCase() + names[0][1].toLowerCase()
+        : names[0][0].toUpperCase();
 };
 
 const getErrorsFromErrorState = (errors) => {

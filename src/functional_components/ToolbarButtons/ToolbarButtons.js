@@ -10,7 +10,7 @@ import FileUpload from '../FileUpload/FileUpload';
 import MoreVertical from '../../assets/svgIcons/MoreVertical';
 import FolderPlus from '../../assets/svgIcons/FolderPlus';
 import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_m as screenM } from '../../styles/constants.scss';
+import { screen_l as screenL } from '../../styles/constants.scss';
 
 export default function ToolbarButtons({
     onFolderUpload,
@@ -22,18 +22,31 @@ export default function ToolbarButtons({
 }) {
     const { width } = useWindowDimension();
     const buttons = [
-        <SvgDownload className={styles.toolbarIcon} onClick={onDownload} />,
-        width > screenM ? (
-            <FileUpload className={styles.toolbarIcon} onChange={onFileUpload}>
+        <SvgDownload
+            key={'SvgDownload'}
+            className={styles.toolbarIcon}
+            onClick={onDownload}
+        />,
+        width > screenL ? (
+            <FileUpload
+                key={'FileUpload'}
+                className={styles.toolbarIcon}
+                onChange={onFileUpload}
+            >
                 <UploadFile />
             </FileUpload>
         ) : (
-            <FileUpload className={styles.toolbarIcon} onChange={onFileUpload}>
+            <FileUpload
+                key={'FileUpload'}
+                className={styles.toolbarIcon}
+                onChange={onFileUpload}
+            >
                 <Upload />
             </FileUpload>
         ),
-        width > screenM ? (
+        width > screenL ? (
             <FileUpload
+                key={'FolderUpload'}
                 className={styles.toolbarIcon}
                 onChange={onFolderUpload}
                 folder
@@ -43,9 +56,18 @@ export default function ToolbarButtons({
         ) : (
             false
         ),
-        <FolderPlus className={styles.toolbarIcon} onClick={onCreateFolder} />,
-        <SvgTrash className={styles.toolbarIcon} onClick={onDelete} />,
+        <FolderPlus
+            key={'CreateFolder'}
+            className={styles.toolbarIcon}
+            onClick={onCreateFolder}
+        />,
+        <SvgTrash
+            key={'Delete'}
+            className={styles.toolbarIcon}
+            onClick={onDelete}
+        />,
         <MoreVertical
+            key={'More'}
             className={classNames(styles.toolbarIcon, styles.more)}
             onClick={onMore}
         />,
@@ -56,7 +78,9 @@ export default function ToolbarButtons({
             {buttons.map(
                 (button) =>
                     button && (
-                        <div className={styles.buttonWrapper}>{button}</div>
+                        <div className={styles.buttonWrapper} key={button.key}>
+                            {button}
+                        </div>
                     )
             )}
             {/* <SvgInfo className={styles.toolbarIcon} /> */}

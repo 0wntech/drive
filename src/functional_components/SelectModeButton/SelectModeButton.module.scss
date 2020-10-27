@@ -5,11 +5,11 @@
     left: calc(10% + 1em);
     position: absolute;
     padding: 0.2em 2em;
-    background: $standard_blue;
-    border: solid $standard_blue 4px;
+    background: $light_blue;
+    border: solid $light_blue 5px;
     color: #fff;
     border-radius: 20px;
-    z-index: 3;
+    z-index: 5;
     cursor: pointer;
 }
 
@@ -17,7 +17,7 @@
     display: none;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .container {
         bottom: 1em;
         left: 1em;

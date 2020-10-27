@@ -1,4 +1,4 @@
-@import '../../../styles/constants.scss';
+@import '../../styles/constants.scss';
 
 .fileMarkup li {
     list-style: none;
@@ -37,7 +37,12 @@
 
 .container {
     overflow-y: auto;
-    padding-top: 1em;
+    overflow-x: hidden;
+    padding: 1em 0;
+}
+
+.noScroll {
+    overflow-y: hidden;
 }
 
 .breadcrumbsContainer {
@@ -46,10 +51,11 @@
     align-items: center;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .mainArea {
-        overflow-y: auto;
+        height: max-content;
         padding: 0 16px;
+        padding-bottom: 8em;
     }
 
     .grid {

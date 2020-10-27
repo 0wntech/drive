@@ -8,17 +8,17 @@
 }
 
 .listContainer + .listContainer {
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .listContainer {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         grid-gap: 20px 20px;
     }
 }
 
-@media (max-width: $screen_s) {
+@media (max-width: $screen_xs) {
     .listContainer {
         grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
         grid-gap: 20px 20px;

@@ -29,7 +29,9 @@ const ContactListItem = ({
                 )}
             </div>
             <div className={styles.nameContainer}>
-                {contact.name ? contact.name : 'No Name'}
+                {contact.name
+                    ? contact.name
+                    : getUsernameFromWebId(contact.webId)}
             </div>
             <div className={styles.iconContainer}>
                 {wasAdded ? (

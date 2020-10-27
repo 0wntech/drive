@@ -41,7 +41,7 @@
 }
 
 .search__option--is-focused {
-    background-color: $light_blue !important;
+    background-color: $standard_blue !important;
 }
 
 .search__placeholder {
@@ -93,7 +93,7 @@
     justify-content: center;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .search__control:hover {
         border: initial;
         box-sizing: initial;
@@ -116,6 +116,8 @@
     }
 
     .search__input {
+        height: 100%;
+        width: 100%;
         font-size: 18px;
     }
 
@@ -156,6 +158,11 @@
 
         .search__control {
             box-shadow: initial !important;
+        }
+
+        .search__input {
+            height: initial;
+            width: 80%;
         }
     }
 }

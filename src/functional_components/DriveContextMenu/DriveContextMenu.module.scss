@@ -4,7 +4,7 @@
     background-color: white;
     border-radius: 10px;
     border: 4px solid $light_black;
-    z-index: 2;
+    z-index: 10;
     width: 200px;
     padding: 0 !important;
     box-shadow: initial;
@@ -25,7 +25,7 @@
 }
 
 .contextItem:hover div {
-    background-color: $light_blue !important;
+    background-color: $standard_blue !important;
 }
 
 .disabled div {

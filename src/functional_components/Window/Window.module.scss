@@ -15,6 +15,8 @@
     display: grid;
     grid-template-rows: 50px 1fr;
     grid-template-areas: 'head' 'body';
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .wrapper {
@@ -24,7 +26,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    z-index: 4;
+    z-index: 11;
     background: rgba($color: #000, $alpha: 0.2);
 }
 
@@ -61,6 +63,7 @@
     padding: 0 1em;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .title {
@@ -70,7 +73,7 @@
     text-align: center;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .wrapper {
         align-items: flex-end;
     }
@@ -83,7 +86,7 @@
         min-width: initial;
         max-width: initial;
         width: 100%;
-        min-height: 60vh;
+        min-height: 80%;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }

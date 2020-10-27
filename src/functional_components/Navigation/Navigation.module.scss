@@ -9,6 +9,11 @@
     height: 20px;
 }
 
+.fullPath {
+  margin-left: .5em;
+  color: $light-black
+}
+
 .fileIcon {
     width: 24px;
     height: 32px;
@@ -29,6 +34,24 @@
     display: flex;
     align-items: center;
 }
+
+.contactIcon {
+    min-width: 38px;
+    min-height: 38px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+
+.defaultContactIcon {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    line-height: 30px !important;
+    font-size: 1em !important;
+}
+
 .container {
     z-index: 1;
     background-color: white;
@@ -68,34 +91,6 @@
     height: 100%;
 }
 
-.separator {
-    color: #666666;
-    font-size: 14px;
-    line-height: 17px;
-}
-
-.separatorContainer {
-    display: flex;
-    align-items: flex-end;
-}
-
-.contactIcon {
-    min-width: 38px;
-    min-height: 38px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%;
-}
-
-.defaultContactIcon {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
-    line-height: 30px !important;
-    font-size: 1em !important;
-}
-
 .loginButton {
     color: #0c89c6;
 }
@@ -112,7 +107,7 @@
     cursor: pointer;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .active {
         grid-template-areas: '. search search search .';
 

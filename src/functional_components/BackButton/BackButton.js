@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
+import url from 'url';
 
 import styles from './Backbutton.module.scss';
 import { setCurrentPath } from '../../actions/appActions';
-import { getRootFromWebId, getPreviousPath } from '../../utils/url';
+import { getPreviousPath } from '../../utils/url';
 
-export const BackButton = ({ setCurrentPath, currentPath, webId, history }) => {
+export const BackButton = ({ currentPath, rootUrl, history }) => {
     const [previousPath, setPreviousPath] = useState(currentPath);
     useEffect(() => {
         setPreviousPath(getPreviousPath(currentPath));
@@ -17,12 +18,14 @@ export const BackButton = ({ setCurrentPath, currentPath, webId, history }) => {
         currentPath && (
             <div
                 className={classNames(styles.container, {
-                    [styles.hidden]:
-                        currentPath && getRootFromWebId(webId) === currentPath,
+                    [styles.hidden]: currentPath && rootUrl === currentPath,
                 })}
                 onClick={() => {
-                    setCurrentPath(previousPath);
-                    history.push('/home');
+                    history.push(
+                        `/home/${encodeURIComponent(
+                            url.parse(previousPath).pathname
+                        )}`
+                    );
                 }}
             >
                 Back
@@ -33,6 +36,7 @@ export const BackButton = ({ setCurrentPath, currentPath, webId, history }) => {
 
 const mapStateToProps = (state) => {
     return {
+        rootUrl: state.app.rootUrl,
         currentPath: state.app.currentPath,
         webId: state.user.webId,
     };

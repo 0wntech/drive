@@ -14,23 +14,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 142px;
+    height: max-content;
+    padding: 8px 0;
     width: 100%;
-    border: solid transparent 2px;
+    border: solid transparent 4px;
     box-sizing: border-box;
     border-radius: 20px;
     transition-property: background-color;
     transition-duration: 300ms;
 }
 
-.gridCell:hover {
-    background-color: $light_grey;
-}
-
 .selected {
-    border: solid 2px #24b0ff;
+    border: solid 4px $light_blue;
     transition-property: border;
     transition-duration: 300ms;
+}
+
+.selected.gridCell:hover {
+    background-color: initial;
 }
 
 .innerContainer {
@@ -49,8 +50,12 @@
     color: #000000;
     white-space: nowrap;
     text-align: center;
+    overflow: hidden;
     text-overflow: ellipsis;
     direction: ltr;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .icon {
@@ -85,22 +90,47 @@
     z-index: 3;
 }
 
-@media (min-width: $screen_m) {
+@media (min-width: $screen_l) {
     .label:hover {
         background: #ffffff;
         border-radius: 10px;
         padding: 0 4px;
         position: relative;
-        text-overflow: initial;
+        top: 0;
         left: 50%;
         transform: translateX(-50%);
+        text-overflow: initial;
         width: min-content;
         box-sizing: border-box;
         border: solid $light_grey 4px;
+        z-index: 3;
+    }
+
+    // .gridCell:first-child {
+    //     .label:hover {
+    //         min-width: 100px;
+    //         top: 1px;
+    //         left: 0;
+    //         transform: initial;
+    //     }
+    // }
+
+    // .gridCell:nth-child(9) {
+    //     .label:hover {
+    //         min-width: 100px;
+    //         top: 1px;
+    //         right: 8px;
+    //         left: initial;
+    //         transform: initial;
+    //     }
+    // }
+
+    .gridCell:hover {
+        background-color: $light_grey;
     }
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .gridCell {
         height: 128px;
         width: 100px;
@@ -131,5 +161,11 @@
     .icon {
         width: 80px;
         height: 60px;
+    }
+}
+
+@media (max-width: $screen_xs) {
+    .gridCell {
+        width: 100px;
     }
 }

@@ -3,13 +3,11 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
-import { ErrorBoundary } from './stateful_components/ErrorBoundary';
-import { login, fetchUser, setWebId, logout } from './actions/userActions';
+import { ErrorBoundary } from './ErrorBoundary';
+import { login, fetchUser, logout } from './actions/userActions';
 import styles from './App.module.scss';
-import NotificationsPage from './stateful_components/NotificationsPage';
-import { deepFetchCurrentItem } from './actions/appActions';
-import { getRootFromWebId } from './utils/url';
-const LoginScreen = lazy(() => import('./functional_components/LoginScreen'));
+import { indexStorage } from './actions/appActions';
+const LoginPage = lazy(() => import('./functional_components/LoginPage'));
 const Drive = lazy(() => import('./functional_components/Drive'));
 const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
 const LandingPage = lazy(() => import('./functional_components/LandingPage'));
@@ -31,18 +29,20 @@ export const App = ({
     session,
     loadLogin,
     loadUser,
+    loadContacts,
     logout,
-    deepFetchCurrentItem,
+    indexStorage,
+    indexingProgress,
+    indexingStorage,
 }) => {
     const [errorKey, setError] = useState(0);
     useEffect(() => {
         if (!session) {
             login();
-        } else {
-            console.log(getRootFromWebId(session.webId), 'deep');
-            deepFetchCurrentItem(getRootFromWebId(session.webId));
+        } else if (user && user.storage) {
+            indexStorage(user.storage);
         }
-    }, [session]);
+    }, [session, user]);
 
     const resetError = () => {
         setError(errorKey + 1);
@@ -50,37 +50,59 @@ export const App = ({
 
     const suspenseView = (
         <div className={styles.spinner}>
-            <ClassicSpinner
-                size={30}
-                color="#686769"
-                loading={loadLogin || loadUser}
-            />
+            <ClassicSpinner size={30} color="#686769" />
+            <div className={styles.loadingMessage}>
+                {indexingProgress
+                    ? indexingProgress <= 1
+                        ? 'Index not found. Creating Index... '
+                        : `Updating index... ${indexingProgress}% Done`
+                    : typeof indexingProgress === 'number'
+                    ? 'Loading Index...'
+                    : loadContacts
+                    ? 'Loading Contacts...'
+                    : loadUser
+                    ? 'Loading User...'
+                    : 'Loading App...'}
+            </div>
         </div>
     );
 
-    if (loadLogin || loadUser) {
+    if (
+        webId &&
+        (loadLogin ||
+            loadUser ||
+            indexingStorage ||
+            indexingProgress ||
+            (!user?.contacts && loadContacts))
+    ) {
         return suspenseView;
     } else {
         return (
             <div className={styles.grid}>
-                <div className={styles.navArea}>
-                    <Navigation
-                        resetError={resetError}
-                        onLogout={logout}
-                        onLogin={login}
-                        webId={webId}
-                        picture={user ? user.picture : undefined}
-                        username={user ? user.name : undefined}
-                    />
-                </div>
-                <div className={styles.mainArea}>
-                    <ErrorBoundary key={errorKey}>
-                        <Suspense fallback={suspenseView}>
+                <Suspense fallback={<></>}>
+                    <div className={styles.navArea}>
+                        <Navigation
+                            resetError={resetError}
+                            onLogout={logout}
+                            onLogin={login}
+                            webId={webId}
+                            picture={user ? user.picture : undefined}
+                            username={user ? user.name : undefined}
+                        />
+                    </div>
+                    <div className={styles.mainArea}>
+                        <ErrorBoundary key={errorKey}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />
                                 <PrivateRoute
                                     session={session}
                                     path="/home"
+                                    exact
+                                    component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/home/:path"
                                     component={<Drive />}
                                 />
                                 <PrivateRoute
@@ -105,13 +127,8 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/contact"
+                                    path="/contact/:id"
                                     component={<ContactProfilePage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/notifications"
-                                    component={<NotificationsPage />}
                                 />
                                 <PrivateRoute
                                     session={session}
@@ -120,20 +137,20 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/file"
+                                    path="/file/:path"
                                     component={<FileView />}
                                 />
                                 <Route
                                     session={session}
                                     path="/login"
                                     component={() => (
-                                        <LoginScreen webId={webId} />
+                                        <LoginPage webId={webId} />
                                     )}
                                 />
                             </Switch>
-                        </Suspense>
-                    </ErrorBoundary>
-                </div>
+                        </ErrorBoundary>
+                    </div>
+                </Suspense>
             </div>
         );
     }
@@ -146,8 +163,11 @@ const mapStateToProps = (state) => {
         session: state.user.session,
         loadLogin: state.user.loadLogin,
         loadUser: state.user.loadUser,
+        loadContacts: state.contact.loadContacts,
         currentFolderTree: state.app.currentFolderTree,
         currentPath: state.app.currentPath,
+        indexingStorage: state.app.indexingStorage,
+        indexingProgress: state.app.indexingProgress,
     };
 };
 
@@ -156,7 +176,6 @@ export default withRouter(
         logout,
         login,
         fetchUser,
-        setWebId,
-        deepFetchCurrentItem,
+        indexStorage,
     })(App)
 );

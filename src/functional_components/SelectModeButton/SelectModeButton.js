@@ -4,13 +4,9 @@ import { withRouter } from 'react-router';
 import classNames from 'classnames';
 
 import styles from './SelectModeButton.module.scss';
-import { setSelection, toggleSelectionMode } from '../../actions/appActions';
+import { setSelection } from '../../actions/appActions';
 
-export const SelectModeButton = ({
-    selectionMode,
-    setSelection,
-    toggleSelectionMode,
-}) => {
+export const SelectModeButton = ({ selectionMode, setSelection }) => {
     return (
         <div
             className={classNames(styles.container, {
@@ -18,7 +14,6 @@ export const SelectModeButton = ({
             })}
             onClick={() => {
                 setSelection([]);
-                toggleSelectionMode();
             }}
         >
             End Selection
@@ -33,7 +28,5 @@ const mapStateToProps = (state) => {
 };
 
 export default withRouter(
-    connect(mapStateToProps, { setSelection, toggleSelectionMode })(
-        SelectModeButton
-    )
+    connect(mapStateToProps, { setSelection })(SelectModeButton)
 );

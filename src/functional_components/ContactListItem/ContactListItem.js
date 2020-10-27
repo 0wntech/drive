@@ -6,6 +6,7 @@ import Add from '../../assets/svgIcons/Add';
 import Delete from '../../assets/svgIcons/Delete';
 import { getInitialsFromUser } from '../../utils/helper';
 import DefaultIcon from '../DefaultIcon';
+import { getUsernameFromWebId } from '../../utils/url';
 
 const ContactListItem = ({
     contact,
@@ -41,7 +42,9 @@ const ContactListItem = ({
                 className={styles.nameContainer}
                 onClick={() => onClick(contact)}
             >
-                {contact.name ? contact.name : 'No Name'}
+                {contact.name
+                    ? contact.name
+                    : getUsernameFromWebId(contact.webId)}
             </div>
             <div
                 className={classNames(styles.iconContainer, {

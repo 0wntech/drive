@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-function SvgSearch({ width, height, ...rest }) {
+function SvgSearch(props) {
     return (
-        <svg width={width} height={height} fill="none" {...rest}>
+        <svg width={24} height={24} fill="none" {...props}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -14,8 +14,8 @@ function SvgSearch({ width, height, ...rest }) {
                 maskUnits="userSpaceOnUse"
                 x={2}
                 y={2}
-                width={width}
-                height={height}
+                width={20}
+                height={20}
             >
                 <path
                     fillRule="evenodd"

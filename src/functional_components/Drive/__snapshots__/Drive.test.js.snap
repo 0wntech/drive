@@ -3,9 +3,22 @@
 exports[`Drive Drive Snapshot matches the snapshot 1`] = `
 <Layout
   className="grid"
-  label="Drive"
   onClick={[Function]}
-  toolbarChildrenLeft={null}
+  toolbarChildrenLeft={
+    <div
+      className="breadcrumbsContainer"
+    >
+      <Breadcrumbs
+        breadcrumbs={
+          Array [
+            "/",
+          ]
+        }
+        onClick={[Function]}
+        rootUrl="https://tester.owntech.de/"
+      />
+    </div>
+  }
   toolbarChildrenRight={
     <ToolbarButtons
       onDelete={[Function]}
@@ -47,8 +60,11 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
           onItemClick={[Function]}
         />
       </div>
-      <withRouter(Connect(BackButton)) />
-      <withRouter(Connect(SelectModeButton)) />
+      <BottomOverlay>
+        <withRouter(Connect(BackButton)) />
+        <withRouter(Connect(SelectModeButton)) />
+        <withRouter(Connect(AccessDisplay)) />
+      </BottomOverlay>
     </div>
   </UNDEFINED>
 </Layout>

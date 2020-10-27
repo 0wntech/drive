@@ -6,8 +6,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Drive.module.scss';
 import Breadcrumbs from '../Breadcrumbs';
-import { ItemList } from '../ItemList';
-import { getBreadcrumbsFromUrl, getRootFromWebId } from '../../utils/url';
+import ItemList from '../ItemList';
+import {
+    getBreadcrumbsFromUrl,
+    getFileRoute,
+    getHomeRoute,
+    getRootFromWebId,
+    useParamsFromUrl,
+} from '../../utils/url';
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { Layout } from '../Layout';
@@ -20,10 +26,10 @@ import {
     toggleSearchbar,
     toggleDriveMenu,
     openCreateFolderWindow,
-    toggleSelectionMode,
     downloadFile,
     uploadFileOrFolder,
 } from '../../actions/appActions';
+import { setStorageUrl, fetchUser } from '../../actions/userActions';
 import ToolbarButtons from '../ToolbarButtons';
 import { handleError } from '../../utils/helper';
 import { getParentFolderUrl } from '../../utils/url';
@@ -32,22 +38,26 @@ import DriveContextMenu from '../DriveContextMenu';
 import BackButton from '../BackButton';
 import DriveMenu from '../DriveMenu';
 import SelectModeButton from '../SelectModeButton';
+import AccessDisplay from '../AccessDisplay/AccessDisplay';
+import BottomOverlay from '../BottomOverlay/BottomOverlay';
 
 const Drive = ({
     selectedItems,
     selectionMode,
     setSelection,
-    toggleSelectionMode,
     currentItem,
-    currentPath,
+    rootUrl,
     loadCurrentItem,
     openConsentWindow,
     openCreateFolderWindow,
     toggleDriveMenu,
     isDriveMenuVisible,
+    user,
     webId,
+    loadUser,
     setCurrentPath,
-    fetchCurrentItem,
+    currentPath,
+    setStorageUrl,
     history,
     downloadFile,
     uploadFileOrFolder,
@@ -57,45 +67,64 @@ const Drive = ({
     loadPaste,
     toggleSearchbar,
     isSearchBarExpanded,
+    isAccessWindowVisible,
 }) => {
+    const { path } = useParamsFromUrl();
+    const routeUrl = url.resolve(rootUrl, path ?? '');
     const appState = JSON.parse(localStorage.getItem('appState'));
     useEffect(() => {
-        if (!loadCurrentItem && (!currentItem || !currentItem.files)) {
-            if (!currentPath && appState && appState.currentPath) {
+        if (!loadUser && !user) {
+            fetchUser(webId);
+        }
+
+        if (currentPath !== routeUrl && !loadCurrentItem) {
+            if (mime.getType(routeUrl)) {
+                history.push(getFileRoute(routeUrl));
+            } else {
+                setCurrentPath(routeUrl);
+            }
+        } else if (
+            !loadCurrentItem &&
+            !loadUser &&
+            (!currentItem || !currentItem.files)
+        ) {
+            if (
+                !currentPath &&
+                appState &&
+                appState.currentPath &&
+                url.parse(webId).host === url.parse(appState.currentPath).host
+            ) {
                 setCurrentPath(appState.currentPath);
-            } else if (!currentPath && webId) {
-                setCurrentPath(getRootFromWebId(webId));
+            } else if (!currentPath && user.storage) {
+                setCurrentPath(user.storage);
+            } else if (!currentPath && !user.storage && user.webId) {
+                setStorageUrl(getRootFromWebId(user.webId), user.webId);
+                setCurrentPath(getRootFromWebId(user.webId));
             } else {
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
         }
-        return () => {
-            localStorage.setItem(
-                'appState',
-                JSON.stringify({
-                    ...appState,
-                    currentPath: currentPath,
-                })
-            );
-        };
-    }, [currentPath]);
+    }, [currentPath, routeUrl, user]);
     handleError(error);
     // Event Handlers
-    const loadFile = (url) => {
-        if (url.endsWith('/')) {
-            url = url.substr(0, url.lastIndexOf('/'));
+    const loadFile = (fileUrl) => {
+        if (fileUrl.endsWith('/')) {
+            fileUrl = fileUrl.substr(0, fileUrl.lastIndexOf('/'));
         }
-        if (selectionMode && !selectedItems.includes(url)) {
-            const newSelection = [...selectedItems, url];
+        if (selectionMode && !selectedItems.includes(fileUrl)) {
+            const newSelection = [...selectedItems, fileUrl];
             setSelection(newSelection);
-        } else if (selectionMode && selectedItems.includes(url)) {
-            const newSelection = selectedItems.filter((item) => item !== url);
+        } else if (selectionMode && selectedItems.includes(fileUrl)) {
+            const newSelection = selectedItems.filter(
+                (item) => item !== fileUrl
+            );
             setSelection(newSelection);
         } else {
-            history.push(`/file?f=${url}`);
+            history.push(
+                `/file/${encodeURIComponent(url.parse(fileUrl).pathname)}`
+            );
         }
     };
-
     const loadFolder = (path) => {
         if (selectionMode && !selectedItems.includes(path)) {
             const newSelection = [...selectedItems, path];
@@ -104,8 +133,9 @@ const Drive = ({
             const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else {
-            setCurrentPath(path);
-            fetchCurrentItem(path, true);
+            history.push(
+                `/home/${encodeURIComponent(url.parse(path).pathname)}`
+            );
         }
     };
 
@@ -116,9 +146,7 @@ const Drive = ({
                 e.target.className.includes('Layout_') ||
                 e.target.className.includes('ItemList_'))
         ) {
-            console.log('Emptying selection');
             setSelection([]);
-            if (selectionMode) toggleSelectionMode();
         }
     };
 
@@ -133,7 +161,7 @@ const Drive = ({
                 downloadFile(item);
             } else {
                 const download =
-                    webId.replace('profile/card#me', 'download?path=') +
+                    user.webId.replace('profile/card#me', 'download?path=') +
                     url.parse(item).pathname;
                 window.open(download.replace(/\/+$/, ''));
             }
@@ -156,19 +184,21 @@ const Drive = ({
         />
     );
 
-    const toolbarLeft = webId ? (
+    const toolbarLeft = currentPath && rootUrl && (
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    setCurrentPath(path);
+                    history.push(getHomeRoute(path));
                 }}
                 breadcrumbs={
-                    currentPath ? getBreadcrumbsFromUrl(currentPath) : null
+                    currentPath
+                        ? getBreadcrumbsFromUrl(currentPath, rootUrl)
+                        : null
                 }
-                webId={webId}
+                rootUrl={rootUrl}
             />
         </div>
-    ) : null;
+    );
 
     const noFilesAndFolders = () => {
         return currentItem.folders.length < 1 && currentItem.files.length < 1;
@@ -179,12 +209,15 @@ const Drive = ({
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={toolbarRight}
             className={classNames(styles.grid, {
-                [styles.noScroll]: isDriveMenuVisible,
+                [styles.noScroll]: isDriveMenuVisible || isAccessWindowVisible,
             })}
-            label="Drive"
             onClick={handleClick}
             isLoading={
-                loadDeletion || loadPaste || loadCurrentItem || uploadingFiles
+                loadDeletion ||
+                loadPaste ||
+                loadCurrentItem ||
+                uploadingFiles ||
+                loadUser
             }
         >
             <DriveMenu
@@ -204,37 +237,44 @@ const Drive = ({
                     currentItem.files &&
                     !noFilesAndFolders() ? (
                         <div>
-                            <ItemList
-                                selectedItems={selectedItems}
-                                items={currentItem.folders}
-                                currPath={currentPath}
-                                image={folder}
-                                onItemClick={
-                                    isSearchBarExpanded
-                                        ? toggleSearchbar
-                                        : loadFolder
-                                }
-                            />
-                            <ItemList
-                                selectedItems={selectedItems}
-                                isFile
-                                items={currentItem.files}
-                                currPath={currentPath}
-                                image={fileIcon}
-                                onItemClick={
-                                    isSearchBarExpanded
-                                        ? toggleSearchbar
-                                        : loadFile
-                                }
-                            />
+                            {currentItem.folders.length > 0 && (
+                                <ItemList
+                                    selectedItems={selectedItems}
+                                    items={currentItem.folders}
+                                    currPath={currentPath}
+                                    image={folder}
+                                    onItemClick={
+                                        isSearchBarExpanded
+                                            ? toggleSearchbar
+                                            : loadFolder
+                                    }
+                                />
+                            )}
+                            {currentItem.files.length > 0 && (
+                                <ItemList
+                                    selectedItems={selectedItems}
+                                    isFile
+                                    items={currentItem.files}
+                                    currPath={currentPath}
+                                    image={fileIcon}
+                                    onItemClick={
+                                        isSearchBarExpanded
+                                            ? toggleSearchbar
+                                            : loadFile
+                                    }
+                                />
+                            )}
                         </div>
                     ) : (
                         <p className={styles.emptyMessage}>
                             This folder is empty
                         </p>
                     )}
-                    <BackButton />
-                    <SelectModeButton />
+                    <BottomOverlay>
+                        <BackButton />
+                        <SelectModeButton />
+                        <AccessDisplay />
+                    </BottomOverlay>
                 </div>
             </DriveContextMenu>
         </Layout>
@@ -245,9 +285,12 @@ const mapStateToProps = (state) => {
     return {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
+        rootUrl: state.app.rootUrl,
         selectedItems: state.app.selectedItems,
         selectionMode: state.app.selectionMode,
+        user: state.user.user,
         webId: state.user.webId,
+        loadUser: state.user.loadUser,
         clipboard: state.app.clipboard,
         error: state.app.error,
         loadDeletion: state.app.loadDeletion,
@@ -255,6 +298,7 @@ const mapStateToProps = (state) => {
         loadCurrentItem: state.app.loadCurrentItem,
         isSearchBarExpanded: state.app.isSearchBarExpanded,
         isDriveMenuVisible: state.app.isDriveMenuVisible,
+        isAccessWindowVisible: state.app.isAccessWindowVisible,
         uploadingFiles: state.app.uploadingFiles,
     };
 };
@@ -268,9 +312,9 @@ export default withRouter(
         sendNotification,
         fetchCurrentItem,
         setSelection,
-        toggleSelectionMode,
         toggleSearchbar,
         downloadFile,
         uploadFileOrFolder,
+        setStorageUrl,
     })(Drive)
 );

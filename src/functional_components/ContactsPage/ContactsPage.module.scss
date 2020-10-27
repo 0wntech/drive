@@ -1,5 +1,4 @@
 .spinner {
-    grid-area: contacts;
     height: 100%;
     width: 100%;
     display: flex;
@@ -8,18 +7,14 @@
 }
 
 .contactsContainer {
-    grid-area: contacts;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    margin-top: 16px;
 }
 
 .grid {
     height: 100%;
-    display: grid;
-    grid-template-areas: 'contacts contacts contacts';
     padding: 0 1em;
 }
 

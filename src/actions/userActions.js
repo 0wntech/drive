@@ -4,8 +4,11 @@ import {
     LOGIN_FAIL,
     FETCH_USER,
     FETCH_USER_SUCCESS,
-    FETCH_USER_FAIL,
+    FETCH_USER_FAILURE,
     SET_WEBID,
+    SET_STORAGE_URL,
+    SET_STORAGE_URL_SUCCESS,
+    SET_STORAGE_URL_FAILURE,
     UPDATE_PROFILE,
     UPDATE_PROFILE_FAILURE,
     UPDATE_PROFILE_SUCCESS,
@@ -16,6 +19,7 @@ import {
 import User from 'ownuser';
 import auth from 'solid-auth-client';
 import * as rdf from 'rdflib';
+import { fetchContactProfiles } from './contactActions';
 
 export const login = () => {
     return (dispatch) => {
@@ -56,6 +60,20 @@ export const setWebId = (webId) => {
     return { type: SET_WEBID, payload: webId };
 };
 
+export const setStorageUrl = (url, webId) => {
+    return (dispatch) => {
+        dispatch({ type: SET_STORAGE_URL });
+        const user = new User(webId);
+        user.setStorage(url)
+            .then(() => {
+                dispatch({ type: SET_STORAGE_URL_SUCCESS, payload: url });
+            })
+            .catch((err) => {
+                dispatch({ type: SET_STORAGE_URL_FAILURE, payload: err });
+            });
+    };
+};
+
 export const fetchUser = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_USER });
@@ -64,9 +82,12 @@ export const fetchUser = (webId) => {
             .getProfile()
             .then((profile) => {
                 dispatch({ type: FETCH_USER_SUCCESS, payload: profile });
+                return currUser.getContacts().then((contacts) => {
+                    dispatch(fetchContactProfiles(contacts, webId));
+                });
             })
             .catch((error) =>
-                dispatch({ type: FETCH_USER_FAIL, payload: error })
+                dispatch({ type: FETCH_USER_FAILURE, payload: error })
             );
     };
 };

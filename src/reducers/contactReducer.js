@@ -1,9 +1,11 @@
 import {
     FETCH_CONTACTS,
     FETCH_CONTACTS_FAILURE,
+    FETCH_CURRENT_CONTACTS_SUCCESS,
     FETCH_CONTACTS_SUCCESS,
     SET_CURRENT_CONTACT,
     SEARCH_CONTACT,
+    SEARCH_CONTACT_COMPLETED,
     SEARCH_CONTACT_SUCCESS,
     SEARCH_CONTACT_FAILURE,
     FETCH_CONTACT_RECOMMENDATIONS,
@@ -21,6 +23,7 @@ const INITIAL_STATE = {
     contacts: null,
     contactRecommendations: null,
     currentContact: null,
+    currentContacts: null,
     contactSearchResult: null,
     searchingContacts: false,
     error: {
@@ -36,6 +39,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
     console.log('Contact Reducer got action: ', type, '\nValue: ', payload);
+
     switch (type) {
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
@@ -65,6 +69,13 @@ export default (state = INITIAL_STATE, action) => {
                 loadContacts: true,
                 error: { ...state.error, FETCH_CONTACTS: false },
             };
+        case FETCH_CURRENT_CONTACTS_SUCCESS:
+            return {
+                ...state,
+                loadContacts: false,
+                currentContacts: payload,
+                error: { ...state.error, FETCH_CONTACTS: false },
+            };
         case FETCH_CONTACTS_SUCCESS:
             return {
                 ...state,
@@ -79,7 +90,7 @@ export default (state = INITIAL_STATE, action) => {
                 error: { ...state.error, FETCH_CONTACTS: payload },
             };
         case SET_CURRENT_CONTACT:
-            return { ...state, currentContact: payload };
+            return { ...state, currentContact: payload, currentContacts: null };
         case SEARCH_CONTACT:
             return {
                 ...state,
@@ -89,15 +100,23 @@ export default (state = INITIAL_STATE, action) => {
         case SEARCH_CONTACT_SUCCESS:
             return {
                 ...state,
+                contactSearchResult: state.contactSearchResult
+                    ? [...state.contactSearchResult, payload]
+                    : [payload],
+                error: { ...state.error, SEARCH_CONTACT: false },
+            };
+        case SEARCH_CONTACT_COMPLETED:
+            return {
+                ...state,
                 searchingContacts: false,
-                contactSearchResult: payload,
                 error: { ...state.error, SEARCH_CONTACT: false },
             };
         case SEARCH_CONTACT_FAILURE:
             return {
                 ...state,
                 searchingContacts: false,
-                error: { ...state.error, SEARCH_CONTACT: payload },
+                contactSearchResult: [],
+                error: { ...state.error, SEARCH_CONTACT: !!payload },
             };
         case FETCH_CONTACT_RECOMMENDATIONS:
             return {
@@ -128,10 +147,10 @@ export default (state = INITIAL_STATE, action) => {
 
 // selectors
 
-export const isContact = (state, webId) => {
-    if (state.contacts && webId) {
-        for (let i = 0; i < state.contacts.length; i++) {
-            if (state.contacts[i].webId === webId) {
+export const isContact = (contacts, webId) => {
+    if (contacts && webId) {
+        for (let i = 0; i < contacts.length; i++) {
+            if (contacts[i].webId === webId) {
                 return true;
             }
         }

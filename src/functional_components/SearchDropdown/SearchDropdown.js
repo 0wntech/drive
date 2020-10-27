@@ -1,52 +1,83 @@
-import React, { useRef } from 'react';
-import styles from './SearchDropdown.module.scss';
-import './SearchDropdown.scss';
+import React, { useRef, useState } from 'react';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
-import { ClassicSpinner } from 'react-spinners-kit';
-import Search from '../../assets/svgIcons/Search';
-import useClickOutside from '../../hooks/useClickOutside';
-import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_m as screenM } from '../../styles/constants.scss';
+import { connect } from 'react-redux';
 
-export default function SearchDropdown({
+import styles from './SearchDropdown.module.scss';
+import './SearchDropdown.scss';
+
+import { searchContact } from '../../actions/contactActions';
+import useClickOutside from '../../hooks/useClickOutside';
+
+const customFilter = (option, searchText) => {
+    if (!option.value) {
+        return true;
+    }
+    if (option.data.type === 'contact') {
+        if (
+            (option.data.contact.webId &&
+                option.data.contact.webId
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())) ||
+            (option.data.contact.name &&
+                option.data.contact.name
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase()))
+        ) {
+            return true;
+        }
+        return false;
+    }
+    if (option.value.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+    }
+    return false;
+};
+
+export function SearchDropdown({
     items,
-    formatOptionLabel,
     className,
     onChange,
     placeholder,
-    onInputChange,
-    filterOption,
-    loading,
     toggleSearchbar,
+    searchContact,
+    searchingContacts,
     isSearchBarExpanded,
+    classNamePrefix = 'search',
+    contacts,
+    noIndicator,
+    indicator,
+    formatOptionLabel,
 }) {
+    const [typingTimer, setTypingTimer] = useState(null);
+    const handleInputChange = (searchText) => {
+        clearTimeout(typingTimer);
+        if (searchText !== '') {
+            searchText = searchText.toLowerCase();
+            setTypingTimer(
+                setTimeout(
+                    () =>
+                        contacts
+                            ? searchContact(searchText)
+                            : searchContact(searchText),
+                    1000
+                )
+            );
+        }
+    };
+
     const dropdownWrapper = useRef(null);
+    const [menuRef, setMenuRef] = useState(null);
     useClickOutside(dropdownWrapper, () => {
         if (isSearchBarExpanded) toggleSearchbar();
     });
 
-    const { width } = useWindowDimension();
-
     const DropdownIndicator = (props) => {
         return (
+            !noIndicator &&
             components.DropdownIndicator && (
                 <components.DropdownIndicator {...props}>
-                    {loading ? (
-                        <ClassicSpinner
-                            size={20}
-                            color="#686769"
-                            loading={loading}
-                        />
-                    ) : (
-                        <Search
-                            {...{
-                                viewBox: '0 0 24 24',
-                                width: width < screenM ? 24 : 30,
-                                height: width < screenM ? 24 : 30,
-                            }}
-                        />
-                    )}
+                    {indicator}
                 </components.DropdownIndicator>
             )
         );
@@ -57,6 +88,7 @@ export default function SearchDropdown({
         // --> prevent unneccessary state updates
         if (!isSearchBarExpanded) {
             toggleSearchbar();
+            menuRef.focus();
         }
     };
 
@@ -67,18 +99,21 @@ export default function SearchDropdown({
             placeholder={placeholder}
             styles={customStyles}
             formatOptionLabel={formatOptionLabel}
-            options={loading ? items : items}
+            options={searchingContacts ? items : items}
             onChange={onChange}
             className={className}
-            classNamePrefix="search"
+            classNamePrefix={classNamePrefix}
             value={null}
             menuIsOpen={isSearchBarExpanded}
-            onInputChange={onInputChange}
-            filterOption={filterOption}
+            onInputChange={handleInputChange}
+            filterOption={customFilter}
             openMenuOnClick={true}
             onMenuOpen={handleMenuOpen}
+            ref={(ref) => {
+                setMenuRef(ref);
+            }}
             noOptionsMessage={() =>
-                loading ? 'Loading results...' : 'No search results'
+                searchingContacts ? 'Loading results...' : 'No search results'
             }
         />
     );
@@ -141,3 +176,12 @@ const customStyles = {
         return { ...provided, opacity, transition };
     },
 };
+
+const mapStateToProps = (state) => {
+    return {
+        contacts: state.app.contacts,
+        searchingContacts: state.contact.searchingContacts,
+    };
+};
+
+export default connect(mapStateToProps, { searchContact })(SearchDropdown);

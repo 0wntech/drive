@@ -73,7 +73,6 @@ function uploadFile(file, currPath) {
                 : `${file.name}`;
             const contentType = mime.getType(file.name);
             const fileUrl = currPath + filePath;
-            console.log(fileUrl, file, 'lala');
             return fetcher
                 .webOperation('PUT', fileUrl, {
                     data: data,
@@ -81,7 +80,6 @@ function uploadFile(file, currPath) {
                 })
                 .then((response) => {
                     if (response.status === 201) {
-                        console.log('Successfully uploaded!');
                         resolve();
                     } else {
                         reject(response.error);
@@ -249,11 +247,6 @@ function getNotificationFiles(webId) {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
     const as = new rdf.Namespace('https://www.w3.org/ns/activitystreams#');
-    fetcher
-        .load('https://ludwigschubert.owntech.de/inbox/Notif1564398405376.ttl')
-        .then((response) => {
-            console.log(response.responseText);
-        });
 
     return fetcher.load(inboxAddress).then(() => {
         const containments = store
@@ -266,7 +259,6 @@ function getNotificationFiles(webId) {
                 return fetcher
                     .load(notificationAddress)
                     .then((response) => {
-                        console.log(response);
                         const notification =
                             store.statementsMatching(
                                 rdf.sym(notificationAddress),
@@ -326,20 +318,7 @@ function sendNotification(notifParams) {
         },
         body: notification,
     };
-    console.log(request);
     return auth.fetch(inboxAddress, request);
-}
-
-function changeAccess(item) {
-    console.log(item);
-}
-
-function getInfo(item) {
-    console.log(item);
-}
-
-function renameFile(item) {
-    console.log(item);
 }
 
 export default {
@@ -347,9 +326,6 @@ export default {
     getFolderContents: getFolderContents,
     uploadFile: uploadFile,
     deleteItems: deleteItems,
-    changeAccess: changeAccess,
-    getInfo: getInfo,
-    renameFile: renameFile,
     getFolderFiles: getFolderFiles,
     deleteRecursively: deleteRecursively,
     getNotificationFiles: getNotificationFiles,

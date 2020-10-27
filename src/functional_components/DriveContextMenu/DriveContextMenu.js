@@ -12,6 +12,8 @@ import {
     openCreateFileWindow,
     openCreateFolderWindow,
     openRenameWindow,
+    toggleAccessWindow,
+    setCurrentPath,
 } from '../../actions/appActions';
 
 export const DriveContextMenu = ({
@@ -19,6 +21,7 @@ export const DriveContextMenu = ({
     currentPath,
     selectedItems,
     setSelection,
+    setCurrentPath,
     webId,
     clipboard,
     copyItems,
@@ -29,6 +32,7 @@ export const DriveContextMenu = ({
     openRenameWindow,
     children,
     item,
+    toggleAccessWindow,
 }) => {
     const renderMenuItem = (option, index) => {
         return (
@@ -56,15 +60,17 @@ export const DriveContextMenu = ({
     };
 
     const CONTEXTMENU_OPTIONS_DRIVE = [
-        {
-            label: 'Info',
-            onClick: (item) => fileUtils.getInfo(item),
-            disabled: false,
-        },
+        // {
+        //     label: 'Info',
+        //     onClick: toggleInfoWindow,
+        //     disabled: false,
+        // },
         {
             label: 'Copy',
             onClick: (item) => {
-                if (
+                if (selectedItems.length === 0) {
+                    selectedItems.push(item);
+                } else if (
                     !selectedItems.includes(item) &&
                     item !== webId.replace('profile/card#me', '')
                 ) {
@@ -89,11 +95,14 @@ export const DriveContextMenu = ({
                 ),
             disabled: !selectedItems || (!item && selectedItems.length !== 1),
         },
-        // {
-        //     label: 'Manage Access',
-        //     onClick: (item) => fileUtils.changeAccess(item),
-        //     disabled: false,
-        // },
+        {
+            label: 'Manage Access',
+            onClick: (item) => {
+                if (item !== currentPath) setCurrentPath(item);
+                toggleAccessWindow();
+            },
+            disabled: false,
+        },
         // {
         //     label: 'Share*',
         //     onClick: (item) => fileUtils.changeAccess(item),
@@ -159,4 +168,6 @@ export default connect(mapStateToProps, {
     openConsentWindow,
     openCreateFileWindow,
     openCreateFolderWindow,
+    toggleAccessWindow,
+    setCurrentPath,
 })(DriveContextMenu);

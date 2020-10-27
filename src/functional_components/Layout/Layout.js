@@ -15,6 +15,7 @@ export const Layout = ({
     label,
     onClick,
     isLoading,
+    showLabel,
 }) => {
     return (
         <>
@@ -33,7 +34,12 @@ export const Layout = ({
                         {toolbarChildrenLeft}
                     </div>
                     {label && (
-                        <div className={styles.header} data-test-id="header">
+                        <div
+                            className={classNames(styles.header, {
+                                [styles.showLabel]: showLabel,
+                            })}
+                            data-test-id="header"
+                        >
                             {label}
                         </div>
                     )}

@@ -1,20 +1,21 @@
 import React from 'react';
+import url from 'url';
 import styles from './Breadcrumbs.module.css';
 import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
 import PropTypes from 'prop-types';
-const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
-    const root = 'https://' + webId.split('/')[2];
+import { getRootFromWebId } from '../../utils/url';
+const Breadcrumbs = ({ webId, breadcrumbs, onClick, rootUrl }) => {
+    const root = rootUrl ? rootUrl : getRootFromWebId(webId);
     const breadcrumbMarkup = breadcrumbs
         ? breadcrumbs.map((currentBreadcrumb, currentIndex) => {
               if (currentIndex !== 0) {
                   // breadcrumb in the middle
                   let currentUrl = root;
                   for (let i = 0; i < currentIndex; i++) {
-                      currentUrl +=
-                          '/' +
-                          encodeURIComponent(
-                              breadcrumbs[i + 1].replace('/', '')
-                          );
+                      currentUrl = url.resolve(
+                          currentUrl,
+                          breadcrumbs[i + 1].replace('/', '') + '/'
+                      );
                   }
                   const currentLabel = currentBreadcrumb.replace('/', '');
                   if (currentIndex + 1 === breadcrumbs.length) {
@@ -23,7 +24,7 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
                               key={currentIndex}
                               label={currentLabel}
                               onClick={() => {
-                                  onClick(currentUrl + '/');
+                                  onClick(currentUrl);
                               }}
                           />
                       );
@@ -34,7 +35,7 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
                               key={currentIndex}
                               label={currentLabel}
                               onClick={() => {
-                                  onClick(currentUrl + '/');
+                                  onClick(currentUrl);
                               }}
                           />
                       );
@@ -46,7 +47,7 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick }) => {
                           seperator
                           key={0}
                           label={'Home'}
-                          onClick={() => onClick(root + '/')}
+                          onClick={() => onClick(root)}
                       ></BreadcrumbItem>
                   );
               }

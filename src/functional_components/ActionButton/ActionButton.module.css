@@ -9,41 +9,33 @@
 }
 
 .blue {
-    color: #fff;
+    color: #2791ff;
     background: #2791ff;
 }
 
 .red {
     color: #fff;
+    color: #cd0000;
     background: #cd0000;
 }
 
-.red:hover {
-    background: #bd0000;
+.green {
+    color: #fff;
+    color: #36c510;
+    background: #36c510;
+}
+
+.primary {
+    color: #fff;
+}
+
+.secondary {
+    background: initial;
 }
 
 .white {
     font-weight: 400 !important;
     background: #fff;
-}
-
-.white:hover {
-    color: #666;
-}
-
-.blue:hover {
-    cursor: pointer;
-    background-color: #2771ff;
-}
-
-.green {
-    background: #36c510;
-    color: #fff;
-}
-
-.green:hover {
-    cursor: pointer;
-    background: #36a510;
 }
 
 .sm {
@@ -66,4 +58,24 @@
 .disabled {
     opacity: 0.5;
     cursor: initial;
+}
+
+@media (min-width: $screen_l) {
+    .white:hover {
+        color: #666;
+    }
+
+    .red:hover {
+        background: #bd0000;
+    }
+
+    .blue:hover {
+        cursor: pointer;
+        background-color: #2771ff;
+    }
+
+    .green:hover {
+        cursor: pointer;
+        background: #36a510;
+    }
 }

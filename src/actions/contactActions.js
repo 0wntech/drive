@@ -18,15 +18,19 @@ import {
     FETCH_CONTACT,
     FETCH_CONTACT_SUCCESS,
     FETCH_CONTACT_FAILURE,
+    SEARCH_CONTACT_COMPLETED,
+    FETCH_CURRENT_CONTACTS_SUCCESS,
 } from './types';
 import User from 'ownuser';
 import auth from 'solid-auth-client';
-import { compareTwoStrings } from 'string-similarity';
 import idps from '../constants/idps.json';
-import { getWebIdFromRoot, getUsernameFromWebId } from '../utils/url';
+import { getWebIdFromRoot } from '../utils/url';
 
 export const setCurrentContact = (profile) => {
-    return { type: SET_CURRENT_CONTACT, payload: profile };
+    return (dispatch) => {
+        dispatch({ type: SET_CURRENT_CONTACT, payload: profile });
+        dispatch(fetchContactProfiles(profile.contacts ?? []));
+    };
 };
 
 export const addContact = (webId, contact) => {
@@ -68,6 +72,7 @@ export const fetchContact = (webId) => {
             .then((profile) => {
                 dispatch(setCurrentContact(profile));
                 dispatch({ type: FETCH_CONTACT_SUCCESS });
+                dispatch(fetchContactProfiles(profile.contacts ?? []));
             })
             .catch((error) => {
                 dispatch({ type: FETCH_CONTACT_FAILURE, payload: error });
@@ -75,29 +80,30 @@ export const fetchContact = (webId) => {
     };
 };
 
-export const fetchContacts = (webId) => {
+export const fetchContactProfiles = (contacts, webId = '') => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
-        const user = new User(webId);
-        user.getContacts()
-            .then((contacts) => {
-                fetchDetailContacts(contacts)
-                    .then((detailContacts) => {
-                        dispatch({
-                            type: FETCH_CONTACTS_SUCCESS,
-                            payload: detailContacts,
-                        });
-                    })
-                    .catch((error) => {
-                        dispatch({
-                            type: FETCH_CONTACTS_FAILURE,
-                            payload: error,
-                        });
+        return fetchDetailContacts(contacts)
+            .then(async (detailContacts) => {
+                const loggedInUser = (await auth.currentSession()).webId;
+                if (loggedInUser === webId) {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: detailContacts,
                     });
+                } else {
+                    dispatch({
+                        type: FETCH_CURRENT_CONTACTS_SUCCESS,
+                        payload: detailContacts,
+                    });
+                }
             })
-            .catch((error) =>
-                dispatch({ type: FETCH_CONTACTS_FAILURE, payload: error })
-            );
+            .catch((error) => {
+                dispatch({
+                    type: FETCH_CONTACTS_FAILURE,
+                    payload: error,
+                });
+            });
     };
 };
 
@@ -107,7 +113,12 @@ export const fetchContactRecommendations = (webId) => {
         const user = new User(webId);
         user.getContactRecommendations()
             .then((recommendations) => {
-                fetchDetailContacts(recommendations).then((detailContacts) => {
+                fetchDetailContacts(
+                    recommendations.filter(
+                        (recommendation) =>
+                            !recommendation.includes('solid.community')
+                    )
+                ).then((detailContacts) => {
                     dispatch({
                         type: FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
                         payload: detailContacts,
@@ -124,16 +135,19 @@ export const fetchContactRecommendations = (webId) => {
 };
 
 export const fetchDetailContacts = (contacts) => {
-    const requests = contacts.map((webid) => {
+    const requests = contacts.map((webId) => {
         const request = new Promise((resolve, reject) => {
-            const contact = new User(webid);
+            if (webId.includes('solid.community')) {
+                webId = webId.replace('solid.community', 'solidcommunity.net');
+            }
+            const contact = new User(webId);
             contact
                 .getProfile()
                 .then((profileData) => {
                     resolve(profileData);
                 })
                 .catch((error) => {
-                    reject(error);
+                    resolve({ webId: webId });
                 });
         });
         return request;
@@ -141,67 +155,50 @@ export const fetchDetailContacts = (contacts) => {
     return Promise.all(requests);
 };
 
-export const searchContact = (query, contacts) => {
+export const searchContact = (query) => {
     return (dispatch) => {
         dispatch({ type: SEARCH_CONTACT });
         const lookups = idps.map((idp) => {
             const url = idp.url.replace(idp.title, query + '.' + idp.title);
             return auth
-                .fetch(url)
+                .fetch(url, { method: 'HEAD' })
                 .then((res) => {
                     if (res.status !== 404) {
                         return url;
                     } else {
-                        return null;
+                        return undefined;
                     }
                 })
                 .catch((err) => {
-                    return null;
+                    return undefined;
                 });
         });
-        Promise.all(lookups)
-            .then((urls) => {
-                const result = [];
-                urls.forEach((rootUrl) => {
-                    if (rootUrl) {
-                        const user = new User(getWebIdFromRoot(rootUrl));
-                        result.push(user.getProfile());
-                    }
-                });
-                Promise.all(result)
-                    .then((results) => {
-                        results = [...results, ...contacts].sort((a, b) =>
-                            compareTwoStrings(
-                                query,
-                                getUsernameFromWebId(a.webId)
-                            ) *
-                                0.5 +
-                            a.name
-                                ? compareTwoStrings(query, a.name) * 0.5
-                                : 0 -
-                                  (compareTwoStrings(
-                                      query,
-                                      getUsernameFromWebId(b.webId)
-                                  ) *
-                                      0.5 +
-                                  a.name
-                                      ? compareTwoStrings(query, b.name) * 0.5
-                                      : 0)
-                        );
+        let foundSomething = false;
+        lookups.forEach(async (lookup, index) => {
+            const url = await Promise.resolve(lookup);
+            if (url) {
+                const user = new User(getWebIdFromRoot(url));
+                await user
+                    .getProfile()
+                    .then((contactProfile) => {
+                        foundSomething = true;
                         dispatch({
                             type: SEARCH_CONTACT_SUCCESS,
-                            payload: results,
+                            payload: contactProfile,
                         });
                     })
                     .catch((err) => {
                         dispatch({
-                            type: SEARCH_CONTACT_FAILURE,
-                            payload: err,
+                            type: SEARCH_CONTACT_SUCCESS,
+                            payload: { webId: url },
                         });
                     });
-            })
-            .catch((err) => {
-                dispatch({ type: SEARCH_CONTACT_FAILURE, payload: err });
-            });
+            }
+            if (!foundSomething && index === lookups.length - 1) {
+                dispatch({ type: SEARCH_CONTACT_FAILURE });
+            } else if (index === lookups.length - 1) {
+                dispatch({ type: SEARCH_CONTACT_COMPLETED });
+            }
+        });
     };
 };

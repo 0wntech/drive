@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import urlUtils from 'url';
 
 export const getBreadcrumbsFromUrl = (url) => {
@@ -8,8 +9,8 @@ export const getBreadcrumbsFromUrl = (url) => {
         );
     }
     url = decodeURIComponent(url);
-    const breadcrumbs = url.replace('https://', '').split('/');
-    breadcrumbs.shift();
+    url = urlUtils.parse(url);
+    const breadcrumbs = url.pathname.split('/');
     const newBreadcrumbs = ['/'];
     breadcrumbs.forEach((breadcrumb) => {
         if (breadcrumb !== '') {
@@ -19,19 +20,24 @@ export const getBreadcrumbsFromUrl = (url) => {
     return newBreadcrumbs;
 };
 
-export const getParamsFromUrl = (url) => {
-    const params = urlUtils.parse(url).search.replace('?', '').split('&');
-    const paramObj = {};
-    params.forEach((param) => {
-        const paramName = param.split('=')[0];
-        const paramVal = param.split('=')[1];
-        paramObj[paramName] = decodeURIComponent(paramVal);
+export const useParamsFromUrl = () => {
+    const paramObj = useParams();
+    Object.keys(paramObj).forEach((key) => {
+        paramObj[key] = decodeURIComponent(paramObj[key]);
     });
     return paramObj;
 };
 
 export const getContactRoute = (contact) => {
-    return `/contact?u=${encodeURIComponent(contact.webId)}`;
+    return `/contact/${urlUtils.parse(contact.webId).host}`;
+};
+
+export const getFileRoute = (path) => {
+    return `/file/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
+};
+
+export const getHomeRoute = (path) => {
+    return `/home/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
 };
 
 export const getPreviousPath = (url) => {
@@ -87,11 +93,11 @@ export const sortContainments = (urls) => {
         if (url.value[url.value.length - 1] === '/') {
             const urlFragments = url.value.split('/');
             const folderUrl = urlFragments[urlFragments.length - 2];
-            folders.push(decodeURIComponent(folderUrl));
+            folders.push(folderUrl);
         } else {
             const urlFragments = url.value.split('/');
             const fileUrl = urlFragments[urlFragments.length - 1];
-            files.push(decodeURIComponent(fileUrl));
+            files.push(fileUrl);
         }
     });
     return [files, folders];

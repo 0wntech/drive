@@ -2,7 +2,7 @@
 
 exports[`ActionButton should render blue small button 1`] = `
 <div
-  className="container blue sm"
+  className="container blue sm primary"
   onClick={[MockFunction]}
 >
   TestButton
@@ -11,7 +11,7 @@ exports[`ActionButton should render blue small button 1`] = `
 
 exports[`ActionButton should render default 1`] = `
 <div
-  className="container blue lg"
+  className="container blue lg primary"
   onClick={[MockFunction]}
 >
   TestButton
@@ -20,7 +20,7 @@ exports[`ActionButton should render default 1`] = `
 
 exports[`ActionButton should render medium sized button 1`] = `
 <div
-  className="container blue md"
+  className="container blue md primary"
   onClick={[MockFunction]}
 >
   TestButton

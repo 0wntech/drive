@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './ErrorBoundary.module.css';
-import { Layout } from '../../functional_components/Layout/Layout';
-import mediumEmoji from '../../assets/icons/medium_emoji.png';
-import ActionButton from '../../functional_components/ActionButton/ActionButton';
+import { Layout } from '../functional_components/Layout/Layout';
+import mediumEmoji from '../assets/icons/medium_emoji.png';
+import ActionButton from '../functional_components/ActionButton/ActionButton';
 import * as Sentry from '@sentry/browser';
 
 class ErrorBoundary extends React.Component {
@@ -29,7 +29,6 @@ class ErrorBoundary extends React.Component {
     }
 
     render() {
-        console.log(this.state.error);
         if (this.state.hasError) {
             // You can render any custom fallback UI
             return (

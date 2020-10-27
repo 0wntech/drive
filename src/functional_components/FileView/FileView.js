@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
 import mime from 'mime';
+import url from 'url';
+
 import { Layout } from '../Layout';
 import styles from './FileView.module.scss';
 import {
@@ -12,8 +14,10 @@ import {
 } from '../../actions/appActions';
 import {
     getBreadcrumbsFromUrl,
-    getParamsFromUrl,
+    useParamsFromUrl,
     convertFileUrlToName,
+    getRootFromWebId,
+    getHomeRoute,
 } from '../../utils/url';
 import fileUtils from '../../utils/fileUtils';
 import Breadcrumbs from '../Breadcrumbs';
@@ -24,6 +28,10 @@ import { FileEditor } from '../FileEditor';
 import { isImageType } from '../../utils/fileUtils';
 import BackButton from '../BackButton';
 import ErrorWindow from '../ErrorWindow';
+import MarkdownView from 'react-showdown';
+import AccessDisplay from '../AccessDisplay/AccessDisplay';
+import AccessWindow from '../AccessWindow';
+import BottomOverlay from '../BottomOverlay/BottomOverlay';
 
 const getPlaceholder = (body) => {
     if (body && body !== '') return body;
@@ -31,17 +39,12 @@ const getPlaceholder = (body) => {
     return 'Empty';
 };
 
-const getValue = (newBody, body) => {
-    if (newBody === '' && body && body !== '') return body;
-
-    return newBody;
-};
-
 export const FileView = ({
     loadCurrentItem,
     currentItem,
     currentPath,
     webId,
+    rootUrl,
     setCurrentPath,
     updateFile,
     updatingFile,
@@ -51,9 +54,13 @@ export const FileView = ({
     errorWindowError,
     toggleErrorWindow,
 }) => {
+    const { path: currentFilePath } = useParamsFromUrl();
+    const currentFileUrl = url.resolve(
+        getRootFromWebId(webId),
+        currentFilePath
+    );
     useEffect(() => {
-        const fileParam = getParamsFromUrl(window.location.href).f;
-        if (fileParam) {
+        if (currentFileUrl) {
             if (
                 !currentItem ||
                 typeof currentItem.body !== 'string' ||
@@ -61,23 +68,30 @@ export const FileView = ({
             ) {
                 let options = {};
                 if (
-                    mime.getType(fileParam) &&
-                    isImageType(mime.getType(fileParam))
+                    mime.getType(currentFileUrl) &&
+                    isImageType(mime.getType(currentFileUrl))
                 ) {
                     options = { noFetch: true };
                 }
-                setCurrentPath(fileParam, options);
+                setCurrentPath(currentFileUrl, options);
             } else if (currentItem.files || currentItem.folders) {
-                history.push('/home');
+                history.push(getHomeRoute(currentPath));
             }
         }
     }, []);
+
+    useEffect(() => {
+        if (currentItem && typeof currentItem.body === 'string')
+            setNewBody(currentItem.body);
+    }, [currentItem]);
 
     const fileType = currentItem ? mime.getType(currentItem.url) : undefined;
     const isImage = isImageType(fileType);
 
     const [isEditable, setEditable] = useState(false);
-    const [newBody, setNewBody] = useState('');
+    const [newBody, setNewBody] = useState(
+        currentItem && currentItem.body ? currentItem.body : ''
+    );
 
     const onCancel = () => {
         setNewBody(currentItem.body);
@@ -107,15 +121,12 @@ export const FileView = ({
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    if (path !== currentPath && path !== currentPath + '/') {
-                        setCurrentPath(path);
-                        history.push('/home');
-                    }
+                    history.push(getHomeRoute(path));
                 }}
                 breadcrumbs={
                     currentPath ? getBreadcrumbsFromUrl(currentPath) : null
                 }
-                webId={webId}
+                rootUrl={rootUrl}
             />
         </div>
     );
@@ -148,24 +159,21 @@ export const FileView = ({
 
     return (
         <Layout
-            className={styles.container}
+            className={classNames(styles.container, {
+                [styles.editable]: isEditable,
+            })}
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
             label={
                 currentItem &&
                 currentItem.url &&
-                convertFileUrlToName(currentItem.url)
+                decodeURIComponent(convertFileUrlToName(currentItem.url))
             }
+            showLabel
             isLoading={updatingFile || loadCurrentItem}
-            label={
-                currentItem &&
-                currentItem.url &&
-                convertFileUrlToName(currentItem.url)
-            }
         >
             {error.FETCH_CURRENT_ITEM ? (
                 <>
-                    {console.log('error:', error)}
                     <div>Sorry, we cannot load this file.</div>
                     <p className={styles.error}>
                         Error: {error.FETCH_CURRENT_ITEM.message}
@@ -176,11 +184,21 @@ export const FileView = ({
                     isEditable ? (
                         <FileEditor
                             edit={isEditable}
-                            value={getValue(newBody, currentItem.body)}
+                            value={newBody}
                             onChange={(e) => {
                                 setNewBody(e.target.value);
                             }}
                             placeholder={getPlaceholder(currentItem.body)}
+                        />
+                    ) : mime.getExtension(fileType) === 'markdown' ? (
+                        <MarkdownView
+                            style={{
+                                textAlign: 'left',
+                                width: 'calc(100% - 2em)',
+                                height: 'max-content',
+                                paddingBottom: '8em',
+                            }}
+                            markdown={currentItem.body}
                         />
                     ) : (
                         <div
@@ -188,7 +206,7 @@ export const FileView = ({
                                 [styles.enabled]: isEditable,
                             })}
                         >
-                            {newBody === '' ? currentItem.body : newBody}
+                            {newBody ? newBody : 'Empty'}
                         </div>
                     )
                 ) : (
@@ -196,10 +214,15 @@ export const FileView = ({
                         src={currentItem.url}
                         alt="file"
                         className={styles.image}
+                        onClick={() => window.open(currentItem.url)}
                     />
                 )
             ) : null}
-            <BackButton />
+            <BottomOverlay className={styles.overlay}>
+                <AccessDisplay />
+                <BackButton />
+            </BottomOverlay>
+            <AccessWindow />
             <ErrorWindow
                 visible={isErrorWindowVisible}
                 onClose={toggleErrorWindow}
@@ -218,6 +241,7 @@ const mapStateToProps = (state) => {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         webId: state.user.webId,
+        rootUrl: state.app.rootUrl,
         updatingFile: state.app.updatingFile,
         error: state.app.error,
         isErrorWindowVisible: state.app.isErrorWindowVisible,

@@ -1,4 +1,4 @@
-@import '../../../styles/constants.scss';
+@import '../../styles/constants.scss';
 
 .prompt {
     margin-bottom: 8px;
@@ -43,7 +43,7 @@
     outline: none;
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .window {
         display: flex;
         flex-direction: column;

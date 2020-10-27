@@ -4,9 +4,13 @@ import {
     SET_CURRENT_PATH,
     FETCH_CURRENT_ITEM,
     FETCH_CURRENT_ITEM_SUCCESS,
+    FETCH_CURRENT_ACCESS_CONTROL,
+    FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
 } from './types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+jest.setTimeout(20000);
 
 const folderFiles = {
     files: [
@@ -48,9 +52,12 @@ describe('App Actions', () => {
         });
     });
     describe('setCurrentPath', () => {
-        it('should create actions to set current path, empty selection, fetch items', () => {
+        it('should create actions to set current path, empty selection, fetch items', async () => {
             const path = 'https://bejow.inrupt.net/.well-known/';
-            const store = mockStore({ currentPath: null });
+            const store = mockStore({
+                currentPath: null,
+                currentAccessControl: null,
+            });
             const expectedActions = [
                 {
                     type: SET_CURRENT_PATH,
@@ -64,14 +71,19 @@ describe('App Actions', () => {
                     type: FETCH_CURRENT_ITEM,
                 },
                 {
+                    type: FETCH_CURRENT_ACCESS_CONTROL,
+                },
+                {
                     type: FETCH_CURRENT_ITEM_SUCCESS,
                     payload: folderFiles,
                 },
+                {
+                    type: FETCH_CURRENT_ACCESS_CONTROL_FAILURE,
+                },
             ];
 
-            return store.dispatch(setCurrentPath(path)).then(() => {
-                expect(store.getActions()).toEqual(expectedActions);
-            });
+            await store.dispatch(setCurrentPath(path));
+            expect(store.getActions()).toEqual(expectedActions);
         });
         it('should set the path and currentItem without fetching when receiving an image path', () => {
             const path = 'https://bejow.owntech.de/favicon.ico';
@@ -87,6 +99,9 @@ describe('App Actions', () => {
                         url: 'https://bejow.owntech.de/favicon.ico',
                     },
                     type: FETCH_CURRENT_ITEM_SUCCESS,
+                },
+                {
+                    type: FETCH_CURRENT_ACCESS_CONTROL,
                 },
             ];
 

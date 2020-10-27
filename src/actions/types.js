@@ -4,30 +4,31 @@ export const LOGIN_FAIL = 'login_fail';
 
 export const FETCH_USER = 'fetch_user';
 export const FETCH_USER_SUCCESS = 'fetch_user_success';
-export const FETCH_USER_FAIL = 'fetch_user_fail';
+export const FETCH_USER_FAILURE = 'fetch_user_failure';
 
 export const SET_WEBID = 'set_webid';
 export const SET_CURRENT_PATH = 'set_current_path';
 
-export const LOAD_CURRENT_ITEMS = 'load_current_items';
 export const SET_CURRENT_ITEMS = 'set_current_items';
 
-export const FETCH_FRIENDS = 'fetch_friends';
-export const FETCH_FRIENDS_SUCCESS = 'fetch_friends_success';
-export const FETCH_FRIENDS_FAIL = 'fetch_friends_fail';
+export const SET_STORAGE_URL = 'set_storage_url';
+export const SET_STORAGE_URL_SUCCESS = 'set_storage_url_success';
+export const SET_STORAGE_URL_FAILURE = 'set_storage_url_failure';
+
+export const FETCH_CURRENT_ACCESS_CONTROL = 'fetch_current_access_control';
+export const FETCH_CURRENT_ACCESS_CONTROL_SUCCESS =
+    'fetch_current_access_control_success';
+export const FETCH_CURRENT_ACCESS_CONTROL_FAILURE =
+    'fetch_current_access_control_failure';
 
 export const FETCH_CURRENT_ITEM = 'fetch_current_item';
 export const FETCH_CURRENT_ITEM_SUCCESS = 'fetch_current_item_success';
-export const FETCH_CURRENT_ITEM_FAIL = 'fetch_current_item_fail';
+export const FETCH_CURRENT_ITEM_FAILURE = 'fetch_current_item_fail';
 
-export const DEEP_FETCH_CURRENT_ITEM = 'deep_fetch_current_item';
-export const DEEP_FETCH_CURRENT_ITEM_SUCCESS =
-    'deep_fetch_current_item_success';
-export const DEEP_FETCH_CURRENT_ITEM_FAIL = 'deep_fetch_current_item_fail';
-
-export const GET_SESSION = 'get_session';
-export const GET_SESSION_SUCCESS = 'get_session_success';
-export const GET_SESSION_FAIL = 'get_session_fail';
+export const INDEX_STORAGE = 'index_storage';
+export const INDEX_STORAGE_PROGRESS = 'index_storage_progress';
+export const INDEX_STORAGE_SUCCESS = 'index_storage_success';
+export const INDEX_STORAGE_FAILURE = 'index_storage_fail';
 
 export const FETCH_NOTIFICATIONS = 'fetch_notifications';
 export const FETCH_NOTIFICATIONS_SUCCESS = 'fetch_notifications_success';
@@ -42,7 +43,7 @@ export const SEND_NOTIFICATION_FAILURE = 'send_notification_failure';
 
 export const FETCH_IDPS = 'fetch_idps';
 export const FETCH_IDPS_SUCCESS = 'fetch_idps_success';
-export const FETCH_IDPS_FAILED = 'fetch_idps_failure';
+export const FETCH_IDPS_FAILURE = 'fetch_idps_failure';
 
 export const DELETE_ITEMS = 'delete_items';
 export const DELETE_ITEMS_SUCCESS = 'delete_items_success';
@@ -55,11 +56,20 @@ export const PASTE_ITEMS_FAILURE = 'paste_items_failure';
 
 export const FETCH_CONTACTS = 'fetch_contacts';
 export const FETCH_CONTACTS_SUCCESS = 'fetch_contacts_success';
+export const FETCH_CURRENT_CONTACTS_SUCCESS = 'fetch_current_contacts_success';
 export const FETCH_CONTACTS_FAILURE = 'fetch_contacts_failure';
 
 export const ADD_CONTACT = 'add_contact';
 export const ADD_CONTACT_SUCCESS = 'add_contact_success';
 export const ADD_CONTACT_FAILURE = 'add_contact_failure';
+
+export const ADD_ACCESS = 'add_access';
+export const ADD_ACCESS_SUCCESS = 'add_access_success';
+export const ADD_ACCESS_FAILURE = 'add_access_failure';
+
+export const DELETE_ACCESS = 'delete_access';
+export const DELETE_ACCESS_SUCCESS = 'delete_access_success';
+export const DELETE_ACCESS_FAILURE = 'delete_access_failure';
 
 export const REMOVE_CONTACT = 'remove_contact';
 export const REMOVE_CONTACT_SUCCESS = 'remove_contact_success';
@@ -85,6 +95,7 @@ export const FETCH_APPS_FAILURE = 'fetch_apps_failure';
 
 export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
+export const SEARCH_CONTACT_COMPLETED = 'search_contact_completed';
 export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
 
 export const OPEN_CONSENT_WINDOW = 'open_consent_window';
@@ -140,3 +151,11 @@ export const CLEAR_ERROR = 'clear_error';
 export const TOGGLE_SEARCHBAR = 'toggle_searchbar';
 
 export const TOGGLE_ERROR_WINDOW = 'toggle_error_window';
+
+export const TOGGLE_ACCESS_WINDOW = 'toggle_access_window';
+
+export const TOGGLE_INFO_WINDOW = 'toggle_info_window';
+
+export const TOGGLE_ACCESS_MODE = 'toggle_access_mode';
+export const TOGGLE_ACCESS_MODE_SUCCESS = 'toggle_access_mode_success';
+export const TOGGLE_ACCESS_MODE_FAILURE = 'toggle_access_mode_failure';

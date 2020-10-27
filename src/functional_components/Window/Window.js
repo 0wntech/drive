@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import styles from './Window.module.scss';
 import PropTypes from 'prop-types';
 import X from '../../assets/svgIcons/X';
+import { ClassicSpinner } from 'react-spinners-kit';
 
 function Window({
     windowName,
@@ -11,6 +12,7 @@ function Window({
     children,
     onClose,
     visible,
+    loading,
 }) {
     return visible ? (
         <div
@@ -34,7 +36,15 @@ function Window({
                     />
                 </div>
                 <div className={classnames(styles.body, className)}>
-                    {children}
+                    {loading ? (
+                        <ClassicSpinner
+                            size={30}
+                            color="#686769"
+                            loading={loading}
+                        />
+                    ) : (
+                        children
+                    )}
                 </div>
             </div>
         </div>

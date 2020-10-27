@@ -1,0 +1,89 @@
+@import '../../styles/constants.scss';
+
+.body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.buttonOverlay {
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resetButton {
+    height: max-content;
+    width: max-content;
+}
+
+.search {
+    width: 100%;
+    position: relative;
+    height: initial;
+}
+
+.entityWrapper {
+    height: calc(50vh - 118px);
+    overflow-y: auto;
+    --webkit-overflow-scrolling: touch;
+    margin-top: 16px;
+}
+
+.entities {
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    width: 100%;
+}
+
+.iconContainer {
+    min-width: 28px;
+    display: flex;
+    justify-content: center;
+}
+
+.optionContainer {
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    height: 32px;
+
+    span {
+        margin-left: 8px;
+    }
+}
+
+.contactIcon {
+    min-width: 28px;
+    min-height: 28px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+
+.defaultContactIcon {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    line-height: 20px !important;
+    font-size: 0.8em !important;
+}
+
+@media (max-width: $screen_l) {
+    .entityWrapper {
+        height: 100%;
+        max-height: calc(80vh - 118px - 80px);
+    }
+
+    .window {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow-y: auto;
+    }
+}

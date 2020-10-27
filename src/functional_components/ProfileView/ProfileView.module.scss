@@ -1,10 +1,9 @@
 @import '../../styles/mixins.scss';
 @import '../../styles/constants.scss';
 .grid {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 2fr 6fr 2fr;
-    grid-template-areas: '. profile .';
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 svg:hover {
@@ -32,7 +31,10 @@ svg:hover {
 }
 
 .profileContainer {
-    grid-area: profile;
+    justify-self: center;
+    width: 400px;
+    height: max-content;
+    padding: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,7 +103,8 @@ svg:hover {
 }
 
 .headContainer {
-    width: 50%;
+    width: 100%;
+    min-width: 50%;
     max-height: 100%;
     display: flex;
     position: relative;
@@ -169,10 +172,6 @@ svg:hover {
     );
 }
 
-.addButton:hover {
-    background-color: $dark_green;
-}
-
 .addButton {
     border: solid $light_green 5px;
     color: #fff;
@@ -191,23 +190,36 @@ svg:hover {
     width: 100%;
 }
 
-.removeButton:hover {
-    cursor: pointer;
+@media (min-width: $screen_l) {
+    .addButton:hover {
+        background-color: $dark_green;
+    }
+
+    .removeButton:hover {
+        cursor: pointer;
+    }
 }
 
-@media (max-width: $screen_m) {
+@media (max-width: $screen_l) {
     .grid {
         grid-template-areas: 'profile profile profile';
         grid-template-rows: 1fr;
         width: 100%;
+        --webkit-overflow-scrolling: touch;
+        height: calc(100vh - 70px);
+        border-radius: initial;
+        overflow-y: auto;
     }
 
     .profileContainer {
-        margin-top: 26px;
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 1em;
+        padding-bottom: 4em;
     }
 
     .headContainer {
-        width: calc(100% - 16px);
+        width: calc(100% - 64px);
     }
 
     .nameLabel {

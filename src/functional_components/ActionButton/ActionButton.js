@@ -6,16 +6,14 @@ import classNames from 'classnames';
 const ActionButton = ({
     label,
     className,
-    color,
+    color = 'blue',
     onClick,
-    size,
+    size = 'lg',
+    type = 'primary',
     disabled,
     dataId,
     children,
 }) => {
-    color = color ? color : 'blue';
-    size = size ? size : 'lg';
-
     return (
         <div
             data-test-id={dataId}
@@ -24,6 +22,7 @@ const ActionButton = ({
                 className,
                 styles[color],
                 styles[size],
+                styles[type],
                 {
                     [styles.disabled]: disabled,
                 }
@@ -37,6 +36,7 @@ const ActionButton = ({
 
 ActionButton.propTypes = {
     color: PropTypes.oneOf(['red', 'green', 'blue', 'white']),
+    primary: PropTypes.oneOf(['primary', 'secondary']),
     size: PropTypes.oneOf(['sm', 'md', 'lg']),
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,

@@ -7,7 +7,7 @@ import styles from './NavbarMenu.module.scss';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { setCurrentPath } from '../../actions/appActions';
 import { logout } from '../../actions/userActions';
-import { getRootFromWebId } from '../../utils/url';
+import { getUsernameFromWebId } from '../../utils/url';
 import { navigate, getInitialsFromUser } from '../../utils/helper';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import styleConstants from '../../styles/constants.scss';
@@ -19,6 +19,7 @@ export const NavbarMenu = ({
     history,
     logout,
     user,
+    rootUrl,
     setCurrentPath,
     resetError,
     dispatch,
@@ -29,7 +30,7 @@ export const NavbarMenu = ({
         {
             onClick: () => {
                 navigate('/home', history, dispatch);
-                setCurrentPath(getRootFromWebId(user.webId));
+                setCurrentPath(rootUrl);
             },
             label: 'Home',
         },
@@ -54,7 +55,7 @@ export const NavbarMenu = ({
 
     const getMenuHead = () => (
         <div className={styles.profileSection}>
-            {width < styleConstants.screen_m &&
+            {width < styleConstants.screen_l &&
             history.location.pathname === '/profile' ? (
                 <div
                     className={styles.settings}
@@ -92,7 +93,7 @@ export const NavbarMenu = ({
             )}
 
             <div data-test-id="navbar-username" className={styles.username}>
-                {user.name}
+                {user.name ? user.name : getUsernameFromWebId(user.webId)}
             </div>
         </div>
     );
@@ -113,6 +114,7 @@ export const NavbarMenu = ({
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
+    rootUrl: state.app.rootUrl,
 });
 
 NavbarMenu.propTypes = {
