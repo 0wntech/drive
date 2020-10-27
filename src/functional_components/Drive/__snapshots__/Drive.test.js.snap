@@ -3,7 +3,6 @@
 exports[`Drive Drive Snapshot matches the snapshot 1`] = `
 <Layout
   className="grid"
-  label="Drive"
   onClick={[Function]}
   toolbarChildrenLeft={
     <div

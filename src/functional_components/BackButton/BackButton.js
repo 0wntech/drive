@@ -8,17 +8,11 @@ import styles from './Backbutton.module.scss';
 import { setCurrentPath } from '../../actions/appActions';
 import { getPreviousPath } from '../../utils/url';
 
-export const BackButton = ({
-    currentPath,
-    rootUrl,
-    history,
-}) => {
+export const BackButton = ({ currentPath, rootUrl, history }) => {
     const [previousPath, setPreviousPath] = useState(currentPath);
     useEffect(() => {
         setPreviousPath(getPreviousPath(currentPath));
     }, [currentPath]);
-
-    console.log(previousPath)
 
     return (
         currentPath && (

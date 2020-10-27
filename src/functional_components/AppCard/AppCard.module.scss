@@ -8,16 +8,20 @@
     border: 5px solid $light_grey;
     box-sizing: border-box;
     border-radius: 20px;
-    width: calc(100% / 5 - .8em);
+    width: calc((100% - 64px) / 5);
     height: 200px;
     position: relative;
     margin-bottom: 1em;
-  }
-
-.container+.container{
-  margin-left: 1em;
 }
-  
+
+.container + .container {
+    margin-left: 1em;
+}
+
+.container:nth-child(6) {
+    margin-left: initial;
+}
+
 .deleteButton {
     width: 28px;
     height: 28px;

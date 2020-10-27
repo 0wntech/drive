@@ -1,11 +1,5 @@
-.appList {
-    grid-area: applist;
-}
-
 .grid {
-    display: grid;
-    grid-template-areas: 'applist applist applist';
-    padding: 16px;
+    padding: 0 16px;
 }
 
 .windowButtonContainer {

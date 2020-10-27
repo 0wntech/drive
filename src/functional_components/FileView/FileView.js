@@ -121,7 +121,6 @@ export const FileView = ({
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
                 onClick={(path) => {
-                    console.log(path);
                     history.push(getHomeRoute(path));
                 }}
                 breadcrumbs={

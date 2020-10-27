@@ -164,8 +164,11 @@ export default (state = INITIAL_STATE, action) => {
         case INDEX_STORAGE_PROGRESS:
             return {
                 ...state,
-                indexingStorage: true,
-                indexingProgress: payload,
+                indexingProgress: Number(
+                    state.indexingStorage &&
+                        payload > state.indexingProgress &&
+                        payload
+                ),
             };
         case INDEX_STORAGE_SUCCESS:
             return {

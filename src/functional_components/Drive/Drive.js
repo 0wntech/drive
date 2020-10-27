@@ -211,7 +211,6 @@ const Drive = ({
             className={classNames(styles.grid, {
                 [styles.noScroll]: isDriveMenuVisible || isAccessWindowVisible,
             })}
-            label="Drive"
             onClick={handleClick}
             isLoading={
                 loadDeletion ||

@@ -68,11 +68,12 @@ export const App = ({
     );
 
     if (
-        loadLogin ||
-        loadUser ||
-        indexingStorage ||
-        indexingProgress ||
-        (!user?.contacts && loadContacts)
+        webId &&
+        (loadLogin ||
+            loadUser ||
+            indexingStorage ||
+            indexingProgress ||
+            (!user?.contacts && loadContacts))
     ) {
         return suspenseView;
     } else {

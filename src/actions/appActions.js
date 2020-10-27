@@ -285,20 +285,28 @@ export const indexStorage = (folderUrl) => {
                             fileClient.indexPath
                     );
                     return await new Promise((resolve) => {
-                        deepFolder.forEach((item, index, array) => {
-                            fileClient.addToIndex(item, {
+                        deepFolder.forEach(async (item, index, array) => {
+                            await fileClient.addToIndex(item, {
                                 force: true,
+                                updateCallback: (_, ok) => {
+                                    if (ok) {
+                                        dispatch({
+                                            type: INDEX_STORAGE_PROGRESS,
+                                            payload:
+                                                Math.floor(
+                                                    ((index / array.length) *
+                                                        100) /
+                                                        5
+                                                ) * 5,
+                                        });
+                                        if (index === array.length - 1) {
+                                            resolve(
+                                                fileClient.readIndex(folderUrl)
+                                            );
+                                        }
+                                    }
+                                },
                             });
-                            dispatch({
-                                type: INDEX_STORAGE_PROGRESS,
-                                payload:
-                                    Math.floor(
-                                        ((index / array.length) * 100) / 5
-                                    ) * 5,
-                            });
-                            if (index === array.length - 1) {
-                                resolve(fileClient.readIndex(folderUrl));
-                            }
                         });
                     });
                 })
@@ -422,7 +430,6 @@ export const toggleSelectionMode = () => {
 };
 
 export const fetchIdps = () => {
-    console.log('fetchIdps');
     return (dispatch) => {
         dispatch({ type: FETCH_IDPS });
         const request = { method: 'GET' };
@@ -522,9 +529,7 @@ export const createFile = function (name, path) {
     return (dispatch) => {
         dispatch({ type: CREATE_FILE });
         const contentType = mime.getType(name) || 'text/plain';
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(name).host + '/',
-        });
+        const fileClient = new PodClient();
         return fileClient
             .create(path + name, { contentType: contentType })
             .then(() => {

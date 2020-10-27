@@ -27,7 +27,10 @@ import idps from '../constants/idps.json';
 import { getWebIdFromRoot } from '../utils/url';
 
 export const setCurrentContact = (profile) => {
-    return { type: SET_CURRENT_CONTACT, payload: profile };
+    return (dispatch) => {
+        dispatch({ type: SET_CURRENT_CONTACT, payload: profile });
+        dispatch(fetchContactProfiles(profile.contacts ?? []));
+    };
 };
 
 export const addContact = (webId, contact) => {
@@ -69,6 +72,7 @@ export const fetchContact = (webId) => {
             .then((profile) => {
                 dispatch(setCurrentContact(profile));
                 dispatch({ type: FETCH_CONTACT_SUCCESS });
+                dispatch(fetchContactProfiles(profile.contacts ?? []));
             })
             .catch((error) => {
                 dispatch({ type: FETCH_CONTACT_FAILURE, payload: error });
@@ -109,7 +113,12 @@ export const fetchContactRecommendations = (webId) => {
         const user = new User(webId);
         user.getContactRecommendations()
             .then((recommendations) => {
-                fetchDetailContacts(recommendations).then((detailContacts) => {
+                fetchDetailContacts(
+                    recommendations.filter(
+                        (recommendation) =>
+                            !recommendation.includes('solid.community')
+                    )
+                ).then((detailContacts) => {
                     dispatch({
                         type: FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
                         payload: detailContacts,
@@ -128,6 +137,9 @@ export const fetchContactRecommendations = (webId) => {
 export const fetchDetailContacts = (contacts) => {
     const requests = contacts.map((webId) => {
         const request = new Promise((resolve, reject) => {
+            if (webId.includes('solid.community')) {
+                webId = webId.replace('solid.community', 'solidcommunity.net');
+            }
             const contact = new User(webId);
             contact
                 .getProfile()
@@ -137,9 +149,6 @@ export const fetchDetailContacts = (contacts) => {
                 .catch((error) => {
                     resolve({ webId: webId });
                 });
-            setTimeout(() => {
-                resolve({ webId: webId });
-            }, 3000);
         });
         return request;
     });

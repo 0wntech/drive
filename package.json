@@ -1,5 +1,5 @@
 {
-  "name": "solid-files",
+  "name": "owndrive",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,8 +15,8 @@
     "mime": "^2.4.5",
     "node-sass": "^4.14.1",
     "ownacl": "0.0.18",
-    "ownfiles": "^1.2.51",
-    "ownuser": "^1.3.13",
+    "ownfiles": "^1.2.54",
+    "ownuser": "^1.3.14",
     "rdflib": "^1.2.1",
     "react": "^16.13.1",
     "react-collapse": "^5.0.1",

@@ -27,7 +27,6 @@ const ContactProfilePage = ({
     setCurrentContact,
     webId,
     isContact,
-    fetchContactProfiles,
     contacts,
     loadContacts,
     currentContacts,
@@ -55,8 +54,6 @@ const ContactProfilePage = ({
         ) {
             fetchContact(currentContactWebId);
         }
-        if (!currentContacts && currentContact)
-            fetchContactProfiles(currentContact.contacts);
     }, [currentContactHost, currentContacts]);
 
     return currentContact ? (
@@ -78,7 +75,7 @@ const ContactProfilePage = ({
             removeContact={removeContact}
             webId={webId}
             contacts={currentContacts}
-            loadingContacts={loadContacts || !currentContacts}
+            loadingContacts={loadContacts}
             navigateToContact={(contact) => {
                 history.push(
                     `/contact/${encodeURIComponent(
