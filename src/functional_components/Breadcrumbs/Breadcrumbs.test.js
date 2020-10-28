@@ -3,6 +3,7 @@ import Breadcrumbs from './Breadcrumbs';
 import { shallow } from 'enzyme';
 import BreadcrumbItem from '../BreadcrumbItem';
 import TestRenderer from 'react-test-renderer';
+import { getRootFromWebId } from '../../utils/url';
 
 describe('Breadcrumbs', () => {
     const breadcrumbs = ['/', 'test', 'path'];
@@ -15,6 +16,7 @@ describe('Breadcrumbs', () => {
                 webId={webId}
                 breadcrumbs={breadcrumbs}
                 onClick={mockFunction}
+                currentPath={getRootFromWebId(webId) + 'test/path'}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
@@ -22,7 +24,11 @@ describe('Breadcrumbs', () => {
 
     it('renders the correct amount of Breadcrumbs', () => {
         const wrapper = shallow(
-            <Breadcrumbs breadcrumbs={breadcrumbs} webId={webId} />
+            <Breadcrumbs
+                breadcrumbs={breadcrumbs}
+                webId={webId}
+                currentPath={getRootFromWebId(webId) + 'test/path'}
+            />
         );
         expect(wrapper.find(BreadcrumbItem)).toHaveLength(3);
     });

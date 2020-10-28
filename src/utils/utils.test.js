@@ -1,3 +1,4 @@
+import ns from 'solid-namespace';
 import {
     getBreadcrumbsFromUrl,
     getWebIdFromRoot,
@@ -138,8 +139,30 @@ describe('Testing util functions', () => {
             });
         });
         describe('Testing file utils', () => {
-            const files = ['test.lol', 'broken.', 'noDot'];
-            const folders = ['doge', 'muchTest'];
+            const files = [
+                {
+                    url: 'https://example.com/test.lol',
+                    types: [ns().ldp('Resource')],
+                },
+                {
+                    url: 'https://example.com/broken',
+                    types: [ns().ldp('Resource')],
+                },
+                {
+                    url: 'https://example.com/noDot',
+                    types: [ns().ldp('Resource')],
+                },
+            ];
+            const folders = [
+                {
+                    url: 'https://example.com/doge',
+                    types: [ns().ldp('Container')],
+                },
+                {
+                    url: 'https://example.com/muchTest',
+                    types: [ns().ldp('Container')],
+                },
+            ];
 
             test('getFileType(regularFileName) should return file type', () => {
                 expect(fileUtils.getFileType('fav.ico')).toBe('ico');
@@ -154,8 +177,7 @@ describe('Testing util functions', () => {
 
             test('convertResourceListToSearchOptions() should return arrayOfObjects', () => {
                 const converted = fileUtils.convertResourceListToSearchOptions({
-                    files,
-                    folders,
+                    items: [...files, ...folders],
                 });
                 expect(converted.length).toBe(5);
                 expect(converted).toContainObject({
@@ -164,21 +186,29 @@ describe('Testing util functions', () => {
                     type: 'file',
                 });
                 expect(converted).toContainObject({
-                    name: 'broken.',
                     fileType: null,
+                    host: 'example.com',
+                    name: 'broken',
+                    path: 'https://example.com/broken',
                     type: 'file',
                 });
                 expect(converted).toContainObject({
+                    fileType: null,
+                    host: 'example.com',
                     name: 'noDot',
-                    fileType: null,
+                    path: 'https://example.com/noDot',
                     type: 'file',
                 });
                 expect(converted).toContainObject({
+                    host: 'example.com',
                     name: 'doge',
+                    path: 'https://example.com/doge/',
                     type: 'folder',
                 });
                 expect(converted).toContainObject({
+                    host: 'example.com',
                     name: 'muchTest',
+                    path: 'https://example.com/muchTest/',
                     type: 'folder',
                 });
             });

@@ -36,9 +36,17 @@ const addForDelete = (item, selectedItems) => {
 
 function namingConflict(name, currentFolder) {
     if (currentFolder) {
-        if (currentFolder.files.indexOf(name) !== -1) {
+        if (
+            currentFolder.files.find(
+                (file) => getFileOrFolderName(file.url) === name
+            )
+        ) {
             return true;
-        } else if (currentFolder.folders.indexOf(name) !== -1) {
+        } else if (
+            currentFolder.folders.find(
+                (folder) => getFileOrFolderName(folder.url) === name
+            )
+        ) {
             return true;
         }
         return false;
@@ -100,19 +108,17 @@ function getFileOrFolderName(url) {
         : itemFragments[itemFragments.length - 1];
 }
 
-// input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
-// returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
 function convertResourceListToSearchOptions({ items }) {
     const fileObjects = [];
     const folderObjects = [];
     if (items) {
         items.forEach((item) => {
-            if (item.url.endsWith('/')) {
+            if (item.types.includes(ns.ldp('Container').value)) {
                 folderObjects.push({
                     host: url.parse(item.url).host,
                     name: decodeURIComponent(getFileOrFolderName(item.url)),
                     type: 'folder',
-                    path: item.url,
+                    path: item.url.endsWith('/') ? item.url : item.url + '/',
                 });
             } else {
                 fileObjects.push({
@@ -303,7 +309,7 @@ function sendNotification(notifParams) {
         method: 'PUT',
         headers: {
             'content-type': 'text/turtle',
-            "slug": notificationAddress.replace(inboxAddress + '/', ''),
+            slug: notificationAddress.replace(inboxAddress + '/', ''),
         },
         body: notification,
     };

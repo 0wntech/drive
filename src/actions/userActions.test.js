@@ -25,11 +25,6 @@ const getProfileSuccess = {
             resolve(card.data);
         });
     },
-    getContacts: () => {
-        return new Promise((resolve, reject) => {
-            resolve(card.contacts);
-        });
-    },
 };
 
 const getProfileFail = {
