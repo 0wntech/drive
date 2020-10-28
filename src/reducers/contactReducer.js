@@ -17,12 +17,14 @@ import {
     REMOVE_CONTACT,
     REMOVE_CONTACT_FAILURE,
 } from '../actions/types';
+import { getRootFromWebId } from '../utils/url';
 
 const INITIAL_STATE = {
     loadContacts: false,
     contacts: null,
     contactRecommendations: null,
     currentContact: null,
+    currentContactRootUrl: null,
     currentContacts: null,
     contactSearchResult: null,
     searchingContacts: false,
@@ -90,7 +92,13 @@ export default (state = INITIAL_STATE, action) => {
                 error: { ...state.error, FETCH_CONTACTS: payload },
             };
         case SET_CURRENT_CONTACT:
-            return { ...state, currentContact: payload, currentContacts: null };
+            return {
+                ...state,
+                currentContact: payload,
+                currentContactRootUrl:
+                    payload.storage ?? getRootFromWebId(payload.webId),
+                currentContacts: null,
+            };
         case SEARCH_CONTACT:
             return {
                 ...state,

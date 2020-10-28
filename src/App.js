@@ -128,7 +128,20 @@ export const App = ({
                                 <PrivateRoute
                                     session={session}
                                     path="/contact/:id"
+                                    exact
                                     component={<ContactProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    exact
+                                    path="/contact/:id/:path"
+                                    component={<Drive />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    exact
+                                    path="/contact/:id/file/:path"
+                                    component={<FileView />}
                                 />
                                 <PrivateRoute
                                     session={session}
@@ -137,7 +150,7 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/file/:path"
+                                    path="/file/:id/:path"
                                     component={<FileView />}
                                 />
                                 <Route

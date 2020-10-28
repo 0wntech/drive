@@ -4,6 +4,7 @@ import AclClient from 'ownacl';
 import User from 'ownuser';
 import mime from 'mime';
 import url from 'url';
+import uniq from 'uniq';
 import FileSaver from 'file-saver';
 
 import {
@@ -76,10 +77,17 @@ import {
     DELETE_ACCESS_SUCCESS,
     TOGGLE_INFO_WINDOW,
     INDEX_STORAGE_PROGRESS,
+    SEARCH_FILE,
+    SEARCH_FILE_SUCCESS,
+    SEARCH_FILE_FAILURE,
 } from './types';
 
 import fileUtils from '../utils/fileUtils';
-import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
+import {
+    convertFolderUrlToName,
+    convertFileUrlToName,
+    getRootFromWebId,
+} from '../utils/url';
 
 export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
@@ -208,6 +216,7 @@ export const fetchCurrentItem = (itemUrl) => {
             podUrl: 'https://' + url.parse(itemUrl).host + '/',
         });
         const options = {
+            auth: auth,
             verbose: true,
             headers: {
                 Accept: mime.getType(itemUrl) ?? 'text/turtle',
@@ -224,22 +233,16 @@ export const fetchCurrentItem = (itemUrl) => {
                             type: file.type,
                         };
                     });
-                    const folderNames = item.folders.map((folder) => {
+                    const folder = item.folders.map((folder) => {
                         return convertFolderUrlToName(folder);
                     });
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: {
                             files: files,
-                            folders: folderNames,
+                            folders: folder,
                         },
                     });
-                    localStorage.setItem(
-                        'appState',
-                        JSON.stringify({
-                            currentPath: itemUrl,
-                        })
-                    );
                 } else if (item !== undefined) {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
@@ -287,7 +290,7 @@ export const indexStorage = (folderUrl) => {
                     return await new Promise((resolve) => {
                         deepFolder.forEach(async (item, index, array) => {
                             await fileClient.addToIndex(item, {
-                                force: true,
+                                force: !!item.types,
                                 updateCallback: (_, ok) => {
                                     if (ok) {
                                         dispatch({
@@ -313,7 +316,7 @@ export const indexStorage = (folderUrl) => {
                 .then((index) => {
                     dispatch({
                         type: INDEX_STORAGE_SUCCESS,
-                        payload: index.map((indexItem) => indexItem.url),
+                        payload: index,
                     });
                 })
                 .catch((err) => {
@@ -325,7 +328,7 @@ export const indexStorage = (folderUrl) => {
         } else {
             dispatch({
                 type: INDEX_STORAGE_SUCCESS,
-                payload: index.map((indexItem) => indexItem.url),
+                payload: index,
             });
         }
     };
@@ -371,6 +374,26 @@ export const fetchNotifications = (webId) => {
                 dispatch({
                     type: FETCH_NOTIFICATIONS_FAILURE,
                 });
+            });
+    };
+};
+
+export const searchFile = (user, path) => {
+    return (dispatch) => {
+        const rootPath = !!user.storage
+            ? user.storage
+            : getRootFromWebId(user.webId);
+        const searchPath = url.resolve(rootPath, path ?? '/');
+        const fileClient = new PodClient();
+        dispatch({ type: SEARCH_FILE });
+        console.log(searchPath);
+        fileClient
+            .deepRead(searchPath, { verbose: true })
+            .then((index) => {
+                dispatch({ type: SEARCH_FILE_SUCCESS, payload: uniq(index) });
+            })
+            .catch((err) => {
+                dispatch({ type: SEARCH_FILE_FAILURE, payload: err });
             });
     };
 };
@@ -598,7 +621,16 @@ export const uploadFileOrFolder = ({ target }, currentPath) => {
             if (files && files.length) {
                 const uploads = [];
                 for (const file of files) {
-                    uploads.push(fileUtils.uploadFile(file, currentPath));
+                    uploads.push(
+                        fileUtils
+                            .uploadFile(file, currentPath)
+                            .catch((error) => {
+                                dispatch({
+                                    type: UPLOAD_FILE_FAILURE,
+                                    payload: error,
+                                });
+                            })
+                    );
                 }
                 Promise.all(uploads)
                     .then(() => {

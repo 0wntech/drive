@@ -152,8 +152,8 @@ describe('Testing util functions', () => {
                 expect(fileUtils.getFileType('fav.')).toBeNull();
             });
 
-            test('convertFilesAndFoldersToArray() should return arrayOfObjects', () => {
-                const converted = fileUtils.convertFilesAndFoldersToArray({
+            test('convertResourceListToSearchOptions() should return arrayOfObjects', () => {
+                const converted = fileUtils.convertResourceListToSearchOptions({
                     files,
                     folders,
                 });

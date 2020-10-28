@@ -82,9 +82,7 @@ export const fetchUser = (webId) => {
             .getProfile()
             .then((profile) => {
                 dispatch({ type: FETCH_USER_SUCCESS, payload: profile });
-                return currUser.getContacts().then((contacts) => {
-                    dispatch(fetchContactProfiles(contacts, webId));
-                });
+                dispatch(fetchContactProfiles(profile.contacts, webId));
             })
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAILURE, payload: error })

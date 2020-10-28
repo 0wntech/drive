@@ -10,7 +10,11 @@ import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
-import { searchContact, setCurrentContact } from '../../actions/contactActions';
+import {
+    fetchContact,
+    searchContact,
+    setCurrentContact,
+} from '../../actions/contactActions';
 import { navigate, getInitialsFromUser } from '../../utils/helper';
 import logo from '../../assets/icons/owndrive-logo.png';
 import {
@@ -19,6 +23,8 @@ import {
     getIdpFromWebId,
     getHomeRoute,
     getFileRoute,
+    getContactFolderRoute,
+    getContactFileRoute,
 } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import Search from '../../assets/svgIcons/Search';
@@ -30,7 +36,8 @@ import FileIconSm from '../../assets/icons/FileIconSm.png';
 import FolderIconSm from '../../assets/icons/FolderSm.png';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 
-const formatOptionLabel = ({ label, name, path, type, contact }) => {
+const formatOptionLabel = ({ label, name, path, type, contact }, webId) => {
+    path = path && url.parse(path);
     if (type === 'contact') {
         return (
             <div className={styles.optionContainer}>
@@ -73,29 +80,33 @@ const formatOptionLabel = ({ label, name, path, type, contact }) => {
                     <img
                         alt="icon"
                         className={
-                            type === 'file'
+                            type !== 'folder'
                                 ? styles.fileIcon
                                 : styles.folderIcon
                         }
                         srcSet={`
-                    ${type === 'file' ? FileIconSm : FolderIconSm} 567px,
-                    ${type === 'file' ? FileIcon : FolderIcon}
+                    ${type !== 'folder' ? FileIconSm : FolderIconSm} 567px,
+                    ${type !== 'folder' ? FileIcon : FolderIcon}
                     `}
                     />
                 </div>
-                <div style={{ display: 'flex' }}>
-                    <div>{name}</div>
-                    {url.parse(path).pathname !== '/' && (
-                        <div className={styles.fullPath}>
-                            {url
-                                .parse(path)
-                                .pathname.replace(
-                                    path.endsWith('/') ? name + '/' : name,
+                {path.host === url.parse(webId).host ? (
+                    <div style={{ display: 'flex' }}>
+                        <div>{name}</div>
+                        {path.pathname !== '/' && (
+                            <div className={styles.fullPath}>
+                                {path.pathname.replace(
+                                    path.pathname.endsWith('/')
+                                        ? name + '/'
+                                        : name,
                                     ''
                                 )}
-                        </div>
-                    )}
-                </div>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div>{path.host + path.pathname}</div>
+                )}
             </div>
         );
     }
@@ -117,6 +128,7 @@ const Navigation = ({
     dispatch,
     isSearchBarExpanded,
     searchingContacts,
+    searchingFile,
     toggleSearchbar,
     isAccessWindowVisible,
 }) => {
@@ -133,7 +145,52 @@ const Navigation = ({
 
     const handleChange = (selected) => {
         resetError();
-        if (selected.type === 'folder' && location.pathname === '/home') {
+        if (
+            selected.type === 'folder' &&
+            selected.host !== url.parse(webId).host
+        ) {
+            const { host } = selected;
+            navigate(
+                getContactFolderRoute(host, selected.path),
+                history,
+                dispatch,
+                () => {
+                    fetchContact(
+                        url.format({
+                            protocol: 'https:',
+                            host: host,
+                            pathname: '/profile/card',
+                            hash: 'me',
+                        }),
+                        { profileOnly: true }
+                    );
+                }
+            );
+        } else if (
+            selected.type === 'file' &&
+            selected.host !== url.parse(webId).host
+        ) {
+            const { host } = selected;
+            navigate(
+                getContactFileRoute(host, selected.path),
+                history,
+                dispatch,
+                navigate(getFileRoute(selected.path), history, dispatch, () => {
+                    fetchContact(
+                        url.format({
+                            protocol: 'https:',
+                            host: host,
+                            pathname: '/profile/card',
+                            hash: 'me',
+                        }),
+                        { profileOnly: true }
+                    );
+                })
+            );
+        } else if (
+            selected.type === 'folder' &&
+            location.pathname === '/home'
+        ) {
             history.push(getHomeRoute(selected.path));
         } else if (
             selected.type === 'file' &&
@@ -154,11 +211,11 @@ const Navigation = ({
     const { width } = useWindowDimension();
 
     const dropdownIndicator =
-        searchingContacts && !isAccessWindowVisible ? (
+        (searchingContacts && !isAccessWindowVisible) || searchingFile ? (
             <ClassicSpinner
                 size={20}
                 color="#686769"
-                loading={searchingContacts}
+                loading={searchingContacts || searchingFile}
             />
         ) : (
             <Search
@@ -203,8 +260,9 @@ const Navigation = ({
         ) {
             if (fileHierarchy) {
                 const filesAndFolders = fileUtils
-                    .convertFilesAndFoldersToArray({
+                    .convertResourceListToSearchOptions({
                         items: fileHierarchy,
+                        webId: webId,
                     })
                     .map((resource) => ({
                         ...resource,
@@ -217,9 +275,9 @@ const Navigation = ({
                     : filesAndFolders;
             } else {
                 const filesAndFolders = fileUtils
-                    .convertFilesAndFoldersToArray({
-                        files: currentItem.files,
-                        folders: currentItem.folders,
+                    .convertResourceListToSearchOptions({
+                        items: [...currentItem.files, ...currentItem.folders],
+                        webId: webId,
                     })
                     .map((resource) => ({
                         ...resource,
@@ -260,6 +318,7 @@ const Navigation = ({
             </div>
             <div className={styles.search}>
                 <SearchDropdown
+                    webId={webId}
                     className={styles.searchDropdown}
                     onChange={handleChange}
                     placeholder="Search..."
@@ -286,6 +345,7 @@ const mapStateToProps = (state) => ({
     rootUrl: state.app.rootUrl,
     contacts: state.contact.contacts,
     searchingContacts: state.contact.searchingContacts,
+    searchingFile: state.app.searchingFile,
     contactSearchResult: state.contact.contactSearchResult,
     isSearchBarExpanded: state.app.isSearchBarExpanded,
     loadCurrentItem: state.app.loadCurrentItem,

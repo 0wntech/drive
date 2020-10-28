@@ -25,6 +25,7 @@ import User from 'ownuser';
 import auth from 'solid-auth-client';
 import idps from '../constants/idps.json';
 import { getWebIdFromRoot } from '../utils/url';
+import { searchFile } from './appActions';
 
 export const setCurrentContact = (profile) => {
     return (dispatch) => {
@@ -64,7 +65,10 @@ export const removeContact = (webId, contact) => {
     };
 };
 
-export const fetchContact = (webId) => {
+export const fetchContact = (
+    webId,
+    { profileOnly } = { profileOnly: false }
+) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACT });
         const user = new User(webId);
@@ -72,7 +76,8 @@ export const fetchContact = (webId) => {
             .then((profile) => {
                 dispatch(setCurrentContact(profile));
                 dispatch({ type: FETCH_CONTACT_SUCCESS });
-                dispatch(fetchContactProfiles(profile.contacts ?? []));
+                if (!profileOnly)
+                    dispatch(fetchContactProfiles(profile.contacts ?? []));
             })
             .catch((error) => {
                 dispatch({ type: FETCH_CONTACT_FAILURE, payload: error });
@@ -155,7 +160,7 @@ export const fetchDetailContacts = (contacts) => {
     return Promise.all(requests);
 };
 
-export const searchContact = (query) => {
+export const searchContact = (query, path) => {
     return (dispatch) => {
         dispatch({ type: SEARCH_CONTACT });
         const lookups = idps.map((idp) => {
@@ -186,12 +191,14 @@ export const searchContact = (query) => {
                             type: SEARCH_CONTACT_SUCCESS,
                             payload: contactProfile,
                         });
+                        if (path) dispatch(searchFile(contactProfile, path));
                     })
                     .catch((err) => {
-                        dispatch({
-                            type: SEARCH_CONTACT_SUCCESS,
-                            payload: { webId: url },
-                        });
+                        if (!foundSomething)
+                            dispatch({
+                                type: SEARCH_CONTACT_SUCCESS,
+                                payload: { webId: url },
+                            });
                     });
             }
             if (!foundSomething && index === lookups.length - 1) {

@@ -98,6 +98,10 @@ export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
 export const SEARCH_CONTACT_COMPLETED = 'search_contact_completed';
 export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
 
+export const SEARCH_FILE = 'search_file';
+export const SEARCH_FILE_SUCCESS = 'search_file_success';
+export const SEARCH_FILE_FAILURE = 'search_file_failure';
+
 export const OPEN_CONSENT_WINDOW = 'open_consent_window';
 export const CLOSE_CONSENT_WINDOW = 'close_consent_window';
 

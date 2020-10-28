@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import mime from 'mime';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { connect } from 'react-redux';
@@ -10,6 +11,9 @@ import { searchContact } from '../../actions/contactActions';
 import useClickOutside from '../../hooks/useClickOutside';
 
 const customFilter = (option, searchText) => {
+    const searchedFragments = searchText.split('/');
+    const searchedUser = searchedFragments.shift();
+    const searchedPath = searchedFragments.join('/');
     if (!option.value) {
         return true;
     }
@@ -22,13 +26,29 @@ const customFilter = (option, searchText) => {
             (option.data.contact.name &&
                 option.data.contact.name
                     .toLowerCase()
-                    .includes(searchText.toLowerCase()))
+                    .includes(searchText.toLowerCase())) ||
+            (option.data.contact.webId &&
+                option.data.contact.webId
+                    .toLowerCase()
+                    .includes(searchedUser.toLowerCase())) ||
+            (option.data.contact.name &&
+                option.data.contact.name
+                    .toLowerCase()
+                    .includes(searchedUser.toLowerCase()))
         ) {
             return true;
         }
         return false;
     }
-    if (option.value.toLowerCase().includes(searchText.toLowerCase())) {
+    if (
+        option.value.toLowerCase().includes(searchText.toLowerCase()) ||
+        (option.data.path.toLowerCase().includes(searchedPath.toLowerCase()) &&
+            option.data.path.includes(searchedUser.toLowerCase())) ||
+        (option.data.fileType &&
+            mime
+                .getType(option.data.fileType)
+                ?.includes(searchText.toLowerCase()))
+    ) {
         return true;
     }
     return false;
@@ -44,24 +64,25 @@ export function SearchDropdown({
     searchingContacts,
     isSearchBarExpanded,
     classNamePrefix = 'search',
-    contacts,
     noIndicator,
     indicator,
     formatOptionLabel,
+    webId,
 }) {
     const [typingTimer, setTypingTimer] = useState(null);
     const handleInputChange = (searchText) => {
         clearTimeout(typingTimer);
         if (searchText !== '') {
-            searchText = searchText.toLowerCase();
+            const searchTextFragments = searchText.toLowerCase().split('/');
+            const searchedUser = searchTextFragments.shift();
+            const searchedPath = searchTextFragments.join('/');
             setTypingTimer(
-                setTimeout(
-                    () =>
-                        contacts
-                            ? searchContact(searchText)
-                            : searchContact(searchText),
-                    1000
-                )
+                setTimeout(() => {
+                    return searchContact(
+                        searchedUser,
+                        searchedPath !== '' ? searchedPath : '/'
+                    );
+                }, 1000)
             );
         }
     };
@@ -98,7 +119,7 @@ export function SearchDropdown({
             components={{ DropdownIndicator }}
             placeholder={placeholder}
             styles={customStyles}
-            formatOptionLabel={formatOptionLabel}
+            formatOptionLabel={(option) => formatOptionLabel(option, webId)}
             options={searchingContacts ? items : items}
             onChange={onChange}
             className={className}

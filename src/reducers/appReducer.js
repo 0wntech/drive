@@ -62,6 +62,9 @@ import {
     TOGGLE_INFO_WINDOW,
     FETCH_USER_SUCCESS,
     SET_STORAGE_URL_SUCCESS,
+    SEARCH_FILE,
+    SEARCH_FILE_FAILURE,
+    SEARCH_FILE_SUCCESS,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
@@ -76,6 +79,7 @@ const INITIAL_STATE = {
     uploadingFiles: false,
     indexingStorage: true,
     indexingProgress: 0,
+    searchingFile: false,
     error: {
         UPLOAD_FILES: false,
         DOWNLOAD_FILE: false,
@@ -179,6 +183,30 @@ export default (state = INITIAL_STATE, action) => {
                 error: {
                     ...state.error,
                     INDEX_STORAGE: false,
+                },
+            };
+        case SEARCH_FILE:
+            return {
+                ...state,
+                searchingFile: true,
+            };
+        case SEARCH_FILE_SUCCESS:
+            return {
+                ...state,
+                fileHierarchy: [...state.fileHierarchy, ...payload],
+                searchingFile: false,
+                error: {
+                    ...state.error,
+                    SEARCH_FILE: false,
+                },
+            };
+        case SEARCH_FILE_FAILURE:
+            return {
+                ...state,
+                searchingFile: false,
+                error: {
+                    ...state.error,
+                    SEARCH_FILE: payload,
                 },
             };
         case INDEX_STORAGE_FAILURE:

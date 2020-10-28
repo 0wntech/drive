@@ -32,8 +32,20 @@ export const getContactRoute = (contact) => {
     return `/contact/${urlUtils.parse(contact.webId).host}`;
 };
 
-export const getFileRoute = (path) => {
-    return `/file/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
+export const getContactFolderRoute = (host, path) => {
+    return `/contact/${host}/${encodeURIComponent(
+        urlUtils.parse(path.endsWith('/') ? path : path + '/').pathname
+    )}`;
+};
+
+export const getContactFileRoute = (host, path) => {
+    return `/contact/${host}/file/${encodeURIComponent(
+        urlUtils.parse(path).pathname
+    )}`;
+};
+
+export const getFileRoute = (host, path) => {
+    return `/file/${host}/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
 };
 
 export const getHomeRoute = (path) => {

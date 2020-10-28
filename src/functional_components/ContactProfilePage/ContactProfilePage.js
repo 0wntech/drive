@@ -45,7 +45,7 @@ const ContactProfilePage = ({
     useEffect(() => {
         if (!currentContact && contacts) {
             const contactFromContacts = contacts.find(
-                (contact) => contact.webId == currentContactWebId
+                (contact) => contact.webId === currentContactWebId
             );
             if (contactFromContacts) setCurrentContact(contactFromContacts);
         } else if (

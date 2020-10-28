@@ -5,7 +5,7 @@ import mime from 'mime';
 const ns = require('solid-namespace')(rdf);
 
 function allowFileName(fileName, currentFolder, fileSuffix) {
-    if (fileName == '') {
+    if (fileName === '') {
         return false;
     }
 
@@ -84,6 +84,9 @@ function uploadFile(file, currPath) {
                     } else {
                         reject(response.error);
                     }
+                })
+                .catch((err) => {
+                    reject(err);
                 });
         };
         reader.readAsArrayBuffer(file);
@@ -99,41 +102,27 @@ function getFileOrFolderName(url) {
 
 // input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
 // returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
-function convertFilesAndFoldersToArray({ files, folders, items }) {
+function convertResourceListToSearchOptions({ items }) {
+    const fileObjects = [];
+    const folderObjects = [];
     if (items) {
-        const fileObjects = [];
-        const folderObjects = [];
         items.forEach((item) => {
-            if (item.endsWith('/')) {
+            if (item.url.endsWith('/')) {
                 folderObjects.push({
-                    name: getFileOrFolderName(item),
+                    host: url.parse(item.url).host,
+                    name: decodeURIComponent(getFileOrFolderName(item.url)),
                     type: 'folder',
-                    path: item,
+                    path: item.url,
                 });
             } else {
                 fileObjects.push({
-                    name: getFileOrFolderName(item),
+                    host: url.parse(item.url).host,
+                    name: decodeURIComponent(getFileOrFolderName(item.url)),
                     type: 'file',
-                    fileType: getFileType(getFileOrFolderName(item)),
-                    path: item,
+                    fileType: getFileType(getFileOrFolderName(item.url)),
+                    path: item.url,
                 });
             }
-        });
-        return [...fileObjects, ...folderObjects];
-    } else {
-        const fileObjects = files.map((file) => {
-            return {
-                name: file.name ? file.name : file,
-                type: 'file',
-                fileType: getFileType(file),
-            };
-        });
-
-        const folderObjects = folders.map((folderName) => {
-            return {
-                name: folderName,
-                type: 'folder',
-            };
         });
         return [...fileObjects, ...folderObjects];
     }
@@ -331,7 +320,7 @@ export default {
     getNotificationFiles: getNotificationFiles,
     sendNotification: sendNotification,
     getFileType: getFileType,
-    convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
+    convertResourceListToSearchOptions: convertResourceListToSearchOptions,
     namingConflict: namingConflict,
     getSuffixAndPlaceholder: getSuffixAndPlaceholder,
     addForDelete: addForDelete,
