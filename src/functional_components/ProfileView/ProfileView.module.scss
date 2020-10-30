@@ -231,10 +231,8 @@ svg:hover {
 }
 
 .addButton {
-    border: solid $light_green 5px;
+    border: solid $light_green 4px;
     color: #fff;
-    max-width: 280px;
-    width: 100%;
     background-color: $light_green;
 }
 
@@ -245,9 +243,7 @@ svg:hover {
 .removeButton {
     background-color: #ffffff !important;
     color: #aaaaaa;
-    border: 5px solid #c4c4c4 !important;
-    max-width: 280px;
-    width: 100%;
+    border: 4px solid #c4c4c4 !important;
 }
 
 @media (min-width: $screen_l) {
