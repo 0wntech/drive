@@ -28,8 +28,8 @@ export const useParamsFromUrl = () => {
     return paramObj;
 };
 
-export const getContactRoute = (contact) => {
-    return `/contact/${urlUtils.parse(contact.webId).host}`;
+export const getProfileRoute = (profile) => {
+    return `/profile/${urlUtils.parse(profile.webId).host}`;
 };
 
 export const getContactFolderRoute = (host, path) => {

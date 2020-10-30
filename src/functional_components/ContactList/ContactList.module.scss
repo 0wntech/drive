@@ -39,6 +39,7 @@
     }
 
     .itemContainer + .itemContainer {
+        margin: initial;
         margin-top: 10px;
     }
 }

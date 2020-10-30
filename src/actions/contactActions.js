@@ -77,7 +77,7 @@ export const fetchContact = (
                 dispatch(setCurrentContact(profile));
                 dispatch({ type: FETCH_CONTACT_SUCCESS });
                 if (!profileOnly)
-                    dispatch(fetchContactProfiles(profile.contacts ?? []));
+                    dispatch(fetchContactProfiles(profile.contacts ?? [], profile.webId));
             })
             .catch((error) => {
                 dispatch({ type: FETCH_CONTACT_FAILURE, payload: error });
@@ -88,7 +88,7 @@ export const fetchContact = (
 export const fetchContactProfiles = (contacts, webId = '') => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
-        return fetchDetailContacts(contacts)
+        return fetchDetailContacts(contacts.map((contact) => contact.replace('solid.community', 'solidcommunity.net')))
             .then(async (detailContacts) => {
                 const loggedInUser = (await auth.currentSession()).webId;
                 if (loggedInUser === webId) {
@@ -119,9 +119,9 @@ export const fetchContactRecommendations = (webId) => {
         user.getContactRecommendations()
             .then((recommendations) => {
                 fetchDetailContacts(
-                    recommendations.filter(
+                    recommendations.map(
                         (recommendation) =>
-                            !recommendation.includes('solid.community')
+                            recommendation.replace('solid.community', 'solidcommunity.net')
                     )
                 ).then((detailContacts) => {
                     dispatch({

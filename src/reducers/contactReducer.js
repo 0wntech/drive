@@ -16,6 +16,8 @@ import {
     ADD_CONTACT_FAILURE,
     REMOVE_CONTACT,
     REMOVE_CONTACT_FAILURE,
+    FETCH_CONTACT_SUCCESS,
+    FETCH_CONTACT,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
@@ -28,12 +30,14 @@ const INITIAL_STATE = {
     currentContacts: null,
     contactSearchResult: null,
     searchingContacts: false,
+    loadCurrentContact: false,
     error: {
         FETCH_CONTACTS: false,
         ADD_CONTACT: false,
         REMOVE_CONTACT: false,
         SEARCH_CONTACT: false,
         FETCH_CONTACT_RECOMMENDATIONS: false,
+        FETCH_CONTACT: false,
     },
     loadContactRecommendations: false,
 };
@@ -104,6 +108,18 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 searchingContacts: true,
                 error: { ...state.error, SEARCH_CONTACT: false },
+            };
+        case FETCH_CONTACT:
+            return {
+                ...state,
+                loadCurrentContact: true,
+                error: { ...state.error, FETCH_CONTACT: false },
+            };
+        case FETCH_CONTACT_SUCCESS:
+            return {
+                ...state,
+                loadCurrentContact: false,
+                error: { ...state.error, FETCH_CONTACT: false },
             };
         case SEARCH_CONTACT_SUCCESS:
             return {

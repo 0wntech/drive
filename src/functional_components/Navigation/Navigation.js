@@ -19,7 +19,7 @@ import { navigate, getInitialsFromUser } from '../../utils/helper';
 import logo from '../../assets/icons/owndrive-logo.png';
 import {
     getUsernameFromWebId,
-    getContactRoute,
+    getProfileRoute,
     getIdpFromWebId,
     getHomeRoute,
     getFileRoute,
@@ -203,7 +203,7 @@ const Navigation = ({
             navigate(getFileRoute(selected.path), history, dispatch);
         } else if (selected.type === 'contact') {
             const { contact } = selected;
-            navigate(getContactRoute(contact), history, dispatch, () =>
+            navigate(getProfileRoute(contact), history, dispatch, () =>
                 setCurrentContact(contact)
             );
         }

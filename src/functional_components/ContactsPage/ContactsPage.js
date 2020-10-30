@@ -14,7 +14,7 @@ import useWindowDimension from '../../hooks/useWindowDimension';
 import { screen_l as screenL } from '../../styles/constants.scss';
 import { Layout } from '../Layout';
 import { handleError } from '../../utils/helper';
-import { getContactRoute } from '../../utils/url';
+import { getProfileRoute } from '../../utils/url';
 
 const ContactsPage = ({
     contacts,
@@ -58,7 +58,7 @@ const ContactsPage = ({
                 <ContactList
                     onItemClick={(contact) => {
                         setCurrentContact(contact);
-                        history.push(getContactRoute(contact));
+                        history.push(getProfileRoute(contact));
                     }}
                     contacts={contacts}
                     webId={webId}
@@ -74,7 +74,7 @@ const ContactsPage = ({
                         <ContactList
                             onItemClick={(contact) => {
                                 setCurrentContact(contact);
-                                history.push(getContactRoute(contact));
+                                history.push(getProfileRoute(contact));
                             }}
                             contacts={contactRecommendationsToDisplay}
                             webId={webId}

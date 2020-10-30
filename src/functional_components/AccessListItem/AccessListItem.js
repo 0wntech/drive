@@ -44,7 +44,7 @@ export const AccessListItem = ({
             )}
             <div className={styles.info}>
                 {isPublicEntity ? (
-                    <div className={styles.name}>Any Authenticated User</div>
+                    <div className={styles.name}>Anyone</div>
                 ) : isCurrentUser ? (
                     <div className={styles.name}>Me</div>
                 ) : entity.name ? (

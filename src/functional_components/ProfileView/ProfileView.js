@@ -10,15 +10,14 @@ import styleConstants from '../../styles/constants.scss';
 import useWindowDimension from '../../hooks/useWindowDimension';
 import ActionButton from '../ActionButton/ActionButton';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
-import { getInitialsFromUser } from '../../utils/helper';
-import ContactCarousel from '../ContactCarousel/ContactCarousel';
+import { getInitialsFromUser, handleError } from '../../utils/helper';
 import { ClassicSpinner } from 'react-spinners-kit';
+import ContactList from '../ContactList/ContactsList';
 
 export const ProfileView = ({
     user,
     userData,
     editState,
-    updatingProfile,
     updateUserData,
     onPhotoChange,
     renderButtons,
@@ -28,22 +27,35 @@ export const ProfileView = ({
     webId,
     label,
     contacts,
-    loadingContacts,
+    loading,
+    error,
+    contactRecommendations,
     navigateToContact,
 }) => {
     // eslint-disable-next-line no-unused-vars
     const { _, width } = useWindowDimension();
     const [contactStatus, setContactStatus] = useState(undefined);
 
+    handleError(error);
+
+    const [displayedRows, setDisplayedRows] = useState(2);
+    const contactRecommendationsToDisplay =
+        contactRecommendations &&
+        contactRecommendations.slice(0, displayedRows * 5);
+
     if (user && userData) {
         return (
             <Layout
-                isLoading={updatingProfile || !user}
+                isLoading={loading}
                 className={styles.grid}
-                label={label}
+                label={(user.name !== '' && user.name) ?? label}
                 hideToolbar={width < styleConstants.screen_l ? true : false}
             >
-                <div className={styles.profileContainer}>
+                <div
+                    className={classNames(styles.profileContainer, {
+                        [styles.edit]: editState,
+                    })}
+                >
                     <div className={styles.headContainer}>
                         <label htmlFor="pictureUpload">
                             {editState ? (
@@ -111,8 +123,10 @@ export const ProfileView = ({
                             </a>
                         </div>
                         <div className={styles.editWrapper}>
-                            {webId && user && user.webId !== webId ? (
-                                contactStatus || isContact ? (
+                            {webId &&
+                                user &&
+                                user.webId !== webId &&
+                                (contactStatus || isContact ? (
                                     <ActionButton
                                         label="Remove from Contacts"
                                         color="white"
@@ -138,61 +152,117 @@ export const ProfileView = ({
                                             setContactStatus(true);
                                         }}
                                     />
-                                )
-                            ) : (
-                                renderButtons()
-                            )}
+                                ))}
                         </div>
                     </div>
-                    {(userData.job || editState) && (
-                        <KeyValuePair
-                            label="Job:"
-                            dataKey="job"
-                            value={userData.job}
-                            editable={editState}
-                            setValue={updateUserData}
-                            placeholder={
-                                userData.job !== '' ? userData.job : ``
-                            }
-                        />
-                    )}
-                    {(userData.emails || editState) && (
-                        <KeyValuePair
-                            setValue={updateUserData}
-                            label="Email:"
-                            dataKey="emails"
-                            value={userData.emails}
-                            editable={editState}
-                            placeholder={userData.emails ? userData.emails : ``}
-                        />
-                    )}
-                    {(userData.telephones || editState) && (
-                        <KeyValuePair
-                            setValue={updateUserData}
-                            dataKey="telephones"
-                            label="Phone:"
-                            value={userData.telephones}
-                            editable={editState}
-                            placeholder={
-                                userData.telephones ? userData.telephones : ``
-                            }
-                        />
-                    )}
-                    {loadingContacts ? (
-                        <ClassicSpinner
-                            size={20}
-                            color="#686769"
-                            loading={true}
-                        />
-                    ) : (
-                        contacts &&
-                        !editState && (
-                            <ContactCarousel
-                                contacts={contacts}
-                                onClick={navigateToContact}
+                    <div className={styles.infoContainer}>
+                        {(userData.job || editState) && (
+                            <KeyValuePair
+                                label="Job:"
+                                dataKey="job"
+                                value={userData.job}
+                                editable={editState}
+                                setValue={updateUserData}
+                                placeholder={
+                                    userData.job !== '' ? userData.job : ``
+                                }
                             />
-                        )
-                    )}
+                        )}
+                        {(userData.emails || editState) && (
+                            <KeyValuePair
+                                setValue={updateUserData}
+                                label="Email:"
+                                dataKey="emails"
+                                value={userData.emails}
+                                editable={editState}
+                                placeholder={
+                                    userData.emails ? userData.emails : ``
+                                }
+                            />
+                        )}
+                        {(userData.telephones || editState) && (
+                            <KeyValuePair
+                                setValue={updateUserData}
+                                dataKey="telephones"
+                                label="Phone:"
+                                value={userData.telephones}
+                                editable={editState}
+                                placeholder={
+                                    userData.telephones
+                                        ? userData.telephones
+                                        : ``
+                                }
+                            />
+                        )}
+                        <div className={styles.editWrapper}>
+                            {webId &&
+                                user &&
+                                user.webId === webId &&
+                                renderButtons()}
+                        </div>
+                    </div>
+                    <div className={styles.contactsContainer}>
+                        {contacts && contacts.length > 0 && !editState && (
+                            <div>
+                                <div className={styles.sectionLabel}>
+                                    Contacts
+                                </div>
+                                <ContactList
+                                    onItemClick={navigateToContact}
+                                    contacts={contacts}
+                                    webId={webId}
+                                    addContact={addContact}
+                                    removeContact={removeContact}
+                                    alreadyContacts
+                                />
+                                {contactRecommendations ? (
+                                    <>
+                                        <div className={styles.sectionLabel}>
+                                            People you might know
+                                        </div>
+                                        <ContactList
+                                            onItemClick={navigateToContact}
+                                            contacts={
+                                                contactRecommendationsToDisplay
+                                            }
+                                            webId={webId}
+                                            addContact={addContact}
+                                            recommended
+                                            removeContact={removeContact}
+                                        />
+                                        {displayedRows * 3 <
+                                        contactRecommendations.length ? (
+                                            <div
+                                                onClick={() =>
+                                                    setDisplayedRows(
+                                                        displayedRows + 2
+                                                    )
+                                                }
+                                                className={
+                                                    styles.showMoreWrapper
+                                                }
+                                            >
+                                                <div
+                                                    className={
+                                                        styles.showMoreLabel
+                                                    }
+                                                >
+                                                    Show more
+                                                </div>
+                                                <div
+                                                    className={
+                                                        styles.showMoreIcon
+                                                    }
+                                                >
+                                                    ...
+                                                </div>
+                                            </div>
+                                        ) : null}
+                                    </>
+                                ) : null}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </Layout>
         );

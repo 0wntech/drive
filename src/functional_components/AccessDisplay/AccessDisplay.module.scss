@@ -21,8 +21,14 @@
     border-radius: 50%;
 }
 
+.defaultIcon {
+    background: #fff;
+    font-size: 16px !important;
+    line-height: 32px !important;
+}
+
 .agentIcon + .agentIcon {
-  margin-left: -10px;
+    margin-left: -10px;
 }
 
 @media (max-width: $screen_l) {

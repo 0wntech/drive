@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
     border: solid $light_grey 5px;
     box-sizing: border-box;
     border-radius: 20px;
@@ -19,7 +20,7 @@
     height: 64px;
     background-size: cover;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: 16px;
 }
 
 .defaultContactIcon {
@@ -28,7 +29,8 @@
     min-width: 64px !important;
     min-height: 64px !important;
     line-height: 56px !important;
-    font-size: 1.5em;
+    font-size: 28px;
+    margin-right: 16px;
 }
 
 .info {

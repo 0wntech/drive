@@ -32,13 +32,73 @@ svg:hover {
 
 .profileContainer {
     justify-self: center;
-    width: 400px;
+    width: 100%;
     height: max-content;
     padding: 32px;
     display: flex;
-    flex-direction: column;
+    flex-flow: row wrap;
     align-items: center;
     justify-content: center;
+}
+
+.edit {
+    flex-flow: column;
+
+    .infoContainer {
+        width: 40%;
+    }
+
+    .headContainer {
+        width: 40%;
+    }
+}
+
+.infoContainer {
+    flex: 1 1 50%;
+    margin-bottom: 2em;
+}
+
+.contactsContainer {
+    flex: 1 1 100%;
+}
+
+.contactsContainer.loading {
+    min-height: 360px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sectionLabel {
+    font-weight: 600 !important;
+    font-size: 2em;
+    margin: 1em 0;
+}
+
+.sectionLabel:nth-of-type(1) {
+    margin-top: initial;
+    margin-bottom: 1em;
+}
+
+.showMoreLabel {
+    color: #2791ff;
+}
+
+.showMoreIcon {
+    font-size: 32px;
+    height: 20px;
+    margin-top: -20px;
+    color: #2791ff;
+    text-align: center;
+}
+
+.showMoreWrapper {
+    width: 100%;
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
 }
 
 .profileImage {
@@ -103,14 +163,12 @@ svg:hover {
 }
 
 .headContainer {
-    width: 100%;
-    min-width: 50%;
-    max-height: 100%;
     display: flex;
     position: relative;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1em;
+    flex: 1 1 50%;
+    margin-bottom: 2em;
 }
 
 .iconContainer {
@@ -175,6 +233,7 @@ svg:hover {
 .addButton {
     border: solid $light_green 5px;
     color: #fff;
+    max-width: 280px;
     width: 100%;
     background-color: $light_green;
 }
@@ -187,6 +246,7 @@ svg:hover {
     background-color: #ffffff !important;
     color: #aaaaaa;
     border: 5px solid #c4c4c4 !important;
+    max-width: 280px;
     width: 100%;
 }
 
@@ -197,6 +257,12 @@ svg:hover {
 
     .removeButton:hover {
         cursor: pointer;
+    }
+}
+
+@media (min-height: 1000px) {
+    .grid {
+        align-items: center;
     }
 }
 
@@ -220,6 +286,11 @@ svg:hover {
 
     .headContainer {
         width: calc(100% - 64px);
+        flex: 1 1 100%;
+    }
+
+    .infoContainer {
+      flex: 1 1 100%;
     }
 
     .nameLabel {

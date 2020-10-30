@@ -118,6 +118,12 @@ export const App = ({
                                 <PrivateRoute
                                     session={session}
                                     path="/profile"
+                                    exact
+                                    component={<ProfilePage />}
+                                />
+                                <PrivateRoute
+                                    session={session}
+                                    path="/profile/:id"
                                     component={<ProfilePage />}
                                 />
                                 <PrivateRoute
