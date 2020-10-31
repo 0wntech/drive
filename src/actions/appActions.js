@@ -4,7 +4,6 @@ import AclClient from 'ownacl';
 import User from 'ownuser';
 import mime from 'mime';
 import url from 'url';
-import uniq from 'uniq';
 import FileSaver from 'file-saver';
 
 import {
@@ -212,9 +211,7 @@ export const toggleErrorWindow = (error) => {
 export const fetchCurrentItem = (itemUrl) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CURRENT_ITEM });
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(itemUrl).host + '/',
-        });
+        const fileClient = new PodClient();
         const options = {
             auth: auth,
             verbose: true,
@@ -280,38 +277,13 @@ export const indexStorage = (folderUrl) => {
                 payload: 1,
             });
             return fileClient
-                .deepRead(folderUrl, { verbose: true })
-                .then(async (deepFolder) => {
-                    const urlObject = url.parse(folderUrl);
-                    await fileClient.createIfNotExist(
-                        `${urlObject.protocol}//${urlObject.host}/` +
-                            fileClient.indexPath
-                    );
-                    return await new Promise((resolve) => {
-                        deepFolder.forEach(async (item, index, array) => {
-                            await fileClient.addToIndex(item, {
-                                force: !!item.types,
-                                updateCallback: (_, ok) => {
-                                    if (ok) {
-                                        dispatch({
-                                            type: INDEX_STORAGE_PROGRESS,
-                                            payload:
-                                                Math.floor(
-                                                    ((index / array.length) *
-                                                        100) /
-                                                        5
-                                                ) * 5,
-                                        });
-                                        if (index === array.length - 1) {
-                                            resolve(
-                                                fileClient.readIndex(folderUrl)
-                                            );
-                                        }
-                                    }
-                                },
-                            });
-                        });
-                    });
+                .createIndex(folderUrl, {
+                    verbose: true,
+                    foundCallback: (item) =>
+                        dispatch({
+                            type: INDEX_STORAGE_PROGRESS,
+                            payload: item,
+                        }),
                 })
                 .then((index) => {
                     dispatch({
@@ -337,7 +309,7 @@ export const indexStorage = (folderUrl) => {
 export const downloadFile = (file) => {
     return (dispatch) => {
         dispatch({ type: DOWNLOAD_FILE });
-        const fileClient = new PodClient({});
+        const fileClient = new PodClient();
         fileClient
             .read(file)
             .then((result) => {
@@ -386,11 +358,11 @@ export const searchFile = (user, path) => {
         const searchPath = url.resolve(rootPath, path ?? '/');
         const fileClient = new PodClient();
         dispatch({ type: SEARCH_FILE });
-        console.log(searchPath);
+        console.debug(searchPath, 'tata');
         fileClient
             .deepRead(searchPath, { verbose: true })
             .then((index) => {
-                dispatch({ type: SEARCH_FILE_SUCCESS, payload: uniq(index) });
+                dispatch({ type: SEARCH_FILE_SUCCESS, payload: index });
             })
             .catch((err) => {
                 dispatch({ type: SEARCH_FILE_FAILURE, payload: err });
@@ -401,9 +373,7 @@ export const searchFile = (user, path) => {
 export const updateFile = (file, body) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_FILE });
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(file).host + '/',
-        });
+        const fileClient = new PodClient();
         fileClient
             .update(file, body)
             .then(() => {
@@ -518,7 +488,7 @@ export const pasteItems = (items, location) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()
             .then((session) => {
-                const fileClient = new PodClient({ podUrl: session.webId });
+                const fileClient = new PodClient();
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
                         if (index === items.length - 1) {
@@ -569,7 +539,8 @@ export const renameItem = function (renamedItem, value) {
     return (dispatch) => {
         dispatch({ type: RENAME_ITEM });
         auth.currentSession().then((session) => {
-            const fileClient = new PodClient({ podUrl: session.webId });
+            console.info(renamedItem, value);
+            const fileClient = new PodClient();
             const rename = new Promise((resolve, reject) => {
                 if (renamedItem.endsWith('/')) {
                     fileClient

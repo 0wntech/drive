@@ -5,6 +5,7 @@ import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
 import { ErrorBoundary } from './ErrorBoundary';
 import { login, fetchUser, logout } from './actions/userActions';
+import { fetchContactRecommendations } from './actions/contactActions';
 import styles from './App.module.scss';
 import { indexStorage } from './actions/appActions';
 const LoginPage = lazy(() => import('./functional_components/LoginPage'));
@@ -12,10 +13,6 @@ const Drive = lazy(() => import('./functional_components/Drive'));
 const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
 const LandingPage = lazy(() => import('./functional_components/LandingPage'));
 const ProfilePage = lazy(() => import('./functional_components/ProfilePage'));
-const ContactsPage = lazy(() => import('./functional_components/ContactsPage'));
-const ContactProfilePage = lazy(() =>
-    import('./functional_components/ContactProfilePage')
-);
 const AppOverviewPage = lazy(() =>
     import('./functional_components/AppOverviewPage')
 );
@@ -26,6 +23,7 @@ export const App = ({
     login,
     webId,
     user,
+    fileHierarchy,
     session,
     loadLogin,
     loadUser,
@@ -34,6 +32,9 @@ export const App = ({
     indexStorage,
     indexingProgress,
     indexingStorage,
+    contactRecommendations,
+    loadContactRecommendations,
+    fetchContactRecommendations,
 }) => {
     const [errorKey, setError] = useState(0);
     useEffect(() => {
@@ -41,6 +42,10 @@ export const App = ({
             login();
         } else if (user && user.storage) {
             indexStorage(user.storage);
+            console.info(contactRecommendations, loadContactRecommendations);
+            if (!contactRecommendations && !loadContactRecommendations) {
+                fetchContactRecommendations(webId);
+            }
         }
     }, [session, user]);
 
@@ -48,31 +53,38 @@ export const App = ({
         setError(errorKey + 1);
     };
 
+    const loadingMessage = () => {
+        if (indexingStorage && indexingProgress) {
+            if (indexingProgress === 1) {
+                return 'Index not found. Creating Index... ';
+            } else {
+                return `Updating Index with ${indexingProgress}...`;
+            }
+        } else if (loadContacts) {
+            return 'Loading Contacts...';
+        } else if (loadUser) {
+            return 'Loading Profile...';
+        } else if (loadContactRecommendations) {
+            return 'Loading Profiles...';
+        } else if (indexingStorage) {
+            return 'Loading Index...';
+        }
+    };
+
     const suspenseView = (
         <div className={styles.spinner}>
             <ClassicSpinner size={30} color="#686769" />
-            <div className={styles.loadingMessage}>
-                {indexingProgress
-                    ? indexingProgress <= 1
-                        ? 'Index not found. Creating Index... '
-                        : `Updating index... ${indexingProgress}% Done`
-                    : typeof indexingProgress === 'number'
-                    ? 'Loading Index...'
-                    : loadContacts
-                    ? 'Loading Contacts...'
-                    : loadUser
-                    ? 'Loading User...'
-                    : 'Loading App...'}
-            </div>
+            <div className={styles.loadingMessage}>{loadingMessage()}</div>
         </div>
     );
 
     if (
         webId &&
         (loadLogin ||
-            loadUser ||
-            indexingStorage ||
+            (!user && loadUser) ||
+            (!fileHierarchy && indexingStorage) ||
             indexingProgress ||
+            loadContactRecommendations ||
             (!user?.contacts && loadContacts))
     ) {
         return suspenseView;
@@ -128,17 +140,6 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/contacts"
-                                    component={<ContactsPage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
-                                    path="/contact/:id"
-                                    exact
-                                    component={<ContactProfilePage />}
-                                />
-                                <PrivateRoute
-                                    session={session}
                                     exact
                                     path="/contact/:id/:path"
                                     component={<Drive />}
@@ -183,8 +184,11 @@ const mapStateToProps = (state) => {
         loadLogin: state.user.loadLogin,
         loadUser: state.user.loadUser,
         loadContacts: state.contact.loadContacts,
+        loadContactRecommendations: state.contact.loadContactRecommendations,
+        contactRecommendations: state.contact.contactRecommendations,
         currentFolderTree: state.app.currentFolderTree,
         currentPath: state.app.currentPath,
+        fileHierarchy: state.app.fileHierarchy,
         indexingStorage: state.app.indexingStorage,
         indexingProgress: state.app.indexingProgress,
     };
@@ -196,5 +200,6 @@ export default withRouter(
         login,
         fetchUser,
         indexStorage,
+        fetchContactRecommendations,
     })(App)
 );

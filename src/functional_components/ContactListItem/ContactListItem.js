@@ -14,13 +14,17 @@ const ContactListItem = ({
     className,
     addContact,
     removeContact,
+    removable,
     onClick,
     isContact,
 }) => {
     const [wasAdded, setWasAdded] = useState(isContact);
     const initials = getInitialsFromUser(contact);
     return (
-        <div className={classNames(styles.container, className)}>
+        <div
+            className={classNames(styles.container, className)}
+            onClick={() => onClick(contact)}
+        >
             <div
                 className={styles.imageContainer}
                 onClick={() => onClick(contact)}
@@ -38,10 +42,7 @@ const ContactListItem = ({
                     />
                 )}
             </div>
-            <div
-                className={styles.nameContainer}
-                onClick={() => onClick(contact)}
-            >
+            <div className={styles.nameContainer}>
                 {contact.name
                     ? contact.name
                     : getUsernameFromWebId(contact.webId)}
@@ -51,27 +52,28 @@ const ContactListItem = ({
                     [styles.added]: !wasAdded,
                 })}
             >
-                {wasAdded ? (
-                    <Delete
-                        onClick={(e) => {
-                            removeContact(webId, contact);
-                            if (wasAdded) {
-                                setWasAdded(false);
-                            }
-                            e.stopPropagation();
-                        }}
-                    />
-                ) : (
-                    <Add
-                        onClick={(e) => {
-                            addContact(webId, contact);
-                            if (!wasAdded) {
-                                setWasAdded(true);
-                            }
-                            e.stopPropagation();
-                        }}
-                    />
-                )}
+                {removable &&
+                    (wasAdded ? (
+                        <Delete
+                            onClick={(e) => {
+                                removeContact(webId, contact);
+                                if (wasAdded) {
+                                    setWasAdded(false);
+                                }
+                                e.stopPropagation();
+                            }}
+                        />
+                    ) : (
+                        <Add
+                            onClick={(e) => {
+                                addContact(webId, contact);
+                                if (!wasAdded) {
+                                    setWasAdded(true);
+                                }
+                                e.stopPropagation();
+                            }}
+                        />
+                    ))}
             </div>
         </div>
     );

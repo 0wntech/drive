@@ -11,7 +11,6 @@ import useWindowDimension from '../../hooks/useWindowDimension';
 import ActionButton from '../ActionButton/ActionButton';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 import { getInitialsFromUser, handleError } from '../../utils/helper';
-import { ClassicSpinner } from 'react-spinners-kit';
 import ContactList from '../ContactList/ContactsList';
 
 export const ProfileView = ({
@@ -41,7 +40,11 @@ export const ProfileView = ({
     const [displayedRows, setDisplayedRows] = useState(2);
     const contactRecommendationsToDisplay =
         contactRecommendations &&
-        contactRecommendations.slice(0, displayedRows * 5);
+        contactRecommendations
+            .filter((recommended) =>
+                !contacts.find((contact) => contact.webId === recommended.webId)
+            )
+            .slice(0, displayedRows * 5);
 
     if (user && userData) {
         return (
@@ -155,52 +158,65 @@ export const ProfileView = ({
                                 ))}
                         </div>
                     </div>
-                    <div className={styles.infoContainer}>
-                        {(userData.job || editState) && (
-                            <KeyValuePair
-                                label="Job:"
-                                dataKey="job"
-                                value={userData.job}
-                                editable={editState}
-                                setValue={updateUserData}
-                                placeholder={
-                                    userData.job !== '' ? userData.job : ``
-                                }
-                            />
-                        )}
-                        {(userData.emails || editState) && (
-                            <KeyValuePair
-                                setValue={updateUserData}
-                                label="Email:"
-                                dataKey="emails"
-                                value={userData.emails}
-                                editable={editState}
-                                placeholder={
-                                    userData.emails ? userData.emails : ``
-                                }
-                            />
-                        )}
-                        {(userData.telephones || editState) && (
-                            <KeyValuePair
-                                setValue={updateUserData}
-                                dataKey="telephones"
-                                label="Phone:"
-                                value={userData.telephones}
-                                editable={editState}
-                                placeholder={
-                                    userData.telephones
-                                        ? userData.telephones
-                                        : ``
-                                }
-                            />
-                        )}
-                        <div className={styles.editWrapper}>
-                            {webId &&
-                                user &&
-                                user.webId === webId &&
-                                renderButtons()}
+                    {(userData.job ||
+                        userData.emails ||
+                        userData.telephones) && (
+                        <div className={styles.infoContainer}>
+                            <div className={styles.infoDataContainer}>
+                                {(userData.job || editState) && (
+                                    <KeyValuePair
+                                        label="Job:"
+                                        dataKey="job"
+                                        value={userData.job}
+                                        editable={editState}
+                                        setValue={updateUserData}
+                                        className={styles.valuePair}
+                                        placeholder={
+                                            userData.job !== ''
+                                                ? userData.job
+                                                : ``
+                                        }
+                                    />
+                                )}
+                                {(userData.emails || editState) && (
+                                    <KeyValuePair
+                                        setValue={updateUserData}
+                                        label="Email:"
+                                        dataKey="emails"
+                                        value={userData.emails}
+                                        editable={editState}
+                                        className={styles.valuePair}
+                                        placeholder={
+                                            userData.emails
+                                                ? userData.emails
+                                                : ``
+                                        }
+                                    />
+                                )}
+                                {(userData.telephones || editState) && (
+                                    <KeyValuePair
+                                        setValue={updateUserData}
+                                        dataKey="telephones"
+                                        label="Phone:"
+                                        value={userData.telephones}
+                                        editable={editState}
+                                        className={styles.valuePair}
+                                        placeholder={
+                                            userData.telephones
+                                                ? userData.telephones
+                                                : ``
+                                        }
+                                    />
+                                )}
+                            </div>
+                            <div className={styles.editWrapper}>
+                                {webId &&
+                                    user &&
+                                    user.webId === webId &&
+                                    renderButtons()}
+                            </div>
                         </div>
-                    </div>
+                    )}
                     <div className={styles.contactsContainer}>
                         {contacts && contacts.length > 0 && !editState && (
                             <div>
@@ -213,7 +229,8 @@ export const ProfileView = ({
                                     webId={webId}
                                     addContact={addContact}
                                     removeContact={removeContact}
-                                    alreadyContacts
+                                    isContact
+                                    removable={user && user.webId === webId}
                                 />
                                 {contactRecommendations ? (
                                     <>
@@ -227,10 +244,11 @@ export const ProfileView = ({
                                             }
                                             webId={webId}
                                             addContact={addContact}
-                                            recommended
                                             removeContact={removeContact}
+                                            recommended
+                                            removable
                                         />
-                                        {displayedRows * 3 <
+                                        {displayedRows * 5 <
                                         contactRecommendations.length ? (
                                             <div
                                                 onClick={() =>

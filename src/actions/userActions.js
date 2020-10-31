@@ -96,13 +96,12 @@ export const updateProfile = (profileData, webId) => {
         const currUser = new User(webId);
         currUser
             .setProfile(profileData)
-            .then(() => {
-                dispatch({ type: UPDATE_PROFILE_SUCCESS });
-                dispatch(fetchUser(webId));
-            })
             .catch((error) =>
                 dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error })
-            );
+            )
+            .then(() => {
+                dispatch({ type: UPDATE_PROFILE_SUCCESS, profileData });
+            });
     };
 };
 

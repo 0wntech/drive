@@ -15,6 +15,7 @@ const showAddButton = (value, editable) => {
 const KeyValuePair = ({
     dataKey,
     editable,
+    className,
     label,
     placeholder,
     setValue,
@@ -49,7 +50,7 @@ const KeyValuePair = ({
     };
 
     return value || editable ? (
-        <div className={styles.container}>
+        <div className={classNames(styles.container, className)}>
             <div className={styles.keyValueContainer}>
                 <div className={styles.keyLabel}>{label}</div>
                 <div className={styles.valueContainer}>

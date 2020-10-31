@@ -5,7 +5,6 @@ import utils from '../../utils/fileUtils';
 import ActionButton from '../ActionButton/ActionButton';
 
 export default function RenameWindow({
-    className,
     onSubmit, // function that takes the input value as an argument ==> onSubmit(inputValue)
     onClose,
     onCancel,
@@ -21,7 +20,7 @@ export default function RenameWindow({
         placeholder: cleanPlaceholder,
     } = utils.getSuffixAndPlaceholder(placeholder);
 
-    const allow = utils.allowFileName(newName, currentItem, fileSuffix);
+    const allow = newName && utils.allowFileName(newName, currentItem, fileSuffix);
 
     return (
         <Window

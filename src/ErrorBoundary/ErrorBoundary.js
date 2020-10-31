@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
-        console.log(error, errorInfo);
+        console.info(error, errorInfo);
         this.setState({ error: error.message });
         Sentry.withScope((scope) => {
             scope.setTag('environment', process.env.NODE_ENV);

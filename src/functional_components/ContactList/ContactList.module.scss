@@ -28,7 +28,7 @@
     margin-bottom: 10px;
 }
 
-.itemContainer:nth-child(6n) {
+.itemContainer:nth-child(5n + 1) {
     margin-left: initial;
 }
 

@@ -78,7 +78,7 @@ const Drive = ({
         path && url.resolve((id && `https://${id}/`) ?? rootUrl, path ?? '');
     useEffect(() => {
         if (routeUrl && currentPath !== routeUrl && !loadCurrentItem) {
-            if (!currentContactRootUrl) {
+            if (id && !currentContactRootUrl) {
                 fetchContact(
                     url.format({
                         protocol: 'https:',

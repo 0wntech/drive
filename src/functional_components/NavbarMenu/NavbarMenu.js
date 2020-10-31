@@ -40,10 +40,6 @@ export const NavbarMenu = ({
             label: 'Profile',
         },
         {
-            onClick: () => navigate('/contacts', history, dispatch, resetError),
-            label: 'Contacts',
-        },
-        {
             onClick: () => navigate('/apps', history, dispatch, resetError),
             label: 'Apps',
         },

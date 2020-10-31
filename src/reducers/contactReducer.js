@@ -18,6 +18,8 @@ import {
     REMOVE_CONTACT_FAILURE,
     FETCH_CONTACT_SUCCESS,
     FETCH_CONTACT,
+    REMOVE_CONTACT_SUCCESS,
+    ADD_CONTACT_SUCCESS,
 } from '../actions/types';
 import { getRootFromWebId } from '../utils/url';
 
@@ -44,7 +46,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
-    console.log('Contact Reducer got action: ', type, '\nValue: ', payload);
+    console.info('Contact Reducer got action: ', type, '\nValue: ', payload);
 
     switch (type) {
         case CLEAR_ERROR:
@@ -59,10 +61,22 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 error: { ...state.error, ADD_CONTACT: payload },
             };
+        case ADD_CONTACT_SUCCESS:
+            return {
+                ...state,
+                contacts: [...state.contacts, payload],
+            };
         case REMOVE_CONTACT:
             return {
                 ...state,
                 error: { ...state.error, REMOVE_CONTACT: false },
+            };
+        case REMOVE_CONTACT_SUCCESS:
+            return {
+                ...state,
+                contacts: state.contacts.filter(
+                    (contact) => contact.webId !== payload.webId
+                ),
             };
         case REMOVE_CONTACT_FAILURE:
             return {

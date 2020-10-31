@@ -7,7 +7,7 @@ import X from '../../assets/svgIcons/X';
 import { AppButtons } from '../AppButtons';
 
 const mockFunction = () => {
-    console.log('needs implementation');
+    console.info('needs implementation');
 };
 
 const AppCard = ({ iconSrc, url, title, onClick, removeApp }) => {

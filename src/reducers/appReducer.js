@@ -1,3 +1,5 @@
+import uniq from 'uniq'
+
 import {
     INDEX_STORAGE,
     INDEX_STORAGE_PROGRESS,
@@ -66,6 +68,7 @@ import {
     SEARCH_FILE_FAILURE,
     SEARCH_FILE_SUCCESS,
 } from '../actions/types';
+import fileUtils from '../utils/fileUtils';
 import { getRootFromWebId } from '../utils/url';
 
 const INITIAL_STATE = {
@@ -121,8 +124,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
-    console.log('App Reducer got action: ', type, '\nValue: ', payload);
-    console.log(state);
+    console.info('App Reducer got action: ', type, '\nValue: ', payload);
+    console.info(state);
 
     switch (type) {
         case FETCH_USER_SUCCESS:
@@ -168,11 +171,10 @@ export default (state = INITIAL_STATE, action) => {
         case INDEX_STORAGE_PROGRESS:
             return {
                 ...state,
-                indexingProgress: Number(
-                    state.indexingStorage &&
-                        payload > state.indexingProgress &&
-                        payload
-                ),
+                indexingProgress:
+                    typeof payload === 'string'
+                        ? fileUtils.getFileOrFolderName(payload)
+                        : payload,
             };
         case INDEX_STORAGE_SUCCESS:
             return {
@@ -193,7 +195,7 @@ export default (state = INITIAL_STATE, action) => {
         case SEARCH_FILE_SUCCESS:
             return {
                 ...state,
-                fileHierarchy: [...state.fileHierarchy, ...payload],
+                fileHierarchy: uniq([...state.fileHierarchy, ...payload]),
                 searchingFile: false,
                 error: {
                     ...state.error,

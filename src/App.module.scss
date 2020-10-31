@@ -22,12 +22,9 @@
     height: 100%;
     margin: 0 10% 0 10%;
     grid-template-areas:
-        '.'
         'nav'
-        '.'
-        'main'
-        '.';
-    grid-template-rows: 1em 80px 10px 1fr 1em;
+        'main';
+    grid-template-rows: 80px 1fr;
 }
 
 .navArea {

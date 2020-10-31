@@ -10,7 +10,8 @@ const ContactList = ({
     webId,
     removeContact,
     addContact,
-    alreadyContacts,
+    isContact,
+    removable,
     recommended,
 }) => {
     const renderContact = (contact) => {
@@ -22,7 +23,8 @@ const ContactList = ({
                 }}
                 contact={contact}
                 removeContact={() => removeContact(webId, contact)}
-                isContact={alreadyContacts}
+                isContact={isContact}
+                removable={removable}
             />
         );
     };

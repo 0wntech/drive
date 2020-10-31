@@ -4,7 +4,7 @@ import url from 'url';
 import mime from 'mime';
 const ns = require('solid-namespace')(rdf);
 
-function allowFileName(fileName, currentFolder, fileSuffix) {
+export const allowFileName = (fileName, currentFolder, fileSuffix) => {
     if (fileName === '') {
         return false;
     }
@@ -16,7 +16,7 @@ function allowFileName(fileName, currentFolder, fileSuffix) {
             return false;
     }
     return !!re.exec(fileName) || mime.getType(fileName);
-}
+};
 
 export const isImageType = (fileType) => {
     return fileType ? fileType.indexOf('image') !== -1 : false;
@@ -34,26 +34,18 @@ const addForDelete = (item, selectedItems) => {
     return false;
 };
 
-function namingConflict(name, currentFolder) {
+export const namingConflict = (name, currentFolder) => {
     if (currentFolder) {
-        if (
-            currentFolder.files.find(
-                (file) => getFileOrFolderName(file.url) === name
-            )
-        ) {
+        if (currentFolder.files.find((file) => file.name === name)) {
             return true;
-        } else if (
-            currentFolder.folders.find(
-                (folder) => getFileOrFolderName(folder.url) === name
-            )
-        ) {
+        } else if (currentFolder.folders.find((folder) => folder === name)) {
             return true;
         }
         return false;
     }
-}
+};
 
-function getSuffixAndPlaceholder(placeholder) {
+export const getSuffixAndPlaceholder = (placeholder) => {
     let fileSuffix;
     placeholder = placeholder.split('/');
     if (placeholder[placeholder.length - 1] === '') {
@@ -66,9 +58,9 @@ function getSuffixAndPlaceholder(placeholder) {
         fileSuffix = fileNameFragments[1];
     }
     return { fileSuffix: fileSuffix, placeholder: placeholder };
-}
+};
 
-function uploadFile(file, currPath) {
+export const uploadFile = (file, currPath) => {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
 
@@ -99,16 +91,16 @@ function uploadFile(file, currPath) {
         };
         reader.readAsArrayBuffer(file);
     });
-}
+};
 
-function getFileOrFolderName(url) {
+export const getFileOrFolderName = (url) => {
     const itemFragments = url.split('/');
     return itemFragments[itemFragments.length - 1] === ''
         ? itemFragments[itemFragments.length - 2]
         : itemFragments[itemFragments.length - 1];
-}
+};
 
-function convertResourceListToSearchOptions({ items }) {
+export const convertResourceListToSearchOptions = ({ items }) => {
     const fileObjects = [];
     const folderObjects = [];
     if (items) {
@@ -132,11 +124,13 @@ function convertResourceListToSearchOptions({ items }) {
         });
         return [...fileObjects, ...folderObjects];
     }
-}
+};
 
 // input "fav.ico" returns "ico"
 function getFileType(file) {
-    const splittedFile = file.name ? file.name.split('.') : file.split('.');
+    const splittedFile = file.name
+        ? file.name.split('.')
+        : file.split('.');
     // no dot || nothing after dot
     if (
         splittedFile.length === 1 ||
@@ -147,21 +141,21 @@ function getFileType(file) {
     return splittedFile[splittedFile.length - 1];
 }
 
-function getFolderUrl(folder) {
+export const getFolderUrl = (folder) => {
     const folderFile = folder.split('/');
     folderFile.pop();
     const folderUrl = folderFile.join('/');
     return folderUrl;
-}
+};
 
-function deleteItems(items) {
+export const deleteItems = (items) => {
     items.map((item) => {
         return deleteRecursively(item);
     });
     return Promise.all(items);
-}
+};
 
-function deleteRecursively(url) {
+export const deleteRecursively = (url) => {
     return new Promise(function (resolve) {
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
@@ -188,9 +182,9 @@ function deleteRecursively(url) {
             });
         });
     });
-}
+};
 
-function getFolderFiles(path) {
+export const getFolderFiles = (path) => {
     return getFolderContents(path).then((results) => {
         const folderFiles = { folders: [], files: [] };
         results.forEach((result) => {
@@ -203,9 +197,9 @@ function getFolderFiles(path) {
         });
         return folderFiles;
     });
-}
+};
 
-function syntaxCheckRdf(input, contentType, url) {
+export const syntaxCheckRdf = (input, contentType, url) => {
     contentType = contentType ? contentType : 'text/turtle';
     const rdfContentTypes = ['application/ld+json', 'text/turtle'];
     if (contentType && rdfContentTypes.indexOf(contentType) !== -1) {
@@ -214,9 +208,9 @@ function syntaxCheckRdf(input, contentType, url) {
     } else {
         return true;
     }
-}
+};
 
-function getFolderContents(folderUrl) {
+export const getFolderContents = (folderUrl) => {
     const store = rdf.graph();
 
     return auth
@@ -234,9 +228,9 @@ function getFolderContents(folderUrl) {
                 return containments;
             });
         });
-}
+};
 
-function getNotificationFiles(webId) {
+export const getNotificationFiles = (webId) => {
     const inboxAddress = webId.replace('profile/card#me', 'inbox');
 
     const store = rdf.graph();
@@ -281,9 +275,9 @@ function getNotificationFiles(webId) {
             return cleanResults;
         });
     });
-}
+};
 
-function makeNotification(notification, notificationAddress) {
+export const makeNotification = (notification, notificationAddress) => {
     const { actor, object, target } = notification;
     const store = rdf.graph();
     const as = new rdf.Namespace('https://www.w3.org/ns/activitystreams#');
@@ -299,9 +293,9 @@ function makeNotification(notification, notificationAddress) {
     store.add(rdf.sym(notificationAddress), as('target'), rdf.sym(target));
 
     return rdf.serialize(undefined, store, notificationAddress);
-}
+};
 
-function sendNotification(notifParams) {
+export const sendNotification = (notifParams) => {
     const inboxAddress = notifParams.target.replace('profile/card#me', 'inbox');
     const notificationAddress = inboxAddress + `/Notif${Date.now()}`;
     const notification = makeNotification(notifParams, notificationAddress);
@@ -314,7 +308,7 @@ function sendNotification(notifParams) {
         body: notification,
     };
     return auth.fetch(inboxAddress, request);
-}
+};
 
 export default {
     getFolderUrl: getFolderUrl,
@@ -322,6 +316,7 @@ export default {
     uploadFile: uploadFile,
     deleteItems: deleteItems,
     getFolderFiles: getFolderFiles,
+    getFileOrFolderName: getFileOrFolderName,
     deleteRecursively: deleteRecursively,
     getNotificationFiles: getNotificationFiles,
     sendNotification: sendNotification,

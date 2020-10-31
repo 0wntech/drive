@@ -30,7 +30,7 @@ export const BackButton = ({ currentPath, rootUrl, history, webId }) => {
                     if (currentHost === url.parse(webId).host) {
                         history.push(getHomeRoute(previousPath));
                     } else {
-                        console.log(
+                        console.info(
                             currentPath ===
                                 url.format({
                                     protocol: 'https:',

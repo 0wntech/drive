@@ -14,14 +14,12 @@ import ProfileView from '../ProfileView/ProfileView';
 import {
     fetchContact,
     fetchContactProfiles,
-    fetchContactRecommendations,
     setCurrentContact,
     addContact,
     removeContact,
 } from '../../actions/contactActions';
 import { withRouter } from 'react-router-dom';
 import { getProfileRoute, useParamsFromUrl } from '../../utils/url';
-import { ClassicSpinner } from 'react-spinners-kit';
 import { isContact } from '../../reducers/contactReducer';
 
 export const ProfilePage = ({
@@ -37,7 +35,6 @@ export const ProfilePage = ({
     loadContacts,
     loadCurrentContact,
     fetchContact,
-    fetchContactRecommendations,
     setCurrentContact,
     addContact,
     removeContact,
@@ -53,10 +50,11 @@ export const ProfilePage = ({
         if (ownProfile) {
             if (!user && !loadUser) {
                 fetchUser(webId);
-            } else if (!user && !loadContacts) {
+            } else if (!contacts && !loadContacts) {
                 fetchContactProfiles(user.contacts, webId);
             }
         } else {
+            setUserData(undefined);
             const contactWebId = url.format({
                 protocol: 'https:',
                 host: id,
@@ -64,15 +62,13 @@ export const ProfilePage = ({
                 hash: '#me',
             });
             if (
-                (!currentContact ||
-                    currentContact.webId !== contactWebId) &&
+                (!currentContact || currentContact.webId !== contactWebId) &&
                 !loadCurrentContact
             ) {
                 fetchContact(contactWebId);
-                fetchContactRecommendations(contactWebId);
             }
         }
-    }, [id, currentContact]);
+    }, [id, currentContact, isContact]);
 
     const userProfile =
         ownProfile && user ? user : currentContact ? currentContact : undefined;
@@ -85,7 +81,7 @@ export const ProfilePage = ({
                   : undefined,
           }
         : undefined;
-    const [userData, setUserData] = useState(profile);
+    const [userData, setUserData] = useState(ownProfile ? profile : undefined);
     const [editState, setEditState] = useState(false);
 
     const updateUserData = (key, value) => {
@@ -142,8 +138,8 @@ export const ProfilePage = ({
                 >
                     <EditIcon
                         viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
+                        width="20"
+                        height="20"
                         onClick={() => setEditState(!editState)}
                         className={styles.iconWhite}
                         data-test-id="edit"
@@ -168,7 +164,7 @@ export const ProfilePage = ({
             onPhotoChange={onPhotoChange}
             updateUserData={updateUserData}
             editState={editState}
-            userData={profile}
+            userData={userData || profile}
             loading={updatingProfile || loadCurrentContact || loadContacts}
             contactRecommendations={contactRecommendations}
             navigateToContact={(contact) => {
@@ -208,5 +204,4 @@ export default connect(mapStateToProps, {
     addContact,
     removeContact,
     setCurrentContact,
-    fetchContactRecommendations,
 })(withRouter(ProfilePage));
