@@ -316,7 +316,7 @@ const Navigation = ({
                     src={logo}
                 />
             </div>
-            <div className={styles.search}>
+            {webId && <div className={styles.search}>
                 <SearchDropdown
                     webId={webId}
                     className={styles.searchDropdown}
@@ -328,7 +328,7 @@ const Navigation = ({
                     indicator={dropdownIndicator}
                     formatOptionLabel={formatOptionLabel}
                 />
-            </div>
+            </div>}
             <NavbarMenu
                 resetError={resetError}
                 className={styles.menuWrapper}
