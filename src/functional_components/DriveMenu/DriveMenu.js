@@ -54,7 +54,12 @@ export const DriveMenu = ({
                 })}
             >
                 {option.icon}
-                <div className={styles.optionLabel}>{option.label}</div>
+                <div
+                    className={styles.optionLabel}
+                    data-test-id={`drivemenu-${option.label.replace(' ', '-')}`}
+                >
+                    {option.label}
+                </div>
             </div>
         );
     };
