@@ -160,10 +160,10 @@ describe('contextMenu', () => {
                 '[data-test-id="rename-resource-submit"]'
             );
             await page.click('[data-test-id="rename-resource-submit"]');
-            const newFile = await page.waitForSelector(
+            const newFolder = await page.waitForSelector(
                 '[data-test-id="item-test3"]'
             );
-            expect(newFile).not.toBe(undefined);
+            expect(newFolder).not.toBe(undefined);
             const files = await page.evaluate(() =>
                 Array.from(
                     document.querySelectorAll('[data-test-id="file-label"]'),
@@ -188,10 +188,71 @@ describe('contextMenu', () => {
             await page.click('[data-test-id="drive"]', { button: 'right' });
             await page.waitForSelector('[data-test-id="contextmenu-Paste"]');
             await page.click('[data-test-id="contextmenu-Paste"]');
-            const newFile = await page.waitForSelector(
+            const newFolder = await page.waitForSelector(
                 '[data-test-id="item-test3"]'
             );
-            expect(newFile).not.toBe(undefined);
+            expect(newFolder).not.toBe(undefined);
+        });
+
+        test('should be able to copy a folder with its contents by using the context menu', async () => {
+            expect.assertions(2);
+            const page = await initPage(browser, config);
+            await page.goto(config.baseUrl + 'home');
+            await page.waitForSelector('[data-test-id="item-test3"]');
+            await page.click('[data-test-id="item-test3"]');
+            await page.waitForSelector('[data-test-id="drive"]');
+            await page.click('[data-test-id="drive"]', {
+                button: 'right',
+            });
+
+            // create nested file
+            await page.waitForSelector(
+                '[data-test-id="contextmenu-Create-File"]'
+            );
+            await page.click('[data-test-id="contextmenu-Create-File"]');
+            await page.waitForSelector('[data-test-id="window-Create-File"]');
+            await page.waitForSelector(
+                '[data-test-id="create-resource-input"]'
+            );
+            await page.type(
+                '[data-test-id="create-resource-input"]',
+                'test.txt'
+            );
+            await page.waitForSelector(
+                '[data-test-id="create-resource-submit"]'
+            );
+            await page.click('[data-test-id="create-resource-submit"]');
+            await page.waitForSelector('[data-test-id="file-test.txt"]');
+
+            //navigate home
+            await page.waitForSelector('[data-test-id="breadcrumb-Home"]');
+            await page.click('[data-test-id="breadcrumb-Home"]');
+
+            // copy
+            await page.waitForSelector('[data-test-id="item-test3"]');
+            await page.click('[data-test-id="item-test3"]', {
+                button: 'right',
+            });
+            await page.waitForSelector('[data-test-id="contextmenu-Copy"]');
+            await page.click('[data-test-id="contextmenu-Copy"]');
+            await page.waitForSelector('[data-test-id="item-test"]');
+            await page.click('[data-test-id="item-test"]');
+            await page.waitForSelector('[data-test-id="item-test3"]');
+            await page.click('[data-test-id="item-test3"]');
+            await page.waitForSelector('[data-test-id="drive"]');
+            await page.click('[data-test-id="drive"]', { button: 'right' });
+            await page.waitForSelector('[data-test-id="contextmenu-Paste"]');
+            await page.click('[data-test-id="contextmenu-Paste"]');
+            const newFolder = await page.waitForSelector(
+                '[data-test-id="item-test3"]'
+            );
+            expect(newFolder).not.toBe(undefined);
+            await page.waitForSelector('[data-test-id="item-test3"]');
+            await page.click('[data-test-id="item-test3"]');
+            const containedFile = await page.waitForSelector(
+                '[data-test-id="file-test.txt"]'
+            );
+            expect(containedFile).not.toBe(undefined);
         });
 
         test('should be able to delete a folder with right click', async () => {
@@ -211,7 +272,7 @@ describe('contextMenu', () => {
             await page.waitForSelector('[data-test-id="header"]');
             const files = await page.evaluate(() =>
                 Array.from(
-                    document.querySelectorAll('[data-test-id="file-label"]'),
+                    document.querySelectorAll('[data-test-id="item-label"]'),
                     (el) => el.innerText
                 )
             );

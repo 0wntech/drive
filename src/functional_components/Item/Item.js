@@ -42,7 +42,7 @@ const MyItem = ({
                     </div>
                 </div>
                 <div className={styles.labelContainer}>
-                    <div className={styles.label}>
+                    <div className={styles.label} data-test-id={'item-label'}>
                         {decodeURIComponent(item)}
                     </div>
                 </div>
