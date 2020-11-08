@@ -1,6 +1,6 @@
 {
     "baseUrl": "http://localhost:3001/",
-    "timeout": 20000,
+    "timeout": 30000,
     "rootUrl": "https://lalatest.solidcommunity.net/",
     "rootFolder": {
         "folders": [

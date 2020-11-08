@@ -8,8 +8,8 @@ module.exports = async function globalTeardown(globalConfig) {
     await teardownPuppeteer(globalConfig);
     // Your global teardown
     const podClient = new PodClient();
-    await auth.login();
-    podClient.fetcher_fetch = auth.fetch;
+    await login();
+    podClient.fetcher._fetch = auth.fetch;
     await cleanUp(podClient);
     console.log('Finished teardown...');
 };

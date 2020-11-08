@@ -89,6 +89,41 @@ describe('contextMenu', () => {
             expect(newFile).not.toBe(undefined);
         });
 
+        test('should be able to copy an image with right click', async () => {
+            expect.assertions(3);
+            const page = await initPage(browser, config);
+            await page.goto(config.baseUrl + 'home');
+            await page.waitForSelector('[data-test-id="file-favicon.ico"]');
+            await page.click('[data-test-id="file-favicon.ico"]', {
+                button: 'right',
+            });
+            await page.waitForSelector('[data-test-id="contextmenu-Copy"]');
+            await page.click('[data-test-id="contextmenu-Copy"]');
+            await page.waitForSelector('[data-test-id="item-test"]');
+            await page.click('[data-test-id="item-test"]');
+            await page.waitForSelector('[data-test-id="drive"]');
+            await page.click('[data-test-id="drive"]', { button: 'right' });
+            await page.waitForSelector('[data-test-id="contextmenu-Paste"]');
+            await page.click('[data-test-id="contextmenu-Paste"]');
+            const newFile = await page.waitForSelector(
+                '[data-test-id="file-favicon.ico"]'
+            );
+            expect(newFile).not.toBe(undefined);
+            await page.click('[data-test-id="file-favicon.ico"]');
+            await page.waitForSelector('[data-test-id="header"]');
+            const header = await page.$eval(
+                '[data-test-id="header"]',
+                (el) => el.innerHTML
+            );
+            expect(header).toBe('favicon.ico');
+
+            // click image
+            const img = await page.waitForSelector(
+                'img[data-test-id="file-image"]'
+            );
+            expect(img).not.toBe(undefined);
+        });
+
         test('should be able to delete a file with right click', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
@@ -224,7 +259,7 @@ describe('contextMenu', () => {
             await page.click('[data-test-id="create-resource-submit"]');
             await page.waitForSelector('[data-test-id="file-test.txt"]');
 
-            //navigate home
+            // navigate home
             await page.waitForSelector('[data-test-id="breadcrumb-Home"]');
             await page.click('[data-test-id="breadcrumb-Home"]');
 
