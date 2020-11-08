@@ -34,6 +34,7 @@ describe('ContactListItem', () => {
 
         const wrapper = shallow(
             <ContactListItem
+                removable
                 contact={contact}
                 webId={webId}
                 className={className}
@@ -54,6 +55,7 @@ describe('ContactListItem', () => {
 
         const wrapper = shallow(
             <ContactListItem
+                removable
                 contact={contact}
                 webId={webId}
                 className={className}
@@ -74,6 +76,7 @@ describe('ContactListItem', () => {
 
         const wrapper = shallow(
             <ContactListItem
+                removable
                 contact={contact}
                 webId={webId}
                 className={className}

@@ -20,7 +20,8 @@ export default function RenameWindow({
         placeholder: cleanPlaceholder,
     } = utils.getSuffixAndPlaceholder(placeholder);
 
-    const allow = newName && utils.allowFileName(newName, currentItem, fileSuffix);
+    const allow =
+        newName && utils.allowFileName(newName, currentItem, fileSuffix);
 
     return (
         <Window
@@ -38,6 +39,7 @@ export default function RenameWindow({
                     Please only use valid characters (A-z, 0-9)
                 </p>
                 <input
+                    data-test-id="rename-resource-input"
                     autoFocus
                     className={styles.input}
                     value={newName}
@@ -62,6 +64,7 @@ export default function RenameWindow({
                     size="lg"
                 />
                 <ActionButton
+                    dataId="rename-resource-submit"
                     onClick={() => {
                         if (allow) {
                             onSubmit(newName);

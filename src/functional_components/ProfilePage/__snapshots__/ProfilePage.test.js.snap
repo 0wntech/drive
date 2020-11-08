@@ -8,19 +8,14 @@ exports[`ProfilePage ProfilePage Snapshot matches the snapshot 1`] = `
   onPhotoChange={[Function]}
   renderButtons={[Function]}
   updateUserData={[Function]}
-  updatingProfile={false}
   user={
     Object {
       "bio": "This is bens Bio!",
-      "emails": Array [
-        "ben.test@owntech.de",
-      ],
+      "emails": "ben.test@owntech.de",
       "job": "Software Engineer",
       "name": "Ben",
       "picture": "https://images-na.ssl-images-amazon.com/images/I/81-yKbVND-L._SY355_.png",
-      "telephones": Array [
-        "0177313131",
-      ],
+      "telephones": "0177313131",
       "webId": "https://bejow.owntech.de/profile/card#me",
     }
   }

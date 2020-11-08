@@ -1,18 +1,9 @@
-const config = require('./testConfig.json');
-require('dotenv').config();
-
-// config
-const initPage = async (browser) => {
-    const timeout = process.env.DRIVE_TIMEOUT || config.timeout;
-    jest.setTimeout(timeout);
-    const page = await browser.newPage();
-    await page.setDefaultNavigationTimeout(timeout);
-    return page;
-};
+const config = require('../testConfig.json');
+const { initPage } = require('../utils');
 
 describe('e2e edit profile', () => {
     it('should change profile data', async () => {
-        const page = await initPage(browser);
+        const page = await initPage(browser, config);
 
         await page.goto(config.baseUrl + 'home');
         await page.waitForSelector(
@@ -24,9 +15,7 @@ describe('e2e edit profile', () => {
         await page.waitForSelector('[data-test-id="name-input"]');
         const nameInput = await page.$('[data-test-id="name-input"]');
         await nameInput.click({ clickCount: 3 });
-        await page.type('[data-test-id="name-input"]', 'Tester', {
-            delay: 500,
-        });
+        await page.type('[data-test-id="name-input"]', 'Tester');
         await page.click('[data-test-id="edit-submit"]');
         await page.waitFor(500);
         await page.waitForSelector('[data-test-id="name"]');

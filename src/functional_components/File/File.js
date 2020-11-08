@@ -36,7 +36,7 @@ export default function File({
                     file={file}
                 />
                 <div className={styles.labelContainer}>
-                    <div className={styles.label}>
+                    <div className={styles.label} data-test-id={`file-label`}>
                         {decodeURIComponent(file.name)}
                     </div>
                 </div>

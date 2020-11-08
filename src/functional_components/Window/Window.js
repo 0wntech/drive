@@ -27,7 +27,12 @@ function Window({
         >
             <div className={classnames(styles.container, containerClassName)}>
                 <div className={styles.head}>
-                    <span className={styles.title}>{windowName}</span>
+                    <span
+                        className={styles.title}
+                        data-test-id={`window-${windowName.replace(' ', '-')}`}
+                    >
+                        {windowName}
+                    </span>
                     <X
                         className={styles.close}
                         preserveAspectRatio="none"

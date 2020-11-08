@@ -26,6 +26,7 @@ export default function CreateWindow({
             <div>
                 <p>{info}</p>
                 <input
+                    data-test-id="create-resource-input"
                     className={styles.input}
                     value={value}
                     onChange={(event) => setValue(event.target.value)}
@@ -42,6 +43,7 @@ export default function CreateWindow({
                     size="lg"
                 />
                 <ActionButton
+                    dataId="create-resource-submit"
                     className={styles.button}
                     onClick={() => {
                         onSubmit(value);

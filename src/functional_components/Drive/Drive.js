@@ -249,7 +249,7 @@ const Drive = ({
                 drive
                 id="drive contextmenu"
             >
-                <div className={styles.container}>
+                <div className={styles.container} data-test-id="drive">
                     <Windows />
                     {currentPath &&
                     currentItem &&

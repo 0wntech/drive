@@ -37,6 +37,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
   >
     <div
       className="container"
+      data-test-id="drive"
     >
       <UNDEFINED />
       <div>

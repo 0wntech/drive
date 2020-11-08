@@ -3,6 +3,7 @@
 exports[`ContactListItem should render correctly 1`] = `
 <div
   className="container test"
+  onClick={[Function]}
 >
   <div
     className="imageContainer"
@@ -20,54 +21,11 @@ exports[`ContactListItem should render correctly 1`] = `
   </div>
   <div
     className="nameContainer"
-    onClick={[Function]}
   >
     Ludwig Faust Schubert
   </div>
   <div
     className="iconContainer added"
-  >
-    <svg
-      fill="none"
-      height={28}
-      onClick={[Function]}
-      width={29}
-    >
-      <ellipse
-        cx={14.74}
-        cy={13.901}
-        fill="#36A510"
-        rx={13.948}
-        ry={13.901}
-      />
-      <path
-        d="M22.901 14c0 .6-.402 1-1.005 1h-6.03v6c0 .6-.402 1-1.005 1-.603 0-1.005-.4-1.005-1v-6h-6.03c-.602 0-1.004-.4-1.004-1s.402-1 1.005-1h6.03V7c0-.6.401-1 1.004-1s1.005.4 1.005 1v6h6.03c.603 0 1.005.4 1.005 1z"
-        fill="#fff"
-      />
-      <mask
-        height={16}
-        id="add_svg__a"
-        maskUnits="userSpaceOnUse"
-        width={17}
-        x={6}
-        y={6}
-      >
-        <path
-          d="M22.901 14c0 .6-.402 1-1.005 1h-6.03v6c0 .6-.402 1-1.005 1-.603 0-1.005-.4-1.005-1v-6h-6.03c-.602 0-1.004-.4-1.004-1s.402-1 1.005-1h6.03V7c0-.6.401-1 1.004-1s1.005.4 1.005 1v6h6.03c.603 0 1.005.4 1.005 1z"
-          fill="#fff"
-        />
-      </mask>
-      <g
-        mask="url(#add_svg__a)"
-      >
-        <path
-          clipRule="evenodd"
-          d="M2.802 2h24.119v24H2.802V2z"
-          fill="#fff"
-          fillRule="evenodd"
-        />
-      </g>
-    </svg>
-  </div>
+  />
 </div>
 `;

@@ -5,6 +5,7 @@ import styles from './FileEditor.module.scss';
 export const FileEditor = ({ value, onChange, placeholder, edit }) => {
     return (
         <textarea
+            data-test-id="file-editor"
             autoFocus
             className={classNames(styles.editor, {
                 [styles.enabled]: edit,

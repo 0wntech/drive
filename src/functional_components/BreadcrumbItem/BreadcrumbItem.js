@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 function BreadcrumbItem({ onClick, label, seperator }) {
     return (
         <div onClick={onClick} className={styles.container}>
-            <div className={styles.breadcrumb}>{label}</div>
+            <div
+                className={styles.breadcrumb}
+                data-test-id={`breadcrumb-${label}`}
+            >
+                {label}
+            </div>
             {seperator ? <div className={styles.seperator}>/</div> : null}
         </div>
     );

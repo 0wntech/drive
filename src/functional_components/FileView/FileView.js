@@ -143,36 +143,40 @@ export const FileView = ({
         </div>
     );
 
-    const toolbarRight = currentItemAccessControl &&
+    const toolbarRight = ((currentItemAccessControl &&
         currentItemAccessControl.find(
             (entity) =>
                 entity.webId === webId &&
                 entity.access.includes(ns().acl('Write'))
-        ) && (
-            <div className={styles.editIconWrapper}>
-                {isEditable ? (
-                    <div className={styles.editButtons}>
-                        <SvgX
-                            viewBox="0 0 32 32"
-                            onClick={onCancel}
-                            className={styles.icon}
-                        />{' '}
-                        <SvgCheck
-                            viewBox="0 0 32 32"
-                            className={styles.icon}
-                            onClick={onSubmit}
-                        />
-                    </div>
-                ) : (
-                    <Edit
-                        viewBox="0 0 24 24"
-                        width="100%"
+        )) ||
+        id === url.parse(webId).host) && (
+        <div className={styles.editIconWrapper}>
+            {isEditable ? (
+                <div className={styles.editButtons}>
+                    <SvgX
+                        data-test-id="cancel-edit-file"
+                        viewBox="0 0 32 32"
+                        onClick={onCancel}
                         className={styles.icon}
-                        onClick={() => setEditable(!isEditable)}
+                    />{' '}
+                    <SvgCheck
+                        data-test-id="save-file"
+                        viewBox="0 0 32 32"
+                        className={styles.icon}
+                        onClick={onSubmit}
                     />
-                )}
-            </div>
-        );
+                </div>
+            ) : (
+                <Edit
+                    data-test-id="edit-file"
+                    viewBox="0 0 24 24"
+                    width="100%"
+                    className={styles.icon}
+                    onClick={() => setEditable(!isEditable)}
+                />
+            )}
+        </div>
+    );
 
     return (
         <Layout
@@ -221,12 +225,14 @@ export const FileView = ({
                             className={classNames(styles.file, {
                                 [styles.enabled]: isEditable,
                             })}
+                            data-test-id="file-body"
                         >
                             {newBody ? newBody : 'Empty'}
                         </div>
                     )
                 ) : (
                     <img
+                        data-test-id="file-image"
                         src={currentItem.url}
                         alt="file"
                         className={styles.image}
