@@ -128,7 +128,7 @@ describe('driveMenu', () => {
             expect(img).not.toBe(undefined);
         });
 
-        test('should be able to delete a file with right click', async () => {
+        test('should be able to delete a file with drive menu', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
             await page.waitForSelector('[data-test-id="file-test3.txt"]');
@@ -156,7 +156,7 @@ describe('driveMenu', () => {
     });
 
     describe('folder options', () => {
-        test('should be able to create a new folder with right click', async () => {
+        test('should be able to create a new folder with drive menu', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
             await page.waitForSelector('[data-test-id="drive"]');
@@ -184,7 +184,7 @@ describe('driveMenu', () => {
             expect(newFolder).not.toBe(undefined);
         });
 
-        test('should be able to rename a folder with right click', async () => {
+        test('should be able to rename a folder with drive menu', async () => {
             expect.assertions(2);
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
@@ -218,7 +218,7 @@ describe('driveMenu', () => {
             expect(files.find((file) => file === 'test2')).toBe(undefined);
         });
 
-        test('should be able to copy a folder with right click', async () => {
+        test('should be able to copy a folder with drive menu', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
             await page.waitForSelector('[data-test-id="item-test3"]');
@@ -306,7 +306,7 @@ describe('driveMenu', () => {
             expect(containedFile).not.toBe(undefined);
         });
 
-        test('should be able to delete a folder with right click', async () => {
+        test('should be able to delete a folder with drive menu', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
             await page.waitForSelector('[data-test-id="item-test3"]');
