@@ -8,14 +8,14 @@ describe('e2e edit turtle file', () => {
         // init & navigate
         const page = await initPage(browser, config);
         await page.goto(config.baseUrl + 'home');
-        await page.waitForSelector('[data-test-id="file-test.ttl"]');
-        await page.click('[data-test-id="file-test.ttl"]');
+        await page.waitForSelector('[data-test-id="file-testFile.ttl"]');
+        await page.click('[data-test-id="file-testFile.ttl"]');
         await page.waitForSelector('[data-test-id="header"]');
         const header = await page.$eval(
             '[data-test-id="header"]',
             (e) => e.innerHTML
         );
-        expect(header).toBe('test.ttl');
+        expect(header).toBe('testFile.ttl');
 
         // enable edit
         await page.waitForSelector('[data-test-id="edit-file"]');

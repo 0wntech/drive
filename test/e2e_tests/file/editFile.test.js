@@ -8,14 +8,14 @@ describe('e2e edit test file', () => {
         // init and navigate
         const page = await initPage(browser, config);
         await page.goto(config.baseUrl + 'home');
-        await page.waitForSelector('[data-test-id="file-test.txt"]');
-        await page.click('[data-test-id="file-test.txt"]');
+        await page.waitForSelector('[data-test-id="file-testFile.txt"]');
+        await page.click('[data-test-id="file-testFile.txt"]');
         await page.waitForSelector('[data-test-id="header"]');
         const header = await page.$eval(
             '[data-test-id="header"]',
             (e) => e.innerHTML
         );
-        expect(header).toBe('test.txt');
+        expect(header).toBe('testFile.txt');
 
         // edit
         await page.waitForSelector('[data-test-id="edit-file"]');

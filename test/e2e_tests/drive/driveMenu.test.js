@@ -19,14 +19,14 @@ describe('driveMenu', () => {
             );
             await page.type(
                 '[data-test-id="create-resource-input"]',
-                'test2.txt'
+                'driveMenu.txt'
             );
             await page.waitForSelector(
                 '[data-test-id="create-resource-submit"]'
             );
             await page.click('[data-test-id="create-resource-submit"]');
             const newFile = await page.waitForSelector(
-                '[data-test-id="file-test2.txt"]'
+                '[data-test-id="file-driveMenu.txt"]'
             );
             expect(newFile).not.toBe(undefined);
         });
@@ -35,8 +35,8 @@ describe('driveMenu', () => {
             expect.assertions(2);
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
-            await page.waitForSelector('[data-test-id="file-test2.txt"]');
-            await page.click('[data-test-id="file-test2.txt"]', {
+            await page.waitForSelector('[data-test-id="file-driveMenu.txt"]');
+            await page.click('[data-test-id="file-driveMenu.txt"]', {
                 delay: 1000,
             });
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
@@ -49,14 +49,14 @@ describe('driveMenu', () => {
             );
             await page.type(
                 '[data-test-id="rename-resource-input"]',
-                'test3.txt'
+                'driveMenu2.txt'
             );
             await page.waitForSelector(
                 '[data-test-id="rename-resource-submit"]'
             );
             await page.click('[data-test-id="rename-resource-submit"]');
             const newFile = await page.waitForSelector(
-                '[data-test-id="file-test3.txt"]'
+                '[data-test-id="file-driveMenu2.txt"]'
             );
             expect(newFile).not.toBe(undefined);
             const files = await page.evaluate(() =>
@@ -65,28 +65,30 @@ describe('driveMenu', () => {
                     (el) => el.innerText
                 )
             );
-            expect(files.find((file) => file === 'test2.txt')).toBe(undefined);
+            expect(files.find((file) => file === 'driveMenu.txt')).toBe(
+                undefined
+            );
         });
 
         test('should be able to copy a file with drive menu', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
-            await page.waitForSelector('[data-test-id="file-test3.txt"]');
-            await page.click('[data-test-id="file-test3.txt"]', {
+            await page.waitForSelector('[data-test-id="file-driveMenu2.txt"]');
+            await page.click('[data-test-id="file-driveMenu2.txt"]', {
                 delay: 1000,
             });
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
             await page.click('[data-test-id="toolbar-buttons-more"]');
             await page.waitForSelector('[data-test-id="drivemenu-Copy"]');
             await page.click('[data-test-id="drivemenu-Copy"]');
-            await page.waitForSelector('[data-test-id="item-test"]');
-            await page.click('[data-test-id="item-test"]');
+            await page.waitForSelector('[data-test-id="item-driveMenu"]');
+            await page.click('[data-test-id="item-driveMenu"]');
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
             await page.click('[data-test-id="toolbar-buttons-more"]');
             await page.waitForSelector('[data-test-id="drivemenu-Paste"]');
             await page.click('[data-test-id="drivemenu-Paste"]');
             const newFile = await page.waitForSelector(
-                '[data-test-id="file-test3.txt"]'
+                '[data-test-id="file-driveMenu2.txt"]'
             );
             expect(newFile).not.toBe(undefined);
         });
@@ -103,8 +105,8 @@ describe('driveMenu', () => {
             await page.click('[data-test-id="toolbar-buttons-more"]');
             await page.waitForSelector('[data-test-id="drivemenu-Copy"]');
             await page.click('[data-test-id="drivemenu-Copy"]');
-            await page.waitForSelector('[data-test-id="item-test"]');
-            await page.click('[data-test-id="item-test"]');
+            await page.waitForSelector('[data-test-id="item-driveMenu"]');
+            await page.click('[data-test-id="item-driveMenu"]');
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
             await page.click('[data-test-id="toolbar-buttons-more"]');
             await page.waitForSelector('[data-test-id="drivemenu-Paste"]');
@@ -131,8 +133,8 @@ describe('driveMenu', () => {
         test('should be able to delete a file with drive menu', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
-            await page.waitForSelector('[data-test-id="file-test3.txt"]');
-            await page.click('[data-test-id="file-test3.txt"]', {
+            await page.waitForSelector('[data-test-id="file-driveMenu2.txt"]');
+            await page.click('[data-test-id="file-driveMenu2.txt"]', {
                 delay: 1000,
             });
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
@@ -151,7 +153,9 @@ describe('driveMenu', () => {
                     (el) => el.innerText
                 )
             );
-            expect(files.find((file) => file === 'test3.txt')).toBe(undefined);
+            expect(files.find((file) => file === 'driveMenu2.txt')).toBe(
+                undefined
+            );
         });
     });
 
@@ -173,13 +177,16 @@ describe('driveMenu', () => {
             await page.waitForSelector(
                 '[data-test-id="create-resource-input"]'
             );
-            await page.type('[data-test-id="create-resource-input"]', 'test2');
+            await page.type(
+                '[data-test-id="create-resource-input"]',
+                'driveMenu'
+            );
             await page.waitForSelector(
                 '[data-test-id="create-resource-submit"]'
             );
             await page.click('[data-test-id="create-resource-submit"]');
             const newFolder = await page.waitForSelector(
-                '[data-test-id="item-test2"]'
+                '[data-test-id="item-driveMenu"]'
             );
             expect(newFolder).not.toBe(undefined);
         });
@@ -188,8 +195,8 @@ describe('driveMenu', () => {
             expect.assertions(2);
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
-            await page.waitForSelector('[data-test-id="item-test2"]');
-            await page.click('[data-test-id="item-test2"]', {
+            await page.waitForSelector('[data-test-id="item-driveMenu"]');
+            await page.click('[data-test-id="item-driveMenu"]', {
                 delay: 1000,
             });
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
@@ -200,13 +207,16 @@ describe('driveMenu', () => {
             await page.waitForSelector(
                 '[data-test-id="rename-resource-input"]'
             );
-            await page.type('[data-test-id="rename-resource-input"]', 'test3');
+            await page.type(
+                '[data-test-id="rename-resource-input"]',
+                'driveMenu2'
+            );
             await page.waitForSelector(
                 '[data-test-id="rename-resource-submit"]'
             );
             await page.click('[data-test-id="rename-resource-submit"]');
             const newFolder = await page.waitForSelector(
-                '[data-test-id="item-test3"]'
+                '[data-test-id="item-driveMenu2"]'
             );
             expect(newFolder).not.toBe(undefined);
             const files = await page.evaluate(() =>
@@ -215,102 +225,48 @@ describe('driveMenu', () => {
                     (el) => el.innerText
                 )
             );
-            expect(files.find((file) => file === 'test2')).toBe(undefined);
-        });
-
-        test('should be able to copy a folder with drive menu', async () => {
-            const page = await initPage(browser, config);
-            await page.goto(config.baseUrl + 'home');
-            await page.waitForSelector('[data-test-id="item-test3"]');
-            await page.click('[data-test-id="item-test3"]', {
-                delay: 1000,
-            });
-            await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
-            await page.click('[data-test-id="toolbar-buttons-more"]');
-            await page.waitForSelector('[data-test-id="drivemenu-Copy"]');
-            await page.click('[data-test-id="drivemenu-Copy"]');
-            await page.waitForSelector('[data-test-id="item-test"]');
-            await page.click('[data-test-id="item-test"]');
-            await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
-            await page.click('[data-test-id="toolbar-buttons-more"]');
-            await page.waitForSelector('[data-test-id="drivemenu-Paste"]');
-            await page.click('[data-test-id="drivemenu-Paste"]');
-            const newFolder = await page.waitForSelector(
-                '[data-test-id="item-test3"]'
-            );
-            expect(newFolder).not.toBe(undefined);
+            expect(files.find((file) => file === 'driveMenu')).toBe(undefined);
         });
 
         test('should be able to copy a folder with its contents by using the context menu', async () => {
-            expect.assertions(2);
+            expect.assertions(3);
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
-            await page.waitForSelector('[data-test-id="item-test3"]');
-            await page.click('[data-test-id="item-test3"]');
-            await page.waitForSelector('[data-test-id="drive"]');
-            await page.click('[data-test-id="drive"]', {
-                button: 'right',
-            });
-
-            // create nested file
-            await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
-            await page.click('[data-test-id="toolbar-buttons-more"]');
-            await page.waitForSelector(
-                '[data-test-id="drivemenu-Create-File"]'
-            );
-            await page.click('[data-test-id="drivemenu-Create-File"]');
-            await page.waitForSelector('[data-test-id="window-Create-File"]');
-            await page.waitForSelector(
-                '[data-test-id="create-resource-input"]'
-            );
-            await page.type(
-                '[data-test-id="create-resource-input"]',
-                'test.txt'
-            );
-            await page.waitForSelector(
-                '[data-test-id="create-resource-submit"]'
-            );
-            await page.click('[data-test-id="create-resource-submit"]');
-            await page.waitForSelector('[data-test-id="file-test.txt"]');
-
-            // navigate home
-            await page.waitForSelector('[data-test-id="breadcrumb-Home"]');
-            await page.click('[data-test-id="breadcrumb-Home"]');
-
-            // copy
-            await page.waitForSelector('[data-test-id="item-test3"]');
-            await page.click('[data-test-id="item-test3"]', {
+            await page.waitForSelector('[data-test-id="item-driveMenu2"]');
+            await page.click('[data-test-id="item-driveMenu2"]', {
                 delay: 1000,
             });
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
             await page.click('[data-test-id="toolbar-buttons-more"]');
             await page.waitForSelector('[data-test-id="drivemenu-Copy"]');
             await page.click('[data-test-id="drivemenu-Copy"]');
-            await page.waitForSelector('[data-test-id="item-test"]');
-            await page.click('[data-test-id="item-test"]');
-            await page.waitForSelector('[data-test-id="item-test3"]');
-            await page.click('[data-test-id="item-test3"]');
+            await page.waitForSelector('[data-test-id="item-driveMenu2"]');
+            await page.click('[data-test-id="item-driveMenu2"]');
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
             await page.click('[data-test-id="toolbar-buttons-more"]');
             await page.waitForSelector('[data-test-id="drivemenu-Paste"]');
             await page.click('[data-test-id="drivemenu-Paste"]');
-            const newFolder = await page.waitForSelector(
-                '[data-test-id="item-test3"]'
+            const copiedFolder = await page.waitForSelector(
+                '[data-test-id="item-driveMenu2"]'
             );
-            expect(newFolder).not.toBe(undefined);
-            await page.waitForSelector('[data-test-id="item-test3"]');
-            await page.click('[data-test-id="item-test3"]');
-            const containedFile = await page.waitForSelector(
-                '[data-test-id="file-test.txt"]'
+            expect(copiedFolder).not.toBe(undefined);
+            await copiedFolder.click();
+            const copiedNestedFolder = await page.waitForSelector(
+                '[data-test-id="item-driveMenu"]'
             );
-            expect(containedFile).not.toBe(undefined);
+            expect(copiedNestedFolder).not.toBe(undefined);
+            await copiedNestedFolder.click();
+            const copiedNestedFile = await page.waitForSelector(
+                '[data-test-id="file-driveMenu.txt"]'
+            );
+            expect(copiedNestedFile).not.toBe(undefined);
         });
 
         test('should be able to delete a folder with drive menu', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'home');
-            await page.waitForSelector('[data-test-id="item-test3"]');
-            await page.click('[data-test-id="item-test3"]', {
+            await page.waitForSelector('[data-test-id="item-driveMenu2"]');
+            await page.click('[data-test-id="item-driveMenu2"]', {
                 delay: 1000,
             });
             await page.waitForSelector('[data-test-id="toolbar-buttons-more"]');
@@ -329,7 +285,7 @@ describe('driveMenu', () => {
                     (el) => el.innerText
                 )
             );
-            expect(files.find((file) => file === 'test3')).toBe(undefined);
+            expect(files.find((file) => file === 'driveMenu2')).toBe(undefined);
         });
     });
 });
