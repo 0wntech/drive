@@ -41,8 +41,11 @@ export const ProfileView = ({
     const contactRecommendationsToDisplay =
         contactRecommendations &&
         contactRecommendations
-            .filter((recommended) =>
-                !contacts.find((contact) => contact.webId === recommended.webId)
+            .filter(
+                (recommended) =>
+                    !contacts.find(
+                        (contact) => contact.webId === recommended.webId
+                    )
             )
             .slice(0, displayedRows * 5);
 
@@ -111,6 +114,7 @@ export const ProfileView = ({
                                     editable={editState}
                                     value={userData.bio}
                                     placeholder="Bio"
+                                    dataKey="bio"
                                     setValue={(value) =>
                                         updateUserData('bio', value)
                                     }
