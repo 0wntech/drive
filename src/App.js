@@ -42,8 +42,11 @@ export const App = ({
             login();
         } else if (user && user.storage) {
             indexStorage(user.storage);
-            console.info(contactRecommendations, loadContactRecommendations);
-            if (!contactRecommendations && !loadContactRecommendations) {
+            if (
+                user.contacts &&
+                !contactRecommendations &&
+                !loadContactRecommendations
+            ) {
                 fetchContactRecommendations(webId);
             }
         }

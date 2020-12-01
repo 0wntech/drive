@@ -24,6 +24,7 @@ const ContactListItem = ({
         <div
             className={classNames(styles.container, className)}
             onClick={() => onClick(contact)}
+            data-test-id={`contact-${getUsernameFromWebId(contact.webId)}`}
         >
             <div
                 className={styles.imageContainer}
@@ -55,6 +56,9 @@ const ContactListItem = ({
                 {removable &&
                     (wasAdded ? (
                         <Delete
+                            data-test-id={`delete-contact-${getUsernameFromWebId(
+                                contact.webId
+                            )}`}
                             onClick={(e) => {
                                 removeContact(webId, contact);
                                 if (wasAdded) {
@@ -65,6 +69,9 @@ const ContactListItem = ({
                         />
                     ) : (
                         <Add
+                            data-test-id={`add-contact-${getUsernameFromWebId(
+                                contact.webId
+                            )}`}
                             onClick={(e) => {
                                 addContact(webId, contact);
                                 if (!wasAdded) {

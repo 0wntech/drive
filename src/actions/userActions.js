@@ -15,6 +15,7 @@ import {
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
+    FETCH_CONTACTS_SUCCESS,
 } from './types';
 import User from 'ownuser';
 import { Graphs } from 'webql-client';
@@ -83,7 +84,6 @@ export const fetchUser = (webId) => {
             .load()
             .then((graph) => {
                 const user = graph['#me'];
-                console.log(user);
                 const profile = {
                     name: user['foaf#name'],
                     bio: user['vcard#note'],
@@ -118,12 +118,27 @@ export const fetchUser = (webId) => {
                           ]
                         : undefined,
                     webId: user.id,
+                    contacts: user['foaf#knows'],
                 };
                 dispatch({
                     type: FETCH_USER_SUCCESS,
                     payload: profile,
                 });
-                dispatch(fetchContactProfiles(user['foaf#knows'], webId));
+                if (user['foaf#knows']) {
+                    dispatch(
+                        fetchContactProfiles(
+                            Array.isArray(user['foaf#knows'])
+                                ? user['foaf#knows']
+                                : [user['foaf#knows']],
+                            webId
+                        )
+                    );
+                } else {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: [],
+                    });
+                }
             })
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAILURE, payload: error })

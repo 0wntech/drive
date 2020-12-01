@@ -9,6 +9,7 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
+      data-test-id="contact-ludwigschubert"
       onClick={[Function]}
     >
       <div
@@ -40,6 +41,7 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
+      data-test-id="contact-bejow"
       onClick={[Function]}
     >
       <div
@@ -71,6 +73,7 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
+      data-test-id="contact-bejowe"
       onClick={[Function]}
     >
       <div

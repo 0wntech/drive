@@ -3,6 +3,7 @@
 exports[`ContactListItem should render correctly 1`] = `
 <div
   className="container test"
+  data-test-id="contact-ludwigschubert"
   onClick={[Function]}
 >
   <div

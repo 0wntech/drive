@@ -60,5 +60,6 @@ export const card = {
         storage: undefined,
         telephones: ['0176322291'],
         webId: 'https://bejow.owntech.de/profile/card#me',
+        contacts: ['https://ludwigschubert.solid.community/profile/card#me'],
     },
 };

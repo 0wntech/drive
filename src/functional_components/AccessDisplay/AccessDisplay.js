@@ -37,7 +37,10 @@ export const AccessDisplay = ({
                             />
                         ) : (
                             <DefaultIcon
-                                className={classNames(styles.defaultIcon, styles.agentIcon)}
+                                className={classNames(
+                                    styles.defaultIcon,
+                                    styles.agentIcon
+                                )}
                                 initials={getInitialsFromUser(entity)}
                             />
                         )
@@ -53,7 +56,7 @@ export const AccessDisplay = ({
                 )}
             </>
         ) : (
-            <WarningIcon />
+            <WarningIcon aria-label="You do not have the permission to control this resource" />
         )}
     </div>
 );

@@ -1,4 +1,4 @@
-import { getErrorsFromErrorState, convertArrayToString } from './helper';
+import { getErrorsFromErrorState } from './helper';
 
 describe('Helper Tests', () => {
     describe('getErrorsFromErrorState', () => {
@@ -30,22 +30,6 @@ describe('Helper Tests', () => {
             expect(JSON.stringify(getErrorsFromErrorState(errorObject))).toBe(
                 JSON.stringify(expected)
             );
-        });
-    });
-    describe('convertArrayToString', () => {
-        it('converts an array to a string', () => {
-            const array = ['Put', 'Me', 'Together'];
-            const expected = 'Put\nMe\nTogether';
-            expect(convertArrayToString(array)).toBe(expected);
-        });
-        it('converts an empty array to an empty string', () => {
-            const array = [];
-            const expected = '';
-            expect(convertArrayToString(array)).toBe(expected);
-        });
-        it('returns undefined if object is passed', () => {
-            const array = { 1: 'Put', 2: 'Me', 3: 'Together' };
-            expect(convertArrayToString(array)).toBeUndefined();
         });
     });
 });

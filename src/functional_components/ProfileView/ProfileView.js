@@ -43,8 +43,12 @@ export const ProfileView = ({
         contactRecommendations
             .filter(
                 (recommended) =>
-                    !contacts.find(
-                        (contact) => contact.webId === recommended.webId
+                    !contacts ||
+                    !(
+                        user.webId === webId &&
+                        contacts.find(
+                            (contact) => contact.webId === recommended.webId
+                        )
                     )
             )
             .slice(0, displayedRows * 5);
@@ -135,6 +139,7 @@ export const ProfileView = ({
                                 user.webId !== webId &&
                                 (contactStatus || isContact ? (
                                     <ActionButton
+                                        dataId="delete-contact"
                                         label="Remove from Contacts"
                                         color="white"
                                         onClick={() => {
@@ -148,6 +153,7 @@ export const ProfileView = ({
                                     />
                                 ) : (
                                     <ActionButton
+                                        dataId="add-contact"
                                         label="Add to Contacts"
                                         color="green"
                                         className={classNames(
@@ -222,7 +228,7 @@ export const ProfileView = ({
                         </div>
                     )}
                     <div className={styles.contactsContainer}>
-                        {contacts && contacts.length > 0 && !editState && (
+                        {contacts && !editState && (
                             <div>
                                 <div className={styles.sectionLabel}>
                                     Contacts
@@ -236,7 +242,7 @@ export const ProfileView = ({
                                     isContact
                                     removable={user && user.webId === webId}
                                 />
-                                {contactRecommendations ? (
+                                {contactRecommendationsToDisplay.length > 0 ? (
                                     <>
                                         <div className={styles.sectionLabel}>
                                             People you might know
