@@ -1,8 +1,10 @@
-jest.mock('ownuser', () => jest.fn());
+jest.mock('webql-client', () => ({
+    Graphs: jest.fn(),
+}));
 
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import User from 'ownuser';
+import { Graphs } from 'webql-client';
 import {
     SET_WEBID,
     FETCH_USER,
@@ -20,15 +22,15 @@ const mockStore = configureMockStore(middlewares);
 const sampleError = 'test error';
 
 const getProfileSuccess = {
-    getProfile: () => {
+    load: () => {
         return new Promise((resolve, reject) => {
-            resolve(card.data);
+            resolve({ ['#me']: card.data });
         });
     },
 };
 
 const getProfileFail = {
-    getProfile: () => {
+    load: () => {
         return new Promise((resolve, reject) => {
             reject(sampleError);
         });
@@ -51,11 +53,11 @@ describe('redux actions', () => {
     describe('async actions', () => {
         describe('fetchUser', () => {
             it('should create actions when fetching success', () => {
-                User.mockImplementation(() => getProfileSuccess);
-                const webId = 'https://bejow.owntech.de/profile/card';
+                Graphs.mockImplementation(() => getProfileSuccess);
+                const webId = 'https://bejow.owntech.de/profile/card#me';
                 const expextedActions = [
                     { type: FETCH_USER },
-                    { type: FETCH_USER_SUCCESS, payload: card.data },
+                    { type: FETCH_USER_SUCCESS, payload: card.user },
                     { type: FETCH_CONTACTS },
                 ];
                 const store = mockStore({ user: null });
@@ -64,8 +66,8 @@ describe('redux actions', () => {
                 });
             });
             it('should create actions when fetching fail', () => {
-                User.mockImplementation(() => getProfileFail);
-                const webId = 'https://bejow.owntech.de/profile/card';
+                Graphs.mockImplementation(() => getProfileFail);
+                const webId = 'https://bejow.owntech.de/profile/card#me';
 
                 const expextedActions = [
                     { type: FETCH_USER },

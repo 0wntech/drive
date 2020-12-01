@@ -44,7 +44,7 @@ describe('e2e edit profile', () => {
         expect(bio).toBe('Testing is life');
     });
 
-    it.only('should change email, phone, number and job', async () => {
+    it('should change email, phone, number and job', async () => {
         const page = await initPage(browser, config);
         await page.goto(config.baseUrl + 'profile');
         await page.waitForSelector('[data-test-id="edit"]');

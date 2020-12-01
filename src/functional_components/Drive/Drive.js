@@ -77,6 +77,7 @@ const Drive = ({
     const routeUrl =
         path && url.resolve((id && `https://${id}/`) ?? rootUrl, path ?? '');
     useEffect(() => {
+        const currentWebId = user && user.webId ? user.webId : webId;
         if (routeUrl && currentPath !== routeUrl && !loadCurrentItem) {
             if (id && !currentContactRootUrl) {
                 fetchContact(
@@ -99,11 +100,15 @@ const Drive = ({
             !loadUser &&
             (!currentItem || !currentItem.files)
         ) {
-            if (!currentPath && user.storage) {
+            if (!currentPath && user && user.storage) {
                 setCurrentPath(user.storage);
-            } else if (!currentPath && !user.storage && user.webId) {
-                setStorageUrl(getRootFromWebId(user.webId), user.webId);
-                setCurrentPath(getRootFromWebId(user.webId));
+            } else if (
+                !currentPath &&
+                !(user && user.storage) &&
+                currentWebId
+            ) {
+                setStorageUrl(getRootFromWebId(currentWebId), currentWebId);
+                setCurrentPath(getRootFromWebId(currentWebId));
             } else {
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
