@@ -19,12 +19,12 @@ exports[`ContactList should render correctly 1`] = `
       >
         <div
           className="image"
-          style={
-            Object {
-              "backgroundImage": "url('https://ludwigschubert.solid.community/profile/aa.jpeg')",
-            }
-          }
-        />
+        >
+          <img
+            onError={[Function]}
+            src="https://ludwigschubert.solid.community/profile/aa.jpeg"
+          />
+        </div>
       </div>
       <div
         className="nameContainer"
@@ -51,12 +51,12 @@ exports[`ContactList should render correctly 1`] = `
       >
         <div
           className="image"
-          style={
-            Object {
-              "backgroundImage": "url('https://bejow.solid.community/profile/meme_ben_gang.jpg')",
-            }
-          }
-        />
+        >
+          <img
+            onError={[Function]}
+            src="https://bejow.solid.community/profile/meme_ben_gang.jpg"
+          />
+        </div>
       </div>
       <div
         className="nameContainer"
@@ -83,12 +83,12 @@ exports[`ContactList should render correctly 1`] = `
       >
         <div
           className="image"
-          style={
-            Object {
-              "backgroundImage": "url('https://bejow.solid.community/profile/meme_ben_gang.jpg')",
-            }
-          }
-        />
+        >
+          <img
+            onError={[Function]}
+            src="https://bejow.solid.community/profile/meme_ben_gang.jpg"
+          />
+        </div>
       </div>
       <div
         className="nameContainer"

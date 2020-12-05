@@ -358,7 +358,6 @@ export const searchFile = (user, path) => {
         const searchPath = url.resolve(rootPath, path ?? '/');
         const fileClient = new PodClient();
         dispatch({ type: SEARCH_FILE });
-        console.debug(searchPath, 'tata');
         fileClient
             .deepRead(searchPath, { verbose: true })
             .then((index) => {

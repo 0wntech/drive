@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import styles from './ProfileView.module.scss';
 import Camera from '../../assets/svgIcons/Camera';
@@ -34,6 +34,11 @@ export const ProfileView = ({
     // eslint-disable-next-line no-unused-vars
     const { _, width } = useWindowDimension();
     const [contactStatus, setContactStatus] = useState(undefined);
+    const [profilePictureError, setProfilePictureError] = useState(undefined);
+
+    useEffect(() => {
+        setProfilePictureError(false);
+    }, [user]);
 
     handleError(error);
 
@@ -80,13 +85,15 @@ export const ProfileView = ({
                                     <Camera />
                                 </div>
                             ) : null}
-                            {user && user.picture ? (
-                                <div
-                                    className={styles.profileImage}
-                                    style={{
-                                        backgroundImage: `url('${user.picture}')`,
-                                    }}
-                                />
+                            {user && user.picture && !profilePictureError ? (
+                                <div className={styles.profileImage}>
+                                    <img
+                                        onError={() =>
+                                            setProfilePictureError(true)
+                                        }
+                                        src={user.picture}
+                                    />
+                                </div>
                             ) : (
                                 <DefaultIcon
                                     className={styles.defaultProfileImage}

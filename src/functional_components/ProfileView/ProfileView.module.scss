@@ -121,9 +121,14 @@ svg:hover {
     position: relative;
     width: 150px;
     height: 150px;
-    background-size: cover;
-    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     border-radius: 50%;
+    img {
+        width: 100%;
+    }
 }
 
 .defaultProfileImage {

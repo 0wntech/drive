@@ -13,14 +13,14 @@ module.exports = async function globalSetup(globalConfig) {
     const podClient = new PodClient();
     podClient.fetcher._fetch = auth.fetch;
     await cleanUp(podClient);
-    await podClient.create(
+    await podClient.createIfNotExist(
         config.rootUrl + 'driveMenu/driveMenu/driveMenu.txt'
     );
-    await podClient.create(
+    await podClient.createIfNotExist(
         config.rootUrl + 'contextMenu/contextMenu/contextMenu.txt'
     );
-    await podClient.create(config.rootUrl + 'testFolder/');
-    await podClient.create(config.rootUrl + 'testFile.txt');
-    await podClient.create(config.rootUrl + 'testFile.ttl');
+    await podClient.createIfNotExist(config.rootUrl + 'testFolder/');
+    await podClient.createIfNotExist(config.rootUrl + 'testFile.txt');
+    await podClient.createIfNotExist(config.rootUrl + 'testFile.ttl');
     console.log('Finished setup...');
 };

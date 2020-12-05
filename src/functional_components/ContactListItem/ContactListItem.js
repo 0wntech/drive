@@ -19,6 +19,7 @@ const ContactListItem = ({
     isContact,
 }) => {
     const [wasAdded, setWasAdded] = useState(isContact);
+    const [profilePictureError, setProfilePictureError] = useState(false);
     const initials = getInitialsFromUser(contact);
     return (
         <div
@@ -31,11 +32,13 @@ const ContactListItem = ({
                 onClick={() => onClick(contact)}
                 data-test-id="contact-picture"
             >
-                {contact.picture ? (
-                    <div
-                        className={styles.image}
-                        style={{ backgroundImage: `url('${contact.picture}')` }}
-                    />
+                {contact.picture && !profilePictureError ? (
+                    <div className={styles.image}>
+                        <img
+                            src={contact.picture}
+                            onError={() => setProfilePictureError(false)}
+                        />
+                    </div>
                 ) : (
                     <DefaultIcon
                         initials={initials}

@@ -10,11 +10,7 @@ import styles from './Navigation.module.scss';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import fileUtils from '../../utils/fileUtils';
 import { setCurrentPath, toggleSearchbar } from '../../actions/appActions';
-import {
-    fetchContact,
-    searchContact,
-    setCurrentContact,
-} from '../../actions/contactActions';
+import { fetchContact, setCurrentContact } from '../../actions/contactActions';
 import { navigate, getInitialsFromUser } from '../../utils/helper';
 import logo from '../../assets/icons/owndrive-logo.png';
 import {
@@ -28,8 +24,6 @@ import {
 } from '../../utils/url';
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import Search from '../../assets/svgIcons/Search';
-import useWindowDimension from '../../hooks/useWindowDimension';
-import { screen_l as screenL } from '../../styles/constants.scss';
 import FileIcon from '../../assets/icons/FileIconMd.png';
 import FolderIcon from '../../assets/icons/FolderMd.png';
 import FileIconSm from '../../assets/icons/FileIconSm.png';
@@ -40,7 +34,12 @@ const formatOptionLabel = ({ label, name, path, type, contact }, webId) => {
     path = path && url.parse(path);
     if (type === 'contact') {
         return (
-            <div className={styles.optionContainer}>
+            <div
+                className={styles.optionContainer}
+                data-test-id={`contact-search-${
+                    url.parse(contact.webId).hostname
+                }`}
+            >
                 <div className={styles.iconContainer}>
                     {contact.picture ? (
                         <div
@@ -105,7 +104,11 @@ const formatOptionLabel = ({ label, name, path, type, contact }, webId) => {
                         )}
                     </div>
                 ) : (
-                    <div>{path.host + path.pathname}</div>
+                    <div>
+                        {path.host === path.pathname + '/'
+                            ? path.pathname
+                            : path.host + path.pathname}
+                    </div>
                 )}
             </div>
         );
@@ -208,7 +211,6 @@ const Navigation = ({
             );
         }
     };
-    const { width } = useWindowDimension();
 
     const dropdownIndicator =
         (searchingContacts && !isAccessWindowVisible) || searchingFile ? (
@@ -221,8 +223,8 @@ const Navigation = ({
             <Search
                 {...{
                     viewBox: '0 0 24 24',
-                    width: width < screenL ? 24 : 30,
-                    height: width < screenL ? 24 : 30,
+                    width: 24,
+                    height: 24,
                 }}
             />
         );
@@ -316,19 +318,21 @@ const Navigation = ({
                     src={logo}
                 />
             </div>
-            {webId && <div className={styles.search}>
-                <SearchDropdown
-                    webId={webId}
-                    className={styles.searchDropdown}
-                    onChange={handleChange}
-                    placeholder="Search..."
-                    items={dropdownOptions}
-                    isSearchBarExpanded={isSearchBarExpanded}
-                    toggleSearchbar={toggleSearchbar}
-                    indicator={dropdownIndicator}
-                    formatOptionLabel={formatOptionLabel}
-                />
-            </div>}
+            {webId && (
+                <div className={styles.search}>
+                    <SearchDropdown
+                        webId={webId}
+                        className={styles.searchDropdown}
+                        onChange={handleChange}
+                        placeholder="Search..."
+                        items={dropdownOptions}
+                        isSearchBarExpanded={isSearchBarExpanded}
+                        toggleSearchbar={toggleSearchbar}
+                        indicator={dropdownIndicator}
+                        formatOptionLabel={formatOptionLabel}
+                    />
+                </div>
+            )}
             <NavbarMenu
                 resetError={resetError}
                 className={styles.menuWrapper}
@@ -358,7 +362,6 @@ export default connect(mapStateToProps, (dispatch) => ({
         {
             setCurrentPath,
             setCurrentContact,
-            searchContact,
             toggleSearchbar,
         },
         dispatch
