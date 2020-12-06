@@ -233,10 +233,10 @@ export const FileView = ({
                 ) : (
                     <img
                         data-test-id="file-image"
-                        src={currentItem.url}
+                        src={routeUrl}
                         alt="file"
                         className={styles.image}
-                        onClick={() => window.open(currentItem.url)}
+                        onClick={() => window.open(routeUrl)}
                     />
                 )
             ) : null}

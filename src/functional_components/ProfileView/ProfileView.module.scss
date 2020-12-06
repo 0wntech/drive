@@ -121,13 +121,11 @@ svg:hover {
     position: relative;
     width: 150px;
     height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
     border-radius: 50%;
+    background-position: center;
+    background-size: cover;
     img {
-        width: 100%;
+        display: none;
     }
 }
 

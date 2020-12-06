@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { ClassicSpinner } from 'react-spinners-kit';
 import Navigation from './functional_components/Navigation';
 import { ErrorBoundary } from './ErrorBoundary';
-import { login, fetchUser, logout } from './actions/userActions';
+import { login, fetchUser } from './actions/userActions';
 import { fetchContactRecommendations } from './actions/contactActions';
 import styles from './App.module.scss';
 import { indexStorage } from './actions/appActions';
+import SearchPage from './functional_components/SearchPage';
+import Drive from './functional_components/Drive';
 const LoginPage = lazy(() => import('./functional_components/LoginPage'));
-const Drive = lazy(() => import('./functional_components/Drive'));
 const PrivateRoute = lazy(() => import('./functional_components/PrivateRoute'));
 const LandingPage = lazy(() => import('./functional_components/LandingPage'));
 const ProfilePage = lazy(() => import('./functional_components/ProfilePage'));
@@ -28,7 +29,6 @@ export const App = ({
     loadLogin,
     loadUser,
     loadContacts,
-    logout,
     indexStorage,
     indexingProgress,
     indexingStorage,
@@ -98,8 +98,6 @@ export const App = ({
                     <div className={styles.navArea}>
                         <Navigation
                             resetError={resetError}
-                            onLogout={logout}
-                            onLogin={login}
                             webId={webId}
                             picture={user ? user.picture : undefined}
                             username={user ? user.name : undefined}
@@ -122,8 +120,8 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/settings"
-                                    component={<SettingsPage />}
+                                    path="/search"
+                                    component={<SearchPage />}
                                 />
                                 <PrivateRoute
                                     session={session}
@@ -155,8 +153,8 @@ export const App = ({
                                 />
                                 <PrivateRoute
                                     session={session}
-                                    path="/drive"
-                                    component={<Drive webId={webId} />}
+                                    path="/settings"
+                                    component={<SettingsPage />}
                                 />
                                 <PrivateRoute
                                     session={session}
@@ -199,7 +197,6 @@ const mapStateToProps = (state) => {
 
 export default withRouter(
     connect(mapStateToProps, {
-        logout,
         login,
         fetchUser,
         indexStorage,

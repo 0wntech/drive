@@ -5,6 +5,7 @@ import 'react-contexify/dist/ReactContexify.min.css';
 import DriveContextMenu from '../DriveContextMenu/DriveContextMenu';
 
 const MyItem = ({
+    webId,
     image,
     item,
     onClick,
@@ -12,16 +13,19 @@ const MyItem = ({
     onMouseDown,
     selectedItem,
 }) => {
+    const itemHost = new URL(item.url)?.host;
+    const strangeOrigin =
+        webId && itemHost && new URL(webId)?.host !== itemHost;
     return (
         <DriveContextMenu
             className={classNames(styles.gridCell, {
                 [styles.selected]: selectedItem,
             })}
-            item={item}
+            item={item.name}
         >
             <div
                 className={classNames(styles.container)}
-                data-test-id={`item-${decodeURIComponent(item)}`}
+                data-test-id={`item-${decodeURIComponent(item.name)}`}
                 onClick={onClick}
                 onMouseUp={onMouseUp}
                 onMouseDown={onMouseDown}
@@ -43,7 +47,10 @@ const MyItem = ({
                 </div>
                 <div className={styles.labelContainer}>
                     <div className={styles.label} data-test-id={'item-label'}>
-                        {decodeURIComponent(item)}
+                        {decodeURIComponent(item.name)}
+                        {strangeOrigin && itemHost !== item.name && (
+                            <div className={styles.origin}>({itemHost})</div>
+                        )}
                     </div>
                 </div>
             </div>

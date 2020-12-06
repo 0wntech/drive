@@ -11,7 +11,6 @@ import {
     SET_CURRENT_CONTACT,
     SEARCH_CONTACT,
     SEARCH_CONTACT_SUCCESS,
-    SEARCH_CONTACT_FAILURE,
     FETCH_CONTACT_RECOMMENDATIONS,
     FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
     FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
@@ -172,29 +171,41 @@ export const fetchDetailContacts = (contacts) => {
 };
 
 export const searchContact = (query, path) => {
-    return (dispatch) => {
-        dispatch({ type: SEARCH_CONTACT });
-        const lookups = query.startsWith('https://')
-            ? [Promise.resolve(query)]
-            : idps.map((idp) => {
-                  const url = idp.url.replace(
-                      idp.title,
-                      query + '.' + idp.title
-                  );
-                  return auth
-                      .fetch(url, { method: 'HEAD' })
-                      .then((res) => {
-                          if (res.status !== 404) {
-                              return url;
-                          } else {
+    return (dispatch, getState) => {
+        const contactSearchResults = getState().contact.contactSearchResult;
+        dispatch({ type: SEARCH_CONTACT, payload: query + path });
+        const lookups =
+            query.startsWith('https://') || query.includes('.')
+                ? [
+                      query.startsWith('https://')
+                          ? Promise.resolve(query)
+                          : Promise.resolve('https://' + query),
+                  ]
+                : idps.map((idp) => {
+                      const url = idp.url.replace(
+                          idp.title,
+                          query + '.' + idp.title
+                      );
+                      if (
+                          contactSearchResults?.find((contact) =>
+                              contact.webId.includes(url)
+                          )
+                      ) {
+                          return Promise.resolve(undefined);
+                      }
+                      return auth
+                          .fetch(url, { method: 'HEAD' })
+                          .then((res) => {
+                              if (res.status !== 404) {
+                                  return url;
+                              } else {
+                                  return undefined;
+                              }
+                          })
+                          .catch((err) => {
                               return undefined;
-                          }
-                      })
-                      .catch((err) => {
-                          return undefined;
-                      });
-              });
-        let foundSomething = false;
+                          });
+                  });
         lookups.forEach(async (lookup, index) => {
             const url = await Promise.resolve(lookup);
             if (url) {
@@ -202,24 +213,20 @@ export const searchContact = (query, path) => {
                 await user
                     .getProfile()
                     .then((contactProfile) => {
-                        foundSomething = true;
                         dispatch({
                             type: SEARCH_CONTACT_SUCCESS,
                             payload: contactProfile,
                         });
                         if (path) dispatch(searchFile(contactProfile, path));
                     })
-                    .catch((err) => {
-                        if (!foundSomething)
-                            dispatch({
-                                type: SEARCH_CONTACT_SUCCESS,
-                                payload: { webId: url },
-                            });
+                    .catch(() => {
+                        dispatch({
+                            type: SEARCH_CONTACT_SUCCESS,
+                            payload: { webId: url },
+                        });
                     });
             }
-            if (!foundSomething && index === lookups.length - 1) {
-                dispatch({ type: SEARCH_CONTACT_FAILURE });
-            } else if (index === lookups.length - 1) {
+            if (index === lookups.length - 1) {
                 dispatch({ type: SEARCH_CONTACT_COMPLETED });
             }
         });

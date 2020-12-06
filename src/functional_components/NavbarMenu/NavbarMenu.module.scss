@@ -7,13 +7,13 @@
 }
 
 .profileIcon {
+    height: 40px;
     width: 40px;
     border-radius: 50%;
-    display: flex;
-    align-self: center;
-    justify-content: center;
+    background-position: center;
+    background-size: cover;
     img {
-        width: 100%;
+        display: none;
     }
 }
 

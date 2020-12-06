@@ -72,6 +72,7 @@
 .search {
     grid-area: search;
     height: 100%;
+    display: flex;
     z-index: 3;
 }
 

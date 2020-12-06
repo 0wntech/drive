@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './ContactListItem.module.scss';
@@ -20,6 +20,7 @@ const ContactListItem = ({
 }) => {
     const [wasAdded, setWasAdded] = useState(isContact);
     const [profilePictureError, setProfilePictureError] = useState(false);
+    const profilePictureRef = useRef();
     const initials = getInitialsFromUser(contact);
     return (
         <div
@@ -33,9 +34,12 @@ const ContactListItem = ({
                 data-test-id="contact-picture"
             >
                 {contact.picture && !profilePictureError ? (
-                    <div className={styles.image}>
+                    <div className={styles.image} ref={profilePictureRef}>
                         <img
                             src={contact.picture}
+                            onLoad={() => {
+                                profilePictureRef.current.style.backgroundImage = `url(${contact.picture})`;
+                            }}
                             onError={() => setProfilePictureError(false)}
                         />
                     </div>

@@ -38,12 +38,6 @@ export const getContactFolderRoute = (host, path) => {
     )}`;
 };
 
-export const getContactFileRoute = (host, path) => {
-    return `/contact/${host}/file/${encodeURIComponent(
-        urlUtils.parse(path).pathname
-    )}`;
-};
-
 export const getFileRoute = (host, path) => {
     return `/file/${host}/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
 };
@@ -123,6 +117,10 @@ export const getUsernameFromWebId = (webId) => {
     }
 };
 
+export const getUsernameFromUrl = (url) => {
+    return url.substring(url.indexOf('://') + 3, url.indexOf('.'));
+};
+
 export const getIdpFromWebId = (webId) => {
     if (webId && isValidUrl(webId)) {
         return webId
@@ -130,6 +128,10 @@ export const getIdpFromWebId = (webId) => {
             .substr(0, webId.replace('https://', '').indexOf('/'))
             .replace(getUsernameFromWebId(webId) + '.', '');
     }
+};
+
+export const getIdpFromUrl = (url) => {
+    return new URL(url)?.host.replace(getUsernameFromUrl(url) + '.', '');
 };
 
 // converts webId into url to fetch folders

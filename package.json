@@ -15,7 +15,7 @@
     "mime": "^2.4.5",
     "node-sass": "^4.14.1",
     "ownacl": "0.0.18",
-    "ownfiles": "^1.2.66",
+    "ownfiles": "^1.2.67",
     "ownuser": "^1.3.18",
     "rdflib": "^1.3.4",
     "react": "^16.13.1",

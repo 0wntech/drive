@@ -16,6 +16,7 @@ exports[`ContactListItem should render correctly 1`] = `
     >
       <img
         onError={[Function]}
+        onLoad={[Function]}
         src="https://ludwigschubert.solid.community/profile/aa.jpeg"
       />
     </div>

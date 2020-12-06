@@ -22,6 +22,7 @@ exports[`ContactList should render correctly 1`] = `
         >
           <img
             onError={[Function]}
+            onLoad={[Function]}
             src="https://ludwigschubert.solid.community/profile/aa.jpeg"
           />
         </div>
@@ -54,6 +55,7 @@ exports[`ContactList should render correctly 1`] = `
         >
           <img
             onError={[Function]}
+            onLoad={[Function]}
             src="https://bejow.solid.community/profile/meme_ben_gang.jpg"
           />
         </div>
@@ -86,6 +88,7 @@ exports[`ContactList should render correctly 1`] = `
         >
           <img
             onError={[Function]}
+            onLoad={[Function]}
             src="https://bejow.solid.community/profile/meme_ben_gang.jpg"
           />
         </div>

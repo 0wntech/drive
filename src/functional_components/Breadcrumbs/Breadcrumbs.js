@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import url from 'url';
 import styles from './Breadcrumbs.module.css';
 import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
 import PropTypes from 'prop-types';
 const Breadcrumbs = ({ currentPath, breadcrumbs, onClick, rootUrl, webId }) => {
+    const breadcrumbsRef = useRef();
+    useEffect(() => {
+        console.debug(breadcrumbsRef.current);
+    }, [breadcrumbsRef]);
     const { protocol, host } = url.parse(currentPath);
     const root = rootUrl ?? url.format({ protocol, host }) + '/';
     const breadcrumbMarkup = breadcrumbs
@@ -59,7 +63,11 @@ const Breadcrumbs = ({ currentPath, breadcrumbs, onClick, rootUrl, webId }) => {
           })
         : undefined;
 
-    return <div className={styles.container}>{breadcrumbMarkup}</div>;
+    return (
+        <div className={styles.container} ref={breadcrumbsRef}>
+            {breadcrumbMarkup}
+        </div>
+    );
 };
 
 Breadcrumbs.propTypes = {

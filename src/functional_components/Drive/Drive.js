@@ -224,9 +224,11 @@ const Drive = ({
             </div>
         );
 
-    const noFilesAndFolders = () => {
-        return currentItem.folders.length < 1 && currentItem.files.length < 1;
-    };
+    const noFilesAndFolders =
+        currentItem?.folders &&
+        currentItem?.files &&
+        currentItem.folders?.length < 1 &&
+        currentItem.files?.length < 1;
 
     return (
         <Layout
@@ -260,7 +262,7 @@ const Drive = ({
                     currentItem &&
                     currentItem.folders &&
                     currentItem.files &&
-                    !noFilesAndFolders() ? (
+                    !noFilesAndFolders ? (
                         <div>
                             {currentItem.folders.length > 0 && (
                                 <ItemList

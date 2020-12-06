@@ -45,12 +45,12 @@ describe('e2e contacts', () => {
             await page.goto(config.baseUrl + 'profile');
             await page.waitForSelector('[data-test-id="add-contact-ludwig"]');
             await page.click('[data-test-id="add-contact-ludwig"]');
-            await page.waitFor(500);
+            await page.waitFor(600);
             await page.waitForSelector(
                 '[data-test-id="delete-contact-ludwig"]'
             );
             await page.click('[data-test-id="delete-contact-ludwig"]');
-            await page.waitFor(500);
+            await page.waitFor(600);
             await page.waitForSelector('[data-test-id="add-contact-ludwig"]');
             const isNotContact = await page.$(
                 '[data-test-id="add-contact-ludwig"]'
@@ -62,7 +62,7 @@ describe('e2e contacts', () => {
             await page.goto(config.baseUrl + 'profile');
             await page.waitForSelector('[data-test-id="contact-ludwig"]');
             await page.click('[data-test-id="contact-ludwig"]');
-            await page.waitFor(500);
+            await page.waitFor(600);
             await page.waitForSelector('[data-test-id="add-contact"]');
             await page.click('[data-test-id="add-contact"]');
             await page.waitFor(1500);

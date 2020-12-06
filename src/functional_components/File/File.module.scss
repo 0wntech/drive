@@ -87,20 +87,22 @@
 }
 
 @media (min-width: $screen_l) {
-    .label:hover {
-        background: #ffffff;
-        border-radius: 10px;
-        padding: 0 4px;
-        text-overflow: initial;
-        width: min-content;
-        box-sizing: border-box;
-        border: solid $light_grey 4px;
-        min-width: 100px;
-        z-index: 3;
-    }
-
     .gridCell:hover {
         background-color: $light_grey;
+
+        .label {
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 0 4px;
+            text-overflow: initial;
+            width: min-content;
+            box-sizing: border-box;
+            border: solid $light_grey 4px;
+            min-width: 100px;
+            z-index: 3;
+        }
     }
 }
 

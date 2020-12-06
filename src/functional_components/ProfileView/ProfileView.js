@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import styles from './ProfileView.module.scss';
 import Camera from '../../assets/svgIcons/Camera';
@@ -11,7 +11,7 @@ import useWindowDimension from '../../hooks/useWindowDimension';
 import ActionButton from '../ActionButton/ActionButton';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 import { getInitialsFromUser, handleError } from '../../utils/helper';
-import ContactList from '../ContactList/ContactsList';
+import ContactList from '../ContactList';
 
 export const ProfileView = ({
     user,
@@ -35,6 +35,7 @@ export const ProfileView = ({
     const { _, width } = useWindowDimension();
     const [contactStatus, setContactStatus] = useState(undefined);
     const [profilePictureError, setProfilePictureError] = useState(undefined);
+    const profilePictureRef = useRef(undefined);
 
     useEffect(() => {
         setProfilePictureError(false);
@@ -86,8 +87,14 @@ export const ProfileView = ({
                                 </div>
                             ) : null}
                             {user && user.picture && !profilePictureError ? (
-                                <div className={styles.profileImage}>
+                                <div
+                                    className={styles.profileImage}
+                                    ref={profilePictureRef}
+                                >
                                     <img
+                                        onLoad={() => {
+                                            profilePictureRef.current.style.backgroundImage = `url(${user.picture})`;
+                                        }}
                                         onError={() =>
                                             setProfilePictureError(true)
                                         }
@@ -137,7 +144,10 @@ export const ProfileView = ({
                                 className={styles.webIdLabel}
                                 href={user && user.webId}
                             >
-                                {user && getIdpFromWebId(user.webId)}
+                                {user &&
+                                    `${getUsernameFromWebId(
+                                        user.webId
+                                    )}.${getIdpFromWebId(user.webId)}`}
                             </a>
                         </div>
                         <div className={styles.editWrapper}>
@@ -237,18 +247,25 @@ export const ProfileView = ({
                     <div className={styles.contactsContainer}>
                         {contacts && !editState && (
                             <div>
-                                <div className={styles.sectionLabel}>
-                                    Contacts
-                                </div>
-                                <ContactList
-                                    onItemClick={navigateToContact}
-                                    contacts={contacts}
-                                    webId={webId}
-                                    addContact={addContact}
-                                    removeContact={removeContact}
-                                    isContact
-                                    removable={user && user.webId === webId}
-                                />
+                                {(user.webId === webId ||
+                                    contacts?.length > 0) && (
+                                    <>
+                                        <div className={styles.sectionLabel}>
+                                            Contacts
+                                        </div>
+                                        <ContactList
+                                            onItemClick={navigateToContact}
+                                            contacts={contacts}
+                                            webId={webId}
+                                            addContact={addContact}
+                                            removeContact={removeContact}
+                                            isContact
+                                            removable={
+                                                user && user.webId === webId
+                                            }
+                                        />
+                                    </>
+                                )}
                                 {contactRecommendationsToDisplay.length > 0 ? (
                                     <>
                                         <div className={styles.sectionLabel}>

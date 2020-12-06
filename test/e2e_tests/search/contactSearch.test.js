@@ -6,50 +6,46 @@ describe('e2e contact search', () => {
         expect.assertions(2);
         const page = await initPage(browser, config);
         await page.goto(config.baseUrl + 'home');
-        await page.waitForSelector('[data-test-id="search-dropdown"]');
-        const searchDropdown = await page.$('[data-test-id="search-dropdown"]');
-        await searchDropdown.click();
-        await page.type('.search__input', 'timbl');
-        await page.waitForSelector(
-            '[data-test-id="contact-search-timbl.solidcommunity.net"]'
-        );
-        await page.click(
-            '[data-test-id="contact-search-timbl.solidcommunity.net"]'
-        );
+        await page.waitForSelector('[data-test-id="search-input"]');
+        const searchInput = await page.$('[data-test-id="search-input"]');
+        await searchInput.click();
+        await page.type('[data-test-id="search-input"]', 'timbl');
+        await page.waitFor(700);
+        await page.waitForSelector('[data-test-id="contact-timbl"]');
+        await page.click('[data-test-id="contact-timbl"]');
         await page.waitFor(1500);
         await page.waitForSelector('[data-test-id="header"]');
         const header = await page.$eval(
             '[data-test-id="header"]',
             (e) => e.innerHTML
         );
-        expect(header).toBe('Tim Berners-Lee (solid.community)');
+        expect(header).toBe('Tim (at OU) BL');
         expect(page.url()).toBe(
-            'http://localhost:3001/profile/timbl.solidcommunity.net'
+            'http://localhost:3001/profile/timbl.solid.open.ac.uk'
         );
     });
     it('should let a user search for contacts by webId', async () => {
         expect.assertions(2);
         const page = await initPage(browser, config);
         await page.goto(config.baseUrl + 'home');
-        await page.waitForSelector('[data-test-id="search-dropdown"]');
-        const searchDropdown = await page.$('[data-test-id="search-dropdown"]');
-        await searchDropdown.click();
-        await page.type('.search__input', 'timbl.solid.community/profile/card');
-        await page.waitForSelector(
-            '[data-test-id="contact-search-timbl.solidcommunity.net"]'
+        await page.waitForSelector('[data-test-id="search-input"]');
+        const searchInput = await page.$('[data-test-id="search-input"]');
+        await searchInput.click();
+        await page.type(
+            '[data-test-id="search-input"]',
+            'timbl.inrupt.net/profile/card'
         );
-        await page.click(
-            '[data-test-id="contact-search-timbl.solidcommunity.net"]'
-        );
+        await page.waitForSelector('[data-test-id="contact-timbl"]');
+        await page.click('[data-test-id="contact-timbl"]');
         await page.waitFor(1500);
         await page.waitForSelector('[data-test-id="header"]');
         const header = await page.$eval(
             '[data-test-id="header"]',
             (e) => e.innerHTML
         );
-        expect(header).toBe('Tim Berners-Lee (solid.community)');
+        expect(header).toBe('Tim BL on Inrupt.net');
         expect(page.url()).toBe(
-            'http://localhost:3001/profile/timbl.solidcommunity.net'
+            'http://localhost:3001/profile/timbl.inrupt.net'
         );
     });
 });
