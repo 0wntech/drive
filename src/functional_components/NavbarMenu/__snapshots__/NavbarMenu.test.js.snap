@@ -21,12 +21,13 @@ exports[`NavbarMenu Should render correctly 1`] = `
             className="profileIcon"
             data-test-id="navigation-profile-picture"
             onClick={[Function]}
-            style={
-              Object {
-                "backgroundImage": "url('https://bejow.owntech.de/profile/meme_ben_gang.jpg')",
-              }
-            }
-          />
+          >
+            <img
+              onError={[Function]}
+              onLoad={[Function]}
+              src="https://bejow.owntech.de/profile/meme_ben_gang.jpg"
+            />
+          </div>
           <div
             className="username"
             data-test-id="navbar-username"
@@ -71,12 +72,6 @@ exports[`NavbarMenu Should render correctly 1`] = `
           onClick={[Function]}
         >
           Profile
-        </div>
-        <div
-          className="option"
-          onClick={[Function]}
-        >
-          Contacts
         </div>
         <div
           className="option"

@@ -11,11 +11,11 @@ export default function DeleteWindow({
     onCancel,
     visible,
 }) {
-    const multiple = selectedItems ? selectedItems.length > 1 : null;
+    const multiple = selectedItems?.length > 1;
 
     return (
         <Window
-            windowName={multiple ? 'Delete Item' : 'Delete Items'}
+            windowName={multiple ? 'Delete Items' : 'Delete Item'}
             onClose={onCancel ? onCancel : onClose}
             visible={visible}
             className={styles.window}
@@ -51,6 +51,7 @@ export default function DeleteWindow({
                     className={styles.button}
                 />
                 <ActionButton
+                    dataId="delete-resource-submit"
                     onClick={() => {
                         onSubmit(selectedItems);
                         onClose();

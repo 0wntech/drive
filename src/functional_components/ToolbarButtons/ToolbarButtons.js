@@ -67,6 +67,7 @@ export default function ToolbarButtons({
             onClick={onDelete}
         />,
         <MoreVertical
+            data-test-id="toolbar-buttons-more"
             key={'More'}
             className={classNames(styles.toolbarIcon, styles.more)}
             onClick={onMore}

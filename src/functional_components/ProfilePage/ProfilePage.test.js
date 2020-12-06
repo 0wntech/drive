@@ -4,6 +4,11 @@ import { FETCH_USER_SUCCESS } from '../../actions/types';
 import userReducer from '../../reducers/userReducer';
 import ShallowRenderer from 'react-test-renderer/shallow';
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn().mockReturnValue({}),
+}));
+
 describe('ProfilePage', () => {
     const user = {
         webId: 'https://bejow.owntech.de/profile/card#me',

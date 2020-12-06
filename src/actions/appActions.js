@@ -4,6 +4,7 @@ import AclClient from 'ownacl';
 import User from 'ownuser';
 import mime from 'mime';
 import url from 'url';
+import ns from 'solid-namespace';
 import FileSaver from 'file-saver';
 
 import {
@@ -81,12 +82,8 @@ import {
     SEARCH_FILE_FAILURE,
 } from './types';
 
-import fileUtils from '../utils/fileUtils';
-import {
-    convertFolderUrlToName,
-    convertFileUrlToName,
-    getRootFromWebId,
-} from '../utils/url';
+import fileUtils, { getFileOrFolderName } from '../utils/fileUtils';
+import { getRootFromWebId } from '../utils/url';
 
 export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
@@ -226,12 +223,16 @@ export const fetchCurrentItem = (itemUrl) => {
                 if (item && item.folders) {
                     const files = item.files.map((file) => {
                         return {
-                            name: convertFileUrlToName(file.name),
+                            url: file.name,
+                            name: getFileOrFolderName(file.name),
                             type: file.type,
                         };
                     });
                     const folder = item.folders.map((folder) => {
-                        return convertFolderUrlToName(folder);
+                        return {
+                            url: folder,
+                            name: getFileOrFolderName(folder),
+                        };
                     });
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
@@ -315,13 +316,13 @@ export const downloadFile = (file) => {
             .then((result) => {
                 const fileType = mime.getType(file);
                 if (fileType.includes('image')) {
-                    FileSaver.saveAs(file, convertFileUrlToName(file));
+                    FileSaver.saveAs(file, getFileOrFolderName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });
                 } else {
                     const blob = new Blob([result], {
                         type: mime.getType(file),
                     });
-                    FileSaver.saveAs(blob, convertFileUrlToName(file));
+                    FileSaver.saveAs(blob, getFileOrFolderName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });
                 }
             })
@@ -357,12 +358,48 @@ export const searchFile = (user, path) => {
             : getRootFromWebId(user.webId);
         const searchPath = url.resolve(rootPath, path ?? '/');
         const fileClient = new PodClient();
-        dispatch({ type: SEARCH_FILE });
-        console.debug(searchPath, 'tata');
+        dispatch({
+            type: SEARCH_FILE,
+            payload: searchPath.replace('https://', ''),
+        });
         fileClient
-            .deepRead(searchPath, { verbose: true })
-            .then((index) => {
-                dispatch({ type: SEARCH_FILE_SUCCESS, payload: index });
+            .read(searchPath, {
+                verbose: true,
+                headOnly: true,
+                headers: {
+                    Accept: mime.getType(searchPath) ?? 'text/turtle',
+                },
+            })
+            .then((folder) => {
+                const result = folder.files
+                    ? [...folder.files, ...folder.folders].map((item) =>
+                          item.name
+                              ? {
+                                    types: item.type
+                                        ? [item.type, ns().ldp('Resource')]
+                                        : ['text/turtle', ns().ldp('Resource')],
+                                    url: item.name,
+                                    name: getFileOrFolderName(item.name),
+                                }
+                              : {
+                                    url: item,
+                                    name: getFileOrFolderName(item),
+                                    types: [ns().ldp('Container')],
+                                }
+                      )
+                    : [
+                          {
+                              types: folder.type
+                                  ? [folder.type, ns().ldp('Resource')]
+                                  : ['text/turtle', ns().ldp('Resource')],
+                              url: folder.name,
+                              name: getFileOrFolderName(folder.name),
+                          },
+                      ];
+                dispatch({
+                    type: SEARCH_FILE_SUCCESS,
+                    payload: result,
+                });
             })
             .catch((err) => {
                 dispatch({ type: SEARCH_FILE_FAILURE, payload: err });

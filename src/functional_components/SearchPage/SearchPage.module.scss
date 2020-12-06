@@ -1,0 +1,28 @@
+@import '../../styles/constants.scss';
+
+.container:last-child {
+    margin-bottom: 64px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionLabel {
+    font-weight: 600 !important;
+    font-size: 2em;
+    margin: 1em 0;
+}
+
+.spinner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .loadingMessage {
+      margin-top: 16px;
+    }
+}

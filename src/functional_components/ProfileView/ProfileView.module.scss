@@ -63,7 +63,7 @@ svg:hover {
     align-items: center;
     align-self: flex-start;
     height: 360px;
-    justify-content: space-between;
+    justify-content: center;
     max-width: 50%;
 }
 
@@ -121,9 +121,12 @@ svg:hover {
     position: relative;
     width: 150px;
     height: 150px;
-    background-size: cover;
-    background-position: center;
     border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+    img {
+        display: none;
+    }
 }
 
 .defaultProfileImage {

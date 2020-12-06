@@ -8,7 +8,11 @@ describe('File', () => {
         const currentPath = 'https://bejow.solid.community/1234/';
         const onClick = jest.fn();
         const image = 'https://owntech.de/favicon.ico';
-        const file = { name: 'Test.png', type: 'image/png' };
+        const file = {
+            name: 'Test.png',
+            url: 'https://test.example.org/Test.png',
+            type: 'image/png',
+        };
         const selectedItem = false;
 
         const tree = new ShallowRenderer().render(
@@ -26,7 +30,11 @@ describe('File', () => {
         const currentPath = 'https://bejow.solid.community/1234/';
         const onClick = jest.fn();
         const image = 'https://owntech.de/favicon.ico';
-        const file = { name: 'Test.png', type: 'image/png' };
+        const file = {
+            name: 'Test.png',
+            url: 'https://test.example.org/Test.png',
+            type: 'image/png',
+        };
         const selectedItem = false;
 
         const tree = new ShallowRenderer().render(
@@ -44,7 +52,11 @@ describe('File', () => {
         const currentPath = 'https://bejow.solid.community/1234/';
         const onClick = jest.fn();
         const image = 'https://owntech.de/favicon.ico';
-        const file = { name: 'Test.png', type: 'image/png' };
+        const file = {
+            name: 'Test.png',
+            url: 'https://test.example.org/Test.png',
+            type: 'image/png',
+        };
         const selectedItem = true;
 
         const wrapper = shallow(

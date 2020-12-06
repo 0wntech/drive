@@ -7,7 +7,6 @@ import {
     SEARCH_CONTACT,
     SEARCH_CONTACT_COMPLETED,
     SEARCH_CONTACT_SUCCESS,
-    SEARCH_CONTACT_FAILURE,
     FETCH_CONTACT_RECOMMENDATIONS,
     FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
     FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
@@ -139,7 +138,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 contactSearchResult: state.contactSearchResult
-                    ? [...state.contactSearchResult, payload]
+                    ? [payload, ...state.contactSearchResult]
                     : [payload],
                 error: { ...state.error, SEARCH_CONTACT: false },
             };
@@ -148,13 +147,6 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 searchingContacts: false,
                 error: { ...state.error, SEARCH_CONTACT: false },
-            };
-        case SEARCH_CONTACT_FAILURE:
-            return {
-                ...state,
-                searchingContacts: false,
-                contactSearchResult: [],
-                error: { ...state.error, SEARCH_CONTACT: !!payload },
             };
         case FETCH_CONTACT_RECOMMENDATIONS:
             return {

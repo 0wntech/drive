@@ -46,8 +46,11 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-size: cover;
     background-position: center;
+    background-size: cover;
+    img {
+        display: none;
+    }
 }
 
 .nameContainer {
@@ -56,6 +59,9 @@
     text-align: center;
     margin-top: 0.5em;
     max-width: 80%;
+    max-height: 44px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
 }
 

@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import mime from 'mime';
+import * as urlUtils from 'url';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { connect } from 'react-redux';
@@ -9,11 +10,12 @@ import './SearchDropdown.scss';
 
 import { searchContact } from '../../actions/contactActions';
 import useClickOutside from '../../hooks/useClickOutside';
+import { getRootFromWebId } from '../../utils/url';
 
 const customFilter = (option, searchText) => {
-    const searchedFragments = searchText.split('/');
-    const searchedUser = searchedFragments.shift();
-    const searchedPath = searchedFragments.join('/');
+    const [searchedUser, searchedPath] = searchText
+        ? constructSearchContactQuery(searchText) ?? ['', '']
+        : ['', ''];
     if (!option.value) {
         return true;
     }
@@ -54,6 +56,28 @@ const customFilter = (option, searchText) => {
     return false;
 };
 
+const constructSearchContactQuery = (searchText) => {
+    const searchTextFragments = searchText.toLowerCase().split('/');
+    const searchedUser = searchTextFragments.shift();
+    const searchedPath = searchTextFragments.join('/');
+    let searchedUrl;
+    try {
+        if (searchText.startsWith('https://') && getRootFromWebId(searchText)) {
+            searchedUrl = new URL(searchText);
+        } else {
+            searchedUrl = new URL('https://' + searchText);
+        }
+    } catch (err) {}
+    if (!searchText.includes('.')) {
+        return [searchedUser, searchedPath];
+    }
+    const hostUrl = urlUtils.format({
+        protocol: searchedUrl.protocol,
+        hostname: searchedUrl.hostname,
+    });
+    return [hostUrl, searchedUrl.pathname];
+};
+
 export function SearchDropdown({
     items,
     className,
@@ -73,16 +97,16 @@ export function SearchDropdown({
     const handleInputChange = (searchText) => {
         clearTimeout(typingTimer);
         if (searchText !== '') {
-            const searchTextFragments = searchText.toLowerCase().split('/');
-            const searchedUser = searchTextFragments.shift();
-            const searchedPath = searchTextFragments.join('/');
+            const [searchedUser, searchedPath] = constructSearchContactQuery(
+                searchText
+            );
             setTypingTimer(
                 setTimeout(() => {
                     return searchContact(
                         searchedUser,
                         searchedPath !== '' ? searchedPath : '/'
                     );
-                }, 1000)
+                }, 2000)
             );
         }
     };
@@ -143,6 +167,7 @@ export function SearchDropdown({
         <div
             className={classNames(styles.container, className)}
             ref={dropdownWrapper}
+            data-test-id={'search-dropdown'}
         >
             {select}
         </div>

@@ -1,4 +1,4 @@
-import uniq from 'uniq'
+import uniq from 'uniq';
 
 import {
     INDEX_STORAGE,
@@ -67,6 +67,7 @@ import {
     SEARCH_FILE,
     SEARCH_FILE_FAILURE,
     SEARCH_FILE_SUCCESS,
+    SEARCH_CONTACT,
 } from '../actions/types';
 import fileUtils from '../utils/fileUtils';
 import { getRootFromWebId } from '../utils/url';
@@ -83,6 +84,7 @@ const INITIAL_STATE = {
     indexingStorage: true,
     indexingProgress: 0,
     searchingFile: false,
+    searchHistory: [],
     error: {
         UPLOAD_FILES: false,
         DOWNLOAD_FILE: false,
@@ -187,15 +189,39 @@ export default (state = INITIAL_STATE, action) => {
                     INDEX_STORAGE: false,
                 },
             };
+        case SEARCH_CONTACT:
+            return {
+                ...state,
+                searchHistory: [
+                    ...state.searchHistory.reduce((history, historicSearch) => {
+                        if (historicSearch !== payload) {
+                            return [...history, historicSearch];
+                        } else {
+                            return history;
+                        }
+                    }, []),
+                    payload,
+                ],
+            };
         case SEARCH_FILE:
             return {
                 ...state,
                 searchingFile: true,
+                searchHistory: [
+                    ...state.searchHistory.reduce((history, historicSearch) => {
+                        if (historicSearch !== payload) {
+                            return [...history, historicSearch];
+                        } else {
+                            return history;
+                        }
+                    }, []),
+                    payload,
+                ],
             };
         case SEARCH_FILE_SUCCESS:
             return {
                 ...state,
-                fileHierarchy: uniq([...state.fileHierarchy, ...payload]),
+                fileHierarchy: uniq([...payload, ...state.fileHierarchy]),
                 searchingFile: false,
                 error: {
                     ...state.error,

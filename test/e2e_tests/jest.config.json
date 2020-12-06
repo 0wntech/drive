@@ -1,5 +1,7 @@
 {
     "preset": "jest-puppeteer",
-    "testRegex": "./*\\.test\\.js$",
-    "testPathIgnorePatterns": ["./login.test.js"]
+    "testRegex": "./*/*\\.test\\.js$",
+    "testPathIgnorePatterns": ["./login.test.js"],
+    "globalSetup": "./globalSetup.js",
+    "globalTeardown": "./globalTeardown.js"
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import styles from './ProfileView.module.scss';
 import Camera from '../../assets/svgIcons/Camera';
@@ -11,7 +11,7 @@ import useWindowDimension from '../../hooks/useWindowDimension';
 import ActionButton from '../ActionButton/ActionButton';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 import { getInitialsFromUser, handleError } from '../../utils/helper';
-import ContactList from '../ContactList/ContactsList';
+import ContactList from '../ContactList';
 
 export const ProfileView = ({
     user,
@@ -34,6 +34,12 @@ export const ProfileView = ({
     // eslint-disable-next-line no-unused-vars
     const { _, width } = useWindowDimension();
     const [contactStatus, setContactStatus] = useState(undefined);
+    const [profilePictureError, setProfilePictureError] = useState(undefined);
+    const profilePictureRef = useRef(undefined);
+
+    useEffect(() => {
+        setProfilePictureError(false);
+    }, [user]);
 
     handleError(error);
 
@@ -41,8 +47,15 @@ export const ProfileView = ({
     const contactRecommendationsToDisplay =
         contactRecommendations &&
         contactRecommendations
-            .filter((recommended) =>
-                !contacts.find((contact) => contact.webId === recommended.webId)
+            .filter(
+                (recommended) =>
+                    !contacts ||
+                    !(
+                        user.webId === webId &&
+                        contacts.find(
+                            (contact) => contact.webId === recommended.webId
+                        )
+                    )
             )
             .slice(0, displayedRows * 5);
 
@@ -73,13 +86,21 @@ export const ProfileView = ({
                                     <Camera />
                                 </div>
                             ) : null}
-                            {user && user.picture ? (
+                            {user && user.picture && !profilePictureError ? (
                                 <div
                                     className={styles.profileImage}
-                                    style={{
-                                        backgroundImage: `url('${user.picture}')`,
-                                    }}
-                                />
+                                    ref={profilePictureRef}
+                                >
+                                    <img
+                                        onLoad={() => {
+                                            profilePictureRef.current.style.backgroundImage = `url(${user.picture})`;
+                                        }}
+                                        onError={() =>
+                                            setProfilePictureError(true)
+                                        }
+                                        src={user.picture}
+                                    />
+                                </div>
                             ) : (
                                 <DefaultIcon
                                     className={styles.defaultProfileImage}
@@ -111,6 +132,7 @@ export const ProfileView = ({
                                     editable={editState}
                                     value={userData.bio}
                                     placeholder="Bio"
+                                    dataKey="bio"
                                     setValue={(value) =>
                                         updateUserData('bio', value)
                                     }
@@ -122,7 +144,10 @@ export const ProfileView = ({
                                 className={styles.webIdLabel}
                                 href={user && user.webId}
                             >
-                                {user && getIdpFromWebId(user.webId)}
+                                {user &&
+                                    `${getUsernameFromWebId(
+                                        user.webId
+                                    )}.${getIdpFromWebId(user.webId)}`}
                             </a>
                         </div>
                         <div className={styles.editWrapper}>
@@ -131,6 +156,7 @@ export const ProfileView = ({
                                 user.webId !== webId &&
                                 (contactStatus || isContact ? (
                                     <ActionButton
+                                        dataId="delete-contact"
                                         label="Remove from Contacts"
                                         color="white"
                                         onClick={() => {
@@ -144,6 +170,7 @@ export const ProfileView = ({
                                     />
                                 ) : (
                                     <ActionButton
+                                        dataId="add-contact"
                                         label="Add to Contacts"
                                         color="green"
                                         className={classNames(
@@ -218,21 +245,28 @@ export const ProfileView = ({
                         </div>
                     )}
                     <div className={styles.contactsContainer}>
-                        {contacts && contacts.length > 0 && !editState && (
+                        {contacts && !editState && (
                             <div>
-                                <div className={styles.sectionLabel}>
-                                    Contacts
-                                </div>
-                                <ContactList
-                                    onItemClick={navigateToContact}
-                                    contacts={contacts}
-                                    webId={webId}
-                                    addContact={addContact}
-                                    removeContact={removeContact}
-                                    isContact
-                                    removable={user && user.webId === webId}
-                                />
-                                {contactRecommendations ? (
+                                {(user.webId === webId ||
+                                    contacts?.length > 0) && (
+                                    <>
+                                        <div className={styles.sectionLabel}>
+                                            Contacts
+                                        </div>
+                                        <ContactList
+                                            onItemClick={navigateToContact}
+                                            contacts={contacts}
+                                            webId={webId}
+                                            addContact={addContact}
+                                            removeContact={removeContact}
+                                            isContact
+                                            removable={
+                                                user && user.webId === webId
+                                            }
+                                        />
+                                    </>
+                                )}
+                                {contactRecommendationsToDisplay.length > 0 ? (
                                     <>
                                         <div className={styles.sectionLabel}>
                                             People you might know

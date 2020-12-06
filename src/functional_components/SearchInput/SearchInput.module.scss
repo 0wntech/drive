@@ -1,0 +1,66 @@
+@import '../../styles/constants.scss';
+
+.container {
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    background: $light_grey;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.focused {
+    background: #fff;
+    border: solid 5px $dark_grey;
+
+    .indicator {
+        padding-left: 11px;
+    }
+
+    .clearable {
+        padding-right: 11px;
+    }
+}
+
+.indicator {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    font-size: 20px;
+    border: none;
+    outline: none;
+    background: none;
+    height: 100%;
+    width: 100%;
+}
+
+.clearable {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+
+    path {
+        fill: $light_black;
+    }
+}
+
+.empty {
+    display: none;
+}
+
+@media (min-width: $screen_l) {
+    .container:hover {
+        border: solid 5px $dark_grey;
+
+        .indicator {
+            padding-left: 11px;
+        }
+
+        .clearable {
+            padding-right: 11px;
+        }
+    }
+}

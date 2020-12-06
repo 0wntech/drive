@@ -109,23 +109,23 @@ const ItemList = ({
 
     const itemComponents = items
         ? items.map((item, index) => {
-              const itemPath =
-                  currentPath + (item.name ? item.name : item + '/');
+              const itemPath = decodeURIComponent(
+                  item.url ? item.url : currentPath + item.name
+              );
 
               return isFile ? (
                   <File
                       selectedItem={
-                          selectedItems.includes(currentPath + item.name)
-                              ? true
-                              : undefined
+                          selectedItems.includes(itemPath) ? true : undefined
                       }
                       key={item + index}
                       image={image}
+                      webId={webId}
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
                       file={item}
-                      currentPath={currentPath}
                       onClick={(e) => {
                           if (!longPressed) {
+                              console.debug(itemPath);
                               onItemClick(itemPath, e);
                           } else {
                               setLongPressed(false);
@@ -137,14 +137,12 @@ const ItemList = ({
               ) : (
                   <Item
                       selectedItem={
-                          selectedItems.includes(currentPath + item + '/')
-                              ? true
-                              : undefined
+                          selectedItems.includes(itemPath) ? true : undefined
                       }
+                      webId={webId}
                       key={item + index}
                       image={image}
                       contextMenuOptions={CONTEXTMENU_OPTIONS}
-                      currentPath={currentPath}
                       item={item}
                       onClick={(e) => {
                           if (!longPressed) {

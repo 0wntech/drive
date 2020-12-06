@@ -128,9 +128,7 @@ export const convertResourceListToSearchOptions = ({ items }) => {
 
 // input "fav.ico" returns "ico"
 function getFileType(file) {
-    const splittedFile = file.name
-        ? file.name.split('.')
-        : file.split('.');
+    const splittedFile = file.name ? file.name.split('.') : file.split('.');
     // no dot || nothing after dot
     if (
         splittedFile.length === 1 ||
@@ -303,7 +301,7 @@ export const sendNotification = (notifParams) => {
         method: 'PUT',
         headers: {
             'content-type': 'text/turtle',
-            slug: notificationAddress.replace(inboxAddress + '/', ''),
+            "slug": notificationAddress.replace(inboxAddress + '/', ''),
         },
         body: notification,
     };

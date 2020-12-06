@@ -13,6 +13,7 @@ exports[`Window should render correctly 1`] = `
     >
       <span
         className="title"
+        data-test-id="window-Test-Window"
       >
         Test Window
       </span>

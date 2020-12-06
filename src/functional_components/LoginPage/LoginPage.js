@@ -35,9 +35,8 @@ const LoginPage = ({ webId, loadIdps, idps, fetchIdps, history, location }) => {
     useEffect(() => {
         if (!loadIdps && !idps) fetchIdps();
 
-        const cachedPath = localStorage.getItem('returnToUrl')
-            ? JSON.parse(localStorage.getItem('returnToUrl'))
-            : undefined;
+        const returnToUrl = localStorage.getItem('returnToUrl');
+        const cachedPath = returnToUrl ? JSON.parse(returnToUrl) : undefined;
 
         if (
             !webId &&
@@ -55,9 +54,14 @@ const LoginPage = ({ webId, loadIdps, idps, fetchIdps, history, location }) => {
                 history.push(cachedPath.pathname + cachedPath.search);
                 localStorage.removeItem('returnToUrl');
             } else if (location.state && location.state.from.pathname) {
-                history.push(
-                    location.state.from.pathname + location.state.from.search
-                );
+                if (history.pathname === '/') {
+                    history.push('/home');
+                } else {
+                    history.push(
+                        location.state.from.pathname +
+                            location.state.from.search
+                    );
+                }
             } else {
                 history.push('/home');
             }

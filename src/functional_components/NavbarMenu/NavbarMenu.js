@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -25,6 +25,10 @@ export const NavbarMenu = ({
     dispatch,
 }) => {
     const [isDropdownExpanded, setDropdownExpanded] = useState(false);
+    const [profilePictureError, setProfilePictureError] = useState(false);
+    const profilePictureRef = useRef();
+
+    useEffect(() => setProfilePictureError(false), [user]);
 
     const DROPDOWN_OPTIONS = [
         {
@@ -63,19 +67,25 @@ export const NavbarMenu = ({
                 >
                     <SvgSettings />
                 </div>
-            ) : user && user.picture ? (
+            ) : user && user.picture && !profilePictureError ? (
                 <div
-                    data-test-id="navigation-profile-picture"
+                    className={styles.profileIcon}
+                    ref={profilePictureRef}
                     onClick={(e) => {
                         e.stopPropagation();
                         setDropdownExpanded(false);
                         navigate('/profile', history, dispatch, resetError);
                     }}
-                    className={styles.profileIcon}
-                    style={{
-                        backgroundImage: `url('${user.picture}')`,
-                    }}
-                />
+                    data-test-id="navigation-profile-picture"
+                >
+                    <img
+                        onLoad={() => {
+                            profilePictureRef.current.style.backgroundImage = `url(${user.picture})`;
+                        }}
+                        onError={() => setProfilePictureError(true)}
+                        src={user.picture}
+                    />
+                </div>
             ) : (
                 <DefaultIcon
                     onClick={(e) => {

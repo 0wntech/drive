@@ -38,20 +38,16 @@ const getErrorsFromErrorState = (errors) => {
     return errorArray;
 };
 
-const convertArrayToString = (array) => {
-    if (!Array.isArray(array)) {
-        return undefined;
-    }
-    const arrayString = array.join('\n');
-    return arrayString;
-};
-
-const handleError = (error) => {
+const handleError = (errors) => {
     // accepts an object containing errors
     // { errorName: error}
-    const errors = getErrorsFromErrorState(error);
-    if (errors.length > 0) {
-        throw new Error(convertArrayToString(errors));
+    const error = getErrorsFromErrorState(errors)[0];
+    if (error && error.response) {
+        if (error.response.status === 403) {
+            throw new Error('You are not authorized to access this resource');
+        }
+    } else if (error) {
+        throw new Error(error);
     }
 };
 
@@ -64,7 +60,6 @@ const navigate = (to, history, dispatch, onNavigate) => {
 export {
     isCmdPressed,
     getErrorsFromErrorState,
-    convertArrayToString,
     handleError,
     navigate,
     getInitialsFromUser,

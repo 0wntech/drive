@@ -77,6 +77,7 @@ const Drive = ({
     const routeUrl =
         path && url.resolve((id && `https://${id}/`) ?? rootUrl, path ?? '');
     useEffect(() => {
+        const currentWebId = user && user.webId ? user.webId : webId;
         if (routeUrl && currentPath !== routeUrl && !loadCurrentItem) {
             if (id && !currentContactRootUrl) {
                 fetchContact(
@@ -99,11 +100,15 @@ const Drive = ({
             !loadUser &&
             (!currentItem || !currentItem.files)
         ) {
-            if (!currentPath && user.storage) {
+            if (!currentPath && user && user.storage) {
                 setCurrentPath(user.storage);
-            } else if (!currentPath && !user.storage && user.webId) {
-                setStorageUrl(getRootFromWebId(user.webId), user.webId);
-                setCurrentPath(getRootFromWebId(user.webId));
+            } else if (
+                !currentPath &&
+                !(user && user.storage) &&
+                currentWebId
+            ) {
+                setStorageUrl(getRootFromWebId(currentWebId), currentWebId);
+                setCurrentPath(getRootFromWebId(currentWebId));
             } else {
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
@@ -219,9 +224,11 @@ const Drive = ({
             </div>
         );
 
-    const noFilesAndFolders = () => {
-        return currentItem.folders.length < 1 && currentItem.files.length < 1;
-    };
+    const noFilesAndFolders =
+        currentItem?.folders &&
+        currentItem?.files &&
+        currentItem.folders?.length < 1 &&
+        currentItem.files?.length < 1;
 
     return (
         <Layout
@@ -249,13 +256,13 @@ const Drive = ({
                 drive
                 id="drive contextmenu"
             >
-                <div className={styles.container}>
+                <div className={styles.container} data-test-id="drive">
                     <Windows />
                     {currentPath &&
                     currentItem &&
                     currentItem.folders &&
                     currentItem.files &&
-                    !noFilesAndFolders() ? (
+                    !noFilesAndFolders ? (
                         <div>
                             {currentItem.folders.length > 0 && (
                                 <ItemList

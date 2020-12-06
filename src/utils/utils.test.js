@@ -139,7 +139,7 @@ describe('Testing util functions', () => {
             });
         });
         describe('Testing file utils', () => {
-            const files = [
+            const items = [
                 {
                     url: 'https://example.com/test.lol',
                     types: [ns().ldp('Resource')],
@@ -152,8 +152,6 @@ describe('Testing util functions', () => {
                     url: 'https://example.com/noDot',
                     types: [ns().ldp('Resource')],
                 },
-            ];
-            const folders = [
                 {
                     url: 'https://example.com/doge',
                     types: [ns().ldp('Container')],
@@ -163,6 +161,20 @@ describe('Testing util functions', () => {
                     types: [ns().ldp('Container')],
                 },
             ];
+
+            const files = [
+                {
+                    name: 'test.lol',
+                },
+                {
+                    name: 'broken',
+                },
+                {
+                    name: 'noDot',
+                },
+            ];
+
+            const folders = ['doge', 'muchTest'];
 
             test('getFileType(regularFileName) should return file type', () => {
                 expect(fileUtils.getFileType('fav.ico')).toBe('ico');
@@ -177,7 +189,7 @@ describe('Testing util functions', () => {
 
             test('convertResourceListToSearchOptions() should return arrayOfObjects', () => {
                 const converted = fileUtils.convertResourceListToSearchOptions({
-                    items: [...files, ...folders],
+                    items: [...items],
                 });
                 expect(converted.length).toBe(5);
                 expect(converted).toContainObject({
@@ -222,7 +234,7 @@ describe('Testing util functions', () => {
                 ).toBe(false);
             });
 
-            test('namingConflict() should return true if the there is a conflict', () => {
+            test.only('namingConflict() should return true if the there is a conflict', () => {
                 expect(
                     fileUtils.namingConflict('doge', {
                         files: files,

@@ -54,7 +54,14 @@ export const DriveContextMenu = ({
                     [styles.disabled]: option.disabled,
                 })}
             >
-                <div>{option.label}</div>
+                <div
+                    data-test-id={`contextmenu-${option.label.replace(
+                        ' ',
+                        '-'
+                    )}`}
+                >
+                    {option.label}
+                </div>
             </Item>
         );
     };

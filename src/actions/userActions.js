@@ -15,8 +15,10 @@ import {
     CHANGE_PROFILE_PHOTO,
     CHANGE_PROFILE_PHOTO_SUCCESS,
     CHANGE_PROFILE_PHOTO_FAILURE,
+    FETCH_CONTACTS_SUCCESS,
 } from './types';
 import User from 'ownuser';
+import { Graphs } from 'webql-client';
 import auth from 'solid-auth-client';
 import * as rdf from 'rdflib';
 import { fetchContactProfiles } from './contactActions';
@@ -77,12 +79,66 @@ export const setStorageUrl = (url, webId) => {
 export const fetchUser = (webId) => {
     return (dispatch) => {
         dispatch({ type: FETCH_USER });
-        const currUser = new User(webId);
-        return currUser
-            .getProfile()
-            .then((profile) => {
-                dispatch({ type: FETCH_USER_SUCCESS, payload: profile });
-                dispatch(fetchContactProfiles(profile.contacts, webId));
+        const graph = new Graphs(webId);
+        return graph
+            .load()
+            .then((graph) => {
+                const user = graph['#me'];
+                const profile = {
+                    name: user['foaf#name'],
+                    bio: user['vcard#note'],
+                    job: user['vcard#role'],
+                    picture: user['vcard#hasPhoto'],
+                    storage: user['space#storage'],
+                    apps: Array.isArray(user['acl#trustedApp'])
+                        ? user['acl#trustedApp'].map((app) => app['acl#origin'])
+                        : user['acl#trustedApp']['acl#origin'],
+                    emails: Array.isArray(user['vcard#hasEmail'])
+                        ? user['vcard#hasEmail'].map((email) =>
+                              email['vcard#value'].replace('mailto:', '')
+                          )
+                        : user['vcard#hasEmail']
+                        ? [
+                              user['vcard#hasEmail']['vcard#value'].replace(
+                                  'mailto:',
+                                  ''
+                              ),
+                          ]
+                        : undefined,
+                    telephones: Array.isArray(user['vcard#hasTelephone'])
+                        ? user['vcard#hasTelephone'].map((telephone) =>
+                              telephone['vcard#value'].replace('tel:', '')
+                          )
+                        : user['vcard#hasTelephone']
+                        ? [
+                              user['vcard#hasTelephone']['vcard#value'].replace(
+                                  'tel:',
+                                  ''
+                              ),
+                          ]
+                        : undefined,
+                    webId: user.id,
+                    contacts: user['foaf#knows'],
+                };
+                dispatch({
+                    type: FETCH_USER_SUCCESS,
+                    payload: profile,
+                });
+                if (user['foaf#knows']) {
+                    dispatch(
+                        fetchContactProfiles(
+                            Array.isArray(user['foaf#knows'])
+                                ? user['foaf#knows']
+                                : [user['foaf#knows']],
+                            webId
+                        )
+                    );
+                } else {
+                    dispatch({
+                        type: FETCH_CONTACTS_SUCCESS,
+                        payload: [],
+                    });
+                }
             })
             .catch((error) =>
                 dispatch({ type: FETCH_USER_FAILURE, payload: error })
@@ -93,14 +149,52 @@ export const fetchUser = (webId) => {
 export const updateProfile = (profileData, webId) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_PROFILE });
-        const currUser = new User(webId);
-        currUser
-            .setProfile(profileData)
+        const graph = new Graphs(webId);
+        graph
+            .load()
             .catch((error) =>
                 dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error })
             )
             .then(() => {
-                dispatch({ type: UPDATE_PROFILE_SUCCESS, profileData });
+                graph
+                    .patch({
+                        [webId]: {
+                            ...(profileData.name
+                                ? { 'vcard#name': profileData.name }
+                                : {}),
+                            ...(profileData.bio
+                                ? { 'vcard#note': profileData.bio }
+                                : {}),
+                            ...(profileData.job
+                                ? { 'vcard#role': profileData.job }
+                                : {}),
+                            ...(profileData.emails
+                                ? {
+                                      'vcard#hasEmail': {
+                                          'vcard#value':
+                                              'mailto:' + profileData.emails,
+                                      },
+                                  }
+                                : {}),
+                            ...(profileData.telephones
+                                ? {
+                                      'vcard#hasTelephone': {
+                                          'vcard#value':
+                                              'tel:' + profileData.telephones,
+                                      },
+                                  }
+                                : {}),
+                        },
+                    })
+                    .catch((error) =>
+                        dispatch({
+                            type: UPDATE_PROFILE_FAILURE,
+                            payload: error,
+                        })
+                    )
+                    .then(() => {
+                        dispatch({ type: UPDATE_PROFILE_SUCCESS, profileData });
+                    });
             });
     };
 };

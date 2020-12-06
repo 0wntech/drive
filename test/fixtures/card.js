@@ -38,13 +38,28 @@ export const card = {
         n0:name "Ben Wetzel".
     `,
     data: {
-        webId: 'https://bejow.owntech.de/profile/card#me',
-        name: 'Ben Wetzel',
-        picture: 'https://bejow.owntech.de/profile/meme_ben_gang.jpg',
+        "id": 'https://bejow.owntech.de/profile/card#me',
+        'foaf#name': 'Ben Wetzel',
+        'acl#trustedApp': { 'acl#origin': 'https://drive.owntech.de' },
+        'vcard#hasPhoto': 'https://bejow.owntech.de/profile/meme_ben_gang.jpg',
+        'vcard#hasEmail': [{ 'vcard#value': 'ben.wetzel@code.berlin' }],
+        'vcard#role': 'tets',
+        'vcard#note': 'ASD',
+        'vcard#hasTelephone': [{ 'vcard#value': '0176322291' }],
+        'foaf#knows': [
+            'https://ludwigschubert.solid.community/profile/card#me',
+        ],
+    },
+    user: {
+        apps: 'https://drive.owntech.de',
+        bio: 'ASD',
         emails: ['ben.wetzel@code.berlin'],
         job: 'tets',
-        bio: 'ASD',
+        name: 'Ben Wetzel',
+        picture: 'https://bejow.owntech.de/profile/meme_ben_gang.jpg',
+        storage: undefined,
         telephones: ['0176322291'],
+        webId: 'https://bejow.owntech.de/profile/card#me',
         contacts: ['https://ludwigschubert.solid.community/profile/card#me'],
     },
 };
