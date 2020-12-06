@@ -57,8 +57,8 @@
 
 .contextMenu {
     background-color: white;
-    border-radius: 5px;
-    border: 0.5px solid #ddd;
+    border-radius: 4px;
+    border: 0.4px solid #ddd;
     z-index: 2;
     width: 130px;
     padding: 0 !important;
@@ -87,37 +87,22 @@
 }
 
 @media (min-width: $screen_l) {
-    .label:hover {
-        background: #ffffff;
-        border-radius: 10px;
-        padding: 0 4px;
-        text-overflow: initial;
-        width: min-content;
-        box-sizing: border-box;
-        border: solid $light_grey 4px;
-        min-width: 100px;
-        z-index: 3;
-    }
-
-    // .gridCell:first-child {
-    //     .label:hover {
-    //         top: 1px;
-    //         left: 0;
-    //         transform: initial;
-    //     }
-    // }
-
-    // .gridCell:nth-child(9) {
-    //     .label:hover {
-    //         top: 1px;
-    //         right: 8px;
-    //         left: initial;
-    //         transform: initial;
-    //     }
-    // }
-
     .gridCell:hover {
         background-color: $light_grey;
+
+        .label {
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 0 4px;
+            text-overflow: initial;
+            width: min-content;
+            box-sizing: border-box;
+            border: solid $light_grey 4px;
+            min-width: 100px;
+            z-index: 3;
+        }
     }
 }
 

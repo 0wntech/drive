@@ -133,7 +133,10 @@ export const AccessWindow = ({
                     <div className={styles.entities}>
                         {currentAccessControl &&
                             currentAccessControl.map((entity) => (
-                                <AccessListItem key={entity.identifier} entity={entity} />
+                                <AccessListItem
+                                    key={entity.identifier}
+                                    entity={entity}
+                                />
                             ))}
                     </div>
                 </div>

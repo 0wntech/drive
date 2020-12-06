@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react';
+import mime from 'mime';
+import * as urlUtils from 'url';
 import classNames from 'classnames';
 import Select, { components } from 'react-select';
 import { connect } from 'react-redux';
@@ -8,8 +10,12 @@ import './SearchDropdown.scss';
 
 import { searchContact } from '../../actions/contactActions';
 import useClickOutside from '../../hooks/useClickOutside';
+import { getRootFromWebId } from '../../utils/url';
 
 const customFilter = (option, searchText) => {
+    const [searchedUser, searchedPath] = searchText
+        ? constructSearchContactQuery(searchText) ?? ['', '']
+        : ['', ''];
     if (!option.value) {
         return true;
     }
@@ -22,16 +28,54 @@ const customFilter = (option, searchText) => {
             (option.data.contact.name &&
                 option.data.contact.name
                     .toLowerCase()
-                    .includes(searchText.toLowerCase()))
+                    .includes(searchText.toLowerCase())) ||
+            (option.data.contact.webId &&
+                option.data.contact.webId
+                    .toLowerCase()
+                    .includes(searchedUser.toLowerCase())) ||
+            (option.data.contact.name &&
+                option.data.contact.name
+                    .toLowerCase()
+                    .includes(searchedUser.toLowerCase()))
         ) {
             return true;
         }
         return false;
     }
-    if (option.value.toLowerCase().includes(searchText.toLowerCase())) {
+    if (
+        option.value.toLowerCase().includes(searchText.toLowerCase()) ||
+        (option.data.path.toLowerCase().includes(searchedPath.toLowerCase()) &&
+            option.data.path.includes(searchedUser.toLowerCase())) ||
+        (option.data.fileType &&
+            mime
+                .getType(option.data.fileType)
+                ?.includes(searchText.toLowerCase()))
+    ) {
         return true;
     }
     return false;
+};
+
+const constructSearchContactQuery = (searchText) => {
+    const searchTextFragments = searchText.toLowerCase().split('/');
+    const searchedUser = searchTextFragments.shift();
+    const searchedPath = searchTextFragments.join('/');
+    let searchedUrl;
+    try {
+        if (searchText.startsWith('https://') && getRootFromWebId(searchText)) {
+            searchedUrl = new URL(searchText);
+        } else {
+            searchedUrl = new URL('https://' + searchText);
+        }
+    } catch (err) {}
+    if (!searchText.includes('.')) {
+        return [searchedUser, searchedPath];
+    }
+    const hostUrl = urlUtils.format({
+        protocol: searchedUrl.protocol,
+        hostname: searchedUrl.hostname,
+    });
+    return [hostUrl, searchedUrl.pathname];
 };
 
 export function SearchDropdown({
@@ -44,24 +88,25 @@ export function SearchDropdown({
     searchingContacts,
     isSearchBarExpanded,
     classNamePrefix = 'search',
-    contacts,
     noIndicator,
     indicator,
     formatOptionLabel,
+    webId,
 }) {
     const [typingTimer, setTypingTimer] = useState(null);
     const handleInputChange = (searchText) => {
         clearTimeout(typingTimer);
         if (searchText !== '') {
-            searchText = searchText.toLowerCase();
+            const [searchedUser, searchedPath] = constructSearchContactQuery(
+                searchText
+            );
             setTypingTimer(
-                setTimeout(
-                    () =>
-                        contacts
-                            ? searchContact(searchText)
-                            : searchContact(searchText),
-                    1000
-                )
+                setTimeout(() => {
+                    return searchContact(
+                        searchedUser,
+                        searchedPath !== '' ? searchedPath : '/'
+                    );
+                }, 2000)
             );
         }
     };
@@ -98,7 +143,7 @@ export function SearchDropdown({
             components={{ DropdownIndicator }}
             placeholder={placeholder}
             styles={customStyles}
-            formatOptionLabel={formatOptionLabel}
+            formatOptionLabel={(option) => formatOptionLabel(option, webId)}
             options={searchingContacts ? items : items}
             onChange={onChange}
             className={className}
@@ -122,6 +167,7 @@ export function SearchDropdown({
         <div
             className={classNames(styles.container, className)}
             ref={dropdownWrapper}
+            data-test-id={'search-dropdown'}
         >
             {select}
         </div>

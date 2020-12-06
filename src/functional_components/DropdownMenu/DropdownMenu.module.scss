@@ -66,7 +66,7 @@
 }
 
 .option {
-    padding: 5px 15px;
+    padding: 4px 15px;
     font-style: normal;
     font-size: 16px;
     line-height: 21px;
@@ -76,7 +76,7 @@
 
 .option:last-child {
     color: red;
-    padding-bottom: 5px;
+    padding-bottom: 4px;
 }
 
 .option:hover {
@@ -90,7 +90,7 @@
 
 @media (max-width: $screen_l) {
     .container:hover {
-        border: solid $dark_grey 5px;
+        border: solid $dark_grey 4px;
         border-radius: 20px;
         padding: initial;
     }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classNames from 'classnames';
+import ns from 'solid-namespace';
 import mime from 'mime';
 import url from 'url';
 
@@ -16,8 +17,8 @@ import {
     getBreadcrumbsFromUrl,
     useParamsFromUrl,
     convertFileUrlToName,
-    getRootFromWebId,
     getHomeRoute,
+    getContactFolderRoute,
 } from '../../utils/url';
 import fileUtils from '../../utils/fileUtils';
 import Breadcrumbs from '../Breadcrumbs';
@@ -42,6 +43,7 @@ const getPlaceholder = (body) => {
 export const FileView = ({
     loadCurrentItem,
     currentItem,
+    currentItemAccessControl,
     currentPath,
     webId,
     rootUrl,
@@ -54,13 +56,13 @@ export const FileView = ({
     errorWindowError,
     toggleErrorWindow,
 }) => {
-    const { path: currentFilePath } = useParamsFromUrl();
-    const currentFileUrl = url.resolve(
-        getRootFromWebId(webId),
-        currentFilePath
-    );
+    const { id, path: currentFilePath } = useParamsFromUrl();
+    const routeUrl =
+        currentFilePath &&
+        url.resolve((id && `https://${id}/`) ?? rootUrl, currentFilePath ?? '');
+
     useEffect(() => {
-        if (currentFileUrl) {
+        if (routeUrl) {
             if (
                 !currentItem ||
                 typeof currentItem.body !== 'string' ||
@@ -68,17 +70,21 @@ export const FileView = ({
             ) {
                 let options = {};
                 if (
-                    mime.getType(currentFileUrl) &&
-                    isImageType(mime.getType(currentFileUrl))
+                    mime.getType(routeUrl) &&
+                    isImageType(mime.getType(routeUrl))
                 ) {
                     options = { noFetch: true };
                 }
-                setCurrentPath(currentFileUrl, options);
+                setCurrentPath(routeUrl, options);
             } else if (currentItem.files || currentItem.folders) {
-                history.push(getHomeRoute(currentPath));
+                if (id !== url.parse(webId).host) {
+                    history.push(getContactFolderRoute(id, currentPath));
+                } else {
+                    history.push(getHomeRoute(currentPath));
+                }
             }
         }
-    }, []);
+    }, [id, currentFilePath]);
 
     useEffect(() => {
         if (currentItem && typeof currentItem.body === 'string')
@@ -120,27 +126,41 @@ export const FileView = ({
     const toolbarLeft = (
         <div className={styles.breadcrumbsContainer}>
             <Breadcrumbs
+                webId={webId}
                 onClick={(path) => {
-                    history.push(getHomeRoute(path));
+                    if (id !== url.parse(webId).host) {
+                        history.push(getContactFolderRoute(id, path));
+                    } else {
+                        history.push(getHomeRoute(path));
+                    }
                 }}
                 breadcrumbs={
                     currentPath ? getBreadcrumbsFromUrl(currentPath) : null
                 }
+                currentPath={currentPath ?? routeUrl}
                 rootUrl={rootUrl}
             />
         </div>
     );
 
-    const toolbarRight = (
+    const toolbarRight = ((currentItemAccessControl &&
+        currentItemAccessControl.find(
+            (entity) =>
+                entity.webId === webId &&
+                entity.access.includes(ns().acl('Write'))
+        )) ||
+        id === url.parse(webId).host) && (
         <div className={styles.editIconWrapper}>
             {isEditable ? (
                 <div className={styles.editButtons}>
                     <SvgX
+                        data-test-id="cancel-edit-file"
                         viewBox="0 0 32 32"
                         onClick={onCancel}
                         className={styles.icon}
                     />{' '}
                     <SvgCheck
+                        data-test-id="save-file"
                         viewBox="0 0 32 32"
                         className={styles.icon}
                         onClick={onSubmit}
@@ -148,6 +168,7 @@ export const FileView = ({
                 </div>
             ) : (
                 <Edit
+                    data-test-id="edit-file"
                     viewBox="0 0 24 24"
                     width="100%"
                     className={styles.icon}
@@ -165,8 +186,7 @@ export const FileView = ({
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={!isImage && currentItem ? toolbarRight : null}
             label={
-                currentItem &&
-                currentItem.url &&
+                currentItem?.url &&
                 decodeURIComponent(convertFileUrlToName(currentItem.url))
             }
             showLabel
@@ -205,16 +225,18 @@ export const FileView = ({
                             className={classNames(styles.file, {
                                 [styles.enabled]: isEditable,
                             })}
+                            data-test-id="file-body"
                         >
                             {newBody ? newBody : 'Empty'}
                         </div>
                     )
                 ) : (
                     <img
-                        src={currentItem.url}
+                        data-test-id="file-image"
+                        src={routeUrl}
                         alt="file"
                         className={styles.image}
-                        onClick={() => window.open(currentItem.url)}
+                        onClick={() => window.open(routeUrl)}
                     />
                 )
             ) : null}
@@ -239,6 +261,7 @@ const mapStateToProps = (state) => {
     return {
         loadCurrentItem: state.app.loadCurrentItem,
         currentItem: state.app.currentItem,
+        currentItemAccessControl: state.app.currentItemAccessControl,
         currentPath: state.app.currentPath,
         webId: state.user.webId,
         rootUrl: state.app.rootUrl,

@@ -9,6 +9,7 @@ import Breadcrumbs from '../Breadcrumbs';
 import ItemList from '../ItemList';
 import {
     getBreadcrumbsFromUrl,
+    getContactFolderRoute,
     getFileRoute,
     getHomeRoute,
     getRootFromWebId,
@@ -29,7 +30,7 @@ import {
     downloadFile,
     uploadFileOrFolder,
 } from '../../actions/appActions';
-import { setStorageUrl, fetchUser } from '../../actions/userActions';
+import { setStorageUrl } from '../../actions/userActions';
 import ToolbarButtons from '../ToolbarButtons';
 import { handleError } from '../../utils/helper';
 import { getParentFolderUrl } from '../../utils/url';
@@ -40,6 +41,7 @@ import DriveMenu from '../DriveMenu';
 import SelectModeButton from '../SelectModeButton';
 import AccessDisplay from '../AccessDisplay/AccessDisplay';
 import BottomOverlay from '../BottomOverlay/BottomOverlay';
+import { fetchContact } from '../../actions/contactActions';
 
 const Drive = ({
     selectedItems,
@@ -47,6 +49,8 @@ const Drive = ({
     setSelection,
     currentItem,
     rootUrl,
+    currentContactRootUrl,
+    fetchContact,
     loadCurrentItem,
     openConsentWindow,
     openCreateFolderWindow,
@@ -69,15 +73,23 @@ const Drive = ({
     isSearchBarExpanded,
     isAccessWindowVisible,
 }) => {
-    const { path } = useParamsFromUrl();
-    const routeUrl = url.resolve(rootUrl, path ?? '');
-    const appState = JSON.parse(localStorage.getItem('appState'));
+    const { path, id } = useParamsFromUrl();
+    const routeUrl =
+        path && url.resolve((id && `https://${id}/`) ?? rootUrl, path ?? '');
     useEffect(() => {
-        if (!loadUser && !user) {
-            fetchUser(webId);
-        }
-
-        if (currentPath !== routeUrl && !loadCurrentItem) {
+        const currentWebId = user && user.webId ? user.webId : webId;
+        if (routeUrl && currentPath !== routeUrl && !loadCurrentItem) {
+            if (id && !currentContactRootUrl) {
+                fetchContact(
+                    url.format({
+                        protocol: 'https:',
+                        host: id,
+                        pathname: '/profile/card',
+                        hash: 'me',
+                    }),
+                    { profileOnly: true }
+                );
+            }
             if (mime.getType(routeUrl)) {
                 history.push(getFileRoute(routeUrl));
             } else {
@@ -88,18 +100,15 @@ const Drive = ({
             !loadUser &&
             (!currentItem || !currentItem.files)
         ) {
-            if (
-                !currentPath &&
-                appState &&
-                appState.currentPath &&
-                url.parse(webId).host === url.parse(appState.currentPath).host
-            ) {
-                setCurrentPath(appState.currentPath);
-            } else if (!currentPath && user.storage) {
+            if (!currentPath && user && user.storage) {
                 setCurrentPath(user.storage);
-            } else if (!currentPath && !user.storage && user.webId) {
-                setStorageUrl(getRootFromWebId(user.webId), user.webId);
-                setCurrentPath(getRootFromWebId(user.webId));
+            } else if (
+                !currentPath &&
+                !(user && user.storage) &&
+                currentWebId
+            ) {
+                setStorageUrl(getRootFromWebId(currentWebId), currentWebId);
+                setCurrentPath(getRootFromWebId(currentWebId));
             } else {
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
@@ -120,9 +129,13 @@ const Drive = ({
             );
             setSelection(newSelection);
         } else {
-            history.push(
-                `/file/${encodeURIComponent(url.parse(fileUrl).pathname)}`
-            );
+            if (mime.getType(fileUrl) === 'application/pdf') {
+                window.open(fileUrl, '_blank');
+            } else if (id) {
+                history.push(getFileRoute(id, fileUrl));
+            } else {
+                history.push(getFileRoute(url.parse(webId).host, fileUrl));
+            }
         }
     };
     const loadFolder = (path) => {
@@ -133,9 +146,11 @@ const Drive = ({
             const newSelection = selectedItems.filter((item) => item !== path);
             setSelection(newSelection);
         } else {
-            history.push(
-                `/home/${encodeURIComponent(url.parse(path).pathname)}`
-            );
+            if (id) {
+                history.push(getContactFolderRoute(id, path));
+            } else {
+                history.push(getHomeRoute(path));
+            }
         }
     };
 
@@ -184,25 +199,36 @@ const Drive = ({
         />
     );
 
-    const toolbarLeft = currentPath && rootUrl && (
-        <div className={styles.breadcrumbsContainer}>
-            <Breadcrumbs
-                onClick={(path) => {
-                    history.push(getHomeRoute(path));
-                }}
-                breadcrumbs={
-                    currentPath
-                        ? getBreadcrumbsFromUrl(currentPath, rootUrl)
-                        : null
-                }
-                rootUrl={rootUrl}
-            />
-        </div>
-    );
+    const toolbarLeft = currentPath &&
+        (rootUrl || (id && currentContactRootUrl)) && (
+            <div className={styles.breadcrumbsContainer}>
+                <Breadcrumbs
+                    webId={webId}
+                    currentPath={currentPath ?? routeUrl}
+                    onClick={(path) => {
+                        if (id) {
+                            history.push(getContactFolderRoute(id, path));
+                        } else {
+                            history.push(getHomeRoute(path));
+                        }
+                    }}
+                    breadcrumbs={
+                        currentPath ? getBreadcrumbsFromUrl(currentPath) : null
+                    }
+                    rootUrl={
+                        id
+                            ? currentContactRootUrl ?? url.parse(webId).host
+                            : rootUrl ?? url.parse(webId).host
+                    }
+                />
+            </div>
+        );
 
-    const noFilesAndFolders = () => {
-        return currentItem.folders.length < 1 && currentItem.files.length < 1;
-    };
+    const noFilesAndFolders =
+        currentItem?.folders &&
+        currentItem?.files &&
+        currentItem.folders?.length < 1 &&
+        currentItem.files?.length < 1;
 
     return (
         <Layout
@@ -211,6 +237,7 @@ const Drive = ({
             className={classNames(styles.grid, {
                 [styles.noScroll]: isDriveMenuVisible || isAccessWindowVisible,
             })}
+            label="Drive"
             onClick={handleClick}
             label="Drive"
             isLoading={
@@ -230,13 +257,13 @@ const Drive = ({
                 drive
                 id="drive contextmenu"
             >
-                <div className={styles.container}>
+                <div className={styles.container} data-test-id="drive">
                     <Windows />
                     {currentPath &&
                     currentItem &&
                     currentItem.folders &&
                     currentItem.files &&
-                    !noFilesAndFolders() ? (
+                    !noFilesAndFolders ? (
                         <div>
                             {currentItem.folders.length > 0 && (
                                 <ItemList
@@ -287,6 +314,7 @@ const mapStateToProps = (state) => {
         currentItem: state.app.currentItem,
         currentPath: state.app.currentPath,
         rootUrl: state.app.rootUrl,
+        currentContactRootUrl: state.contact.currentContactRootUrl,
         selectedItems: state.app.selectedItems,
         selectionMode: state.app.selectionMode,
         user: state.user.user,
@@ -317,5 +345,6 @@ export default withRouter(
         downloadFile,
         uploadFileOrFolder,
         setStorageUrl,
+        fetchContact,
     })(Drive)
 );

@@ -44,23 +44,23 @@
 
 .accept {
     border: solid green 1px;
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: #fff;
     color: green;
-    margin: 5px;
+    margin: 4px;
 }
 
 .deny {
     border: solid red 1px;
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: #fff;
     color: red;
-    margin: 5px;
+    margin: 4px;
 }
 
 .threeDots {
     border: solid #777 1px;
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: #fff;
     color: #777777;
     font-weight: bold;

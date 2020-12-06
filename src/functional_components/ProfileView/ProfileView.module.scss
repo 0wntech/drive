@@ -32,22 +32,101 @@ svg:hover {
 
 .profileContainer {
     justify-self: center;
-    width: 400px;
+    width: 1000px;
     height: max-content;
-    padding: 32px;
+    padding: 64px 0;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit {
+    flex-flow: column;
+
+    .infoContainer {
+        width: 50%;
+        align-self: initial;
+    }
+
+    .headContainer {
+        min-height: initial;
+        width: 50%;
+    }
+}
+
+.infoContainer {
+    flex: 1 1 50%;
+    margin-bottom: 2em;
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: flex-start;
+    height: 360px;
     justify-content: center;
+    max-width: 50%;
+}
+
+.infoDataContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contactsContainer {
+    flex: 1 1 100%;
+}
+
+.contactsContainer.loading {
+    min-height: 360px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sectionLabel {
+    font-weight: 600 !important;
+    font-size: 2em;
+    margin: 1em 0;
+}
+
+.sectionLabel:nth-of-type(1) {
+    margin-top: initial;
+    margin-bottom: 1em;
+}
+
+.showMoreLabel {
+    color: #2791ff;
+}
+
+.showMoreIcon {
+    font-size: 32px;
+    height: 20px;
+    margin-top: -20px;
+    color: #2791ff;
+    text-align: center;
+}
+
+.showMoreWrapper {
+    width: 100%;
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
 }
 
 .profileImage {
     position: relative;
     width: 150px;
     height: 150px;
-    background-size: cover;
-    background-position: center;
     border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+    img {
+        display: none;
+    }
 }
 
 .defaultProfileImage {
@@ -88,7 +167,6 @@ svg:hover {
 }
 
 .bioLabel {
-    width: 100% !important;
     text-align: center;
 }
 
@@ -96,21 +174,19 @@ svg:hover {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    flex: 1;
     align-items: center;
     margin-top: 1em;
 }
 
 .headContainer {
-    width: 100%;
-    min-width: 50%;
-    max-height: 100%;
     display: flex;
     position: relative;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1em;
+    flex: 1 1 50%;
+    min-height: 360px;
+    height: max-content;
+    margin-bottom: 2em;
 }
 
 .iconContainer {
@@ -120,8 +196,6 @@ svg:hover {
 .toolbarArea {
     grid-area: toolbar;
     background-color: #e2e2e6;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
     width: 100%;
     display: grid;
     position: relative;
@@ -137,13 +211,14 @@ svg:hover {
 }
 
 .nameLabel {
-    width: 100% !important;
+    height: min-content;
+    overflow: initial !important;
     font-weight: 600 !important;
     text-align: center;
 }
 
 .webIdLabel {
-    margin: 1em;
+    margin: 1em 0;
     color: #454545;
     text-align: center;
     text-decoration: none;
@@ -175,7 +250,6 @@ svg:hover {
 .addButton {
     border: solid $light_green 5px;
     color: #fff;
-    width: 100%;
     background-color: $light_green;
 }
 
@@ -184,19 +258,16 @@ svg:hover {
 }
 
 .removeButton {
-    background-color: #ffffff !important;
-    color: #aaaaaa;
-    border: 5px solid #c4c4c4 !important;
-    width: 100%;
+    border: 5px solid #c4c4c4;
 }
 
 @media (min-width: $screen_l) {
     .addButton:hover {
-        background-color: $dark_green;
+        border-color: $dark_green;
     }
 
     .removeButton:hover {
-        cursor: pointer;
+        border-color: $light_black;
     }
 }
 
@@ -204,22 +275,28 @@ svg:hover {
     .grid {
         grid-template-areas: 'profile profile profile';
         grid-template-rows: 1fr;
-        width: 100%;
+        width: calc(100% - 32px);
         --webkit-overflow-scrolling: touch;
         height: calc(100vh - 70px);
         border-radius: initial;
         overflow-y: auto;
+        padding: 0 16px;
     }
 
     .profileContainer {
         width: 100%;
         justify-content: flex-start;
-        margin-top: 1em;
-        padding-bottom: 4em;
+        margin-top: 2em;
+        padding: initial;
     }
 
     .headContainer {
         width: calc(100% - 64px);
+        flex: 1 1 100%;
+    }
+
+    .infoContainer {
+        flex: 1 1 100%;
     }
 
     .nameLabel {

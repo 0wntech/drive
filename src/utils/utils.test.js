@@ -1,3 +1,4 @@
+import ns from 'solid-namespace';
 import {
     getBreadcrumbsFromUrl,
     getWebIdFromRoot,
@@ -138,7 +139,41 @@ describe('Testing util functions', () => {
             });
         });
         describe('Testing file utils', () => {
-            const files = ['test.lol', 'broken.', 'noDot'];
+            const items = [
+                {
+                    url: 'https://example.com/test.lol',
+                    types: [ns().ldp('Resource')],
+                },
+                {
+                    url: 'https://example.com/broken',
+                    types: [ns().ldp('Resource')],
+                },
+                {
+                    url: 'https://example.com/noDot',
+                    types: [ns().ldp('Resource')],
+                },
+                {
+                    url: 'https://example.com/doge',
+                    types: [ns().ldp('Container')],
+                },
+                {
+                    url: 'https://example.com/muchTest',
+                    types: [ns().ldp('Container')],
+                },
+            ];
+
+            const files = [
+                {
+                    name: 'test.lol',
+                },
+                {
+                    name: 'broken',
+                },
+                {
+                    name: 'noDot',
+                },
+            ];
+
             const folders = ['doge', 'muchTest'];
 
             test('getFileType(regularFileName) should return file type', () => {
@@ -152,10 +187,9 @@ describe('Testing util functions', () => {
                 expect(fileUtils.getFileType('fav.')).toBeNull();
             });
 
-            test('convertFilesAndFoldersToArray() should return arrayOfObjects', () => {
-                const converted = fileUtils.convertFilesAndFoldersToArray({
-                    files,
-                    folders,
+            test('convertResourceListToSearchOptions() should return arrayOfObjects', () => {
+                const converted = fileUtils.convertResourceListToSearchOptions({
+                    items: [...items],
                 });
                 expect(converted.length).toBe(5);
                 expect(converted).toContainObject({
@@ -164,21 +198,29 @@ describe('Testing util functions', () => {
                     type: 'file',
                 });
                 expect(converted).toContainObject({
-                    name: 'broken.',
                     fileType: null,
+                    host: 'example.com',
+                    name: 'broken',
+                    path: 'https://example.com/broken',
                     type: 'file',
                 });
                 expect(converted).toContainObject({
+                    fileType: null,
+                    host: 'example.com',
                     name: 'noDot',
-                    fileType: null,
+                    path: 'https://example.com/noDot',
                     type: 'file',
                 });
                 expect(converted).toContainObject({
+                    host: 'example.com',
                     name: 'doge',
+                    path: 'https://example.com/doge/',
                     type: 'folder',
                 });
                 expect(converted).toContainObject({
+                    host: 'example.com',
                     name: 'muchTest',
+                    path: 'https://example.com/muchTest/',
                     type: 'folder',
                 });
             });
@@ -192,7 +234,7 @@ describe('Testing util functions', () => {
                 ).toBe(false);
             });
 
-            test('namingConflict() should return true if the there is a conflict', () => {
+            test.only('namingConflict() should return true if the there is a conflict', () => {
                 expect(
                     fileUtils.namingConflict('doge', {
                         files: files,

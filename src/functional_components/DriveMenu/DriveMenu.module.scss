@@ -30,7 +30,7 @@
             grid-template-areas: 'icon . label';
             align-items: center;
             padding: 4px 1em;
-            margin: 5px 0;
+            margin: 4px 0;
 
             svg {
                 grid-area: icon;
@@ -38,7 +38,7 @@
 
             .optionLabel {
                 grid-area: label;
-                padding: 5px 0;
+                padding: 4px 0;
                 width: 100%;
                 font-style: normal;
                 font-size: 18px;

@@ -1,3 +1,5 @@
+import uniq from 'uniq';
+
 import {
     INDEX_STORAGE,
     INDEX_STORAGE_PROGRESS,
@@ -62,7 +64,12 @@ import {
     TOGGLE_INFO_WINDOW,
     FETCH_USER_SUCCESS,
     SET_STORAGE_URL_SUCCESS,
+    SEARCH_FILE,
+    SEARCH_FILE_FAILURE,
+    SEARCH_FILE_SUCCESS,
+    SEARCH_CONTACT,
 } from '../actions/types';
+import fileUtils from '../utils/fileUtils';
 import { getRootFromWebId } from '../utils/url';
 
 const INITIAL_STATE = {
@@ -76,6 +83,8 @@ const INITIAL_STATE = {
     uploadingFiles: false,
     indexingStorage: true,
     indexingProgress: 0,
+    searchingFile: false,
+    searchHistory: [],
     error: {
         UPLOAD_FILES: false,
         DOWNLOAD_FILE: false,
@@ -117,8 +126,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
-    console.log('App Reducer got action: ', type, '\nValue: ', payload);
-    console.log(state);
+    console.info('App Reducer got action: ', type, '\nValue: ', payload);
+    console.info(state);
 
     switch (type) {
         case FETCH_USER_SUCCESS:
@@ -164,11 +173,10 @@ export default (state = INITIAL_STATE, action) => {
         case INDEX_STORAGE_PROGRESS:
             return {
                 ...state,
-                indexingProgress: Number(
-                    state.indexingStorage &&
-                        payload > state.indexingProgress &&
-                        payload
-                ),
+                indexingProgress:
+                    typeof payload === 'string'
+                        ? fileUtils.getFileOrFolderName(payload)
+                        : payload,
             };
         case INDEX_STORAGE_SUCCESS:
             return {
@@ -179,6 +187,54 @@ export default (state = INITIAL_STATE, action) => {
                 error: {
                     ...state.error,
                     INDEX_STORAGE: false,
+                },
+            };
+        case SEARCH_CONTACT:
+            return {
+                ...state,
+                searchHistory: [
+                    ...state.searchHistory.reduce((history, historicSearch) => {
+                        if (historicSearch !== payload) {
+                            return [...history, historicSearch];
+                        } else {
+                            return history;
+                        }
+                    }, []),
+                    payload,
+                ],
+            };
+        case SEARCH_FILE:
+            return {
+                ...state,
+                searchingFile: true,
+                searchHistory: [
+                    ...state.searchHistory.reduce((history, historicSearch) => {
+                        if (historicSearch !== payload) {
+                            return [...history, historicSearch];
+                        } else {
+                            return history;
+                        }
+                    }, []),
+                    payload,
+                ],
+            };
+        case SEARCH_FILE_SUCCESS:
+            return {
+                ...state,
+                fileHierarchy: uniq([...payload, ...state.fileHierarchy]),
+                searchingFile: false,
+                error: {
+                    ...state.error,
+                    SEARCH_FILE: false,
+                },
+            };
+        case SEARCH_FILE_FAILURE:
+            return {
+                ...state,
+                searchingFile: false,
+                error: {
+                    ...state.error,
+                    SEARCH_FILE: payload,
                 },
             };
         case INDEX_STORAGE_FAILURE:

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './ActionButton.module.css';
+import styles from './ActionButton.module.scss';
 import classNames from 'classnames';
 
 const ActionButton = ({

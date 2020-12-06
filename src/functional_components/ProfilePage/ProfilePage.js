@@ -11,8 +11,16 @@ import EditIcon from '../../assets/svgIcons/Edit';
 import ActionButton from '../ActionButton/ActionButton';
 import { handleError } from '../../utils/helper';
 import ProfileView from '../ProfileView/ProfileView';
-import { fetchContactProfiles, setCurrentContact } from '../../actions/contactActions';
+import {
+    fetchContact,
+    fetchContactProfiles,
+    setCurrentContact,
+    addContact,
+    removeContact,
+} from '../../actions/contactActions';
 import { withRouter } from 'react-router-dom';
+import { getProfileRoute, useParamsFromUrl } from '../../utils/url';
+import { isContact } from '../../reducers/contactReducer';
 
 export const ProfilePage = ({
     user,
@@ -23,25 +31,57 @@ export const ProfilePage = ({
     webId,
     loadUser,
     contacts,
+    currentContacts,
     loadContacts,
-    fetchContactProfiles,
+    loadCurrentContact,
+    fetchContact,
     setCurrentContact,
+    addContact,
+    removeContact,
+    isContact,
     history,
+    currentContact,
+    contactRecommendations,
 }) => {
+    const { id } = useParamsFromUrl();
     handleError(error);
+    const ownProfile = !id || id === url.parse(webId).host;
     useEffect(() => {
-        if (!user && !loadUser && webId) {
-            fetchUser(webId);
-        } else if (!contacts && !loadContacts && !user) {
-            fetchContactProfiles(user.contacts, webId);
+        if (ownProfile) {
+            if (!user && !loadUser) {
+                fetchUser(webId);
+            } else if (!contacts && !loadContacts) {
+                fetchContactProfiles(user.contacts, webId);
+            }
+        } else {
+            setUserData(undefined);
+            const contactWebId = url.format({
+                protocol: 'https:',
+                host: id,
+                pathname: '/profile/card',
+                hash: '#me',
+            });
+            if (
+                (!currentContact || currentContact.webId !== contactWebId) &&
+                !loadCurrentContact
+            ) {
+                fetchContact(contactWebId);
+            }
         }
-    }, []);
+    }, [id, currentContact, isContact]);
 
-    const [userData, setUserData] = useState({
-        ...user,
-        emails: user.emails[0],
-        telephones: user.telephones[0],
-    });
+    const userProfile =
+        ownProfile && user ? user : currentContact ? currentContact : undefined;
+    const profile = userProfile
+        ? {
+              ...userProfile,
+              emails: userProfile.emails ? userProfile.emails[0] : undefined,
+              telephones: userProfile.telephones
+                  ? userProfile.telephones[0]
+                  : undefined,
+          }
+        : undefined;
+    const [userData, setUserData] = useState(ownProfile ? profile : undefined);
     const [editState, setEditState] = useState(false);
 
     const updateUserData = (key, value) => {
@@ -94,11 +134,12 @@ export const ProfilePage = ({
                     onClick={() => setEditState(!editState)}
                     size="lg"
                     color="blue"
+                    className={styles.editButton}
                 >
                     <EditIcon
                         viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
+                        width="20"
+                        height="20"
                         onClick={() => setEditState(!editState)}
                         className={styles.iconWhite}
                         data-test-id="edit"
@@ -112,37 +153,55 @@ export const ProfilePage = ({
     return (
         <ProfileView
             label="Profile"
-            user={user}
-            contacts={contacts}
-            updatingProfile={updatingProfile}
+            user={profile}
+            webId={webId}
+            addContact={addContact}
+            removeContact={removeContact}
+            isContact={isContact}
+            contacts={ownProfile ? contacts : currentContacts}
+            error={error}
             renderButtons={renderEditButtons}
             onPhotoChange={onPhotoChange}
             updateUserData={updateUserData}
             editState={editState}
-            userData={userData}
-            loadingContacts={loadContacts}
+            userData={userData || profile}
+            loading={updatingProfile || loadCurrentContact || loadContacts}
+            contactRecommendations={contactRecommendations}
             navigateToContact={(contact) => {
                 setCurrentContact(contact);
-                history.push(`/contact/${url.parse(contact.webId).host}`);
+                history.push(getProfileRoute(contact));
             }}
-        ></ProfileView>
+        />
     );
 };
 
 const mapStateToProps = (state) => ({
     user: state.user.user,
     updatingProfile: state.user.updatingProfile,
-    error: state.user.error,
+    error: state.user.error ?? state.contact.error,
     webId: state.user.webId,
     loadUser: state.user.loadUser,
     contacts: state.contact.contacts,
     loadContacts: state.contact.loadContacts,
+    loadCurrentContact: state.contact.loadCurrentContact,
+    currentContact: state.contact.currentContact,
+    currentContacts: state.contact.currentContacts,
+    contactRecommendations: state.contact.contactRecommendations,
+    isContact:
+        state.contact.contacts && state.contact.currentContact
+            ? isContact(
+                  state.contact.contacts,
+                  state.contact.currentContact.webId
+              )
+            : undefined,
 });
 
 export default connect(mapStateToProps, {
     updateProfile,
     changeProfilePhoto,
     fetchUser,
-    fetchContactProfiles,
+    fetchContact,
+    addContact,
+    removeContact,
     setCurrentContact,
 })(withRouter(ProfilePage));

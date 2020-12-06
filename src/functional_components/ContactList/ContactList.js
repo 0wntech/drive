@@ -10,8 +10,8 @@ const ContactList = ({
     webId,
     removeContact,
     addContact,
-    alreadyContacts,
-    recommended,
+    isContact,
+    removable,
 }) => {
     const renderContact = (contact) => {
         return (
@@ -22,7 +22,8 @@ const ContactList = ({
                 }}
                 contact={contact}
                 removeContact={() => removeContact(webId, contact)}
-                isContact={alreadyContacts}
+                isContact={isContact}
+                removable={removable}
             />
         );
     };
@@ -33,7 +34,7 @@ const ContactList = ({
                 [styles.empty]: !contacts || contacts.length === 0,
             })}
         >
-            {contacts ? (
+            {contacts && contacts.length > 0 ? (
                 contacts.map((contact) => (
                     <div key={contact.webId} className={styles.itemContainer}>
                         {renderContact(contact)}
@@ -41,9 +42,8 @@ const ContactList = ({
                 ))
             ) : (
                 <div className={styles.emptyMessage}>
-                    You don't have any{' '}
-                    {recommended ? 'contact recommendations' : 'contacts'} yet.
-                    Try searching for a contact through the search bar.
+                    You don't have any contacts yet. Try searching for a contact
+                    through the search bar.
                 </div>
             )}
         </div>

@@ -28,12 +28,18 @@ export const useParamsFromUrl = () => {
     return paramObj;
 };
 
-export const getContactRoute = (contact) => {
-    return `/contact/${urlUtils.parse(contact.webId).host}`;
+export const getProfileRoute = (profile) => {
+    return `/profile/${urlUtils.parse(profile.webId).host}`;
 };
 
-export const getFileRoute = (path) => {
-    return `/file/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
+export const getContactFolderRoute = (host, path) => {
+    return `/contact/${host}/${encodeURIComponent(
+        urlUtils.parse(path.endsWith('/') ? path : path + '/').pathname
+    )}`;
+};
+
+export const getFileRoute = (host, path) => {
+    return `/file/${host}/${encodeURIComponent(urlUtils.parse(path).pathname)}`;
 };
 
 export const getHomeRoute = (path) => {
@@ -111,6 +117,10 @@ export const getUsernameFromWebId = (webId) => {
     }
 };
 
+export const getUsernameFromUrl = (url) => {
+    return url.substring(url.indexOf('://') + 3, url.indexOf('.'));
+};
+
 export const getIdpFromWebId = (webId) => {
     if (webId && isValidUrl(webId)) {
         return webId
@@ -118,6 +128,10 @@ export const getIdpFromWebId = (webId) => {
             .substr(0, webId.replace('https://', '').indexOf('/'))
             .replace(getUsernameFromWebId(webId) + '.', '');
     }
+};
+
+export const getIdpFromUrl = (url) => {
+    return new URL(url)?.host.replace(getUsernameFromUrl(url) + '.', '');
 };
 
 // converts webId into url to fetch folders

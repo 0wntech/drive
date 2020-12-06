@@ -5,26 +5,25 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    width: 100%;
-    border: 5px solid $light_grey;
+    width: 100;
+    border: 4px solid $light_grey;
     box-sizing: border-box;
     border-radius: 20px;
     height: 180px;
     padding: 1em;
     position: relative;
+    cursor: pointer;
 }
 
 .imageContainer {
     width: 80px;
     height: 80px;
-    cursor: pointer;
 }
 
 .iconContainer {
     position: absolute;
     top: 10px;
     right: 10px;
-    cursor: pointer;
 }
 
 .iconContainer:hover ellipse {
@@ -47,8 +46,11 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-size: cover;
     background-position: center;
+    background-size: cover;
+    img {
+        display: none;
+    }
 }
 
 .nameContainer {
@@ -57,7 +59,21 @@
     text-align: center;
     margin-top: 0.5em;
     max-width: 80%;
+    max-height: 44px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
+}
+
+@media (min-width: $screen_l) {
+    .container:hover {
+        border-color: $light_black;
+
+        .defaultIcon {
+          color: $light_black;
+          border-color: $light_black;
+        }
+    }
 }
 
 @media (max-width: $screen_l) {

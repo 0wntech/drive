@@ -1,28 +1,26 @@
+@import '../../styles/constants.scss';
 .container {
     border-radius: 20px;
-    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     font-weight: 600;
+    box-sizing: border-box;
+    color: #fff;
 }
 
 .blue {
-    color: #2791ff;
     background: #2791ff;
 }
 
 .red {
-    color: #fff;
-    color: #cd0000;
     background: #cd0000;
 }
 
 .green {
     color: #fff;
-    color: #36c510;
-    background: #36c510;
+    background: $light_green;
 }
 
 .primary {
@@ -36,6 +34,7 @@
 .white {
     font-weight: 400 !important;
     background: #fff;
+    color: #000;
 }
 
 .sm {
@@ -49,10 +48,9 @@
 }
 
 .lg {
-    font-size: 20px;
-    padding: 8px 24px;
-    line-height: 24px;
-    box-sizing: border-box;
+    font-size: 18px;
+    padding: 4px 24px;
+    line-height: 28px;
 }
 
 .disabled {
@@ -61,21 +59,17 @@
 }
 
 @media (min-width: $screen_l) {
-    .white:hover {
-        color: #666;
-    }
-
     .red:hover {
-        background: #bd0000;
+        border-color: #bd0000;
     }
 
     .blue:hover {
         cursor: pointer;
-        background-color: #2771ff;
+        border-color: #2771ff;
     }
 
     .green:hover {
         cursor: pointer;
-        background: #36a510;
+        border-color: $light_green;
     }
 }

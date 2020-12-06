@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import url from 'url';
 import styles from './Breadcrumbs.module.css';
 import BreadcrumbItem from '../BreadcrumbItem/BreadcrumbItem';
 import PropTypes from 'prop-types';
-import { getRootFromWebId } from '../../utils/url';
-const Breadcrumbs = ({ webId, breadcrumbs, onClick, rootUrl }) => {
-    const root = rootUrl ? rootUrl : getRootFromWebId(webId);
+const Breadcrumbs = ({ currentPath, breadcrumbs, onClick, rootUrl, webId }) => {
+    const breadcrumbsRef = useRef();
+    useEffect(() => {
+        console.debug(breadcrumbsRef.current);
+    }, [breadcrumbsRef]);
+    const { protocol, host } = url.parse(currentPath);
+    const root = rootUrl ?? url.format({ protocol, host }) + '/';
     const breadcrumbMarkup = breadcrumbs
         ? breadcrumbs.map((currentBreadcrumb, currentIndex) => {
               if (currentIndex !== 0) {
@@ -46,7 +50,12 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick, rootUrl }) => {
                       <BreadcrumbItem
                           seperator
                           key={0}
-                          label={'Home'}
+                          label={
+                              url.parse(webId).host ===
+                              url.parse(currentPath).host
+                                  ? 'Home'
+                                  : url.parse(currentPath).host
+                          }
                           onClick={() => onClick(root)}
                       ></BreadcrumbItem>
                   );
@@ -54,7 +63,11 @@ const Breadcrumbs = ({ webId, breadcrumbs, onClick, rootUrl }) => {
           })
         : undefined;
 
-    return <div className={styles.container}>{breadcrumbMarkup}</div>;
+    return (
+        <div className={styles.container} ref={breadcrumbsRef}>
+            {breadcrumbMarkup}
+        </div>
+    );
 };
 
 Breadcrumbs.propTypes = {

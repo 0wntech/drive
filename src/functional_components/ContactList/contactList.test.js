@@ -1,6 +1,6 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import ContactList from './ContactsList';
+import ContactList from './ContactList';
 import { contacts } from '../../../test/fixtures/contacts';
 
 describe('ContactList', () => {

@@ -11,7 +11,11 @@ export default function ErrorWindow({ onClose, visible, error, windowName }) {
             className={styles.window}
             containerClassName={styles.container}
         >
-            {error && <div className={styles.error}>{error.message}</div>}
+            {error && (
+                <div data-test-id="file-error-message" className={styles.error}>
+                    {error.message}
+                </div>
+            )}
         </Window>
     );
 }

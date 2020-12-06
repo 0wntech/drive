@@ -14,17 +14,55 @@ jest.setTimeout(20000);
 
 const folderFiles = {
     files: [
-        { name: 'favicon.ico', type: 'image/vnd.microsoft.icon' },
-        { name: 'robots.txt', type: 'text/plain' },
-        { name: 'test.txt', type: 'text/plain' },
+        {
+            name: 'favicon.ico',
+            url: 'https://test.example.org/favicon.ico',
+            type: 'image/vnd.microsoft.icon',
+        },
+        {
+            name: 'robots.txt',
+            url: 'https://test.example.org/robots.txt',
+            type: 'text/plain',
+        },
+        {
+            name: 'test.txt',
+            url: 'https://test.example.org/test.txt',
+            type: 'text/plain',
+        },
     ],
-    folders: ['.well-known', 'public', 'settings'],
+    folders: [
+        { url: 'https://test.example.org/.well-known', name: '.well-known' },
+        { url: 'https://test.example.org/public', name: 'public' },
+        { url: 'https://test.example.org/settings', name: 'settings' },
+    ],
+};
+
+const readResult = {
+    files: [
+        {
+            name: 'https://test.example.org/favicon.ico',
+            type: 'image/vnd.microsoft.icon',
+        },
+        {
+            name: 'https://test.example.org/robots.txt',
+            type: 'text/plain',
+        },
+        {
+            name: 'https://test.example.org/test.txt',
+            type: 'text/plain',
+        },
+    ],
+    folders: [
+        'https://test.example.org/.well-known',
+        'https://test.example.org/public',
+        'https://test.example.org/settings',
+    ],
 };
 
 const readSuccess = {
     read: () => {
         return new Promise((resolve) => {
-            resolve(folderFiles);
+            resolve(readResult);
         });
     },
 };

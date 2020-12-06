@@ -14,7 +14,7 @@ const AppList = ({ apps, className, removeApp }) => {
                           iconSrc={app.icon || `${app.url}/favicon.ico`}
                           title={app.title}
                           url={app.url}
-                          onClick={() => console.log('Implement on Click')}
+                          onClick={() => console.info('Implement on Click')}
                           removeApp={removeApp}
                       />
                   ))

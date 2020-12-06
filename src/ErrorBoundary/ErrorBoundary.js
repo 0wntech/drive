@@ -4,6 +4,7 @@ import { Layout } from '../functional_components/Layout/Layout';
 import mediumEmoji from '../assets/icons/medium_emoji.png';
 import ActionButton from '../functional_components/ActionButton/ActionButton';
 import * as Sentry from '@sentry/browser';
+import { withRouter } from 'react-router-dom';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
-        console.log(error, errorInfo);
+        console.info(error, errorInfo);
         this.setState({ error: error.message });
         Sentry.withScope((scope) => {
             scope.setTag('environment', process.env.NODE_ENV);
@@ -39,16 +40,14 @@ class ErrorBoundary extends React.Component {
                         {this.state.error.toString()}
                     </p>
                     <ActionButton
-                        onClick={() => window.location.reload()}
-                        label="Reload Page"
+                        onClick={() => this.state.history?.goBack()}
+                        label="Go Back"
                         color="blue"
-                        size="sm"
                     />
                     <ActionButton
                         label="Report Feedback"
                         className={styles.feedbackButton}
                         color="white"
-                        size="sm"
                         onClick={() =>
                             Sentry.showReportDialog({
                                 eventId: this.state.eventId,
@@ -65,4 +64,4 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-export default ErrorBoundary;
+export default withRouter(ErrorBoundary);

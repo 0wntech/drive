@@ -27,8 +27,7 @@ export const FETCH_CURRENT_ITEM_FAILURE = 'fetch_current_item_fail';
 
 export const INDEX_STORAGE = 'index_storage';
 export const INDEX_STORAGE_PROGRESS = 'index_storage_progress';
-export const INDEX_STORAGE_SUCCESS =
-    'index_storage_success';
+export const INDEX_STORAGE_SUCCESS = 'index_storage_success';
 export const INDEX_STORAGE_FAILURE = 'index_storage_fail';
 
 export const FETCH_NOTIFICATIONS = 'fetch_notifications';
@@ -97,7 +96,10 @@ export const FETCH_APPS_FAILURE = 'fetch_apps_failure';
 export const SEARCH_CONTACT = 'search_contact';
 export const SEARCH_CONTACT_SUCCESS = 'search_contact_success';
 export const SEARCH_CONTACT_COMPLETED = 'search_contact_completed';
-export const SEARCH_CONTACT_FAILURE = 'search_contact_failure';
+
+export const SEARCH_FILE = 'search_file';
+export const SEARCH_FILE_SUCCESS = 'search_file_success';
+export const SEARCH_FILE_FAILURE = 'search_file_failure';
 
 export const OPEN_CONSENT_WINDOW = 'open_consent_window';
 export const CLOSE_CONSENT_WINDOW = 'close_consent_window';

@@ -15,8 +15,10 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
             "/",
           ]
         }
+        currentPath="https://tester.owntech.de/"
         onClick={[Function]}
         rootUrl="https://tester.owntech.de/"
+        webId="https://tester.owntech.de/profile/card#me"
       />
     </div>
   }
@@ -35,6 +37,7 @@ exports[`Drive Drive Snapshot matches the snapshot 1`] = `
   >
     <div
       className="container"
+      data-test-id="drive"
     >
       <UNDEFINED />
       <div>

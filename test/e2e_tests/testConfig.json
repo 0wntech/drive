@@ -1,1 +1,19 @@
-{ "baseUrl": "http://localhost:3001/", "timeout": 30000 }
+{
+    "baseUrl": "http://localhost:3001/",
+    "timeout": 30000,
+    "rootUrl": "https://lalatest.solidcommunity.net/",
+    "rootFolder": {
+        "folders": [
+            "https://lalatest.solidcommunity.net/.well-known/",
+            "https://lalatest.solidcommunity.net/inbox/",
+            "https://lalatest.solidcommunity.net/private/",
+            "https://lalatest.solidcommunity.net/profile/",
+            "https://lalatest.solidcommunity.net/public/",
+            "https://lalatest.solidcommunity.net/settings/"
+        ],
+        "files": [
+            "https://lalatest.solidcommunity.net/favicon.ico",
+            "https://lalatest.solidcommunity.net/robots.txt"
+        ]
+    }
+}

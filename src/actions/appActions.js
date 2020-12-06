@@ -4,6 +4,7 @@ import AclClient from 'ownacl';
 import User from 'ownuser';
 import mime from 'mime';
 import url from 'url';
+import ns from 'solid-namespace';
 import FileSaver from 'file-saver';
 
 import {
@@ -76,10 +77,13 @@ import {
     DELETE_ACCESS_SUCCESS,
     TOGGLE_INFO_WINDOW,
     INDEX_STORAGE_PROGRESS,
+    SEARCH_FILE,
+    SEARCH_FILE_SUCCESS,
+    SEARCH_FILE_FAILURE,
 } from './types';
 
-import fileUtils from '../utils/fileUtils';
-import { convertFolderUrlToName, convertFileUrlToName } from '../utils/url';
+import fileUtils, { getFileOrFolderName } from '../utils/fileUtils';
+import { getRootFromWebId } from '../utils/url';
 
 export const setCurrentPath = (newPath, options = {}) => {
     return (dispatch) => {
@@ -204,10 +208,9 @@ export const toggleErrorWindow = (error) => {
 export const fetchCurrentItem = (itemUrl) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CURRENT_ITEM });
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(itemUrl).host + '/',
-        });
+        const fileClient = new PodClient();
         const options = {
+            auth: auth,
             verbose: true,
             headers: {
                 Accept: mime.getType(itemUrl) ?? 'text/turtle',
@@ -220,26 +223,24 @@ export const fetchCurrentItem = (itemUrl) => {
                 if (item && item.folders) {
                     const files = item.files.map((file) => {
                         return {
-                            name: convertFileUrlToName(file.name),
+                            url: file.name,
+                            name: getFileOrFolderName(file.name),
                             type: file.type,
                         };
                     });
-                    const folderNames = item.folders.map((folder) => {
-                        return convertFolderUrlToName(folder);
+                    const folder = item.folders.map((folder) => {
+                        return {
+                            url: folder,
+                            name: getFileOrFolderName(folder),
+                        };
                     });
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
                         payload: {
                             files: files,
-                            folders: folderNames,
+                            folders: folder,
                         },
                     });
-                    localStorage.setItem(
-                        'appState',
-                        JSON.stringify({
-                            currentPath: itemUrl,
-                        })
-                    );
                 } else if (item !== undefined) {
                     dispatch({
                         type: FETCH_CURRENT_ITEM_SUCCESS,
@@ -277,43 +278,18 @@ export const indexStorage = (folderUrl) => {
                 payload: 1,
             });
             return fileClient
-                .deepRead(folderUrl, { verbose: true })
-                .then(async (deepFolder) => {
-                    const urlObject = url.parse(folderUrl);
-                    await fileClient.createIfNotExist(
-                        `${urlObject.protocol}//${urlObject.host}/` +
-                            fileClient.indexPath
-                    );
-                    return await new Promise((resolve) => {
-                        deepFolder.forEach(async (item, index, array) => {
-                            await fileClient.addToIndex(item, {
-                                force: true,
-                                updateCallback: (_, ok) => {
-                                    if (ok) {
-                                        dispatch({
-                                            type: INDEX_STORAGE_PROGRESS,
-                                            payload:
-                                                Math.floor(
-                                                    ((index / array.length) *
-                                                        100) /
-                                                        5
-                                                ) * 5,
-                                        });
-                                        if (index === array.length - 1) {
-                                            resolve(
-                                                fileClient.readIndex(folderUrl)
-                                            );
-                                        }
-                                    }
-                                },
-                            });
-                        });
-                    });
+                .createIndex(folderUrl, {
+                    verbose: true,
+                    foundCallback: (item) =>
+                        dispatch({
+                            type: INDEX_STORAGE_PROGRESS,
+                            payload: item,
+                        }),
                 })
                 .then((index) => {
                     dispatch({
                         type: INDEX_STORAGE_SUCCESS,
-                        payload: index.map((indexItem) => indexItem.url),
+                        payload: index,
                     });
                 })
                 .catch((err) => {
@@ -325,7 +301,7 @@ export const indexStorage = (folderUrl) => {
         } else {
             dispatch({
                 type: INDEX_STORAGE_SUCCESS,
-                payload: index.map((indexItem) => indexItem.url),
+                payload: index,
             });
         }
     };
@@ -334,19 +310,19 @@ export const indexStorage = (folderUrl) => {
 export const downloadFile = (file) => {
     return (dispatch) => {
         dispatch({ type: DOWNLOAD_FILE });
-        const fileClient = new PodClient({});
+        const fileClient = new PodClient();
         fileClient
             .read(file)
             .then((result) => {
                 const fileType = mime.getType(file);
                 if (fileType.includes('image')) {
-                    FileSaver.saveAs(file, convertFileUrlToName(file));
+                    FileSaver.saveAs(file, getFileOrFolderName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });
                 } else {
                     const blob = new Blob([result], {
                         type: mime.getType(file),
                     });
-                    FileSaver.saveAs(blob, convertFileUrlToName(file));
+                    FileSaver.saveAs(blob, getFileOrFolderName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });
                 }
             })
@@ -375,12 +351,66 @@ export const fetchNotifications = (webId) => {
     };
 };
 
+export const searchFile = (user, path) => {
+    return (dispatch) => {
+        const rootPath = !!user.storage
+            ? user.storage
+            : getRootFromWebId(user.webId);
+        const searchPath = url.resolve(rootPath, path ?? '/');
+        const fileClient = new PodClient();
+        dispatch({
+            type: SEARCH_FILE,
+            payload: searchPath.replace('https://', ''),
+        });
+        fileClient
+            .read(searchPath, {
+                verbose: true,
+                headOnly: true,
+                headers: {
+                    Accept: mime.getType(searchPath) ?? 'text/turtle',
+                },
+            })
+            .then((folder) => {
+                const result = folder.files
+                    ? [...folder.files, ...folder.folders].map((item) =>
+                          item.name
+                              ? {
+                                    types: item.type
+                                        ? [item.type, ns().ldp('Resource')]
+                                        : ['text/turtle', ns().ldp('Resource')],
+                                    url: item.name,
+                                    name: getFileOrFolderName(item.name),
+                                }
+                              : {
+                                    url: item,
+                                    name: getFileOrFolderName(item),
+                                    types: [ns().ldp('Container')],
+                                }
+                      )
+                    : [
+                          {
+                              types: folder.type
+                                  ? [folder.type, ns().ldp('Resource')]
+                                  : ['text/turtle', ns().ldp('Resource')],
+                              url: folder.name,
+                              name: getFileOrFolderName(folder.name),
+                          },
+                      ];
+                dispatch({
+                    type: SEARCH_FILE_SUCCESS,
+                    payload: result,
+                });
+            })
+            .catch((err) => {
+                dispatch({ type: SEARCH_FILE_FAILURE, payload: err });
+            });
+    };
+};
+
 export const updateFile = (file, body) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_FILE });
-        const fileClient = new PodClient({
-            podUrl: 'https://' + url.parse(file).host + '/',
-        });
+        const fileClient = new PodClient();
         fileClient
             .update(file, body)
             .then(() => {
@@ -495,7 +525,7 @@ export const pasteItems = (items, location) => {
         dispatch({ type: PASTE_ITEMS });
         auth.currentSession()
             .then((session) => {
-                const fileClient = new PodClient({ podUrl: session.webId });
+                const fileClient = new PodClient();
                 const paste = new Promise((resolve, reject) => {
                     items.map((item, index) => {
                         if (index === items.length - 1) {
@@ -546,7 +576,8 @@ export const renameItem = function (renamedItem, value) {
     return (dispatch) => {
         dispatch({ type: RENAME_ITEM });
         auth.currentSession().then((session) => {
-            const fileClient = new PodClient({ podUrl: session.webId });
+            console.info(renamedItem, value);
+            const fileClient = new PodClient();
             const rename = new Promise((resolve, reject) => {
                 if (renamedItem.endsWith('/')) {
                     fileClient
@@ -598,7 +629,16 @@ export const uploadFileOrFolder = ({ target }, currentPath) => {
             if (files && files.length) {
                 const uploads = [];
                 for (const file of files) {
-                    uploads.push(fileUtils.uploadFile(file, currentPath));
+                    uploads.push(
+                        fileUtils
+                            .uploadFile(file, currentPath)
+                            .catch((error) => {
+                                dispatch({
+                                    type: UPLOAD_FILE_FAILURE,
+                                    payload: error,
+                                });
+                            })
+                    );
                 }
                 Promise.all(uploads)
                     .then(() => {

@@ -10,10 +10,13 @@ export default function File({
     onMouseUp,
     onMouseDown,
     file,
-    currentPath,
+    webId,
     image,
     selectedItem,
 }) {
+    const fileHost = new URL(file.url)?.host;
+    const strangeOrigin =
+        webId && file.url && new URL(webId)?.host !== fileHost;
     return (
         <DriveContextMenu
             className={classNames(styles.gridCell, {
@@ -31,13 +34,19 @@ export default function File({
                 onTouchStart={onMouseDown}
             >
                 <FileImage
-                    currentPath={currentPath}
+                    currentPath={file.url.substr(
+                        0,
+                        file.url.lastIndexOf('/') + 1
+                    )}
                     image={image}
                     file={file}
                 />
                 <div className={styles.labelContainer}>
-                    <div className={styles.label}>
+                    <div className={styles.label} data-test-id={`file-label`}>
                         {decodeURIComponent(file.name)}
+                        {strangeOrigin && fileHost !== file.name && (
+                            <div className={styles.origin}>({fileHost})</div>
+                        )}
                     </div>
                 </div>
             </div>

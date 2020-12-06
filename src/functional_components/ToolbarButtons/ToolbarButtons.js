@@ -67,6 +67,7 @@ export default function ToolbarButtons({
             onClick={onDelete}
         />,
         <MoreVertical
+            data-test-id="toolbar-buttons-more"
             key={'More'}
             className={classNames(styles.toolbarIcon, styles.more)}
             onClick={onMore}
@@ -78,7 +79,9 @@ export default function ToolbarButtons({
             {buttons.map(
                 (button) =>
                     button && (
-                        <div className={styles.buttonWrapper} key={button.key}>{button}</div>
+                        <div className={styles.buttonWrapper} key={button.key}>
+                            {button}
+                        </div>
                     )
             )}
             {/* <SvgInfo className={styles.toolbarIcon} /> */}

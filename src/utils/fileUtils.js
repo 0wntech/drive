@@ -4,8 +4,8 @@ import url from 'url';
 import mime from 'mime';
 const ns = require('solid-namespace')(rdf);
 
-function allowFileName(fileName, currentFolder, fileSuffix) {
-    if (fileName == '') {
+export const allowFileName = (fileName, currentFolder, fileSuffix) => {
+    if (fileName === '') {
         return false;
     }
 
@@ -16,7 +16,7 @@ function allowFileName(fileName, currentFolder, fileSuffix) {
             return false;
     }
     return !!re.exec(fileName) || mime.getType(fileName);
-}
+};
 
 export const isImageType = (fileType) => {
     return fileType ? fileType.indexOf('image') !== -1 : false;
@@ -34,18 +34,18 @@ const addForDelete = (item, selectedItems) => {
     return false;
 };
 
-function namingConflict(name, currentFolder) {
+export const namingConflict = (name, currentFolder) => {
     if (currentFolder) {
-        if (currentFolder.files.indexOf(name) !== -1) {
+        if (currentFolder.files.find((file) => file.name === name)) {
             return true;
-        } else if (currentFolder.folders.indexOf(name) !== -1) {
+        } else if (currentFolder.folders.find((folder) => folder === name)) {
             return true;
         }
         return false;
     }
-}
+};
 
-function getSuffixAndPlaceholder(placeholder) {
+export const getSuffixAndPlaceholder = (placeholder) => {
     let fileSuffix;
     placeholder = placeholder.split('/');
     if (placeholder[placeholder.length - 1] === '') {
@@ -58,9 +58,9 @@ function getSuffixAndPlaceholder(placeholder) {
         fileSuffix = fileNameFragments[1];
     }
     return { fileSuffix: fileSuffix, placeholder: placeholder };
-}
+};
 
-function uploadFile(file, currPath) {
+export const uploadFile = (file, currPath) => {
     const store = rdf.graph();
     const fetcher = new rdf.Fetcher(store);
 
@@ -84,60 +84,47 @@ function uploadFile(file, currPath) {
                     } else {
                         reject(response.error);
                     }
+                })
+                .catch((err) => {
+                    reject(err);
                 });
         };
         reader.readAsArrayBuffer(file);
     });
-}
+};
 
-function getFileOrFolderName(url) {
+export const getFileOrFolderName = (url) => {
     const itemFragments = url.split('/');
     return itemFragments[itemFragments.length - 1] === ''
         ? itemFragments[itemFragments.length - 2]
         : itemFragments[itemFragments.length - 1];
-}
+};
 
-// input files = ["example.ico", "anotherItem.png"] folders = ["folder", "folder1"]
-// returns [ {name: "example.ico", type: "file", fileType:"ico"}, { name: "folder", type: "folder"} ]
-function convertFilesAndFoldersToArray({ files, folders, items }) {
+export const convertResourceListToSearchOptions = ({ items }) => {
+    const fileObjects = [];
+    const folderObjects = [];
     if (items) {
-        const fileObjects = [];
-        const folderObjects = [];
         items.forEach((item) => {
-            if (item.endsWith('/')) {
+            if (item.types.includes(ns.ldp('Container').value)) {
                 folderObjects.push({
-                    name: getFileOrFolderName(item),
+                    host: url.parse(item.url).host,
+                    name: decodeURIComponent(getFileOrFolderName(item.url)),
                     type: 'folder',
-                    path: item,
+                    path: item.url.endsWith('/') ? item.url : item.url + '/',
                 });
             } else {
                 fileObjects.push({
-                    name: getFileOrFolderName(item),
+                    host: url.parse(item.url).host,
+                    name: decodeURIComponent(getFileOrFolderName(item.url)),
                     type: 'file',
-                    fileType: getFileType(getFileOrFolderName(item)),
-                    path: item,
+                    fileType: getFileType(getFileOrFolderName(item.url)),
+                    path: item.url,
                 });
             }
         });
         return [...fileObjects, ...folderObjects];
-    } else {
-        const fileObjects = files.map((file) => {
-            return {
-                name: file.name ? file.name : file,
-                type: 'file',
-                fileType: getFileType(file),
-            };
-        });
-
-        const folderObjects = folders.map((folderName) => {
-            return {
-                name: folderName,
-                type: 'folder',
-            };
-        });
-        return [...fileObjects, ...folderObjects];
     }
-}
+};
 
 // input "fav.ico" returns "ico"
 function getFileType(file) {
@@ -152,21 +139,21 @@ function getFileType(file) {
     return splittedFile[splittedFile.length - 1];
 }
 
-function getFolderUrl(folder) {
+export const getFolderUrl = (folder) => {
     const folderFile = folder.split('/');
     folderFile.pop();
     const folderUrl = folderFile.join('/');
     return folderUrl;
-}
+};
 
-function deleteItems(items) {
+export const deleteItems = (items) => {
     items.map((item) => {
         return deleteRecursively(item);
     });
     return Promise.all(items);
-}
+};
 
-function deleteRecursively(url) {
+export const deleteRecursively = (url) => {
     return new Promise(function (resolve) {
         const store = rdf.graph();
         const fetcher = new rdf.Fetcher(store);
@@ -193,9 +180,9 @@ function deleteRecursively(url) {
             });
         });
     });
-}
+};
 
-function getFolderFiles(path) {
+export const getFolderFiles = (path) => {
     return getFolderContents(path).then((results) => {
         const folderFiles = { folders: [], files: [] };
         results.forEach((result) => {
@@ -208,9 +195,9 @@ function getFolderFiles(path) {
         });
         return folderFiles;
     });
-}
+};
 
-function syntaxCheckRdf(input, contentType, url) {
+export const syntaxCheckRdf = (input, contentType, url) => {
     contentType = contentType ? contentType : 'text/turtle';
     const rdfContentTypes = ['application/ld+json', 'text/turtle'];
     if (contentType && rdfContentTypes.indexOf(contentType) !== -1) {
@@ -219,9 +206,9 @@ function syntaxCheckRdf(input, contentType, url) {
     } else {
         return true;
     }
-}
+};
 
-function getFolderContents(folderUrl) {
+export const getFolderContents = (folderUrl) => {
     const store = rdf.graph();
 
     return auth
@@ -239,9 +226,9 @@ function getFolderContents(folderUrl) {
                 return containments;
             });
         });
-}
+};
 
-function getNotificationFiles(webId) {
+export const getNotificationFiles = (webId) => {
     const inboxAddress = webId.replace('profile/card#me', 'inbox');
 
     const store = rdf.graph();
@@ -286,9 +273,9 @@ function getNotificationFiles(webId) {
             return cleanResults;
         });
     });
-}
+};
 
-function makeNotification(notification, notificationAddress) {
+export const makeNotification = (notification, notificationAddress) => {
     const { actor, object, target } = notification;
     const store = rdf.graph();
     const as = new rdf.Namespace('https://www.w3.org/ns/activitystreams#');
@@ -304,9 +291,9 @@ function makeNotification(notification, notificationAddress) {
     store.add(rdf.sym(notificationAddress), as('target'), rdf.sym(target));
 
     return rdf.serialize(undefined, store, notificationAddress);
-}
+};
 
-function sendNotification(notifParams) {
+export const sendNotification = (notifParams) => {
     const inboxAddress = notifParams.target.replace('profile/card#me', 'inbox');
     const notificationAddress = inboxAddress + `/Notif${Date.now()}`;
     const notification = makeNotification(notifParams, notificationAddress);
@@ -319,7 +306,7 @@ function sendNotification(notifParams) {
         body: notification,
     };
     return auth.fetch(inboxAddress, request);
-}
+};
 
 export default {
     getFolderUrl: getFolderUrl,
@@ -327,11 +314,12 @@ export default {
     uploadFile: uploadFile,
     deleteItems: deleteItems,
     getFolderFiles: getFolderFiles,
+    getFileOrFolderName: getFileOrFolderName,
     deleteRecursively: deleteRecursively,
     getNotificationFiles: getNotificationFiles,
     sendNotification: sendNotification,
     getFileType: getFileType,
-    convertFilesAndFoldersToArray: convertFilesAndFoldersToArray,
+    convertResourceListToSearchOptions: convertResourceListToSearchOptions,
     namingConflict: namingConflict,
     getSuffixAndPlaceholder: getSuffixAndPlaceholder,
     addForDelete: addForDelete,

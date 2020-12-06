@@ -36,7 +36,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
-    console.log('User Reducer got action: ', type, '\nValue: ', payload);
+    console.info('User Reducer got action: ', type, '\nValue: ', payload);
     switch (type) {
         case CLEAR_ERROR:
             return { ...state, error: INITIAL_STATE.error };
@@ -93,6 +93,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 updatingProfile: false,
                 updateProfileError: false,
+                user: { ...state.user, ...payload },
                 error: { ...state.error, UPDATE_PROFILE: false },
             };
         case UPDATE_PROFILE_FAILURE:

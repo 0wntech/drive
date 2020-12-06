@@ -11,7 +11,6 @@ import {
     SET_CURRENT_CONTACT,
     SEARCH_CONTACT,
     SEARCH_CONTACT_SUCCESS,
-    SEARCH_CONTACT_FAILURE,
     FETCH_CONTACT_RECOMMENDATIONS,
     FETCH_CONTACT_RECOMMENDATIONS_SUCCESS,
     FETCH_CONTACT_RECOMMENDATIONS_FAILURE,
@@ -25,6 +24,7 @@ import User from 'ownuser';
 import auth from 'solid-auth-client';
 import idps from '../constants/idps.json';
 import { getWebIdFromRoot } from '../utils/url';
+import { searchFile } from './appActions';
 
 export const setCurrentContact = (profile) => {
     return (dispatch) => {
@@ -64,7 +64,10 @@ export const removeContact = (webId, contact) => {
     };
 };
 
-export const fetchContact = (webId) => {
+export const fetchContact = (
+    webId,
+    { profileOnly } = { profileOnly: false }
+) => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACT });
         const user = new User(webId);
@@ -72,7 +75,13 @@ export const fetchContact = (webId) => {
             .then((profile) => {
                 dispatch(setCurrentContact(profile));
                 dispatch({ type: FETCH_CONTACT_SUCCESS });
-                dispatch(fetchContactProfiles(profile.contacts ?? []));
+                if (!profileOnly)
+                    dispatch(
+                        fetchContactProfiles(
+                            profile.contacts ?? [],
+                            profile.webId
+                        )
+                    );
             })
             .catch((error) => {
                 dispatch({ type: FETCH_CONTACT_FAILURE, payload: error });
@@ -83,7 +92,11 @@ export const fetchContact = (webId) => {
 export const fetchContactProfiles = (contacts, webId = '') => {
     return (dispatch) => {
         dispatch({ type: FETCH_CONTACTS });
-        return fetchDetailContacts(contacts)
+        return fetchDetailContacts(
+            contacts.map((contact) =>
+                contact.replace('solid.community', 'solidcommunity.net')
+            )
+        )
             .then(async (detailContacts) => {
                 const loggedInUser = (await auth.currentSession()).webId;
                 if (loggedInUser === webId) {
@@ -114,9 +127,11 @@ export const fetchContactRecommendations = (webId) => {
         user.getContactRecommendations()
             .then((recommendations) => {
                 fetchDetailContacts(
-                    recommendations.filter(
-                        (recommendation) =>
-                            !recommendation.includes('solid.community')
+                    recommendations.map((recommendation) =>
+                        recommendation.replace(
+                            'solid.community',
+                            'solidcommunity.net'
+                        )
                     )
                 ).then((detailContacts) => {
                     dispatch({
@@ -155,25 +170,42 @@ export const fetchDetailContacts = (contacts) => {
     return Promise.all(requests);
 };
 
-export const searchContact = (query) => {
-    return (dispatch) => {
-        dispatch({ type: SEARCH_CONTACT });
-        const lookups = idps.map((idp) => {
-            const url = idp.url.replace(idp.title, query + '.' + idp.title);
-            return auth
-                .fetch(url, { method: 'HEAD' })
-                .then((res) => {
-                    if (res.status !== 404) {
-                        return url;
-                    } else {
-                        return undefined;
-                    }
-                })
-                .catch((err) => {
-                    return undefined;
-                });
-        });
-        let foundSomething = false;
+export const searchContact = (query, path) => {
+    return (dispatch, getState) => {
+        const contactSearchResults = getState().contact.contactSearchResult;
+        dispatch({ type: SEARCH_CONTACT, payload: query + path });
+        const lookups =
+            query.startsWith('https://') || query.includes('.')
+                ? [
+                      query.startsWith('https://')
+                          ? Promise.resolve(query)
+                          : Promise.resolve('https://' + query),
+                  ]
+                : idps.map((idp) => {
+                      const url = idp.url.replace(
+                          idp.title,
+                          query + '.' + idp.title
+                      );
+                      if (
+                          contactSearchResults?.find((contact) =>
+                              contact.webId.includes(url)
+                          )
+                      ) {
+                          return Promise.resolve(undefined);
+                      }
+                      return auth
+                          .fetch(url, { method: 'HEAD' })
+                          .then((res) => {
+                              if (res.status !== 404) {
+                                  return url;
+                              } else {
+                                  return undefined;
+                              }
+                          })
+                          .catch((err) => {
+                              return undefined;
+                          });
+                  });
         lookups.forEach(async (lookup, index) => {
             const url = await Promise.resolve(lookup);
             if (url) {
@@ -181,22 +213,20 @@ export const searchContact = (query) => {
                 await user
                     .getProfile()
                     .then((contactProfile) => {
-                        foundSomething = true;
                         dispatch({
                             type: SEARCH_CONTACT_SUCCESS,
                             payload: contactProfile,
                         });
+                        if (path) dispatch(searchFile(contactProfile, path));
                     })
-                    .catch((err) => {
+                    .catch(() => {
                         dispatch({
                             type: SEARCH_CONTACT_SUCCESS,
                             payload: { webId: url },
                         });
                     });
             }
-            if (!foundSomething && index === lookups.length - 1) {
-                dispatch({ type: SEARCH_CONTACT_FAILURE });
-            } else if (index === lookups.length - 1) {
+            if (index === lookups.length - 1) {
                 dispatch({ type: SEARCH_CONTACT_COMPLETED });
             }
         });
