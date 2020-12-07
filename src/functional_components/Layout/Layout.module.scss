@@ -17,10 +17,9 @@
 }
 
 .grid.hideToolbar {
-    grid-template-areas: 'content';
-    grid-template-rows: 1fr;
-    grid-template-columns: 100%;
-    width: 100%;
+    .toolbarArea {
+      display: none;
+    }
 }
 
 .toolbarArea {

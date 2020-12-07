@@ -3,9 +3,11 @@
 .overlay {
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     height: 72px;
     width: 100%;
+    max-width: 1152px;
     z-index: 10 !important;
 }
 

@@ -43,9 +43,7 @@
 
 @media (min-width: $screen_xl) {
     .grid {
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
+        width: 1152px;
         margin: initial;
     }
 }

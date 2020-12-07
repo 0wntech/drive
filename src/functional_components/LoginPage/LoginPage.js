@@ -15,7 +15,7 @@ const getIdpStyles = (title) => {
             idp.color = '#18A9E6';
             idp.textColor = '#fff';
             break;
-        case 'solid.community':
+        case 'solidcommunity.net':
             idp.color = '#7C4DFF';
             idp.textColor = '#fff';
             break;

@@ -13,6 +13,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+    scrollbar-color: #e2e2e6 transparent;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -48,6 +52,14 @@ html,
 
 #root {
     background-color: #fff;
+}
+
+@media (min-width: 1382px) {
+    #root {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 @media (max-width: 768px) {
