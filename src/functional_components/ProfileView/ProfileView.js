@@ -50,12 +50,13 @@ export const ProfileView = ({
             .filter(
                 (recommended) =>
                     !contacts ||
-                    !(
+                    (!(
                         user.webId === webId &&
                         contacts.find(
                             (contact) => contact.webId === recommended.webId
                         )
-                    )
+                    ) &&
+                        !(recommended.webId === user.webId))
             )
             .slice(0, displayedRows * 5);
 

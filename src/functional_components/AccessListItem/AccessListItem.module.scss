@@ -21,6 +21,10 @@
     background-size: cover;
     border-radius: 50%;
     margin-right: 16px;
+
+    img {
+      display: none;
+    }
 }
 
 .defaultContactIcon {

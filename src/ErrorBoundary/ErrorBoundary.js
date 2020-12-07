@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom';
 class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
+        this.history = props.history;
+        this.resetError = props.resetError;
         this.state = { hasError: false, error: '' };
     }
 
@@ -40,7 +42,10 @@ class ErrorBoundary extends React.Component {
                         {this.state.error.toString()}
                     </p>
                     <ActionButton
-                        onClick={() => this.state.history?.goBack()}
+                        onClick={() => {
+                            this.resetError();
+                            this.history.goBack();
+                        }}
                         label="Go Back"
                         color="blue"
                     />

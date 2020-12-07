@@ -104,7 +104,7 @@ export const App = ({
                         />
                     </div>
                     <div className={styles.mainArea}>
-                        <ErrorBoundary key={errorKey}>
+                        <ErrorBoundary key={errorKey} resetError={resetError}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />
                                 <PrivateRoute

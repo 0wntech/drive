@@ -6,7 +6,13 @@ import styles from './SearchInput.module.scss';
 import X from '../../assets/svgIcons/X';
 import { withRouter } from 'react-router-dom';
 
-export const SearchInput = ({ indicator, className, placeholder, history }) => {
+export const SearchInput = ({
+    indicator,
+    className,
+    placeholder,
+    history,
+    resetError,
+}) => {
     const [focused, setFocused] = useState(false);
     const [originalPath, setOriginalPath] = useState('');
     const [value, setValue] = useState('');
@@ -22,7 +28,7 @@ export const SearchInput = ({ indicator, className, placeholder, history }) => {
                 [styles.focused]: focused,
             })}
             onClick={(e) => {
-                console.debug(e.target.nodeName);
+                resetError();
                 if (e.target.nodeName === 'INPUT') {
                     setFocused(true);
                     history.push(`/search?q=${value}`);

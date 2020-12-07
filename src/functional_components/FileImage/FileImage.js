@@ -12,7 +12,7 @@ export const FileImage = ({ currentPath, file, image }) => {
             <div className={styles.innerContainer}>
                 <div className={styles.iconContainer}>
                     <img
-                        alt="file"
+                        alt="image-file"
                         className={styles.thumbnail}
                         src={currentPath + file.name}
                         loading="lazy"

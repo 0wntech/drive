@@ -33,12 +33,10 @@
     grid-template-rows: 23fr;
     grid-template-columns: 1fr 10fr 1fr;
     grid-template-areas: 'main main main';
-    overflow-x: visible;
 }
 
 .container {
     overflow-y: auto;
-    overflow-x: visible;
     padding: 1em 0;
 }
 

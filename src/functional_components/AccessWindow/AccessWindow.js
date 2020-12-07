@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import url from 'url';
 import { Window } from '../Window';
 import styles from './AccessWindow.module.scss';
@@ -20,19 +20,29 @@ import Search from '../../assets/svgIcons/Search';
 import DefaultIcon from '../DefaultIcon';
 import { getInitialsFromUser } from '../../utils/helper';
 
-const formatOptionLabel = ({ contact }) => {
+const OptionLabel = ({ contact }) => {
+    const [profilePictureError, setProfilePictureError] = useState(false);
+    const profilePictureRef = useRef();
     return (
         contact &&
         contact.webId && (
             <div className={styles.optionContainer}>
                 <div className={styles.iconContainer}>
-                    {contact.picture && isValidUrl(contact.picture) ? (
+                    {contact.picture &&
+                    isValidUrl(contact.picture) &&
+                    !profilePictureError ? (
                         <div
+                            ref={profilePictureRef}
                             className={styles.contactIcon}
-                            style={{
-                                backgroundImage: `url('${contact.picture}')`,
-                            }}
-                        />
+                        >
+                            <img
+                                onLoad={() => {
+                                    profilePictureRef.current.style.backgroundImage = `url(${contact.picture})`;
+                                }}
+                                onError={() => setProfilePictureError(true)}
+                                src={contact.picture}
+                            />
+                        </div>
                     ) : (
                         <DefaultIcon
                             className={styles.defaultContactIcon}
@@ -127,7 +137,7 @@ export const AccessWindow = ({
                     onChange={(selected) => {
                         addAccess(selected.contact.webId, currentPath);
                     }}
-                    formatOptionLabel={formatOptionLabel}
+                    formatOptionLabel={(props) => <OptionLabel {...props} />}
                 />
                 <div className={styles.entityWrapper}>
                     <div className={styles.entities}>

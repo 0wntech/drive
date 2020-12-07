@@ -261,6 +261,12 @@ svg:hover {
     border: 5px solid #c4c4c4;
 }
 
+@media (min-width: $screen_xl) {
+    .profileContainer {
+        width: 100%;
+    }
+}
+
 @media (min-width: $screen_l) {
     .addButton:hover {
         border-color: $dark_green;
