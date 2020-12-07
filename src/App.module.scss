@@ -41,7 +41,7 @@
     overflow-y: auto;
 }
 
-@media (min-width: 1382px) {
+@media (min-width: $screen_xl) {
     .grid {
         position: relative;
         left: 50%;

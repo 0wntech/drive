@@ -17,6 +17,12 @@
     display: none;
 }
 
+@media (min-width: $screen_xl) {
+    .container {
+        left: 1em;
+    }
+}
+
 @media (max-width: $screen_l) {
     .container {
         bottom: 1em;

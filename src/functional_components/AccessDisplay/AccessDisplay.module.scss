@@ -31,6 +31,12 @@
     margin-left: -10px;
 }
 
+@media (min-width: $screen_xl) {
+    .container {
+        right: 1em;
+    }
+}
+
 @media (max-width: $screen_l) {
     .container {
         bottom: 1em;

@@ -9,8 +9,7 @@ import styles from './AccessDisplay.module.scss';
 import WarningIcon from '../../assets/svgIcons/Subtract';
 import PublicIcon from '../../assets/svgIcons/PublicIcon';
 import { toggleAccessWindow } from '../../actions/appActions';
-import DefaultIcon from '../DefaultIcon/DefaultIcon';
-import { getInitialsFromUser } from '../../utils/helper';
+import ImageHandler from '../ImageHandler';
 
 export const AccessDisplay = ({
     currentAccessControl,
@@ -27,23 +26,15 @@ export const AccessDisplay = ({
             <>
                 {currentAccessControl.map((entity) =>
                     entity.type === 'Agent' ? (
-                        entity.picture ? (
-                            <div
-                                key={entity.identifier}
-                                className={styles.agentIcon}
-                                style={{
-                                    backgroundImage: `url(${entity.picture})`,
-                                }}
-                            />
-                        ) : (
-                            <DefaultIcon
-                                className={classNames(
-                                    styles.defaultIcon,
-                                    styles.agentIcon
-                                )}
-                                initials={getInitialsFromUser(entity)}
-                            />
-                        )
+                        <ImageHandler
+                            user={entity}
+                            className={styles.agentIcon}
+                            defaultIconClassName={classNames(
+                                styles.defaultIcon,
+                                styles.agentIcon
+                            )}
+                            key={entity.identifier}
+                        />
                     ) : (
                         entity.type === 'AgentGroup' &&
                         entity.name === 'http://xmlns.com/foaf/0.1/Agent' && (
