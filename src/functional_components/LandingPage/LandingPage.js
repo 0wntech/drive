@@ -30,7 +30,7 @@ const LandingPage = ({ webId, history }) => {
                                 <ActionButton
                                     dataId="login_btn"
                                     size="lg"
-                                    label="Go Home"
+                                    label="Go to root"
                                     color="blue"
                                     onClick={() => {
                                         history.push('/home');
