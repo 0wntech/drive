@@ -5,11 +5,14 @@ import mediumEmoji from '../assets/icons/medium_emoji.png';
 import ActionButton from '../functional_components/ActionButton/ActionButton';
 import * as Sentry from '@sentry/browser';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { CLEAR_ERROR } from '../actions/types';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
         this.history = props.history;
+        this.dispatch = props.dispatch;
         this.resetError = props.resetError;
         this.state = { hasError: false, error: '' };
     }
@@ -33,6 +36,7 @@ class ErrorBoundary extends React.Component {
 
     render() {
         if (this.state.hasError) {
+            console.debug(this.state);
             // You can render any custom fallback UI
             return (
                 <Layout className={styles.container} label="Error">
@@ -44,6 +48,7 @@ class ErrorBoundary extends React.Component {
                     <ActionButton
                         onClick={() => {
                             this.resetError();
+                            this.dispatch({ type: CLEAR_ERROR });
                             this.history.goBack();
                         }}
                         label="Go Back"
@@ -69,4 +74,7 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-export default withRouter(ErrorBoundary);
+export default connect(
+    () => {},
+    (dispatch) => ({ dispatch })
+)(withRouter(ErrorBoundary));
