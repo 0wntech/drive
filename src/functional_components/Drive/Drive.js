@@ -239,6 +239,7 @@ const Drive = ({
             })}
             label="Drive"
             onClick={handleClick}
+            label="Drive"
             isLoading={
                 loadDeletion ||
                 loadPaste ||

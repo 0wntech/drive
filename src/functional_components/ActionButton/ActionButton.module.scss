@@ -1,5 +1,7 @@
 @import '../../styles/constants.scss';
 .container {
+    border: 5px solid #2791ff;
+    border-width: 0;
     border-radius: 20px;
     display: flex;
     justify-content: center;
@@ -12,15 +14,20 @@
 
 .blue {
     background: #2791ff;
+    border-color: #2791ff;
+    color: #2791ff;
 }
 
 .red {
     background: #cd0000;
+    border-color: #cd0000;
+    color: #cd0000;
 }
 
 .green {
-    color: #fff;
     background: $light_green;
+    border-color: $light_green;
+    color: $light_green;
 }
 
 .primary {
@@ -29,6 +36,7 @@
 
 .secondary {
     background: initial;
+    border-width: 5px;
 }
 
 .white {
@@ -51,6 +59,10 @@
     font-size: 18px;
     padding: 4px 24px;
     line-height: 28px;
+}
+
+.lg.secondary {
+  padding: 0 24px;
 }
 
 .disabled {

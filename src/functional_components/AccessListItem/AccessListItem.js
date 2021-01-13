@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import ns from 'solid-namespace';
 import { connect } from 'react-redux';
 
@@ -21,6 +21,8 @@ export const AccessListItem = ({
 }) => {
     const isPublicEntity = entity.name === ns().foaf('Agent');
     const isCurrentUser = entity.webId === user.webId;
+    const [profilePictureError, setProfilePictureError] = useState(false);
+    const profilePictureRef = useRef();
 
     return (
         <div className={styles.container}>
@@ -31,11 +33,18 @@ export const AccessListItem = ({
                     height={64}
                     viewBox="0 0 40 40"
                 />
-            ) : entity.picture && isValidUrl(entity.picture) ? (
-                <div
-                    className={styles.image}
-                    style={{ backgroundImage: `url(${entity.picture})` }}
-                ></div>
+            ) : entity.picture &&
+              isValidUrl(entity.picture) &&
+              !profilePictureError ? (
+                <div className={styles.image} ref={profilePictureRef}>
+                    <img
+                        onLoad={() => {
+                            profilePictureRef.current.style.backgroundImage = `url(${entity.picture})`;
+                        }}
+                        onError={() => setProfilePictureError(true)}
+                        src={entity.picture}
+                    />
+                </div>
             ) : (
                 <DefaultIcon
                     className={styles.defaultContactIcon}

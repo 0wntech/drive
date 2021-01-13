@@ -55,6 +55,7 @@ const Navigation = ({
             {webId && (
                 <div className={styles.search}>
                     <SearchInput
+                        resetError={resetError}
                         className={styles.searchDropdown}
                         placeholder="Search..."
                         indicator={dropdownIndicator}

@@ -87,17 +87,18 @@ export const SearchPage = ({
 
     const filteredContacts = contactSearchResult?.filter(
         (contact) =>
-            contact.name?.includes(userSearchQuery) ||
-            contact.webId.includes(userSearchQuery)
+            contact.name
+                ?.toLowerCase()
+                .includes(userSearchQuery.toLowerCase()) ||
+            contact.webId.toLowerCase().includes(userSearchQuery.toLowerCase())
     );
 
     const filteredFiles = fileHierarchy
         .filter(
             (item) =>
                 item.types.includes(ns().ldp('Resource')) &&
-                (fileSearchPath !== '/'
-                    ? item.url.includes(fileSearchPath)
-                    : item.url.includes(userSearchQuery))
+                item.url.toLowerCase().includes(fileSearchPath.toLowerCase()) &&
+                item.url.toLowerCase().includes(userSearchQuery.toLowerCase())
         )
         .map((item) => {
             const type = mime.getType(item.url);
@@ -112,9 +113,8 @@ export const SearchPage = ({
         .filter(
             (item) =>
                 item.types.includes(ns().ldp('Container')) &&
-                (fileSearchPath !== '/'
-                    ? item.url.includes(fileSearchPath)
-                    : item.url.includes(userSearchQuery))
+                item.url.toLowerCase().includes(fileSearchPath.toLowerCase()) &&
+                item.url.toLowerCase().includes(userSearchQuery.toLowerCase())
         )
         .map((item) => {
             return {

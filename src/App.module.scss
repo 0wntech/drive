@@ -20,6 +20,7 @@
     min-height: 0;
     display: grid;
     height: 100%;
+    max-width: 1152px;
     margin: 0 10% 0 10%;
     grid-template-areas:
         'nav'
@@ -38,13 +39,18 @@
     grid-area: main;
     height: 100%;
     overflow-y: auto;
-    overflow-x: hidden;
+}
+
+@media (min-width: $screen_xl) {
+    .grid {
+        width: 1152px;
+        margin: initial;
+    }
 }
 
 @media (max-width: $screen_l) {
     .mainArea {
         overflow-y: initial;
-        overflow-x: initial;
     }
 
     .grid {

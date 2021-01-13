@@ -97,15 +97,9 @@ export function SearchDropdown({
     const handleInputChange = (searchText) => {
         clearTimeout(typingTimer);
         if (searchText !== '') {
-            const [searchedUser, searchedPath] = constructSearchContactQuery(
-                searchText
-            );
             setTypingTimer(
                 setTimeout(() => {
-                    return searchContact(
-                        searchedUser,
-                        searchedPath !== '' ? searchedPath : '/'
-                    );
+                    return searchContact(searchText);
                 }, 2000)
             );
         }

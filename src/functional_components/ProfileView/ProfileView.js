@@ -50,12 +50,13 @@ export const ProfileView = ({
             .filter(
                 (recommended) =>
                     !contacts ||
-                    !(
+                    (!(
                         user.webId === webId &&
                         contacts.find(
                             (contact) => contact.webId === recommended.webId
                         )
-                    )
+                    ) &&
+                        !(recommended.webId === user.webId))
             )
             .slice(0, displayedRows * 5);
 
@@ -65,7 +66,7 @@ export const ProfileView = ({
                 isLoading={loading}
                 className={styles.grid}
                 label={(user.name !== '' && user.name) ?? label}
-                hideToolbar={width < styleConstants.screen_l ? true : false}
+                hideToolbar={width < styleConstants.screen_l}
             >
                 <div
                     className={classNames(styles.profileContainer, {
@@ -127,7 +128,8 @@ export const ProfileView = ({
                                     className={styles.nameLabel}
                                 />
                             )}
-                            {(userData.bio || editState) && (
+                            {((userData.bio && userData.bio !== '\n') ||
+                                editState) && (
                                 <SingleValue
                                     editable={editState}
                                     value={userData.bio}
@@ -282,7 +284,10 @@ export const ProfileView = ({
                                             recommended
                                             removable
                                         />
-                                        {displayedRows * 5 <
+                                        {displayedRows *
+                                            (width < styleConstants.screen_xl
+                                                ? 5
+                                                : 6) <
                                         contactRecommendations.length ? (
                                             <div
                                                 onClick={() =>

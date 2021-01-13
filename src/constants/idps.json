@@ -12,7 +12,7 @@
     },
     {
         "url": "https://inrupt.net/",
-        "icon": "https://inrupt.com/themes/custom/solid/logo.svg",
+        "icon": "https://docs.inrupt.com/inrupt-logo-small.svg",
         "icon_bg": "#ffffff",
         "title": "inrupt.net",
         "title_color": "#fff",

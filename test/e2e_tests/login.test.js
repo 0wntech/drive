@@ -11,8 +11,8 @@ describe('login', () => {
         await page.goto(config.baseUrl);
         await page.waitForSelector('[data-test-id=login_btn]');
         await page.click('[data-test-id=login_btn]');
-        await page.waitForSelector('[data-test-id="solid.community"');
-        await page.click('[data-test-id="solid.community"]');
+        await page.waitForSelector('[data-test-id="solidcommunity.net"');
+        await page.click('[data-test-id="solidcommunity.net"]');
         await page.waitForSelector('form');
         await page.click('#username');
         await page.type('#username', process.env.SOLID_USERNAME);

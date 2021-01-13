@@ -25,7 +25,7 @@ import {
     SEND_NOTIFICATION_FAILURE,
     FETCH_IDPS,
     FETCH_IDPS_SUCCESS,
-    FETCH_IDPS_FAILURE,
+    // FETCH_IDPS_FAILURE,
     OPEN_CONSENT_WINDOW,
     CLOSE_CONSENT_WINDOW,
     DELETE_ITEMS,
@@ -82,6 +82,7 @@ import {
     SEARCH_FILE_FAILURE,
 } from './types';
 
+import idps from '../constants/idps.json';
 import fileUtils, { getFileOrFolderName } from '../utils/fileUtils';
 import { getRootFromWebId } from '../utils/url';
 
@@ -462,36 +463,37 @@ export const toggleSelectionMode = () => {
 export const fetchIdps = () => {
     return (dispatch) => {
         dispatch({ type: FETCH_IDPS });
-        const request = { method: 'GET' };
-        fetch('https://solid.github.io/solid-idp-list/services.json', request)
-            .then((response) => {
-                response.json().then((body) => {
-                    body.idps = [
-                        {
-                            url: 'https://aws.owntech.de/',
-                            icon: 'https://aws.owntech.de/favicon.ico',
-                            icon_bg: '#fff',
-                            title: 'aws.owntech.de',
-                            title_color: '#000',
-                            policyURL: 'https://aws.owntech.de',
-                            description: `Owntech is a german identity provider, dedicated to Data Ownership`,
-                            btn_bg: '#fff',
-                            btn_color: '#000',
-                        },
-                        ...body.idps,
-                    ];
-                    if (body.idps)
-                        body.idps.find((idp) => {
-                            if (idp.title === 'solid.community') {
-                                idp.url = 'https://solidcommunity.net/';
-                            }
-                        });
-                    dispatch({ type: FETCH_IDPS_SUCCESS, payload: body.idps });
-                });
-            })
-            .catch((err) => {
-                dispatch({ type: FETCH_IDPS_FAILURE, payload: err });
-            });
+        dispatch({ type: FETCH_IDPS_SUCCESS, payload: idps });
+        // const request = { method: 'GET' };
+        // fetch('https://solid.github.io/solid-idp-list/services.json', request)
+        //     .then((response) => {
+        //         response.json().then((body) => {
+        //             body.idps = [
+        //                 {
+        //                     url: 'https://aws.owntech.de/',
+        //                     icon: 'https://aws.owntech.de/favicon.ico',
+        //                     icon_bg: '#fff',
+        //                     title: 'aws.owntech.de',
+        //                     title_color: '#000',
+        //                     policyURL: 'https://aws.owntech.de',
+        //                     description: `Owntech is a german identity provider, dedicated to Data Ownership`,
+        //                     btn_bg: '#fff',
+        //                     btn_color: '#000',
+        //                 },
+        //                 ...body.idps,
+        //             ];
+        //             if (body.idps)
+        //                 body.idps.find((idp) => {
+        //                     if (idp.title === 'solid.community') {
+        //                         idp.url = 'https://solidcommunity.net/';
+        //                     }
+        //                 });
+        //             dispatch({ type: FETCH_IDPS_SUCCESS, payload: body.idps });
+        //         });
+        //     })
+        //     .catch((err) => {
+        //         dispatch({ type: FETCH_IDPS_FAILURE, payload: err });
+        //     });
     };
 };
 

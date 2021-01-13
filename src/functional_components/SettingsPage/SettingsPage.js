@@ -39,18 +39,18 @@ export const SettingsPage = ({
             label: 'Delete',
             onClick: () => window.open(idp + 'account/delete', '_blank'),
             color: 'red',
-            type: 'secondary',
         },
         {
             description: 'Log out of my account',
             label: 'Logout',
             onClick: () => logout(),
             color: 'red',
+            type: 'secondary',
         },
     ];
 
     return (
-        <Layout label="Settings" className={styles.layout} hideToolbar>
+        <Layout label="Settings" className={styles.layout}>
             <div className={styles.container}>
                 <SettingsSection label="Account" options={accountSettings} />
             </div>

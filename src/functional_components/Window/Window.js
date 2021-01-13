@@ -42,11 +42,13 @@ function Window({
                 </div>
                 <div className={classnames(styles.body, className)}>
                     {loading ? (
-                        <ClassicSpinner
-                            size={30}
-                            color="#686769"
-                            loading={loading}
-                        />
+                        <div className={styles.spinner}>
+                            <ClassicSpinner
+                                size={30}
+                                color="#686769"
+                                loading={loading}
+                            />
+                        </div>
                     ) : (
                         children
                     )}

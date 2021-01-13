@@ -39,8 +39,9 @@ const ContactListItem = ({
                             src={contact.picture}
                             onLoad={() => {
                                 profilePictureRef.current.style.backgroundImage = `url(${contact.picture})`;
+                                setProfilePictureError(false);
                             }}
-                            onError={() => setProfilePictureError(false)}
+                            onError={() => setProfilePictureError(true)}
                         />
                     </div>
                 ) : (
