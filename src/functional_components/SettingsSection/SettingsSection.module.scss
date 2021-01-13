@@ -2,13 +2,17 @@
 
 .container {
     display: flex;
-  }
-  
-  .optionContainer {
+}
+
+.optionContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 64px;
+}
+
+.optionDescription {
+    font: $medium-text;
 }
 
 .label {
@@ -20,7 +24,7 @@
 .input {
     box-sizing: border-box;
     font-family: inherit;
-    font-size: 1.2em;
+    font: $medium-text;
     border: initial;
     outline: none;
     resize: none;

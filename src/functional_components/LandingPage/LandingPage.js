@@ -1,7 +1,7 @@
 import React from 'react';
 import auth from 'solid-auth-client';
 import { connect } from 'react-redux';
-import styles from './LandingPage.module.css';
+import styles from './LandingPage.module.scss';
 import ActionButton from '../ActionButton/ActionButton';
 import { Layout } from '../Layout';
 

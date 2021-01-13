@@ -38,13 +38,12 @@ export const SettingsPage = ({
             description: 'Delete my account',
             label: 'Delete',
             onClick: () => window.open(idp + 'account/delete', '_blank'),
-            color: 'red',
+            type: 'danger',
         },
         {
             description: 'Log out of my account',
             label: 'Logout',
             onClick: () => logout(),
-            color: 'red',
             type: 'secondary',
         },
     ];

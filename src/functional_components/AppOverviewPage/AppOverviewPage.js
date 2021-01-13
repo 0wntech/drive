@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styles from './AppOverviewPage.module.css';
+import styles from './AppOverviewPage.module.scss';
 import AppList from '../AppList';
 import { fetchApps, removeApp } from '../../actions/userAppActions';
 import { Layout } from '../Layout';

@@ -68,7 +68,7 @@
 .option {
     padding: 4px 15px;
     font-style: normal;
-    font-size: 16px;
+    font: $medium-text;
     line-height: 21px;
 
     cursor: pointer;
@@ -81,6 +81,7 @@
 
 .option:hover {
     background-color: $pastell-blue;
+    color: #ffffff;
 }
 
 .option:hover:last-child {

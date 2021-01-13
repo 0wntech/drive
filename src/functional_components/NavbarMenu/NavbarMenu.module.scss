@@ -39,7 +39,7 @@
 .username {
     max-height: 63px;
     width: 100%;
-    font-size: 16px;
+    font: $medium-text;
     margin: 0 10px;
     @include multiLineEllipsis(
         $lineHeight: 21px,

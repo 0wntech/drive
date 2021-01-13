@@ -23,9 +23,7 @@
 }
 
 .keyLabel {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
+    font: $large-title-text;
     width: 100%;
     margin-bottom: 8px;
 }
@@ -37,8 +35,7 @@
 
 .value {
     box-sizing: border-box;
-    font-family: inherit;
-    font-size: 1.2em;
+    font: $large-text;
     border: initial;
     outline: none;
     resize: none;
@@ -89,7 +86,11 @@
 @media (max-width: $screen_l) {
     .keyLabel {
         width: calc(70px + 1em);
-        font-size: 16px;
+        font: $medium-title-text;
+    }
+
+    .value {
+        font: $medium-text;
     }
 
     .value.active + .value.active {

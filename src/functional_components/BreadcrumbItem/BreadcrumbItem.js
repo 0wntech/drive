@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './BreadcrumbItem.module.css';
+import styles from './BreadcrumbItem.module.scss';
 import PropTypes from 'prop-types';
 
 function BreadcrumbItem({ onClick, label, seperator }) {
