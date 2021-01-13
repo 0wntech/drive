@@ -46,7 +46,7 @@ export default function DeleteWindow({
                 <ActionButton
                     onClick={onCancel ? onCancel : onClose}
                     label="Cancel"
-                    color="white"
+                    type="secondary"
                     size="lg"
                     className={styles.button}
                 />
@@ -58,7 +58,7 @@ export default function DeleteWindow({
                     }}
                     className={styles.button}
                     label="Delete"
-                    color="red"
+                    type="danger"
                     size="lg"
                 />
             </div>

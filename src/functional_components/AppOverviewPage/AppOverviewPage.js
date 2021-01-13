@@ -74,13 +74,13 @@ const AppOverviewPage = ({
 
                 <div className={styles.windowButtonContainer}>
                     <ActionButton
-                        color="white"
+                        type="secondary"
                         label="Cancel"
                         onClick={() => setDangerWindow(false)}
                     />
                     <ActionButton
                         className={styles.button}
-                        color="red"
+                        type="danger"
                         label="Revoke Access"
                         onClick={() => {
                             removeApp(apptoDelete, isDriveApp(apptoDelete));

@@ -115,7 +115,7 @@ export const ProfilePage = ({
                         onClick={onCancel}
                         label="Cancel"
                         size="lg"
-                        color="red"
+                        type="danger"
                         dataId="edit-cancel"
                     />
                     <ActionButton
@@ -123,7 +123,7 @@ export const ProfilePage = ({
                         onClick={onSubmit}
                         label="Save"
                         size="lg"
-                        color="green"
+                        type="confirm"
                         dataId="edit-submit"
                     />
                 </div>
@@ -133,7 +133,7 @@ export const ProfilePage = ({
                 <ActionButton
                     onClick={() => setEditState(!editState)}
                     size="lg"
-                    color="blue"
+                    type="primary"
                     className={styles.editButton}
                 >
                     <EditIcon

@@ -52,12 +52,12 @@ class ErrorBoundary extends React.Component {
                             this.history.goBack();
                         }}
                         label="Go Back"
-                        color="blue"
+                        type="primary"
                     />
                     <ActionButton
                         label="Report Feedback"
                         className={styles.feedbackButton}
-                        color="white"
+                        type="secondary"
                         onClick={() =>
                             Sentry.showReportDialog({
                                 eventId: this.state.eventId,

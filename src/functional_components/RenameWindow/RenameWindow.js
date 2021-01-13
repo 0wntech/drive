@@ -60,7 +60,7 @@ export default function RenameWindow({
                     }}
                     className={styles.button}
                     label="Cancel"
-                    color="white"
+                    type="secondary"
                     size="lg"
                 />
                 <ActionButton
@@ -74,7 +74,7 @@ export default function RenameWindow({
                     }}
                     className={styles.button}
                     disabled={!allow}
-                    color="blue"
+                    type="primary"
                     size="lg"
                     label="Rename"
                 />

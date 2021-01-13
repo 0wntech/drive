@@ -8,13 +8,34 @@ $screen-m: 768px;
 $screen-l: 1040px;
 $screen-xl: 1382px;
 
+$extra-large-text: normal normal 400 24px/28px 'Helvetica Neue';
+$large-text: normal normal 400 20px/24px 'Helvetica Neue';
+$medium-text: normal normal 400 16px/20px 'Helvetica Neue';
+$small-text: normal normal 400 12px/16px 'Helvetica Neue';
+
+$extra-large-title-text: normal normal 500 24px/28px 'Helvetica Neue';
+$large-title-text: normal normal 500 20px/24px 'Helvetica Neue';
+$medium-title-text: normal normal 500 16px/20px 'Helvetica Neue';
+$small-title-text: normal normal 500 12px/16px 'Helvetica Neue';
+
+$extra-large-button-text: normal normal 600 24px/28px 'Helvetica Neue';
+$large-button-text: normal normal 600 20px/24px 'Helvetica Neue';
+$medium-button-text: normal normal 600 16px/20px 'Helvetica Neue';
+$small-button-text: normal normal 600 12px/16px 'Helvetica Neue';
+
 $light-black: #666666;
 $dark-black: #333333;
+
 $light-grey: #f4f4f4;
 $dark-grey: #e2e2e6;
-$standard-blue: #deebff;
-$light-blue: #24b0ff;
-$danger-red: #bd0000;
+
+$pastell-blue: #5C94FF;
+$light-blue: #2791FF;
+$dark-blue: #1F74CC;
+
+$light-red: #F41818;
+$dark-red: #c21313;
+
 $dark-green: #36a510;
 $light-green: #41c811;
 

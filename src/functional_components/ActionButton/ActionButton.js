@@ -35,8 +35,7 @@ const ActionButton = ({
 };
 
 ActionButton.propTypes = {
-    color: PropTypes.oneOf(['red', 'green', 'blue', 'white']),
-    primary: PropTypes.oneOf(['primary', 'secondary']),
+    primary: PropTypes.oneOf(['primary', 'secondary', 'confirm', 'danger']),
     size: PropTypes.oneOf(['sm', 'md', 'lg']),
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,

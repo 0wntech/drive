@@ -155,7 +155,7 @@ export const AccessWindow = ({
                     defaultAclResource && (
                         <BottomOverlay className={styles.buttonOverlay}>
                             <ActionButton
-                                color="white"
+                                type="secondary"
                                 label="Revert to default"
                                 className={styles.resetButton}
                             />

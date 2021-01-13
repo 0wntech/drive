@@ -31,7 +31,7 @@ const LandingPage = ({ webId, history }) => {
                                     dataId="login_btn"
                                     size="lg"
                                     label="Go to root"
-                                    color="blue"
+                                    type="primary"
                                     onClick={() => {
                                         history.push('/home');
                                     }}
@@ -48,13 +48,13 @@ const LandingPage = ({ webId, history }) => {
                                     dataId="login_btn"
                                     size="lg"
                                     label="Login"
-                                    color="blue"
+                                    type="primary"
                                     onClick={login}
                                 />
                                 <ActionButton
                                     size="lg"
                                     label="Register"
-                                    color="green"
+                                    type="confirm"
                                     className={styles.registerButton}
                                     onClick={onRegister}
                                 />

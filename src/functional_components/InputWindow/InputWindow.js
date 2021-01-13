@@ -38,7 +38,7 @@ export default function CreateWindow({
                 <ActionButton
                     onClick={onCancel ? onCancel : onClose}
                     className={styles.button}
-                    color="white"
+                    type="secondary"
                     label="Cancel"
                     size="lg"
                 />
@@ -51,7 +51,7 @@ export default function CreateWindow({
                     }}
                     disabled={!allow}
                     size="lg"
-                    color="green"
+                    type="confirm"
                     label="Confirm"
                 />
             </div>

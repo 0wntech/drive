@@ -160,7 +160,7 @@ export const ProfileView = ({
                                     <ActionButton
                                         dataId="delete-contact"
                                         label="Remove from Contacts"
-                                        color="white"
+                                        type="secondary"
                                         onClick={() => {
                                             removeContact(webId, user);
                                             setContactStatus(false);
@@ -174,7 +174,7 @@ export const ProfileView = ({
                                     <ActionButton
                                         dataId="add-contact"
                                         label="Add to Contacts"
-                                        color="green"
+                                        type="confirm"
                                         className={classNames(
                                             styles.addButton,
                                             styles.actionButton
