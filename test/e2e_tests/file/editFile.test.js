@@ -20,23 +20,23 @@ describe('e2e edit test file', () => {
         // edit
         await page.waitForSelector('[data-test-id="edit-file"]');
         await page.click('[data-test-id="edit-file"]');
-        await page.waitForSelector('[data-test-id="file-editor"]');
+        await page.waitForSelector('[class="CodeMirror-code"]');
 
         // clear editor
-        const nameInput = await page.$('[data-test-id="file-editor"]');
+        const nameInput = await page.$('[class="CodeMirror-code"]');
         await nameInput.click({ clickCount: 3 });
 
         // type
-        await page.type('[data-test-id="file-editor"]', 'Test');
+        await page.type('[class="CodeMirror-code"]', 'Test');
 
         // save
         await page.waitForSelector('[data-test-id="save-file"]');
         await page.click('[data-test-id="save-file"]');
 
         await page.waitForSelector('[data-test-id="edit-file"]');
-        await page.waitForSelector('[data-test-id="file-body"]');
+        await page.waitForSelector('[class="CodeMirror-line"]');
         const body = await page.$eval(
-            '[data-test-id="file-body"]',
+            '[class="CodeMirror-line"]',
             (e) => e.innerHTML
         );
         expect(body).toBe('Test');

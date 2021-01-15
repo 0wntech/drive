@@ -5,10 +5,12 @@
     display: flex;
     justify-content: center;
     border-radius: initial;
+    padding: initial;
 }
 
 .editable {
     overflow-y: hidden;
+    padding: initial;
 }
 
 .spinner {

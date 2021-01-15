@@ -1,12 +1,11 @@
 @import '../../styles/constants.scss';
 
 .editor {
-    padding-bottom: calc(72px + 4em);
     font: $medium-text;
     outline: none;
     border: none;
     width: 100%;
-    height: calc(100% - 80px);
+    height: 100%;
     resize: none;
     margin: initial;
 }

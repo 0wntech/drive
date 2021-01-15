@@ -18,9 +18,9 @@ describe('e2e open contact file', () => {
         expect(header).toBe('robots.txt');
 
         // read
-        await page.waitForSelector('[data-test-id="file-body"]');
+        await page.waitForSelector('[class="CodeMirror-line"]');
         const body = await page.$eval(
-            '[data-test-id="file-body"]',
+            '[class="CodeMirror-line"]',
             (e) => e.innerHTML
         );
         expect(body).toBe(`User-agent: *
