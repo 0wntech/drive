@@ -1,4 +1,4 @@
-const auth = require('solid-node-client');
+const { SolidNodeClient } = require('solid-node-client');
 const config = require('./testConfig.json');
 require('dotenv').config();
 
@@ -11,11 +11,12 @@ exports.initPage = async (browser, config) => {
 };
 
 exports.login = async () => {
-    const session = await auth.currentSession();
-    if (!session) {
-        return await auth.login();
+    const nodeClient = new SolidNodeClient();
+    if (!nodeClient.session?.webId) {
+        await nodeClient.login();
+        return nodeClient;
     } else {
-        return session;
+        return nodeClient;
     }
 };
 
