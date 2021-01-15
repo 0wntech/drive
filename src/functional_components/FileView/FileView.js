@@ -34,12 +34,6 @@ import AccessDisplay from '../AccessDisplay/AccessDisplay';
 import AccessWindow from '../AccessWindow';
 import BottomOverlay from '../BottomOverlay/BottomOverlay';
 
-const getPlaceholder = (body) => {
-    if (body && body !== '') return body;
-
-    return 'Empty';
-};
-
 export const FileView = ({
     loadCurrentItem,
     currentItem,
@@ -84,7 +78,16 @@ export const FileView = ({
                 }
             }
         }
-    }, [id, currentFilePath]);
+    }, [
+        id,
+        currentFilePath,
+        webId,
+        currentItem,
+        currentPath,
+        history,
+        routeUrl,
+        setCurrentPath,
+    ]);
 
     useEffect(() => {
         if (currentItem && typeof currentItem.body === 'string')
@@ -203,12 +206,11 @@ export const FileView = ({
                 !isImage && currentItem.url ? (
                     isEditable ? (
                         <FileEditor
-                            edit={isEditable}
+                            editable
                             value={newBody}
-                            onChange={(e) => {
-                                setNewBody(e.target.value);
+                            onChange={(_, _a, value) => {
+                                setNewBody(value);
                             }}
-                            placeholder={getPlaceholder(currentItem.body)}
                         />
                     ) : mime.getExtension(fileType) === 'markdown' ? (
                         <MarkdownView
@@ -221,14 +223,10 @@ export const FileView = ({
                             markdown={currentItem.body}
                         />
                     ) : (
-                        <div
-                            className={classNames(styles.file, {
-                                [styles.enabled]: isEditable,
-                            })}
-                            data-test-id="file-body"
-                        >
-                            {newBody ? newBody : 'Empty'}
-                        </div>
+                        <FileEditor
+                            dataId="file-body"
+                            value={newBody ? newBody : 'Empty'}
+                        />
                     )
                 ) : (
                     <img

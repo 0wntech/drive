@@ -21,7 +21,7 @@ export const SearchInput = ({
             const query = new URLSearchParams(history.location.search).get('q');
             setValue(query);
         }
-    }, [history.location]);
+    }, [history.location, originalPath]);
     return (
         <div
             className={classnames(styles.container, className, {

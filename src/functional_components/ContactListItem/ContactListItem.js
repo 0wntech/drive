@@ -36,6 +36,9 @@ const ContactListItem = ({
                 {contact.picture && !profilePictureError ? (
                     <div className={styles.image} ref={profilePictureRef}>
                         <img
+                            alt={`${getUsernameFromWebId(
+                                contact.webId
+                            )}'s profile`}
                             src={contact.picture}
                             onLoad={() => {
                                 profilePictureRef.current.style.backgroundImage = `url(${contact.picture})`;

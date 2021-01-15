@@ -113,7 +113,22 @@ const Drive = ({
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
         }
-    }, [currentPath, routeUrl, user]);
+    }, [
+        currentPath,
+        routeUrl,
+        user,
+        currentContactRootUrl,
+        currentItem,
+        fetchContact,
+        history,
+        id,
+        loadCurrentItem,
+        loadUser,
+        setCurrentPath,
+        setStorageUrl,
+        webId,
+    ]);
+
     handleError(error);
     // Event Handlers
     const loadFile = (fileUrl) => {
@@ -239,7 +254,6 @@ const Drive = ({
             })}
             label="Drive"
             onClick={handleClick}
-            label="Drive"
             isLoading={
                 loadDeletion ||
                 loadPaste ||

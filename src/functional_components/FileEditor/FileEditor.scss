@@ -1,0 +1,10 @@
+@import '../../styles/constants.scss';
+
+.CodeMirror {
+    height: auto;
+    z-index: 0;
+}
+
+.CodeMirror-lines {
+    padding-top: 8px;
+}

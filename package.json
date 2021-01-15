@@ -8,6 +8,7 @@
     "@sentry/browser": "^5.15.5",
     "babel-plugin-remove-test-ids": "^1.1.0",
     "classnames": "^2.2.6",
+    "codemirror": "^5.59.1",
     "cross-env": "^7.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
@@ -19,6 +20,7 @@
     "ownuser": "^1.3.18",
     "rdflib": "^1.3.4",
     "react": "^16.13.1",
+    "react-codemirror2": "^7.2.1",
     "react-collapse": "^5.0.1",
     "react-contexify": "^4.1.1",
     "react-dom": "^16.13.1",
@@ -38,7 +40,7 @@
     "solid-namespace": "^0.3.0",
     "uniq": "^1.0.1",
     "url": "^0.11.0",
-    "webql-client": "^1.0.1",
+    "webql-client": "^1.0.8",
     "your-user": "^1.1.12"
   },
   "scripts": {

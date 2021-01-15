@@ -68,7 +68,19 @@ export const ProfilePage = ({
                 fetchContact(contactWebId);
             }
         }
-    }, [id, currentContact, isContact]);
+    }, [
+        id,
+        currentContact,
+        isContact,
+        contacts,
+        fetchContact,
+        loadContacts,
+        loadCurrentContact,
+        loadUser,
+        ownProfile,
+        user,
+        webId,
+    ]);
 
     const userProfile =
         ownProfile && user ? user : currentContact ? currentContact : undefined;

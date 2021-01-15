@@ -20,7 +20,7 @@ export const InfoWindow = ({
                   : [currentPath]
               ).map((item) =>
                   [...currentItem.folders, ...currentItem.files].find(
-                      (item) => item === item || item === item.name
+                      (item) => item === item.name
                   )
               )
             : [];
@@ -32,8 +32,8 @@ export const InfoWindow = ({
             visible={isInfoWindowVisible}
         >
             <div className={styles.container}>
-                {items.map((item) => (
-                    <InfoListItem key={item} item={item} />
+                {items.map((item, index) => (
+                    <InfoListItem key={index} item={item} />
                 ))}
             </div>
         </Window>

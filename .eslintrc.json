@@ -31,6 +31,7 @@
         "react/jsx-uses-vars": 1,
         "react/jsx-uses-react": 1,
         "object-curly-spacing": ["error", "always"],
-        "quote-props": "warn"
+        "quote-props": "warn",
+        "react-hooks/exhaustive-deps": "off"
     }
 }

@@ -77,7 +77,7 @@ export const convertFileUrlToName = (fileUrl) => {
 
 export const isValidUrl = (url) => {
     return url.match(
-        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&%'\(\)\*\+,;=.]+$/
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&%'()*+,;=.]+$/
     )
         ? true
         : false;
@@ -169,23 +169,4 @@ export const getWebIdFromRoot = (rootUrl) => {
 // removes the last element of an url
 export const removeFromUrl = (url) => {
     return url.split('/').slice(0, -1);
-};
-
-function escapeRegExp(string) {
-    return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // $& means the whole matched string
-}
-
-export const matchPathInUrlList = (list, path) => {
-    // a function to determine the files and folders in the current path
-    const currentFolder = path.split('/').slice(-1)[0] + '/';
-    const matches = [];
-    const pattern = RegExp(escapeRegExp(currentFolder) + '\\w*(\\/|\\.\\w*)$');
-    for (let i = 0; i < list.length; i++) {
-        const match = list[i].match(pattern);
-        if (match) {
-            // item is in folder
-            matches.push(list[i]);
-        }
-    }
-    return matches;
 };

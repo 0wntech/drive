@@ -21,7 +21,7 @@ export const SettingsPage = ({
         } else if (!user.storage) {
             setStorageUrl(getRootFromWebId(webId), webId);
         }
-    }, []);
+    }, [fetchUser, setStorageUrl, user, webId]);
     const accountSettings = [
         {
             description: 'Root storage url',

@@ -93,6 +93,9 @@ export const ProfileView = ({
                                     ref={profilePictureRef}
                                 >
                                     <img
+                                        alt={`${getUsernameFromWebId(
+                                            user.webId
+                                        )}'s profile`}
                                         onLoad={() => {
                                             profilePictureRef.current.style.backgroundImage = `url(${user.picture})`;
                                         }}

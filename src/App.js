@@ -50,7 +50,16 @@ export const App = ({
                 fetchContactRecommendations(webId);
             }
         }
-    }, [session, user]);
+    }, [
+        session,
+        user,
+        contactRecommendations,
+        fetchContactRecommendations,
+        loadContactRecommendations,
+        indexStorage,
+        login,
+        webId,
+    ]);
 
     const resetError = () => {
         setError(errorKey + 1);

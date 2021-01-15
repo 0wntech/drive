@@ -12,17 +12,17 @@ export const FileImage = ({ currentPath, file, image }) => {
             <div className={styles.innerContainer}>
                 <div className={styles.iconContainer}>
                     <img
-                        alt="image-file"
+                        alt="thumbnail"
                         className={styles.thumbnail}
                         src={currentPath + file.name}
                         loading="lazy"
                     />
                     <div
-                        alt="file"
                         className={styles.icon}
                         style={{ backgroundImage: `url(${image})` }}
                     >
                         <img
+                            alt="file"
                             src={image}
                             style={{ visibility: 'hidden' }}
                             className={styles.icon}
@@ -40,6 +40,7 @@ export const FileImage = ({ currentPath, file, image }) => {
                 {file.type ? (
                     file.type === 'text/turtle' ? (
                         <img
+                            alt="linked"
                             src={linkedFileImage}
                             className={styles.linkedFile}
                         />
@@ -52,11 +53,11 @@ export const FileImage = ({ currentPath, file, image }) => {
                     )
                 ) : null}
                 <div
-                    alt="file"
                     className={styles.icon}
                     style={{ backgroundImage: `url(${image})` }}
                 >
                     <img
+                        alt="file"
                         src={image}
                         style={{ visibility: 'hidden' }}
                         className={styles.icon}

@@ -83,7 +83,16 @@ export const SearchPage = ({
                 }, 1500)
             );
         }
-    }, [query]);
+    }, [
+        query,
+        userSearchQuery,
+        contactSearchResult,
+        fileSearchPath,
+        searchContact,
+        searchFile,
+        searchHistory,
+        searching,
+    ]);
 
     const filteredContacts = contactSearchResult?.filter(
         (contact) =>

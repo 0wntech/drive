@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import url from 'url';
 import { Window } from '../Window';
 import styles from './AccessWindow.module.scss';
@@ -17,36 +17,19 @@ import BottomOverlay from '../BottomOverlay';
 import ActionButton from '../ActionButton';
 import { getUsernameFromWebId, isValidUrl } from '../../utils/url';
 import Search from '../../assets/svgIcons/Search';
-import DefaultIcon from '../DefaultIcon';
-import { getInitialsFromUser } from '../../utils/helper';
+import ImageHandler from '../ImageHandler/ImageHandler';
 
 const OptionLabel = ({ contact }) => {
-    const [profilePictureError, setProfilePictureError] = useState(false);
-    const profilePictureRef = useRef();
     return (
         contact &&
         contact.webId && (
             <div className={styles.optionContainer}>
                 <div className={styles.iconContainer}>
-                    {contact.picture &&
-                    isValidUrl(contact.picture) &&
-                    !profilePictureError ? (
-                        <div
-                            ref={profilePictureRef}
+                    {contact.picture && isValidUrl(contact.picture) && (
+                        <ImageHandler
+                            user={contact}
                             className={styles.contactIcon}
-                        >
-                            <img
-                                onLoad={() => {
-                                    profilePictureRef.current.style.backgroundImage = `url(${contact.picture})`;
-                                }}
-                                onError={() => setProfilePictureError(true)}
-                                src={contact.picture}
-                            />
-                        </div>
-                    ) : (
-                        <DefaultIcon
-                            className={styles.defaultContactIcon}
-                            initials={getInitialsFromUser(contact)}
+                            defaultIconClassName={styles.defaultContactIcon}
                         />
                     )}
                 </div>

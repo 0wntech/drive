@@ -21,7 +21,6 @@ const fakeApps = (apps) => {
             description: url,
             settings: url,
             icon: undefined,
-            description: url,
             contents: [],
             permissions: {},
         };
@@ -42,7 +41,7 @@ const AppOverviewPage = ({
 }) => {
     useEffect(() => {
         fetchApps(webId);
-    }, []);
+    }, [fetchApps, webId]);
     handleError(error);
 
     const [dangerWindow, setDangerWindow] = useState(false);

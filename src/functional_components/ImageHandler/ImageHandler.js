@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import styles from './ImageHandler.module.scss';
 import DefaultIcon from '../DefaultIcon/DefaultIcon';
 import { getInitialsFromUser } from '../../utils/helper';
+import { getUsernameFromWebId } from '../../utils/url';
 
 export const ImageHandler = ({
     user,
@@ -20,6 +21,7 @@ export const ImageHandler = ({
             {...rest}
         >
             <img
+                alt={`${getUsernameFromWebId(user.webId)}'s profile`}
                 onLoad={() => {
                     profilePictureRef.current.style.backgroundImage = `url(${user.picture})`;
                 }}
