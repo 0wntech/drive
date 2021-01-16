@@ -43,13 +43,12 @@ describe('e2e edit turtle file', () => {
         await page.waitForSelector('[data-test-id="save-file"]');
         await page.click('[data-test-id="save-file"]');
 
-        console.debug('saved');
         await page.waitForSelector('[data-test-id="edit-file"]');
-        console.debug('saving completed');
-        await page.waitForSelector('[class="CodeMirror-line"]');
-        const body = await page.$eval(
-            '[class="CodeMirror-line"]',
-            (e) => e.innerHTML
+        await page.waitForSelector('[class=" CodeMirror-line "]');
+        const body = await page.evaluate(() =>
+            Array.from(document.querySelectorAll('span[role="presentation"]'))
+                .map((el) => el.innerHTML)
+                .join('\n')
         );
         expect(body).toBe(
             `@prefix : &lt;#&gt;.
@@ -59,6 +58,7 @@ describe('e2e edit turtle file', () => {
 
         // enable edit
         await page.click('[data-test-id="edit-file"]');
+        await page.click('[class="CodeMirror-code"]');
 
         // type wrong
         await page.type('[class="CodeMirror-code"]', 's');

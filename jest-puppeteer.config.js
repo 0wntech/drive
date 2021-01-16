@@ -2,8 +2,8 @@ const path = require('path');
 
 module.exports = {
     launch: {
-        headless: false,
-        slowMo: 0,
+        headless: true,
+        slowMo: 10,
         defaultViewport: {
             width: 1920,
             height: 1024,

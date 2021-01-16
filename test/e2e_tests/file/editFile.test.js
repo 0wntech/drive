@@ -34,10 +34,11 @@ describe('e2e edit test file', () => {
         await page.click('[data-test-id="save-file"]');
 
         await page.waitForSelector('[data-test-id="edit-file"]');
-        await page.waitForSelector('[class="CodeMirror-line"]');
-        const body = await page.$eval(
-            '[class="CodeMirror-line"]',
-            (e) => e.innerHTML
+        await page.waitForSelector('span[role="presentation"]');
+        const body = await page.evaluate(() =>
+            Array.from(document.querySelectorAll('span[role="presentation"]'))
+                .map((el) => el.innerHTML)
+                .join('\n')
         );
         expect(body).toBe('Test');
     });
