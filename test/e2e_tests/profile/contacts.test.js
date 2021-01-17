@@ -47,25 +47,17 @@ describe('e2e contacts', () => {
         it('should be able to add and remove contact from contact recommendations or contacts', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'profile');
-            await page.waitForSelector(
-                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
-            );
-            await page.click(
-                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
-            );
+            await page.waitForSelector('[data-test-id="add-contact-ludwig"]');
+            await page.click('[data-test-id="add-contact-ludwig"]');
             await page.waitFor(600);
             await page.waitForSelector(
-                '[data-test-id="delete-contact-ludwig.solidcommunity.net"]'
+                '[data-test-id="delete-contact-ludwig"]'
             );
-            await page.click(
-                '[data-test-id="delete-contact-ludwig.solidcommunity.net"]'
-            );
+            await page.click('[data-test-id="delete-contact-ludwig"]');
             await page.waitFor(600);
-            await page.waitForSelector(
-                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
-            );
+            await page.waitForSelector('[data-test-id="add-contact-ludwig"]');
             const isNotContact = await page.$(
-                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
+                '[data-test-id="add-contact-ludwig"]'
             );
             expect(isNotContact).not.toBe(undefined);
         });
