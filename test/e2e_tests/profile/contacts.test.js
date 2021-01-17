@@ -15,7 +15,7 @@ describe('e2e contacts', () => {
                 '[data-test-id="contact-bejow.aws.owntech.de"]'
             );
             await page.waitForSelector(
-                '[data-test-id="contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
             );
             await page.click('[data-test-id="contact-bejow.aws.owntech.de"]');
             await page.waitFor(500);
@@ -48,24 +48,24 @@ describe('e2e contacts', () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'profile');
             await page.waitForSelector(
-                '[data-test-id="add-contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
             );
             await page.click(
-                '[data-test-id="add-contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
             );
             await page.waitFor(600);
             await page.waitForSelector(
-                '[data-test-id="delete-contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="delete-contact-ludwig.solidcommunity.net"]'
             );
             await page.click(
-                '[data-test-id="delete-contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="delete-contact-ludwig.solidcommunity.net"]'
             );
             await page.waitFor(600);
             await page.waitForSelector(
-                '[data-test-id="add-contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
             );
             const isNotContact = await page.$(
-                '[data-test-id="add-contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="add-contact-ludwig.solidcommunity.net"]'
             );
             expect(isNotContact).not.toBe(undefined);
         });
@@ -73,9 +73,11 @@ describe('e2e contacts', () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'profile');
             await page.waitForSelector(
-                '[data-test-id="contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
             );
-            await page.click('[data-test-id="contact-ludwig.aws.owntech.de"]');
+            await page.click(
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
+            );
             await page.waitFor(600);
             await page.waitForSelector('[data-test-id="add-contact"]');
             await page.click('[data-test-id="add-contact"]');
@@ -104,7 +106,7 @@ describe('e2e contacts', () => {
                 '[data-test-id="contact-bejow.aws.owntech.de"]'
             );
             await page.waitForSelector(
-                '[data-test-id="contact-ludwig.aws.owntech.de"]'
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
             );
             await page.click('[data-test-id="contact-bejow.aws.owntech.de"]');
             await page.waitFor(500);
