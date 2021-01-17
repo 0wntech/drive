@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ns from 'solid-namespace';
@@ -45,7 +45,8 @@ export const SearchPage = ({
         .replace('https://', '');
     const userSearchQuery = getUserSearchQuery(query);
     const fileSearchPath = getFileSearchPath(query);
-    useEffect(() => {
+
+    const search = useCallback(() => {
         if (searching) clearTimeout(searching);
         if (
             query &&
@@ -83,54 +84,62 @@ export const SearchPage = ({
                 }, 1500)
             );
         }
-    }, [
-        query,
-        userSearchQuery,
-        contactSearchResult,
-        fileSearchPath,
-        searchContact,
-        searchFile,
-        searchHistory,
-        searching,
-    ]);
+    }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(search, [query]);
 
-    const filteredContacts = contactSearchResult?.filter(
-        (contact) =>
-            contact.name
-                ?.toLowerCase()
-                .includes(userSearchQuery.toLowerCase()) ||
-            contact.webId.toLowerCase().includes(userSearchQuery.toLowerCase())
-    );
+    const filteredContacts = useMemo(() => {
+        return contactSearchResult?.filter(
+            (contact) =>
+                contact.name
+                    ?.toLowerCase()
+                    .includes(userSearchQuery.toLowerCase()) ||
+                contact.webId
+                    .toLowerCase()
+                    .includes(userSearchQuery.toLowerCase())
+        );
+    }, [contactSearchResult, userSearchQuery]);
 
-    const filteredFiles = fileHierarchy
-        .filter(
-            (item) =>
-                item.types.includes(ns().ldp('Resource')) &&
-                item.url.toLowerCase().includes(fileSearchPath.toLowerCase()) &&
-                item.url.toLowerCase().includes(userSearchQuery.toLowerCase())
-        )
-        .map((item) => {
-            const type = mime.getType(item.url);
-            return {
-                url: item.url,
-                type: type ?? 'text/turtle',
-                name: getFileOrFolderName(item.url),
-            };
-        });
+    const filteredFiles = useMemo(() => {
+        return fileHierarchy
+            .filter(
+                (item) =>
+                    item.types.includes(ns().ldp('Resource')) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(fileSearchPath.toLowerCase()) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(userSearchQuery.toLowerCase())
+            )
+            .map((item) => {
+                const type = mime.getType(item.url);
+                return {
+                    url: item.url,
+                    type: type ?? 'text/turtle',
+                    name: getFileOrFolderName(item.url),
+                };
+            });
+    }, [fileHierarchy, fileSearchPath, userSearchQuery]);
 
-    const filteredFolders = fileHierarchy
-        .filter(
-            (item) =>
-                item.types.includes(ns().ldp('Container')) &&
-                item.url.toLowerCase().includes(fileSearchPath.toLowerCase()) &&
-                item.url.toLowerCase().includes(userSearchQuery.toLowerCase())
-        )
-        .map((item) => {
-            return {
-                url: item.url,
-                name: getFileOrFolderName(item.url),
-            };
-        });
+    const filteredFolders = useMemo(() => {
+        return fileHierarchy
+            .filter(
+                (item) =>
+                    item.types.includes(ns().ldp('Container')) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(fileSearchPath.toLowerCase()) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(userSearchQuery.toLowerCase())
+            )
+            .map((item) => {
+                return {
+                    url: item.url,
+                    name: getFileOrFolderName(item.url),
+                };
+            });
+    }, [fileHierarchy, fileSearchPath, userSearchQuery]);
 
     return (
         <Layout

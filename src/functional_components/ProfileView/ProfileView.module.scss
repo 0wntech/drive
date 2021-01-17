@@ -248,33 +248,13 @@ svg:hover {
     );
 }
 
-.addButton {
-    border: solid $light_green 5px;
-    color: #fff;
-    background-color: $light_green;
-}
-
 .addButton svg path {
     fill: white;
-}
-
-.removeButton {
-    border: 5px solid #c4c4c4;
 }
 
 @media (min-width: $screen_xl) {
     .profileContainer {
         width: 100%;
-    }
-}
-
-@media (min-width: $screen_l) {
-    .addButton:hover {
-        border-color: $dark_green;
-    }
-
-    .removeButton:hover {
-        border-color: $light_black;
     }
 }
 

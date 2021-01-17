@@ -1,7 +1,7 @@
 const config = require('../testConfig.json');
 const { initPage } = require('../utils');
 
-describe('e2e edit profile', () => {
+describe.skip('e2e edit profile', () => {
     it('should change display name', async () => {
         const page = await initPage(browser, config);
         await page.goto(config.baseUrl + 'home');

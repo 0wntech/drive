@@ -22,7 +22,7 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": ["react"],
+    "plugins": ["react", "react-hooks"],
     "rules": {
         "max-len": [1, 100, 4],
         "linebreak-style": 0,

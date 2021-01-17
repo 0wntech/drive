@@ -26,7 +26,7 @@ const ContactListItem = ({
         <div
             className={classNames(styles.container, className)}
             onClick={() => onClick(contact)}
-            data-test-id={`contact-${getUsernameFromWebId(contact.webId)}`}
+            data-test-id={`contact-${new URL(contact.webId).host}`}
         >
             <div
                 className={styles.imageContainer}

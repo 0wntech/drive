@@ -3,7 +3,7 @@
 exports[`ContactListItem should render correctly 1`] = `
 <div
   className="container test"
-  data-test-id="contact-ludwigschubert"
+  data-test-id="contact-ludwigschubert.solid.community"
   onClick={[Function]}
 >
   <div
