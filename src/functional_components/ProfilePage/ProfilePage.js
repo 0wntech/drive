@@ -7,7 +7,6 @@ import {
     changeProfilePhoto,
     fetchUser,
 } from '../../actions/userActions';
-import EditIcon from '../../assets/svgIcons/Edit';
 import ActionButton from '../ActionButton/ActionButton';
 import { handleError } from '../../utils/helper';
 import ProfileView from '../ProfileView/ProfileView';
@@ -144,18 +143,10 @@ export const ProfilePage = ({
             return (
                 <ActionButton
                     onClick={() => setEditState(!editState)}
-                    size="lg"
-                    type="primary"
+                    size="md"
+                    type="secondary"
                     className={styles.editButton}
                 >
-                    <EditIcon
-                        viewBox="0 0 24 24"
-                        width="20"
-                        height="20"
-                        onClick={() => setEditState(!editState)}
-                        className={styles.iconWhite}
-                        data-test-id="edit"
-                    />
                     Edit Profile
                 </ActionButton>
             );

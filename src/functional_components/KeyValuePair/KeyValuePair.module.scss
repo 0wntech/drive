@@ -56,18 +56,17 @@
 }
 
 .value.active {
-    border-radius: initial;
-    border-bottom: 4px solid $dark_black;
+    border-radius: 20px;
+    background: $light-grey;
+    padding: 8px 16px;
     margin-bottom: initial;
     /* text-decoration: underline; */
 }
 
-.value.focus::placeholder {
-    color: transparent;
-}
-
 .value.active:focus {
-    outline: initial;
+    border: solid 4px $light-black;
+    background: #fff;
+    padding: 4px 12px;
     /* text-decoration-color: #6db7db; */
 }
 
