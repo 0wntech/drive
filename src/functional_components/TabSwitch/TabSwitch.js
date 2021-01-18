@@ -12,6 +12,7 @@ export const TabSwitch = ({ options, className }) => {
                         className={classNames(styles.tabOption, {
                             [styles.selectedTab]: selectedOption === index,
                         })}
+                        data-test-id={`tab-${name}`}
                         onClick={() => setSelectedOption(index)}
                     >
                         {name}

@@ -11,6 +11,8 @@ describe('e2e contacts', () => {
                 '[data-test-id="navigation-profile-picture"]'
             );
             await page.click('[data-test-id="navigation-profile-picture"]');
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
             await page.waitForSelector(
                 '[data-test-id="contact-bejow.aws.owntech.de"]'
             );
@@ -47,6 +49,8 @@ describe('e2e contacts', () => {
         it('should be able to add and remove contact from contact recommendations or contacts', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'profile');
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
             await page.waitForSelector('[data-test-id="add-contact-ludwig"]');
             await page.click('[data-test-id="add-contact-ludwig"]');
             await page.waitFor(600);
@@ -64,6 +68,8 @@ describe('e2e contacts', () => {
         it('should be able to remove or add contact from profile page', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'profile');
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
             await page.waitForSelector(
                 '[data-test-id="contact-ludwig.solidcommunity.net"]'
             );
@@ -94,6 +100,8 @@ describe('e2e contacts', () => {
                     process.env.SOLID_USERNAME +
                     '.solidcommunity.net'
             );
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
             await page.waitForSelector(
                 '[data-test-id="contact-bejow.aws.owntech.de"]'
             );
