@@ -59,7 +59,10 @@ export const ProfileView = ({
 
     const infoDisplay = useMemo(
         () =>
-            (userData?.job || userData?.emails || userData?.telephones) && (
+            (userData?.job ||
+                userData?.emails ||
+                userData?.telephones ||
+                editState) && (
                 <div className={styles.infoContainer}>
                     <div className={styles.infoDataContainer}>
                         {(userData.job || editState) && (
@@ -110,7 +113,7 @@ export const ProfileView = ({
                 </div>
             ),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [(userData, editState, isCurrentUser)]
+        [userData, editState, isCurrentUser]
     );
 
     const contactsDisplay = useMemo(

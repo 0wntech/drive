@@ -45,8 +45,9 @@ svg:hover {
     .headContainer {
         flex-direction: column;
         align-self: initial;
-        width: 360px;
+        width: 400px;
         margin: initial;
+        padding: initial
     }
 
     .headDataContainer {
@@ -54,9 +55,14 @@ svg:hover {
         margin-left: initial;
     }
 
+    .infoContainer {
+        width: 400px;
+    }
+
     .nameLabel {
         width: 100% !important;
         margin-left: initial;
+        margin-right: initial;
     }
 
     .bioLabel {
