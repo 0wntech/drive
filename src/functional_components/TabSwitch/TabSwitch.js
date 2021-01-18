@@ -9,6 +9,7 @@ export const TabSwitch = ({ options, className }) => {
             <div className={styles.tabOptionContainer}>
                 {options.map(({ name }, index) => (
                     <div
+                        key={index}
                         className={classNames(styles.tabOption, {
                             [styles.selectedTab]: selectedOption === index,
                         })}
@@ -22,6 +23,7 @@ export const TabSwitch = ({ options, className }) => {
             <div className={styles.tabChildrenContainer}>
                 {options.map(({ children }, index) => (
                     <div
+                        key={index}
                         className={classNames(styles.tabChildren, {
                             [styles.selectedTabChildren]:
                                 selectedOption === index,

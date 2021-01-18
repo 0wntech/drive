@@ -146,9 +146,8 @@ export const ProfilePage = ({
                     size="md"
                     type="secondary"
                     className={styles.editButton}
-                >
-                    Edit Profile
-                </ActionButton>
+                    label="Edit Profile"
+                />
             );
         }
     };
