@@ -18,7 +18,7 @@ exports[`ContactList should render correctly 1`] = `
         onClick={[Function]}
       >
         <div
-          className="image"
+          className="image image"
         >
           <img
             alt="ludwigschubert's profile"
@@ -52,7 +52,7 @@ exports[`ContactList should render correctly 1`] = `
         onClick={[Function]}
       >
         <div
-          className="image"
+          className="image image"
         >
           <img
             alt="bejow's profile"
@@ -86,7 +86,7 @@ exports[`ContactList should render correctly 1`] = `
         onClick={[Function]}
       >
         <div
-          className="image"
+          className="image image"
         >
           <img
             alt="bejowe's profile"

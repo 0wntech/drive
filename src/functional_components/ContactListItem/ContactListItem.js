@@ -1,16 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './ContactListItem.module.scss';
 import Add from '../../assets/svgIcons/Add';
 import Delete from '../../assets/svgIcons/Delete';
-import { getInitialsFromUser } from '../../utils/helper';
-import DefaultIcon from '../DefaultIcon';
-import { getUsernameFromWebId } from '../../utils/url';
+import { getIdpFromWebId, getUsernameFromWebId } from '../../utils/url';
+import ImageHandler from '../ImageHandler';
 
 const ContactListItem = ({
     contact,
     webId,
+    withIdp,
     className,
     addContact,
     removeContact,
@@ -19,9 +19,6 @@ const ContactListItem = ({
     isContact,
 }) => {
     const [wasAdded, setWasAdded] = useState(isContact);
-    const [profilePictureError, setProfilePictureError] = useState(false);
-    const profilePictureRef = useRef();
-    const initials = getInitialsFromUser(contact);
     return (
         <div
             className={classNames(styles.container, className)}
@@ -33,32 +30,22 @@ const ContactListItem = ({
                 onClick={() => onClick(contact)}
                 data-test-id="contact-picture"
             >
-                {contact.picture && !profilePictureError ? (
-                    <div className={styles.image} ref={profilePictureRef}>
-                        <img
-                            alt={`${getUsernameFromWebId(
-                                contact.webId
-                            )}'s profile`}
-                            src={contact.picture}
-                            onLoad={() => {
-                                profilePictureRef.current.style.backgroundImage = `url(${contact.picture})`;
-                                setProfilePictureError(false);
-                            }}
-                            onError={() => setProfilePictureError(true)}
-                        />
-                    </div>
-                ) : (
-                    <DefaultIcon
-                        initials={initials}
-                        className={styles.defaultIcon}
-                    />
-                )}
+                <ImageHandler
+                    user={contact}
+                    className={styles.image}
+                    defaultIconClassName={styles.defaultIcon}
+                />
             </div>
             <div className={styles.nameContainer}>
                 {contact.name
                     ? contact.name
                     : getUsernameFromWebId(contact.webId)}
             </div>
+            {withIdp && (
+                <div className={styles.idpContainer}>
+                    {getIdpFromWebId(contact.webId)}
+                </div>
+            )}
             <div
                 className={classNames(styles.iconContainer, {
                     [styles.added]: !wasAdded,

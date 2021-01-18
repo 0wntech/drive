@@ -8,6 +8,7 @@ const ContactList = ({
     contacts,
     onItemClick,
     webId,
+    withIdp,
     removeContact,
     addContact,
     isContact,
@@ -16,6 +17,7 @@ const ContactList = ({
     const renderContact = (contact) => {
         return (
             <ContactListItem
+                withIdp={withIdp}
                 addContact={() => addContact(webId, contact)}
                 onClick={(contact) => {
                     onItemClick(contact);

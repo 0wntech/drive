@@ -153,6 +153,7 @@ export const SearchPage = ({
                         {query ? 'Users found:' : 'Last Users found:'}
                     </div>
                     <ContactList
+                        withIdp
                         contacts={filteredContacts}
                         onItemClick={(contact) => {
                             history.push(getProfileRoute(contact));

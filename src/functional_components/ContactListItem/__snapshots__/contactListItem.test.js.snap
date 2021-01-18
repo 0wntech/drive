@@ -12,7 +12,7 @@ exports[`ContactListItem should render correctly 1`] = `
     onClick={[Function]}
   >
     <div
-      className="image"
+      className="image image"
     >
       <img
         alt="ludwigschubert's profile"
