@@ -103,14 +103,26 @@ export const ProfilePage = ({
         setEditState(false);
         setUserData({
             ...user,
-            emails: user.emails[0],
-            telephones: user.telephones[0],
+            emails:
+                !!user?.emails && user?.emails.length > 0
+                    ? user.emails[0] ?? undefined
+                    : undefined,
+            telephones:
+                !!user?.telephones && user?.telephones.length > 0
+                    ? user.telephones[0] ?? undefined
+                    : undefined,
         });
     };
 
     const onSubmit = () => {
         setEditState(false);
-        updateProfile(userData, user.webId);
+        console.debug(
+            JSON.stringify(userData) !== JSON.stringify(user),
+            JSON.stringify(userData),
+            JSON.stringify(user)
+        );
+        if (JSON.stringify(userData) !== JSON.stringify(user))
+            updateProfile(userData, user.webId);
     };
 
     const onPhotoChange = (e) => {

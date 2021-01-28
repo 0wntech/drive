@@ -73,9 +73,7 @@ export const ProfileView = ({
                                 editable={editState}
                                 setValue={updateUserData}
                                 className={styles.valuePair}
-                                placeholder={
-                                    userData.job !== '' ? userData.job : ``
-                                }
+                                placeholder={userData.job}
                             />
                         )}
                         {(userData.emails || editState) && (
@@ -86,9 +84,7 @@ export const ProfileView = ({
                                 value={userData.emails}
                                 editable={editState}
                                 className={styles.valuePair}
-                                placeholder={
-                                    userData.emails ? userData.emails : ``
-                                }
+                                placeholder={userData.emails}
                             />
                         )}
                         {(userData.telephones || editState) && (
@@ -99,11 +95,7 @@ export const ProfileView = ({
                                 value={userData.telephones}
                                 editable={editState}
                                 className={styles.valuePair}
-                                placeholder={
-                                    userData.telephones
-                                        ? userData.telephones
-                                        : ``
-                                }
+                                placeholder={userData.telephones}
                             />
                         )}
                     </div>
@@ -117,9 +109,11 @@ export const ProfileView = ({
     );
 
     const contactsDisplay = useMemo(
-        () => (
-            <div className={styles.contactsContainer}>
-                {contacts && !editState && (
+        () =>
+            contacts &&
+            contacts.length > 0 &&
+            !editState && (
+                <div className={styles.contactsContainer}>
                     <div>
                         {(user.webId === webId || contacts?.length > 0) && (
                             <ContactList
@@ -132,7 +126,7 @@ export const ProfileView = ({
                                 removable={user && user.webId === webId}
                             />
                         )}
-                        {contactRecommendationsToDisplay.length > 0 ? (
+                        {contactRecommendationsToDisplay?.length > 0 && (
                             <>
                                 <div className={styles.sectionLabel}>
                                     People you might know
@@ -147,7 +141,7 @@ export const ProfileView = ({
                                     removable
                                 />
                                 {displayedRows * 3 <
-                                contactRecommendations.length ? (
+                                    contactRecommendations.length && (
                                     <div
                                         onClick={() =>
                                             setDisplayedRows(displayedRows + 2)
@@ -161,13 +155,12 @@ export const ProfileView = ({
                                             ...
                                         </div>
                                     </div>
-                                ) : null}
+                                )}
                             </>
-                        ) : null}
+                        )}
                     </div>
-                )}
-            </div>
-        ),
+                </div>
+            ),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             contacts,
@@ -256,39 +249,6 @@ export const ProfileView = ({
                                         className={styles.nameLabel}
                                     />
                                 )}
-                                {isCurrentUser && !editState && renderButtons()}
-                                {!isCurrentUser &&
-                                    (contactStatus || isContact ? (
-                                        <ActionButton
-                                            dataId="delete-contact"
-                                            label="Remove from Contacts"
-                                            size="md"
-                                            type="secondary"
-                                            onClick={() => {
-                                                removeContact(webId, user);
-                                                setContactStatus(false);
-                                            }}
-                                            className={classNames(
-                                                styles.removeButton,
-                                                styles.actionButton
-                                            )}
-                                        />
-                                    ) : (
-                                        <ActionButton
-                                            dataId="add-contact"
-                                            label="Add to Contacts"
-                                            size="md"
-                                            type="confirm"
-                                            className={classNames(
-                                                styles.addButton,
-                                                styles.actionButton
-                                            )}
-                                            onClick={() => {
-                                                addContact(webId, user);
-                                                setContactStatus(true);
-                                            }}
-                                        />
-                                    ))}
                             </div>
                             {((userData.bio && userData.bio !== '\n') ||
                                 editState) &&
@@ -325,6 +285,41 @@ export const ProfileView = ({
                                         user.webId
                                     )}.${getIdpFromWebId(user.webId)}`}
                             </a>
+                            <div className={styles.buttonContainer}>
+                                {isCurrentUser && !editState && renderButtons()}
+                                {!isCurrentUser &&
+                                    (contactStatus || isContact ? (
+                                        <ActionButton
+                                            dataId="delete-contact"
+                                            label="Remove from Contacts"
+                                            size="md"
+                                            type="secondary"
+                                            onClick={() => {
+                                                removeContact(webId, user);
+                                                setContactStatus(false);
+                                            }}
+                                            className={classNames(
+                                                styles.removeButton,
+                                                styles.actionButton
+                                            )}
+                                        />
+                                    ) : (
+                                        <ActionButton
+                                            dataId="add-contact"
+                                            label="Add to Contacts"
+                                            size="md"
+                                            type="confirm"
+                                            className={classNames(
+                                                styles.addButton,
+                                                styles.actionButton
+                                            )}
+                                            onClick={() => {
+                                                addContact(webId, user);
+                                                setContactStatus(true);
+                                            }}
+                                        />
+                                    ))}
+                            </div>
                         </div>
                     </div>
                     <div className={styles.infoAndContactsContainer}>

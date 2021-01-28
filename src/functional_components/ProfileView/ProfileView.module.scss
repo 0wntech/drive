@@ -47,7 +47,7 @@ svg:hover {
         align-self: initial;
         width: 400px;
         margin: initial;
-        padding: initial
+        padding: initial;
     }
 
     .headDataContainer {
@@ -193,6 +193,10 @@ svg:hover {
     width: 100%;
 }
 
+.buttonContainer {
+    margin-top: 16px;
+}
+
 .headDataContainer {
     margin-left: 64px;
     width: 100%;
@@ -295,7 +299,7 @@ svg:hover {
     .profileContainer {
         width: 100%;
         justify-content: flex-start;
-        margin-top: 2em;
+        margin-top: 32px;
         padding: initial;
     }
 
@@ -305,13 +309,16 @@ svg:hover {
     }
 
     .infoContainer {
-        flex: 1 1 100%;
+        width: 400px;
+    }
+
+    .nameContainer {
+        justify-content: space-between;
     }
 
     .nameLabel {
         margin-top: 10px;
         width: 100%;
-        text-align: center;
         line-height: initial;
     }
 
@@ -323,7 +330,7 @@ svg:hover {
     .bioLabel {
         width: 100%;
         margin-top: 10px;
-        text-align: center;
+        text-align: left;
     }
 
     .multiline {

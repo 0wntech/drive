@@ -40,7 +40,7 @@
     "solid-namespace": "^0.3.0",
     "uniq": "^1.0.1",
     "url": "^0.11.0",
-    "webql-client": "^1.0.10"
+    "webql-client": "^1.0.11"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
