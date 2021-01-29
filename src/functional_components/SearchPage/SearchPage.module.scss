@@ -23,6 +23,12 @@
     align-items: center;
 
     .loadingMessage {
-      margin-top: 16px;
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: $screen_l) {
+    .container {
+        padding: 0 16px;
     }
 }

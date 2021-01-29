@@ -12,7 +12,7 @@
 }
 
 .optionDescription {
-    font: $medium-text;
+    font: $large-text;
 }
 
 .label {
@@ -23,15 +23,20 @@
 
 .input {
     box-sizing: border-box;
-    font-family: inherit;
-    font: $medium-text;
+    font: $large-text;
     border: initial;
     outline: none;
     resize: none;
     width: 50%;
-    border-radius: initial;
-    border-bottom: 4px solid $dark_black;
-    margin-bottom: initial;
+    border-radius: 20px;
+    background: $light-grey;
+    padding: 8px 16px;
+}
+
+.input:focus {
+    border: solid 4px $light-black;
+    background: #fff;
+    padding: 4px 12px;
 }
 
 @media (max-width: $screen_l) {

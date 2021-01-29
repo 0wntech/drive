@@ -31,7 +31,7 @@ svg:hover {
 }
 
 .profileContainer {
-    width: 712px;
+    width: 800px;
     padding-top: 32px;
     height: max-content;
     display: flex;
@@ -53,6 +53,10 @@ svg:hover {
     .headDataContainer {
         margin-top: 16px;
         margin-left: initial;
+    }
+
+    .buttonContainer {
+      display: none;
     }
 
     .infoContainer {

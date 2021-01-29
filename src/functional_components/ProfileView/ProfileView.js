@@ -6,8 +6,6 @@ import KeyValuePair from '../KeyValuePair/KeyValuePair';
 import SingleValue from '../KeyValuePair/SingleValue';
 import { Layout } from '../Layout';
 import { getIdpFromWebId, getUsernameFromWebId } from '../../utils/url.js';
-import styleConstants from '../../styles/constants.scss';
-import useWindowDimension from '../../hooks/useWindowDimension';
 import ActionButton from '../ActionButton/ActionButton';
 import { handleError } from '../../utils/helper';
 import ContactList from '../ContactList';
@@ -32,8 +30,6 @@ export const ProfileView = ({
     contactRecommendations,
     navigateToContact,
 }) => {
-    // eslint-disable-next-line no-unused-vars
-    const { _, width } = useWindowDimension();
     const [contactStatus, setContactStatus] = useState(undefined);
 
     handleError(error);
@@ -190,7 +186,7 @@ export const ProfileView = ({
                 isLoading={loading}
                 className={styles.grid}
                 label={(user.name !== '' && user.name) ?? label}
-                hideToolbar={width < styleConstants.screen_l}
+                hideToolbar
             >
                 <div
                     className={classNames(styles.profileContainer, {
@@ -254,7 +250,7 @@ export const ProfileView = ({
                                 editState) &&
                                 (editState ? (
                                     <KeyValuePair
-                                        label="Bio:"
+                                        label="Bio/Note:"
                                         editable={editState}
                                         value={userData.bio}
                                         placeholder="Bio"

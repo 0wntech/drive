@@ -20,11 +20,10 @@
     min-height: 0;
     display: grid;
     height: 100%;
-    max-width: 1152px;
-    margin: 0 10% 0 10%;
     grid-template-areas:
-        'nav'
-        'main';
+        '. nav .'
+        '. main .';
+    grid-template-columns: 1fr 1152px 1fr;
     grid-template-rows: 80px 1fr;
 }
 
@@ -41,13 +40,6 @@
     overflow-y: auto;
 }
 
-@media (min-width: $screen_xl) {
-    .grid {
-        width: 1152px;
-        margin: initial;
-    }
-}
-
 @media (max-width: $screen_l) {
     .mainArea {
         overflow-y: initial;
@@ -55,6 +47,7 @@
 
     .grid {
         margin: initial;
+        grid-template-columns: 1fr;
         grid-template-rows: 70px 1fr;
         grid-template-areas: 'nav' 'main';
     }

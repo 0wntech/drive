@@ -159,6 +159,7 @@ export const ProfilePage = ({
                     type="secondary"
                     className={styles.editButton}
                     label="Edit Profile"
+                    dataId="edit"
                 />
             );
         }
