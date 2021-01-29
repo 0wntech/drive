@@ -81,7 +81,10 @@
 @media (max-width: $screen_l) {
     .entityWrapper {
         height: 100%;
-        max-height: calc(80vh - 118px - 80px);
+    }
+
+    .entities {
+      padding-bottom: 32px;
     }
 
     .window {

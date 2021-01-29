@@ -33,10 +33,14 @@
     }
 
     .section {
-      margin-bottom: 160px;
+        margin-top: 16px;
+    }
+
+    .section:last-child {
+        margin-bottom: 160px;
     }
 
     .sectionLabel {
-      display: none;
+        display: none;
     }
 }

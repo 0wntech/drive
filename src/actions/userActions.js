@@ -200,7 +200,6 @@ export const updateProfile = (profileData, webId) => {
                 })
             )
             .then((e) => {
-                console.debug(profileData, e);
                 dispatch({ type: UPDATE_PROFILE_SUCCESS, profileData });
             });
     };

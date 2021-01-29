@@ -16,8 +16,7 @@
 
 @media (max-width: $screen_l) {
     .container {
-        grid-column-start: 2;
-        grid-column-end: span 10;
-        row-gap: 1em;
+        padding: 0 16px;
+        width: calc(100% - 32px);
     }
 }

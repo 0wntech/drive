@@ -47,8 +47,8 @@ export const SearchPage = ({
     const query = new URLSearchParams(history.location.search)
         .get('q')
         .replace('https://', '');
-    const userSearchQuery = getUserSearchQuery(query);
-    const fileSearchPath = getFileSearchPath(query);
+    const userSearchQuery = getUserSearchQuery(query).trim().replace(' ', '');
+    const fileSearchPath = getFileSearchPath(query).trim().replace(' ', '');
 
     const search = useCallback(() => {
         if (searching) clearTimeout(searching);
@@ -183,6 +183,7 @@ export const SearchPage = ({
                         </div>
                     )}
                     <ItemList
+                        noSelect
                         items={filteredFolders}
                         image={folder}
                         onItemClick={(item) => {
@@ -199,6 +200,7 @@ export const SearchPage = ({
                         }}
                     />
                     <ItemList
+                        noSelect
                         isFile
                         items={filteredFiles}
                         image={fileIcon}

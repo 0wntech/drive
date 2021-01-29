@@ -185,14 +185,13 @@ const Drive = ({
 
     const downloadItems = () => {
         selectedItems.forEach((item) => {
-            const file = mime.getType(item);
-            if (file) {
-                downloadFile(item);
-            } else {
+            if (user.webId.includes('owntech')) {
                 const download =
                     user.webId.replace('profile/card#me', 'download?path=') +
                     url.parse(item).pathname;
                 window.open(download.replace(/\/+$/, ''));
+            } else if (!item.endsWith('/')) {
+                downloadFile(item);
             }
         });
     };

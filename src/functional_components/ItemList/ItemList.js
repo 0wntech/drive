@@ -26,12 +26,13 @@ const ItemList = ({
     items,
     image,
     onItemClick,
-    isFile = false,
+    isFile,
     setSelection,
     copyItems,
     pasteItems,
     openConsentWindow,
     openRenameWindow,
+    noSelect,
 }) => {
     const [mouseHoldTimer, setMouseHoldTimer] = useState(null);
     const [longPressed, setLongPressed] = useState(false);
@@ -116,7 +117,9 @@ const ItemList = ({
               return isFile ? (
                   <File
                       selectedItem={
-                          selectedItems.includes(itemPath) ? true : undefined
+                          selectedItems.includes(itemPath)
+                              ? true && !noSelect
+                              : undefined
                       }
                       key={item + index}
                       image={image}
@@ -125,7 +128,6 @@ const ItemList = ({
                       file={item}
                       onClick={(e) => {
                           if (!longPressed) {
-                              console.debug(itemPath);
                               onItemClick(itemPath, e);
                           } else {
                               setLongPressed(false);
@@ -137,7 +139,9 @@ const ItemList = ({
               ) : (
                   <Item
                       selectedItem={
-                          selectedItems.includes(itemPath) ? true : undefined
+                          selectedItems.includes(itemPath)
+                              ? true && !noSelect
+                              : undefined
                       }
                       webId={webId}
                       key={item + index}

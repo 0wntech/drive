@@ -33,10 +33,10 @@ export const SearchInput = ({
     }, [history.location, originalPath]);
 
     useEffect(() => {
-        if (!history.location.pathname.startsWith('/search')) {
+        if (!history.location.pathname.startsWith('/search') && isMobile) {
             setFocused(false);
         }
-    }, [history.location]);
+    }, [history.location, isMobile]);
 
     return (
         <div
@@ -93,9 +93,6 @@ export const SearchInput = ({
                     [styles.empty]: isMobile ? !focused : !value,
                 })}
                 onClick={() => {
-                    if (isMobile) {
-                        setFocused(false);
-                    }
                     if (window.location.pathname.startsWith('/search'))
                         if (originalPath) {
                             history.push(originalPath);

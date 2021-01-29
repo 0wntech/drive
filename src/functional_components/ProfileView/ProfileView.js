@@ -11,6 +11,8 @@ import { handleError } from '../../utils/helper';
 import ContactList from '../ContactList';
 import TabSwitch from '../TabSwitch/TabSwitch';
 import ImageHandler from '../ImageHandler/ImageHandler';
+import size from '../../styles/constants.scss';
+import useWindowDimensions from '../../hooks/useWindowDimension';
 
 export const ProfileView = ({
     user,
@@ -30,6 +32,10 @@ export const ProfileView = ({
     contactRecommendations,
     navigateToContact,
 }) => {
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimensions();
+    const isMobile = width < size.screen_l;
+
     const [contactStatus, setContactStatus] = useState(undefined);
 
     handleError(error);
@@ -125,7 +131,7 @@ export const ProfileView = ({
                         {contactRecommendationsToDisplay?.length > 0 && (
                             <>
                                 <div className={styles.sectionLabel}>
-                                    People you might know
+                                    People that you might know
                                 </div>
                                 <ContactList
                                     onItemClick={navigateToContact}
@@ -178,6 +184,48 @@ export const ProfileView = ({
                 />
             ),
         [user]
+    );
+
+    const profileButtons = useMemo(
+        () => (
+            <div className={styles.buttonContainer}>
+                {isCurrentUser && !editState && renderButtons()}
+                {!isCurrentUser &&
+                    (contactStatus || isContact ? (
+                        <ActionButton
+                            dataId="delete-contact"
+                            label="Remove from Contacts"
+                            size="md"
+                            type="secondary"
+                            onClick={() => {
+                                removeContact(webId, user);
+                                setContactStatus(false);
+                            }}
+                            className={classNames(
+                                styles.removeButton,
+                                styles.actionButton
+                            )}
+                        />
+                    ) : (
+                        <ActionButton
+                            dataId="add-contact"
+                            label="Add to Contacts"
+                            size="md"
+                            type="confirm"
+                            className={classNames(
+                                styles.addButton,
+                                styles.actionButton
+                            )}
+                            onClick={() => {
+                                addContact(webId, user);
+                                setContactStatus(true);
+                            }}
+                        />
+                    ))}
+            </div>
+        ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [editState, isCurrentUser, contactStatus, user]
     );
 
     if (user && userData) {
@@ -281,43 +329,10 @@ export const ProfileView = ({
                                         user.webId
                                     )}.${getIdpFromWebId(user.webId)}`}
                             </a>
-                            <div className={styles.buttonContainer}>
-                                {isCurrentUser && !editState && renderButtons()}
-                                {!isCurrentUser &&
-                                    (contactStatus || isContact ? (
-                                        <ActionButton
-                                            dataId="delete-contact"
-                                            label="Remove from Contacts"
-                                            size="md"
-                                            type="secondary"
-                                            onClick={() => {
-                                                removeContact(webId, user);
-                                                setContactStatus(false);
-                                            }}
-                                            className={classNames(
-                                                styles.removeButton,
-                                                styles.actionButton
-                                            )}
-                                        />
-                                    ) : (
-                                        <ActionButton
-                                            dataId="add-contact"
-                                            label="Add to Contacts"
-                                            size="md"
-                                            type="confirm"
-                                            className={classNames(
-                                                styles.addButton,
-                                                styles.actionButton
-                                            )}
-                                            onClick={() => {
-                                                addContact(webId, user);
-                                                setContactStatus(true);
-                                            }}
-                                        />
-                                    ))}
-                            </div>
+                            {!isMobile && profileButtons}
                         </div>
                     </div>
+                    {isMobile && profileButtons}
                     <div className={styles.infoAndContactsContainer}>
                         {editState && infoDisplay}
                         <TabSwitch

@@ -3,8 +3,14 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import styles from './SettingsSection.module.scss';
 import ActionButton from '../ActionButton/ActionButton';
+import size from '../../styles/constants.scss';
+import useWindowDimensions from '../../hooks/useWindowDimension';
 
 export const SettingsSection = ({ label, options }) => {
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimensions();
+    const isMobile = width < size.screen_l;
+
     return (
         <>
             <div className={styles.container}>
@@ -38,6 +44,7 @@ export const SettingsSection = ({ label, options }) => {
                             {option.description}
                         </div>
                         <ActionButton
+                            size={isMobile ? 'md' : 'lg'}
                             label={option.label}
                             onClick={option.onClick}
                             color={option.color}
