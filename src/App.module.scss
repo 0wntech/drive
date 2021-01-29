@@ -46,9 +46,10 @@
     }
 
     .grid {
+        user-select: none;
         margin: initial;
         grid-template-columns: 1fr;
-        grid-template-rows: 70px 1fr;
+        grid-template-rows: 64px 1fr;
         grid-template-areas: 'nav' 'main';
     }
 }

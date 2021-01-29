@@ -133,9 +133,19 @@
 
 @media (max-width: $screen_l) {
     .gridCell {
-        height: 128px;
-        width: 100px;
-        justify-self: center;
+        height: 144px;
+        flex: 0 1;
+        flex-basis: calc((100% - 16px) / 3);
+        grid-gap: initial;
+        margin-bottom: 8px;
+    }
+
+    .gridCell + .gridCell {
+        margin-left: 8px;
+    }
+
+    .gridCell:nth-child(3n + 1) {
+        margin-left: initial;
     }
 
     .labelContainer {

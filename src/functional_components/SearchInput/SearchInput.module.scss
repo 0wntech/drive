@@ -68,7 +68,7 @@
 
 @media (max-width: $screen_l) {
     .container {
-        background: #fff;
+        background: initial;
         width: min-content;
     }
 
@@ -81,10 +81,12 @@
     }
 
     .focused {
+        background: $light-grey;
+        border: initial;
         position: absolute;
-        top: 10px;
-        left: 10px;
-        width: calc(100% - 20px);
+        top: 8px;
+        left: 16px;
+        width: calc(100% - 32px);
         .input {
             display: initial;
         }

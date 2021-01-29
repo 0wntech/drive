@@ -32,6 +32,12 @@ export const SearchInput = ({
         }
     }, [history.location, originalPath]);
 
+    useEffect(() => {
+        if (!history.location.pathname.startsWith('/search')) {
+            setFocused(false);
+        }
+    }, [history.location]);
+
     return (
         <div
             className={classnames(styles.container, className, {
