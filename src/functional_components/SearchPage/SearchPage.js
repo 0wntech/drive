@@ -21,6 +21,8 @@ import {
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { getFileOrFolderName } from '../../utils/fileUtils';
+import useWindowDimensions from '../../hooks/useWindowDimension';
+import size from '../../styles/constants.scss';
 
 const getUserSearchQuery = (query) =>
     query.includes('/') ? query.substr(0, query.indexOf('/')) : query;
@@ -39,12 +41,14 @@ export const SearchPage = ({
     searchingContacts,
     searchingFile,
 }) => {
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimensions();
     const [searching, setSearching] = useState(false);
     const query = new URLSearchParams(history.location.search)
         .get('q')
         .replace('https://', '');
-    const userSearchQuery = getUserSearchQuery(query);
-    const fileSearchPath = getFileSearchPath(query);
+    const userSearchQuery = getUserSearchQuery(query).trim().replace(' ', '');
+    const fileSearchPath = getFileSearchPath(query).trim().replace(' ', '');
 
     const search = useCallback(() => {
         if (searching) clearTimeout(searching);
@@ -146,6 +150,7 @@ export const SearchPage = ({
             isLoading={searchingContacts || searchingFile}
             className={styles.container}
             label={'Search for ' + query}
+            hideToolbar={width < size.screen_l}
         >
             {filteredContacts?.length > 0 && (
                 <div className={styles.section}>
@@ -178,6 +183,7 @@ export const SearchPage = ({
                         </div>
                     )}
                     <ItemList
+                        noSelect
                         items={filteredFolders}
                         image={folder}
                         onItemClick={(item) => {
@@ -194,6 +200,7 @@ export const SearchPage = ({
                         }}
                     />
                     <ItemList
+                        noSelect
                         isFile
                         items={filteredFiles}
                         image={fileIcon}

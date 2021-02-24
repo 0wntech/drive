@@ -31,7 +31,6 @@ export const FileUpload = ({
                     : {})}
                 style={{ display: 'none' }}
                 id={folder ? 'folderUpload' : 'fileUpload'}
-                accept="*/*"
             />
         </label>
     );

@@ -36,16 +36,18 @@ const ContactListItem = ({
                     defaultIconClassName={styles.defaultIcon}
                 />
             </div>
-            <div className={styles.nameContainer}>
-                {contact.name
-                    ? contact.name
-                    : getUsernameFromWebId(contact.webId)}
-            </div>
-            {withIdp && (
-                <div className={styles.idpContainer}>
-                    {getIdpFromWebId(contact.webId)}
+            <div className={styles.body}>
+                <div className={styles.nameContainer}>
+                    {contact.name
+                        ? contact.name
+                        : getUsernameFromWebId(contact.webId)}
                 </div>
-            )}
+                {withIdp && (
+                    <div className={styles.idpContainer}>
+                        {getIdpFromWebId(contact.webId)}
+                    </div>
+                )}
+            </div>
             <div
                 className={classNames(styles.iconContainer, {
                     [styles.added]: !wasAdded,

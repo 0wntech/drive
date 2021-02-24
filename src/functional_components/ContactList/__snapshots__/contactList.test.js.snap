@@ -29,9 +29,13 @@ exports[`ContactList should render correctly 1`] = `
         </div>
       </div>
       <div
-        className="nameContainer"
+        className="body"
       >
-        Ludwig Faust Schubert
+        <div
+          className="nameContainer"
+        >
+          Ludwig Faust Schubert
+        </div>
       </div>
       <div
         className="iconContainer added"
@@ -63,9 +67,13 @@ exports[`ContactList should render correctly 1`] = `
         </div>
       </div>
       <div
-        className="nameContainer"
+        className="body"
       >
-        Ben Wetzel
+        <div
+          className="nameContainer"
+        >
+          Ben Wetzel
+        </div>
       </div>
       <div
         className="iconContainer added"
@@ -97,9 +105,13 @@ exports[`ContactList should render correctly 1`] = `
         </div>
       </div>
       <div
-        className="nameContainer"
+        className="body"
       >
-        Ben Wetzel
+        <div
+          className="nameContainer"
+        >
+          Ben Wetzel
+        </div>
       </div>
       <div
         className="iconContainer added"

@@ -7,14 +7,12 @@
     grid-gap: 8px;
 }
 
-.listContainer + .listContainer {
-    margin-top: 8px;
-}
-
 @media (max-width: $screen_l) {
     .listContainer {
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 20px 20px;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+        grid-gap: initial;
     }
 }
 
