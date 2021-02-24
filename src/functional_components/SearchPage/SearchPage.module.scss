@@ -23,6 +23,24 @@
     align-items: center;
 
     .loadingMessage {
-      margin-top: 16px;
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: $screen_l) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .section {
+        margin-top: 16px;
+    }
+
+    .section:last-child {
+        margin-bottom: 160px;
+    }
+
+    .sectionLabel {
+        display: none;
     }
 }

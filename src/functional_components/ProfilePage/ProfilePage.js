@@ -90,6 +90,9 @@ export const ProfilePage = ({
               telephones: userProfile.telephones
                   ? userProfile.telephones[0]
                   : undefined,
+              bio: Array.isArray(userProfile.bio)
+                  ? userProfile.bio[0]
+                  : userProfile.bio,
           }
         : undefined;
     const [userData, setUserData] = useState(ownProfile ? profile : undefined);
@@ -116,11 +119,6 @@ export const ProfilePage = ({
 
     const onSubmit = () => {
         setEditState(false);
-        console.debug(
-            JSON.stringify(userData) !== JSON.stringify(user),
-            JSON.stringify(userData),
-            JSON.stringify(user)
-        );
         if (JSON.stringify(userData) !== JSON.stringify(user))
             updateProfile(userData, user.webId);
     };
@@ -159,6 +157,7 @@ export const ProfilePage = ({
                     type="secondary"
                     className={styles.editButton}
                     label="Edit Profile"
+                    dataId="edit"
                 />
             );
         }

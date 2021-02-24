@@ -31,7 +31,7 @@ svg:hover {
 }
 
 .profileContainer {
-    width: 712px;
+    width: 800px;
     padding-top: 32px;
     height: max-content;
     display: flex;
@@ -53,6 +53,10 @@ svg:hover {
     .headDataContainer {
         margin-top: 16px;
         margin-left: initial;
+    }
+
+    .buttonContainer {
+        display: none;
     }
 
     .infoContainer {
@@ -113,9 +117,9 @@ svg:hover {
 }
 
 .sectionLabel {
-    font-weight: 600 !important;
-    font-size: 2em;
-    margin: 1em 0;
+    font: $extra-large-title-text;
+    text-align: center;
+    margin-bottom: 32px;
 }
 
 .sectionLabel:nth-of-type(1) {
@@ -299,17 +303,41 @@ svg:hover {
     .profileContainer {
         width: 100%;
         justify-content: flex-start;
-        margin-top: 32px;
         padding: initial;
     }
 
     .headContainer {
-        width: calc(100% - 64px);
+        width: 100%;
         flex: 1 1 100%;
+        padding: 16px 0;
+        margin-bottom: initial;
+        align-items: flex-start;
+        min-height: initial;
+    }
+
+    .edit {
+        .headContainer {
+            align-items: center;
+            width: 100%;
+        }
+
+        .headDataContainer {
+            width: 100%;
+        }
+
+        .profileImage {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    .headDataContainer {
+        margin-left: 10px;
+        width: calc(100% - 90px);
     }
 
     .infoContainer {
-        width: 400px;
+        width: 100%;
     }
 
     .nameContainer {
@@ -317,20 +345,31 @@ svg:hover {
     }
 
     .nameLabel {
-        margin-top: 10px;
-        width: 100%;
-        line-height: initial;
+        font: $large-text !important;
     }
 
     .webIdLabel {
         width: 100%;
-        margin: 1em 0;
+        margin-top: 8px;
     }
 
     .bioLabel {
         width: 100%;
-        margin-top: 10px;
+        margin-top: 8px;
         text-align: left;
+        word-break: break-word;
+    }
+
+    .buttonContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 16px;
+        margin-top: initial;
+    }
+
+    .sectionLabel {
+        margin-bottom: 16px;
     }
 
     .multiline {
@@ -339,6 +378,8 @@ svg:hover {
     }
 
     .profileImage {
-        margin-right: 0px;
+        margin-right: 0;
+        width: 80px;
+        height: 80px;
     }
 }

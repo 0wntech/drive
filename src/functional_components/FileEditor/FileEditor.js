@@ -23,6 +23,7 @@ export const FileEditor = ({
                 readOnly: editable ? false : 'nocursor',
                 lineWrapping: true,
                 autofocus: editable,
+                inputStyle: 'textarea',
             }}
             value={value}
             onBeforeChange={onChange}

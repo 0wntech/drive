@@ -5,6 +5,7 @@
     flex-flow: row wrap;
     align-items: flex-start;
     width: 100%;
+    margin-bottom: 16px;
 }
 
 .empty {
@@ -39,6 +40,6 @@
 
     .itemContainer + .itemContainer {
         margin: initial;
-        margin-top: 10px;
+        margin-top: 8px;
     }
 }

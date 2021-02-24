@@ -40,3 +40,14 @@
 .selectedTabChildren {
     display: initial;
 }
+
+@media (max-width: $screen_l) {
+    .tabChildrenContainer {
+        padding-top: 16px;
+        width: 100%;
+    }
+
+    .tabChildren {
+        width: 100%;
+    }
+}

@@ -11,14 +11,16 @@ export default function SelectedFile({ item }) {
         : fileFragments[fileFragments.length - 2];
     return (
         <div className={styles.container}>
-            <div className={styles.listing}>
-                {file ? (
-                    <img alt="file" src={fileIcon} />
-                ) : (
-                    <img alt="folder" src={folderIcon} />
-                )}
-                <div className={styles.labelText}>{label}</div>
-            </div>
+            {file ? (
+                <img alt="file" src={fileIcon} className={styles.fileIcon} />
+            ) : (
+                <img
+                    alt="folder"
+                    src={folderIcon}
+                    className={styles.folderIcon}
+                />
+            )}
+            <div className={styles.labelText}>{label}</div>
         </div>
     );
 }

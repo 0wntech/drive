@@ -12,9 +12,7 @@
 
 @media (max-width: $screen_l) {
     .editor {
-        padding: 0 1em;
-        padding: 100%;
-        width: calc(100% - 2em);
+        width: 100%;
         margin: initial;
         overflow-wrap: break-word;
     }

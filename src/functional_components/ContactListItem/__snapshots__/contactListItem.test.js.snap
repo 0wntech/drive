@@ -23,9 +23,13 @@ exports[`ContactListItem should render correctly 1`] = `
     </div>
   </div>
   <div
-    className="nameContainer"
+    className="body"
   >
-    Ludwig Faust Schubert
+    <div
+      className="nameContainer"
+    >
+      Ludwig Faust Schubert
+    </div>
   </div>
   <div
     className="iconContainer added"

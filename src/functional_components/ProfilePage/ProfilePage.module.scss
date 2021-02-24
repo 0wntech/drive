@@ -2,16 +2,20 @@
 
 .editButtons {
     display: flex;
-    flex-direction: row;
+    width: 100%;
 }
 
 .actionButton {
-    margin: 0 4px;
+    flex: 1;
+}
+
+.actionButton + .actionButton {
+    margin-left: 4px;
 }
 
 .iconWhite {
-  path {
-      fill: #ffffff;
-  }
-  margin-right: 10px;
+    path {
+        fill: #ffffff;
+    }
+    margin-right: 10px;
 }
