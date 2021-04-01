@@ -27,7 +27,7 @@
 }
 
 .iconContainer:hover ellipse {
-    fill: $danger_red;
+    fill: $light-red;
 }
 
 .iconContainer ellipse {
@@ -57,12 +57,15 @@
     white-space: pre-wrap;
     word-break: keep-all;
     text-align: center;
-    margin-top: 0.5em;
-    max-width: 80%;
+    margin-top: 8px;
     max-height: 44px;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
+}
+
+.idpContainer {
+    color: $light_black;
 }
 
 @media (min-width: $screen_l) {
@@ -70,13 +73,19 @@
         border-color: $light_black;
 
         .defaultIcon {
-          color: $light_black;
-          border-color: $light_black;
+            color: $light_black;
+            border-color: $light_black;
         }
     }
 }
 
 @media (max-width: $screen_l) {
+    .body {
+        display: flex;
+        flex-direction: column;
+        margin-left: 16px;
+    }
+
     .container {
         flex-direction: row;
         justify-content: flex-start;
@@ -102,13 +111,12 @@
     .defaultIcon {
         height: 40px;
         width: 40px;
-        font-size: 1em;
-        line-height: 30px;
+        font-size: 20px;
+        line-height: 32px;
     }
 
     .nameContainer {
         margin-top: initial;
-        margin-left: 1em;
         text-align: left;
     }
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import ns from 'solid-namespace';
 import { connect } from 'react-redux';
 
@@ -8,8 +8,7 @@ import AccessToggle from '../AccessToggle/AccessToggle.js';
 import { toggleAccessMode } from '../../actions/appActions.js';
 import { ClassicSpinner } from 'react-spinners-kit';
 import { isValidUrl, getUsernameFromWebId } from '../../utils/url.js';
-import { getInitialsFromUser } from '../../utils/helper.js';
-import DefaultIcon from '../DefaultIcon/DefaultIcon.js';
+import ImageHandler from '../ImageHandler/ImageHandler.js';
 
 export const AccessListItem = ({
     entity,
@@ -21,8 +20,6 @@ export const AccessListItem = ({
 }) => {
     const isPublicEntity = entity.name === ns().foaf('Agent');
     const isCurrentUser = entity.webId === user.webId;
-    const [profilePictureError, setProfilePictureError] = useState(false);
-    const profilePictureRef = useRef();
 
     return (
         <div className={styles.container}>
@@ -33,23 +30,15 @@ export const AccessListItem = ({
                     height={64}
                     viewBox="0 0 40 40"
                 />
-            ) : entity.picture &&
-              isValidUrl(entity.picture) &&
-              !profilePictureError ? (
-                <div className={styles.image} ref={profilePictureRef}>
-                    <img
-                        onLoad={() => {
-                            profilePictureRef.current.style.backgroundImage = `url(${entity.picture})`;
-                        }}
-                        onError={() => setProfilePictureError(true)}
-                        src={entity.picture}
-                    />
-                </div>
             ) : (
-                <DefaultIcon
-                    className={styles.defaultContactIcon}
-                    initials={getInitialsFromUser(entity)}
-                />
+                entity.picture &&
+                isValidUrl(entity.picture) && (
+                    <ImageHandler
+                        user={entity}
+                        className={styles.image}
+                        defaultIconClassName={styles.defaultContactIcon}
+                    />
+                )
             )}
             <div className={styles.info}>
                 {isPublicEntity ? (

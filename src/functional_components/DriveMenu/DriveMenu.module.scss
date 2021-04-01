@@ -41,8 +41,7 @@
                 padding: 4px 0;
                 width: 100%;
                 font-style: normal;
-                font-size: 18px;
-                line-height: 28px;
+                font: $medium-text;
                 vertical-align: middle;
                 cursor: pointer;
             }
@@ -61,7 +60,7 @@
 
 @media (min-width: $screen_l) {
     .option:hover {
-        background: $standard_blue;
+        background: $pastell-blue;
     }
 }
 

@@ -9,7 +9,7 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
-      data-test-id="contact-ludwigschubert"
+      data-test-id="contact-ludwigschubert.solid.community"
       onClick={[Function]}
     >
       <div
@@ -18,9 +18,10 @@ exports[`ContactList should render correctly 1`] = `
         onClick={[Function]}
       >
         <div
-          className="image"
+          className="image image"
         >
           <img
+            alt="ludwigschubert's profile"
             onError={[Function]}
             onLoad={[Function]}
             src="https://ludwigschubert.solid.community/profile/aa.jpeg"
@@ -28,9 +29,13 @@ exports[`ContactList should render correctly 1`] = `
         </div>
       </div>
       <div
-        className="nameContainer"
+        className="body"
       >
-        Ludwig Faust Schubert
+        <div
+          className="nameContainer"
+        >
+          Ludwig Faust Schubert
+        </div>
       </div>
       <div
         className="iconContainer added"
@@ -42,7 +47,7 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
-      data-test-id="contact-bejow"
+      data-test-id="contact-bejow.solid.community"
       onClick={[Function]}
     >
       <div
@@ -51,9 +56,10 @@ exports[`ContactList should render correctly 1`] = `
         onClick={[Function]}
       >
         <div
-          className="image"
+          className="image image"
         >
           <img
+            alt="bejow's profile"
             onError={[Function]}
             onLoad={[Function]}
             src="https://bejow.solid.community/profile/meme_ben_gang.jpg"
@@ -61,9 +67,13 @@ exports[`ContactList should render correctly 1`] = `
         </div>
       </div>
       <div
-        className="nameContainer"
+        className="body"
       >
-        Ben Wetzel
+        <div
+          className="nameContainer"
+        >
+          Ben Wetzel
+        </div>
       </div>
       <div
         className="iconContainer added"
@@ -75,7 +85,7 @@ exports[`ContactList should render correctly 1`] = `
   >
     <div
       className="container"
-      data-test-id="contact-bejowe"
+      data-test-id="contact-bejowe.solid.community"
       onClick={[Function]}
     >
       <div
@@ -84,9 +94,10 @@ exports[`ContactList should render correctly 1`] = `
         onClick={[Function]}
       >
         <div
-          className="image"
+          className="image image"
         >
           <img
+            alt="bejowe's profile"
             onError={[Function]}
             onLoad={[Function]}
             src="https://bejow.solid.community/profile/meme_ben_gang.jpg"
@@ -94,9 +105,13 @@ exports[`ContactList should render correctly 1`] = `
         </div>
       </div>
       <div
-        className="nameContainer"
+        className="body"
       >
-        Ben Wetzel
+        <div
+          className="nameContainer"
+        >
+          Ben Wetzel
+        </div>
       </div>
       <div
         className="iconContainer added"

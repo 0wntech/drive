@@ -1,14 +1,16 @@
+@import '../../styles/constants.scss';
+
 .breadcrumb {
-    color: #5c94ff;
+    color: $light-blue;
     cursor: pointer;
     font-style: normal;
-    font-size: 18px;
+    font: $medium-text;
 }
 
 .seperator {
     margin: 0 10px 0 10px;
     font-style: normal;
-    font-size: 18px;
+    font: $medium-text;
 }
 
 .container {

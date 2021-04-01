@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import classNames from 'classnames';
 import url from 'url';
 import mime from 'mime';
 import { connect } from 'react-redux';
@@ -113,7 +112,22 @@ const Drive = ({
                 setCurrentPath(getParentFolderUrl(currentPath));
             }
         }
-    }, [currentPath, routeUrl, user]);
+    }, [
+        currentPath,
+        routeUrl,
+        user,
+        currentContactRootUrl,
+        currentItem,
+        fetchContact,
+        history,
+        id,
+        loadCurrentItem,
+        loadUser,
+        setCurrentPath,
+        setStorageUrl,
+        webId,
+    ]);
+
     handleError(error);
     // Event Handlers
     const loadFile = (fileUrl) => {
@@ -171,14 +185,13 @@ const Drive = ({
 
     const downloadItems = () => {
         selectedItems.forEach((item) => {
-            const file = mime.getType(item);
-            if (file) {
-                downloadFile(item);
-            } else {
+            if (user.webId.includes('owntech')) {
                 const download =
                     user.webId.replace('profile/card#me', 'download?path=') +
                     url.parse(item).pathname;
                 window.open(download.replace(/\/+$/, ''));
+            } else if (!item.endsWith('/')) {
+                downloadFile(item);
             }
         });
     };
@@ -234,12 +247,9 @@ const Drive = ({
         <Layout
             toolbarChildrenLeft={toolbarLeft}
             toolbarChildrenRight={toolbarRight}
-            className={classNames(styles.grid, {
-                [styles.noScroll]: isDriveMenuVisible || isAccessWindowVisible,
-            })}
+            className={styles.grid}
             label="Drive"
             onClick={handleClick}
-            label="Drive"
             isLoading={
                 loadDeletion ||
                 loadPaste ||

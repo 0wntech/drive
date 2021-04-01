@@ -7,7 +7,6 @@ import {
     changeProfilePhoto,
     fetchUser,
 } from '../../actions/userActions';
-import EditIcon from '../../assets/svgIcons/Edit';
 import ActionButton from '../ActionButton/ActionButton';
 import { handleError } from '../../utils/helper';
 import ProfileView from '../ProfileView/ProfileView';
@@ -68,7 +67,19 @@ export const ProfilePage = ({
                 fetchContact(contactWebId);
             }
         }
-    }, [id, currentContact, isContact]);
+    }, [
+        id,
+        currentContact,
+        isContact,
+        contacts,
+        fetchContact,
+        loadContacts,
+        loadCurrentContact,
+        loadUser,
+        ownProfile,
+        user,
+        webId,
+    ]);
 
     const userProfile =
         ownProfile && user ? user : currentContact ? currentContact : undefined;
@@ -79,6 +90,9 @@ export const ProfilePage = ({
               telephones: userProfile.telephones
                   ? userProfile.telephones[0]
                   : undefined,
+              bio: Array.isArray(userProfile.bio)
+                  ? userProfile.bio[0]
+                  : userProfile.bio,
           }
         : undefined;
     const [userData, setUserData] = useState(ownProfile ? profile : undefined);
@@ -92,14 +106,21 @@ export const ProfilePage = ({
         setEditState(false);
         setUserData({
             ...user,
-            emails: user.emails[0],
-            telephones: user.telephones[0],
+            emails:
+                !!user?.emails && user?.emails.length > 0
+                    ? user.emails[0] ?? undefined
+                    : undefined,
+            telephones:
+                !!user?.telephones && user?.telephones.length > 0
+                    ? user.telephones[0] ?? undefined
+                    : undefined,
         });
     };
 
     const onSubmit = () => {
         setEditState(false);
-        updateProfile(userData, user.webId);
+        if (JSON.stringify(userData) !== JSON.stringify(user))
+            updateProfile(userData, user.webId);
     };
 
     const onPhotoChange = (e) => {
@@ -115,7 +136,7 @@ export const ProfilePage = ({
                         onClick={onCancel}
                         label="Cancel"
                         size="lg"
-                        color="red"
+                        type="danger"
                         dataId="edit-cancel"
                     />
                     <ActionButton
@@ -123,7 +144,7 @@ export const ProfilePage = ({
                         onClick={onSubmit}
                         label="Save"
                         size="lg"
-                        color="green"
+                        type="confirm"
                         dataId="edit-submit"
                     />
                 </div>
@@ -132,20 +153,12 @@ export const ProfilePage = ({
             return (
                 <ActionButton
                     onClick={() => setEditState(!editState)}
-                    size="lg"
-                    color="blue"
+                    size="md"
+                    type="secondary"
                     className={styles.editButton}
-                >
-                    <EditIcon
-                        viewBox="0 0 24 24"
-                        width="20"
-                        height="20"
-                        onClick={() => setEditState(!editState)}
-                        className={styles.iconWhite}
-                        data-test-id="edit"
-                    />
-                    Edit Profile
-                </ActionButton>
+                    label="Edit Profile"
+                    dataId="edit"
+                />
             );
         }
     };

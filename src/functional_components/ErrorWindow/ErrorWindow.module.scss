@@ -1,11 +1,11 @@
 @import '../../styles/constants.scss';
 
 .window {
-    color: $danger_red;
+    color: $light-red;
 }
 
 .container {
-    border: solid $danger_red 5px;
+    border: solid $light-red 5px;
 }
 
 @media (max-width: $screen_l) {

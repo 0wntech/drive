@@ -3,7 +3,7 @@
 exports[`ContactListItem should render correctly 1`] = `
 <div
   className="container test"
-  data-test-id="contact-ludwigschubert"
+  data-test-id="contact-ludwigschubert.solid.community"
   onClick={[Function]}
 >
   <div
@@ -12,9 +12,10 @@ exports[`ContactListItem should render correctly 1`] = `
     onClick={[Function]}
   >
     <div
-      className="image"
+      className="image image"
     >
       <img
+        alt="ludwigschubert's profile"
         onError={[Function]}
         onLoad={[Function]}
         src="https://ludwigschubert.solid.community/profile/aa.jpeg"
@@ -22,9 +23,13 @@ exports[`ContactListItem should render correctly 1`] = `
     </div>
   </div>
   <div
-    className="nameContainer"
+    className="body"
   >
-    Ludwig Faust Schubert
+    <div
+      className="nameContainer"
+    >
+      Ludwig Faust Schubert
+    </div>
   </div>
   <div
     className="iconContainer added"

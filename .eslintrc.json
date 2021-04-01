@@ -22,7 +22,7 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": ["react"],
+    "plugins": ["react", "react-hooks"],
     "rules": {
         "max-len": [1, 100, 4],
         "linebreak-style": 0,
@@ -31,6 +31,7 @@
         "react/jsx-uses-vars": 1,
         "react/jsx-uses-react": 1,
         "object-curly-spacing": ["error", "always"],
-        "quote-props": "warn"
+        "quote-props": "warn",
+        "react-hooks/exhaustive-deps": "off"
     }
 }

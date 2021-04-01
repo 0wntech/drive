@@ -22,14 +22,15 @@ export const FileUpload = ({
                         onChange(e, currentPath);
                     }
                 }}
-                {...{
-                    webkitdirectory: folder ? 'true' : false,
-                    directory: folder ? 'true' : false,
-                    multiple: folder ? 'true' : false,
-                }}
+                {...(folder
+                    ? {
+                          webkitdirectory: 'true',
+                          directory: 'true',
+                          multiple: true,
+                      }
+                    : {})}
                 style={{ display: 'none' }}
                 id={folder ? 'folderUpload' : 'fileUpload'}
-                accept="*/*"
             />
         </label>
     );

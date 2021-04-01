@@ -34,11 +34,11 @@ const MyItem = ({
             >
                 <div className={styles.innerContainer}>
                     <div
-                        alt="item"
                         className={styles.icon}
                         style={{ backgroundImage: `url(${image})` }}
                     >
                         <img
+                            alt="item"
                             src={image}
                             style={{ visibility: 'hidden' }}
                             className={styles.icon}

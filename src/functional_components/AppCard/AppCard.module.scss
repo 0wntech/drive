@@ -37,7 +37,7 @@
 }
 
 .deleteButton:hover {
-    background-color: $danger_red;
+    background-color: $light-red;
 }
 
 .deleteButton:hover path {
@@ -63,7 +63,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    font-size: 16px;
+    font: $medium-text;
     margin: 1em 0;
     max-width: 90%;
     text-align: center;

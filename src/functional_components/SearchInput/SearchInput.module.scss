@@ -29,7 +29,7 @@
 }
 
 .input {
-    font-size: 20px;
+    font: $large-text;
     border: none;
     outline: none;
     background: none;
@@ -40,7 +40,7 @@
 .clearable {
     display: flex;
     align-items: center;
-    padding: 16px;
+    padding-right: 16px;
     cursor: pointer;
 
     path {
@@ -62,6 +62,33 @@
 
         .clearable {
             padding-right: 11px;
+        }
+    }
+}
+
+@media (max-width: $screen_l) {
+    .container {
+        background: initial;
+        width: min-content;
+    }
+
+    .indicator {
+        padding: 8px;
+    }
+
+    .input {
+        display: none;
+    }
+
+    .focused {
+        background: $light-grey;
+        border: initial;
+        position: absolute;
+        top: 8px;
+        left: 16px;
+        width: calc(100% - 32px);
+        .input {
+            display: initial;
         }
     }
 }

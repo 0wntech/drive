@@ -11,9 +11,15 @@ describe('e2e contacts', () => {
                 '[data-test-id="navigation-profile-picture"]'
             );
             await page.click('[data-test-id="navigation-profile-picture"]');
-            await page.waitForSelector('[data-test-id="contact-bejow"]');
-            await page.waitForSelector('[data-test-id="contact-ludwig"]');
-            await page.click('[data-test-id="contact-bejow"]');
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
+            await page.waitForSelector(
+                '[data-test-id="contact-bejow.aws.owntech.de"]'
+            );
+            await page.waitForSelector(
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
+            );
+            await page.click('[data-test-id="contact-bejow.aws.owntech.de"]');
             await page.waitFor(500);
             await page.waitForSelector('[data-test-id="header"]');
             const header = await page.$eval(
@@ -43,6 +49,8 @@ describe('e2e contacts', () => {
         it('should be able to add and remove contact from contact recommendations or contacts', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'profile');
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
             await page.waitForSelector('[data-test-id="add-contact-ludwig"]');
             await page.click('[data-test-id="add-contact-ludwig"]');
             await page.waitFor(600);
@@ -60,8 +68,14 @@ describe('e2e contacts', () => {
         it('should be able to remove or add contact from profile page', async () => {
             const page = await initPage(browser, config);
             await page.goto(config.baseUrl + 'profile');
-            await page.waitForSelector('[data-test-id="contact-ludwig"]');
-            await page.click('[data-test-id="contact-ludwig"]');
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
+            await page.waitForSelector(
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
+            );
+            await page.click(
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
+            );
             await page.waitFor(600);
             await page.waitForSelector('[data-test-id="add-contact"]');
             await page.click('[data-test-id="add-contact"]');
@@ -86,9 +100,15 @@ describe('e2e contacts', () => {
                     process.env.SOLID_USERNAME +
                     '.solidcommunity.net'
             );
-            await page.waitForSelector('[data-test-id="contact-bejow"]');
-            await page.waitForSelector('[data-test-id="contact-ludwig"]');
-            await page.click('[data-test-id="contact-bejow"]');
+            await page.waitForSelector('[data-test-id="tab-Contacts"]');
+            await page.click('[data-test-id="tab-Contacts"]');
+            await page.waitForSelector(
+                '[data-test-id="contact-bejow.aws.owntech.de"]'
+            );
+            await page.waitForSelector(
+                '[data-test-id="contact-ludwig.solidcommunity.net"]'
+            );
+            await page.click('[data-test-id="contact-bejow.aws.owntech.de"]');
             await page.waitFor(500);
             await page.waitForSelector('[data-test-id="header"]');
             const header = await page.$eval(

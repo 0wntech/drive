@@ -5,6 +5,7 @@
     flex-flow: row wrap;
     align-items: flex-start;
     width: 100%;
+    margin-bottom: 16px;
 }
 
 .empty {
@@ -14,37 +15,21 @@
 .emptyMessage {
     align-self: center;
     text-align: center;
-    font-size: 1em;
+    font: $medium-text;
     width: 50%;
 }
 
 .itemContainer {
-    width: calc((100% - 40px) / 5);
+    width: calc((100% - 40px) / 3);
 }
 
 .itemContainer + .itemContainer {
-    margin-left: calc((100% - (100% - 40px)) / 4);
-    margin-bottom: calc((100% - (100% - 40px)) / 4);
+    margin-left: calc((100% - (100% - 40px)) / 2);
+    margin-bottom: calc((100% - (100% - 40px)) / 2);
 }
 
-.itemContainer:nth-child(5n + 1) {
+.itemContainer:nth-child(3n + 1) {
     margin-left: initial;
-}
-
-@media (min-width: $screen_xl) {
-    .itemContainer {
-        width: calc((100% - 40px) / 6);
-    }
-    .itemContainer + .itemContainer {
-        margin-left: calc((100% - (100% - 40px)) / 5);
-        margin-bottom: calc((100% - (100% - 40px)) / 5);
-    }
-    .itemContainer:nth-child(5n + 1) {
-        margin-left: calc((100% - (100% - 40px)) / 5);
-    }
-    .itemContainer:nth-child(6n + 1) {
-        margin-left: initial;
-    }
 }
 
 @media (max-width: $screen_l) {
@@ -55,6 +40,6 @@
 
     .itemContainer + .itemContainer {
         margin: initial;
-        margin-top: 10px;
+        margin-top: 8px;
     }
 }

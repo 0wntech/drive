@@ -2,13 +2,17 @@
 
 .container {
     display: flex;
-  }
-  
-  .optionContainer {
+}
+
+.optionContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 64px;
+    margin-bottom: 16px;
+}
+
+.optionDescription {
+    font: $large-text;
 }
 
 .label {
@@ -19,25 +23,44 @@
 
 .input {
     box-sizing: border-box;
-    font-family: inherit;
-    font-size: 1.2em;
+    font: $large-text;
     border: initial;
     outline: none;
     resize: none;
     width: 50%;
-    border-radius: initial;
-    border-bottom: 4px solid $dark_black;
-    margin-bottom: initial;
+    border-radius: 20px;
+    background: $light-grey;
+    padding: 8px 16px;
+}
+
+.input:focus {
+    border: solid 4px $light-black;
+    background: #fff;
+    padding: 4px 12px;
 }
 
 @media (max-width: $screen_l) {
-    .inputContainer {
-        align-items: flex-start;
-        flex-direction: column;
+    .label {
+        width: 100%;
+        font: $extra-large-title-text;
+        margin-bottom: 16px;
+    }
 
-        .input {
-            margin-top: 8px;
-            width: 100%;
+    .optionDescription {
+        font: $medium-text;
+    }
+
+    .inputContainer {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .optionDescription {
+            margin-bottom: 8px;
         }
+    }
+
+    .input {
+        font: $medium-text;
+        width: 100%;
     }
 }

@@ -23,6 +23,7 @@ exports[`NavbarMenu Should render correctly 1`] = `
             onClick={[Function]}
           >
             <img
+              alt="bejow's profile"
               onError={[Function]}
               onLoad={[Function]}
               src="https://bejow.owntech.de/profile/meme_ben_gang.jpg"

@@ -61,7 +61,7 @@ function Window({
 Window.propTypes = {
     windowName: PropTypes.string,
     className: PropTypes.string,
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onClose: PropTypes.func,
     visible: PropTypes.bool,
 };

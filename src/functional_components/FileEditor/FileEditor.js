@@ -1,17 +1,32 @@
 import React from 'react';
 import classNames from 'classnames';
+import './FileEditor.scss';
 import styles from './FileEditor.module.scss';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 
-export const FileEditor = ({ value, onChange, placeholder, edit }) => {
+export const FileEditor = ({
+    value,
+    onChange,
+    placeholder,
+    editable,
+    dataId,
+}) => {
     return (
-        <textarea
-            data-test-id="file-editor"
-            autoFocus
+        <CodeMirror
+            data-test-id={dataId ?? 'file-editor'}
             className={classNames(styles.editor, {
-                [styles.enabled]: edit,
+                [styles.enabled]: editable,
             })}
+            autoScroll={false}
+            options={{
+                lineNumbers: true,
+                readOnly: editable ? false : 'nocursor',
+                lineWrapping: true,
+                autofocus: editable,
+                inputStyle: 'textarea',
+            }}
             value={value}
-            onChange={onChange}
+            onBeforeChange={onChange}
             placeholder={placeholder}
         />
     );

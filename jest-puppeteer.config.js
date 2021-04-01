@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     launch: {
         headless: true,
-        slowMo: 0,
+        slowMo: 10,
         defaultViewport: {
             width: 1920,
             height: 1024,

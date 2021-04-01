@@ -31,40 +31,71 @@ svg:hover {
 }
 
 .profileContainer {
-    justify-self: center;
-    width: 1000px;
+    width: 800px;
+    padding-top: 32px;
     height: max-content;
-    padding: 64px 0;
     display: flex;
-    flex-flow: row wrap;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 .edit {
     flex-flow: column;
 
-    .infoContainer {
-        width: 50%;
+    .headContainer {
+        flex-direction: column;
         align-self: initial;
+        width: 400px;
+        margin: initial;
+        padding: initial;
     }
 
-    .headContainer {
-        min-height: initial;
-        width: 50%;
+    .headDataContainer {
+        margin-top: 16px;
+        margin-left: initial;
+    }
+
+    .buttonContainer {
+        display: none;
+    }
+
+    .infoContainer {
+        width: 400px;
+    }
+
+    .nameLabel {
+        width: 100% !important;
+        margin-left: initial;
+        margin-right: initial;
+    }
+
+    .bioLabel {
+        margin-top: initial;
+    }
+
+    .webIdLabel {
+        display: none;
     }
 }
 
+.infoAndContactsContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.hideTabSwitch {
+    display: none !important;
+}
+
 .infoContainer {
-    flex: 1 1 50%;
     margin-bottom: 2em;
     display: flex;
     flex-direction: column;
     align-items: center;
     align-self: flex-start;
-    height: 360px;
+    width: 360px;
     justify-content: center;
-    max-width: 50%;
 }
 
 .infoDataContainer {
@@ -86,9 +117,9 @@ svg:hover {
 }
 
 .sectionLabel {
-    font-weight: 600 !important;
-    font-size: 2em;
-    margin: 1em 0;
+    font: $extra-large-title-text;
+    text-align: center;
+    margin-bottom: 32px;
 }
 
 .sectionLabel:nth-of-type(1) {
@@ -112,6 +143,7 @@ svg:hover {
     width: 100%;
     display: flex;
     height: 40px;
+    margin-top: 16px;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
@@ -159,34 +191,35 @@ svg:hover {
 }
 
 .nameContainer {
-    grid-area: name;
-    padding: 0 0 0 30px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
 }
 
-.bioLabel {
-    text-align: center;
+.buttonContainer {
+    margin-top: 16px;
 }
 
 .headDataContainer {
+    margin-left: 64px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 1em;
+    align-items: flex-start;
 }
 
 .headContainer {
     display: flex;
     position: relative;
-    flex-direction: column;
+    flex-direction: row;
+    text-align: left;
     align-items: center;
-    flex: 1 1 50%;
-    min-height: 360px;
+    min-height: 160px;
     height: max-content;
-    margin-bottom: 2em;
+    margin-bottom: 32px;
+    padding-left: 64px;
+    align-self: flex-start;
 }
 
 .iconContainer {
@@ -211,16 +244,20 @@ svg:hover {
 }
 
 .nameLabel {
+    font: $extra-large-title-text !important;
     height: min-content;
     overflow: initial !important;
-    font-weight: 600 !important;
-    text-align: center;
+    width: min-content !important;
+    margin-right: 32px;
+}
+
+.bioLabel {
+    margin-top: 16px;
 }
 
 .webIdLabel {
-    margin: 1em 0;
+    margin-top: 16px;
     color: #454545;
-    text-align: center;
     text-decoration: none;
 }
 
@@ -247,34 +284,8 @@ svg:hover {
     );
 }
 
-.addButton {
-    border: solid $light_green 5px;
-    color: #fff;
-    background-color: $light_green;
-}
-
 .addButton svg path {
     fill: white;
-}
-
-.removeButton {
-    border: 5px solid #c4c4c4;
-}
-
-@media (min-width: $screen_xl) {
-    .profileContainer {
-        width: 100%;
-    }
-}
-
-@media (min-width: $screen_l) {
-    .addButton:hover {
-        border-color: $dark_green;
-    }
-
-    .removeButton:hover {
-        border-color: $light_black;
-    }
 }
 
 @media (max-width: $screen_l) {
@@ -292,35 +303,73 @@ svg:hover {
     .profileContainer {
         width: 100%;
         justify-content: flex-start;
-        margin-top: 2em;
         padding: initial;
     }
 
     .headContainer {
-        width: calc(100% - 64px);
+        width: 100%;
         flex: 1 1 100%;
+        padding: 16px 0;
+        margin-bottom: initial;
+        align-items: flex-start;
+        min-height: initial;
+    }
+
+    .edit {
+        .headContainer {
+            align-items: center;
+            width: 100%;
+        }
+
+        .headDataContainer {
+            width: 100%;
+        }
+
+        .profileImage {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    .headDataContainer {
+        margin-left: 10px;
+        width: calc(100% - 90px);
     }
 
     .infoContainer {
-        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .nameContainer {
+        justify-content: space-between;
     }
 
     .nameLabel {
-        margin-top: 10px;
-        width: 100%;
-        text-align: center;
-        line-height: initial;
+        font: $large-text !important;
     }
 
     .webIdLabel {
         width: 100%;
-        margin: 1em 0;
+        margin-top: 8px;
     }
 
     .bioLabel {
         width: 100%;
-        margin-top: 10px;
-        text-align: center;
+        margin-top: 8px;
+        text-align: left;
+        word-break: break-word;
+    }
+
+    .buttonContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 16px;
+        margin-top: initial;
+    }
+
+    .sectionLabel {
+        margin-bottom: 16px;
     }
 
     .multiline {
@@ -329,6 +378,8 @@ svg:hover {
     }
 
     .profileImage {
-        margin-right: 0px;
+        margin-right: 0;
+        width: 80px;
+        height: 80px;
     }
 }

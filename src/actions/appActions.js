@@ -316,12 +316,12 @@ export const downloadFile = (file) => {
             .read(file)
             .then((result) => {
                 const fileType = mime.getType(file);
-                if (fileType.includes('image')) {
+                if (fileType?.includes('image')) {
                     FileSaver.saveAs(file, getFileOrFolderName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });
                 } else {
                     const blob = new Blob([result], {
-                        type: mime.getType(file),
+                        type: mime.getType(file) ?? 'text/turtle',
                     });
                     FileSaver.saveAs(blob, getFileOrFolderName(file));
                     dispatch({ type: DOWNLOAD_FILE_SUCCESS });

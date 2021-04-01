@@ -1,24 +1,18 @@
 @import '../../styles/constants.scss';
 
 .editor {
-    padding: 1em 10%;
-    padding-bottom: calc(72px + 4em);
-    font-family: inherit;
-    font-size: 1em;
+    font: $medium-text;
     outline: none;
     border: none;
     width: 100%;
-    height: calc(100% - 80px);
-    overflow: auto;
+    height: 100%;
     resize: none;
     margin: initial;
 }
 
 @media (max-width: $screen_l) {
     .editor {
-        padding: 0 1em;
-        padding: 100%;
-        width: calc(100% - 2em);
+        width: 100%;
         margin: initial;
         overflow-wrap: break-word;
     }

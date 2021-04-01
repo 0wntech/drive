@@ -3,24 +3,22 @@
 .listContainer {
     color: #000;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    grid-gap: 10px 10px;
-}
-
-.listContainer + .listContainer {
-    margin-top: 8px;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 8px;
 }
 
 @media (max-width: $screen_l) {
     .listContainer {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        grid-gap: 20px 20px;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+        grid-gap: initial;
     }
 }
 
 @media (max-width: $screen_xs) {
     .listContainer {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         grid-gap: 20px 20px;
     }
 }

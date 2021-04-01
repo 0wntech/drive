@@ -79,6 +79,7 @@ export const NavbarMenu = ({
                     data-test-id="navigation-profile-picture"
                 >
                     <img
+                        alt={`${getUsernameFromWebId(user.webId)}'s profile`}
                         onLoad={() => {
                             profilePictureRef.current.style.backgroundImage = `url(${user.picture})`;
                         }}

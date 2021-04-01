@@ -39,7 +39,7 @@
 .username {
     max-height: 63px;
     width: 100%;
-    font-size: 16px;
+    font: $medium-text;
     margin: 0 10px;
     @include multiLineEllipsis(
         $lineHeight: 21px,
@@ -73,13 +73,6 @@
     .profileSection {
         height: initial;
         width: 100%;
-    }
-
-    .profileIcon {
-        min-height: 50px;
-        min-width: 50px;
-        height: 50px;
-        width: 50px;
     }
 
     .settings {

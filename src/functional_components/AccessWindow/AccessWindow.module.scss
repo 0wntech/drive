@@ -75,13 +75,16 @@
     min-width: 28px !important;
     min-height: 28px !important;
     line-height: 20px !important;
-    font-size: 0.8em !important;
+    font: $small-text;
 }
 
 @media (max-width: $screen_l) {
     .entityWrapper {
         height: 100%;
-        max-height: calc(80vh - 118px - 80px);
+    }
+
+    .entities {
+      padding-bottom: 32px;
     }
 
     .window {

@@ -146,55 +146,61 @@ export const fetchUser = (webId) => {
     };
 };
 
+const updateOrDeleteValue = (value, shapeFunction, linkPrefix) => {
+    return value
+        ? shapeFunction(linkPrefix ? linkPrefix + value : value)
+        : Object.assign(
+              {},
+              ...Object.keys(shapeFunction()).map((field) => ({
+                  [field]: undefined,
+              }))
+          );
+};
+
 export const updateProfile = (profileData, webId) => {
     return (dispatch) => {
         dispatch({ type: UPDATE_PROFILE });
         const graph = new Graphs(webId);
         graph
-            .load()
+            .patch({
+                [webId]: {
+                    ...updateOrDeleteValue(profileData.name, (value) => ({
+                        'vcard#name': value,
+                    })),
+                    ...updateOrDeleteValue(profileData.bio, (value) => ({
+                        'vcard#note': value,
+                    })),
+                    ...updateOrDeleteValue(profileData.job, (value) => ({
+                        'vcard#role': value,
+                    })),
+                    ...updateOrDeleteValue(
+                        profileData.emails,
+                        (value) => ({
+                            'vcard#hasEmail': {
+                                'vcard#value': value,
+                            },
+                        }),
+                        'mailto:'
+                    ),
+                    ...updateOrDeleteValue(
+                        profileData.telephones,
+                        (value) => ({
+                            'vcard#hasTelephone': {
+                                'vcard#value': value,
+                            },
+                        }),
+                        'tel:'
+                    ),
+                },
+            })
             .catch((error) =>
-                dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error })
+                dispatch({
+                    type: UPDATE_PROFILE_FAILURE,
+                    payload: error,
+                })
             )
-            .then(() => {
-                graph
-                    .patch({
-                        [webId]: {
-                            ...(profileData.name
-                                ? { 'vcard#name': profileData.name }
-                                : {}),
-                            ...(profileData.bio
-                                ? { 'vcard#note': profileData.bio }
-                                : {}),
-                            ...(profileData.job
-                                ? { 'vcard#role': profileData.job }
-                                : {}),
-                            ...(profileData.emails
-                                ? {
-                                      'vcard#hasEmail': {
-                                          'vcard#value':
-                                              'mailto:' + profileData.emails,
-                                      },
-                                  }
-                                : {}),
-                            ...(profileData.telephones
-                                ? {
-                                      'vcard#hasTelephone': {
-                                          'vcard#value':
-                                              'tel:' + profileData.telephones,
-                                      },
-                                  }
-                                : {}),
-                        },
-                    })
-                    .catch((error) =>
-                        dispatch({
-                            type: UPDATE_PROFILE_FAILURE,
-                            payload: error,
-                        })
-                    )
-                    .then(() => {
-                        dispatch({ type: UPDATE_PROFILE_SUCCESS, profileData });
-                    });
+            .then((e) => {
+                dispatch({ type: UPDATE_PROFILE_SUCCESS, profileData });
             });
     };
 };

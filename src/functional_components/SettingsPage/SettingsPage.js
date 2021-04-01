@@ -6,6 +6,8 @@ import { SettingsSection } from '../SettingsSection/SettingsSection';
 import { idp } from '../../selectors/userSelectors';
 import { fetchUser, logout, setStorageUrl } from '../../actions/userActions';
 import { getRootFromWebId, isValidUrl } from '../../utils/url';
+import useWindowDimensions from '../../hooks/useWindowDimension';
+import size from '../../styles/constants.scss';
 
 export const SettingsPage = ({
     idp,
@@ -15,13 +17,16 @@ export const SettingsPage = ({
     fetchUser,
     setStorageUrl,
 }) => {
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimensions();
+    const isMobile = width < size.screen_l;
     useEffect(() => {
         if (!user) {
             fetchUser(webId);
         } else if (!user.storage) {
             setStorageUrl(getRootFromWebId(webId), webId);
         }
-    }, []);
+    }, [fetchUser, setStorageUrl, user, webId]);
     const accountSettings = [
         {
             description: 'Root storage url',
@@ -38,19 +43,22 @@ export const SettingsPage = ({
             description: 'Delete my account',
             label: 'Delete',
             onClick: () => window.open(idp + 'account/delete', '_blank'),
-            color: 'red',
+            type: 'danger',
         },
         {
             description: 'Log out of my account',
             label: 'Logout',
             onClick: () => logout(),
-            color: 'red',
             type: 'secondary',
         },
     ];
 
     return (
-        <Layout label="Settings" className={styles.layout}>
+        <Layout
+            label="Settings"
+            className={styles.layout}
+            hideToolbar={isMobile}
+        >
             <div className={styles.container}>
                 <SettingsSection label="Account" options={accountSettings} />
             </div>

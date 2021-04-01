@@ -40,7 +40,11 @@ class ErrorBoundary extends React.Component {
             // You can render any custom fallback UI
             return (
                 <Layout className={styles.container} label="Error">
-                    <img className={styles.image} src={mediumEmoji} />
+                    <img
+                        alt="sad smiley"
+                        className={styles.image}
+                        src={mediumEmoji}
+                    />
                     <p className={styles.infoText}>There was an error.</p>
                     <p className={styles.errorText}>
                         {this.state.error.toString()}
@@ -52,12 +56,12 @@ class ErrorBoundary extends React.Component {
                             this.history.goBack();
                         }}
                         label="Go Back"
-                        color="blue"
+                        type="primary"
                     />
                     <ActionButton
                         label="Report Feedback"
                         className={styles.feedbackButton}
-                        color="white"
+                        type="secondary"
                         onClick={() =>
                             Sentry.showReportDialog({
                                 eventId: this.state.eventId,
@@ -75,6 +79,6 @@ class ErrorBoundary extends React.Component {
 }
 
 export default connect(
-    () => {},
+    () => ({}),
     (dispatch) => ({ dispatch })
 )(withRouter(ErrorBoundary));

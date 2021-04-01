@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ns from 'solid-namespace';
@@ -21,6 +21,8 @@ import {
 import folder from '../../assets/icons/Folder.png';
 import fileIcon from '../../assets/icons/File.png';
 import { getFileOrFolderName } from '../../utils/fileUtils';
+import useWindowDimensions from '../../hooks/useWindowDimension';
+import size from '../../styles/constants.scss';
 
 const getUserSearchQuery = (query) =>
     query.includes('/') ? query.substr(0, query.indexOf('/')) : query;
@@ -39,13 +41,16 @@ export const SearchPage = ({
     searchingContacts,
     searchingFile,
 }) => {
+    // eslint-disable-next-line no-unused-vars
+    const { _, width } = useWindowDimensions();
     const [searching, setSearching] = useState(false);
     const query = new URLSearchParams(history.location.search)
         .get('q')
         .replace('https://', '');
-    const userSearchQuery = getUserSearchQuery(query);
-    const fileSearchPath = getFileSearchPath(query);
-    useEffect(() => {
+    const userSearchQuery = getUserSearchQuery(query).trim().replace(' ', '');
+    const fileSearchPath = getFileSearchPath(query).trim().replace(' ', '');
+
+    const search = useCallback(() => {
         if (searching) clearTimeout(searching);
         if (
             query &&
@@ -83,51 +88,69 @@ export const SearchPage = ({
                 }, 1500)
             );
         }
-    }, [query]);
+    }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(search, [query]);
 
-    const filteredContacts = contactSearchResult?.filter(
-        (contact) =>
-            contact.name
-                ?.toLowerCase()
-                .includes(userSearchQuery.toLowerCase()) ||
-            contact.webId.toLowerCase().includes(userSearchQuery.toLowerCase())
-    );
+    const filteredContacts = useMemo(() => {
+        return contactSearchResult?.filter(
+            (contact) =>
+                contact.name
+                    ?.toLowerCase()
+                    .includes(userSearchQuery.toLowerCase()) ||
+                contact.webId
+                    .toLowerCase()
+                    .includes(userSearchQuery.toLowerCase())
+        );
+    }, [contactSearchResult, userSearchQuery]);
 
-    const filteredFiles = fileHierarchy
-        .filter(
-            (item) =>
-                item.types.includes(ns().ldp('Resource')) &&
-                item.url.toLowerCase().includes(fileSearchPath.toLowerCase()) &&
-                item.url.toLowerCase().includes(userSearchQuery.toLowerCase())
-        )
-        .map((item) => {
-            const type = mime.getType(item.url);
-            return {
-                url: item.url,
-                type: type ?? 'text/turtle',
-                name: getFileOrFolderName(item.url),
-            };
-        });
+    const filteredFiles = useMemo(() => {
+        return fileHierarchy
+            .filter(
+                (item) =>
+                    item.types.includes(ns().ldp('Resource')) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(fileSearchPath.toLowerCase()) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(userSearchQuery.toLowerCase())
+            )
+            .map((item) => {
+                const type = mime.getType(item.url);
+                return {
+                    url: item.url,
+                    type: type ?? 'text/turtle',
+                    name: getFileOrFolderName(item.url),
+                };
+            });
+    }, [fileHierarchy, fileSearchPath, userSearchQuery]);
 
-    const filteredFolders = fileHierarchy
-        .filter(
-            (item) =>
-                item.types.includes(ns().ldp('Container')) &&
-                item.url.toLowerCase().includes(fileSearchPath.toLowerCase()) &&
-                item.url.toLowerCase().includes(userSearchQuery.toLowerCase())
-        )
-        .map((item) => {
-            return {
-                url: item.url,
-                name: getFileOrFolderName(item.url),
-            };
-        });
+    const filteredFolders = useMemo(() => {
+        return fileHierarchy
+            .filter(
+                (item) =>
+                    item.types.includes(ns().ldp('Container')) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(fileSearchPath.toLowerCase()) &&
+                    item.url
+                        .toLowerCase()
+                        .includes(userSearchQuery.toLowerCase())
+            )
+            .map((item) => {
+                return {
+                    url: item.url,
+                    name: getFileOrFolderName(item.url),
+                };
+            });
+    }, [fileHierarchy, fileSearchPath, userSearchQuery]);
 
     return (
         <Layout
             isLoading={searchingContacts || searchingFile}
             className={styles.container}
             label={'Search for ' + query}
+            hideToolbar={width < size.screen_l}
         >
             {filteredContacts?.length > 0 && (
                 <div className={styles.section}>
@@ -135,6 +158,7 @@ export const SearchPage = ({
                         {query ? 'Users found:' : 'Last Users found:'}
                     </div>
                     <ContactList
+                        withIdp
                         contacts={filteredContacts}
                         onItemClick={(contact) => {
                             history.push(getProfileRoute(contact));
@@ -159,6 +183,7 @@ export const SearchPage = ({
                         </div>
                     )}
                     <ItemList
+                        noSelect
                         items={filteredFolders}
                         image={folder}
                         onItemClick={(item) => {
@@ -175,6 +200,7 @@ export const SearchPage = ({
                         }}
                     />
                     <ItemList
+                        noSelect
                         isFile
                         items={filteredFiles}
                         image={fileIcon}

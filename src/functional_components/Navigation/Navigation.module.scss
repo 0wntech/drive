@@ -10,8 +10,8 @@
 }
 
 .fullPath {
-  margin-left: .5em;
-  color: $light-black
+    margin-left: 0.5em;
+    color: $light-black;
 }
 
 .fileIcon {
@@ -65,7 +65,7 @@
 
 .searchDropdown {
     display: flex;
-    height: 50px;
+    height: 48px;
     width: 100%;
 }
 
@@ -137,19 +137,19 @@
     .brand {
         height: 50px;
         width: 50px;
-        font-size: 1em;
-        width: 50px;
-        height: 50px;
     }
     .profileIcon {
-        max-width: 50px;
-        height: 50px;
+        max-width: 40px;
+        height: 40px;
     }
 
     .container {
         border-radius: initial;
-        height: 70px;
-        grid-template-columns: 16px 2fr 9fr 1fr 16px;
+        grid-template-columns: 16px 50px 9fr 40px 16px;
+    }
+
+    .search {
+        justify-content: flex-end;
     }
 
     .menuWrapper {

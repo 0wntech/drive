@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styles from './AppOverviewPage.module.css';
+import styles from './AppOverviewPage.module.scss';
 import AppList from '../AppList';
 import { fetchApps, removeApp } from '../../actions/userAppActions';
 import { Layout } from '../Layout';
@@ -21,7 +21,6 @@ const fakeApps = (apps) => {
             description: url,
             settings: url,
             icon: undefined,
-            description: url,
             contents: [],
             permissions: {},
         };
@@ -42,7 +41,7 @@ const AppOverviewPage = ({
 }) => {
     useEffect(() => {
         fetchApps(webId);
-    }, []);
+    }, [fetchApps, webId]);
     handleError(error);
 
     const [dangerWindow, setDangerWindow] = useState(false);
@@ -74,13 +73,13 @@ const AppOverviewPage = ({
 
                 <div className={styles.windowButtonContainer}>
                     <ActionButton
-                        color="white"
+                        type="secondary"
                         label="Cancel"
                         onClick={() => setDangerWindow(false)}
                     />
                     <ActionButton
                         className={styles.button}
-                        color="red"
+                        type="danger"
                         label="Revoke Access"
                         onClick={() => {
                             removeApp(apptoDelete, isDriveApp(apptoDelete));

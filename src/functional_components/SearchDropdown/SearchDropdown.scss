@@ -41,18 +41,18 @@
 }
 
 .search__option--is-focused {
-    background-color: $standard_blue !important;
+    background-color: $pastell-blue !important;
 }
 
 .search__placeholder {
     display: none;
-    font-size: 22px;
+    font: $large-text;
     padding: 0 2px !important;
     margin: initial !important;
 }
 
 .search__input {
-    font-size: 22px;
+    font: $large-text;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -118,7 +118,7 @@
     .search__input {
         height: 100%;
         width: 100%;
-        font-size: 18px;
+        font: $large-text;
     }
 
     .search__menu {

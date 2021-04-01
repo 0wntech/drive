@@ -27,6 +27,7 @@ exports[`KeyValuePair should render expanded 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="ReactCollapse--collapse"
     style={
       Object {
@@ -101,6 +102,7 @@ exports[`KeyValuePair should render uneditable with multiple values 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="ReactCollapse--collapse"
     style={
       Object {
@@ -147,6 +149,7 @@ exports[`KeyValuePair should render unexpanded 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="ReactCollapse--collapse"
     style={
       Object {

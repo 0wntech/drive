@@ -14,6 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 144px;
     height: max-content;
     padding: 8px 0;
     width: 100%;
@@ -44,7 +45,7 @@
 
 .label {
     z-index: 1;
-    font-size: 16px;
+    font: $medium-text;
     line-height: 21px;
     padding: 4px 0;
     color: #000000;
@@ -112,7 +113,7 @@
 
     .gridCell:hover {
         background-color: $light_grey;
-        
+
         .label {
             background: #ffffff;
             border-radius: 10px;
@@ -132,9 +133,19 @@
 
 @media (max-width: $screen_l) {
     .gridCell {
-        height: 128px;
-        width: 100px;
-        justify-self: center;
+        height: 144px;
+        flex: 0 1;
+        flex-basis: calc((100% - 16px) / 3);
+        grid-gap: initial;
+        margin-bottom: 8px;
+    }
+
+    .gridCell + .gridCell {
+        margin-left: 8px;
+    }
+
+    .gridCell:nth-child(3n + 1) {
+        margin-left: initial;
     }
 
     .labelContainer {
