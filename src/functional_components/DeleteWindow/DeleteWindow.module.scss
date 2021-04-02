@@ -9,8 +9,8 @@
 }
 
 .selectedFiles {
-    max-height: calc(50vh - 50px - 72px - 72px);
-    overflow-y: auto;
+    max-height: 100%;
+    margin-bottom: 16px;
     display: flex;
     flex-flow: row wrap;
 }
@@ -21,15 +21,12 @@
 }
 
 .buttonBar {
+    padding-bottom: 16px;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
-    background-color: #ffffff;
-    width: calc(100% - 2em);
-    position: absolute;
-    bottom: 0;
-    padding: 1em 1em;
-    right: 0;
     border-radius: 20px;
+    background-color: #ffffff;
 }
 
 .input {
@@ -41,14 +38,17 @@
         overflow-y: auto;
     }
 
-    .selectedFiles {
-        max-height: calc(100vh - 50px - 152px - 62px);
+    .buttonBar {
+      position: absolute;
+      bottom: 80px;
+      left: 0;
+      padding: 16px;
+      width: calc(100% - 32px);
     }
 
     .window {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         overflow-y: auto;
     }
 }

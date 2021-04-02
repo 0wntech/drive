@@ -6,11 +6,8 @@
 }
 
 .buttonBar {
-    width: calc(100% - 2em);
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 1em;
+    margin-top: 16px;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
 }
@@ -31,7 +28,14 @@
     .window {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        height: calc(50vh - 50px);
+        max-height: 100%;
+    }
+
+    .buttonBar {
+      position: absolute;
+      bottom: 80px;
+      left: 0;
+      padding: 16px;
+      width: calc(100% - 32px);
     }
 }
