@@ -65,12 +65,10 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "*.{json,css}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "eslintConfig": {
