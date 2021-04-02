@@ -9,7 +9,7 @@
     transform: translateX(-50%) translateY(-50%);
     background-color: white;
     width: 500px;
-    height: 50vh;
+    max-height: 50vh;
     border-radius: 20px;
     border: 5px solid $light_black;
     display: grid;
@@ -67,7 +67,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 0 1em;
+    padding: 1em;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
