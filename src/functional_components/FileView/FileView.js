@@ -138,7 +138,9 @@ export const FileView = ({
                     }
                 }}
                 breadcrumbs={
-                    currentPath ? getBreadcrumbsFromUrl(currentPath) : null
+                    currentPath
+                        ? getBreadcrumbsFromUrl(currentPath, true)
+                        : null
                 }
                 currentPath={currentPath ?? routeUrl}
                 rootUrl={rootUrl}

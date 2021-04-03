@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import urlUtils from 'url';
 
-export const getBreadcrumbsFromUrl = (url) => {
+export const getBreadcrumbsFromUrl = (url, file = false) => {
     // check if url is a valid url
     if (!isValidUrl(url)) {
         throw new Error(
@@ -12,8 +12,8 @@ export const getBreadcrumbsFromUrl = (url) => {
     url = urlUtils.parse(url);
     const breadcrumbs = url.pathname.split('/');
     const newBreadcrumbs = ['/'];
-    breadcrumbs.forEach((breadcrumb) => {
-        if (breadcrumb !== '') {
+    breadcrumbs.forEach((breadcrumb, index) => {
+        if (breadcrumb !== '' && !(file && index === breadcrumbs.length - 1)) {
             newBreadcrumbs.push('/' + breadcrumb);
         }
     });

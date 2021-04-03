@@ -22,12 +22,8 @@
 }
 
 .buttonBar {
-    margin-top: 15px;
-    width: calc(100% - 2em);
-    padding: 1em;
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    margin-top: 16px;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
 }
@@ -35,7 +31,7 @@
 .input {
     width: 100%;
     box-sizing: border-box;
-    font-size: $large-text;
+    font: $large-text;
     text-overflow: ellipsis;
     border: initial;
     border-radius: initial;
@@ -47,6 +43,13 @@
     .window {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+    }
+
+    .buttonBar {
+      position: absolute;
+      bottom: 80px;
+      left: 0;
+      padding: 16px;
+      width: calc(100% - 32px);
     }
 }
